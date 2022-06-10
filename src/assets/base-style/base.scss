@@ -1,0 +1,111 @@
+// 样式初始化
+@import 'normalize.css';
+
+/*:root -> 获取根元素html*/
+// 使用 color: var(--color-tint)
+:root {
+  --color-text: #409EFF;
+  --color-high-text: #ff5777;
+  --color-tint: #ff8198;
+  --color-background: #fff;
+  --font-size: 14px;
+  --line-height: 1.5;
+}
+
+body,
+ul,
+ol,
+dl,
+li,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+input {
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+  font-weight: normal;
+  font-family: "Microsoft YaHei";
+}
+
+img {
+  border: none;
+}
+
+input,
+button,
+textarea,
+select {
+  *font-size: 100%;
+  border: none;
+}
+
+body {
+  background: #fff;
+  color: #444;
+  font: 14px/24px Microsoft YaHei, SimSun, Arial;
+  overflow-x: hidden;
+  user-select: none;
+}
+
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/*默认a标签样式*/
+a {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+/*浮动和清除浮动*/
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.clear {
+  zoom: 1
+}
+
+.clear:after {
+  content: "";
+  display: block;
+  height: 0;
+  visibility: visible;
+  clear: both;
+}
+
+/*显示隐藏*/
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+/*表格table和td有边框*/
