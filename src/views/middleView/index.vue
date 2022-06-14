@@ -7,6 +7,8 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
+import { client } from '@/utils/plugin/client';
+import * as API from '@/utils/server';
 
 export default defineComponent({
   setup() {
