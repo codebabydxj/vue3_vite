@@ -8,5 +8,11 @@
 </script>
 
 <style lang="scss">
-
+#app, .vite-app {
+  height: 100%;
+  margin: 0;
+}
+.base-warp {
+  width: calc(100%);
+}
 </style>

@@ -14,11 +14,11 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [vue()],
     css: {
-      postcss: {
-        plugins: [
-          postcss,
-        ]
-      }
+      // postcss: {
+      //   plugins: [
+      //     postcss,
+      //   ]
+      // }
     },
     base: env.VITE_HOST,
     server: {

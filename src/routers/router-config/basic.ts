@@ -1,7 +1,7 @@
 export default {
   key: 'basic',
   title: '基本信息',
-  icon: '',
+  icon: 'HomeFilled',
   access: true,
   routes: [
     {

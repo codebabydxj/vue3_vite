@@ -1,6 +1,6 @@
 /**
  * 使用
- * import { client } from '@/utils/plugin/client';
+ * import { client } from '@/utils/https/client';
  */
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import type { Method } from 'axios';
@@ -75,7 +75,7 @@ instance.interceptors.response.use((response: AxiosResponse) => {
 }, (error: any) => {
   if (error.response.status === 401) {
     // toke过期，重新登录
-    store.logout(store.$state)
+    store.logout()
     routers.replace('/login');
     return Promise.reject(error.response);
   }

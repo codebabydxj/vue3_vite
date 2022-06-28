@@ -1,4 +1,9 @@
 import { createApp } from 'vue'
+import { globalFunc } from '@/utils/globalFunc'
+
+// 全局组件
+import flexCard from '@/components/flex-card.vue'
+
 import App from './App.vue'
 import { pinia } from './store'
 import routers from './routers'
@@ -17,9 +22,15 @@ app = createApp(App)
 
 app.use(pinia)
 app.use(routers)
+
+// 将globalFunc方法挂载在全局
+app.provide('globalFunc', globalFunc);
+
 app.use(ElementUI, {
   locale: zhCN
 })
+
+app.component('flex-card', flexCard);
 
 const Icons = { ...ElementIcon, ...AntdIcons }
 Object.keys(Icons).forEach(key => {
