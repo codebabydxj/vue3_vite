@@ -24,7 +24,6 @@
 import { nextTick } from 'vue';
 import { pinia, globalStore } from '@/store'
 import routers from '@/routers'
-import { useRoute } from 'vue-router';
 
 const useGlobalStore = globalStore(pinia)
 const routerConfig = useGlobalStore.routerConfig

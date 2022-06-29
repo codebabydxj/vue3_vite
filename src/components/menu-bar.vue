@@ -10,10 +10,18 @@
       后台管理系统
     </h4>
     <div class="search-wrap" :class="{ 'search-wrap-active': isCurCollapse }">
-      <input class="search-input" placeholder="请输入关键词" name="searchInput" autocomplete="off" v-model="searchInput">
-      <el-icon color="#878d99" :size="18">
-        <Search />
-      </el-icon>
+      <input class="search-input" type="text" placeholder="请输入关键词" name="searchInput" autocomplete="off"
+        v-model="searchInput" @input="handleInput">
+      <template v-if="isShowSoIcon">
+        <el-icon color="#878d99" :size="18" style="margin-left: 15px;">
+          <Search />
+        </el-icon>
+      </template>
+      <template v-else>
+        <el-icon color="#878d99" :size="18" style="margin-left: 15px; cursor: pointer;" @click="cleanInput">
+          <CloseBold />
+        </el-icon>
+      </template>
     </div>
     <div class="search-btn" v-if="!isCurCollapse" @click="searchTog">
       <el-icon color="#878d99" :size="18">
@@ -51,6 +59,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const isCurCollapse: any = ref(props.isCollapse);
     const searchInput: any = ref('');
+    const isShowSoIcon: any = ref(true);
     const menuRef: any = ref(null);
 
     // 通过inject获取挂载在全局的globalFunc方法，初始化view
@@ -89,6 +98,18 @@ export default defineComponent({
       emit('isCurCollapseChange', isCurCollapse.value)
     })
 
+    const handleInput = () => {
+      searchInput.value = searchInput.value.replace(/\s+/g, '');
+      if (searchInput.value.length > 0) {
+        isShowSoIcon.value = false;
+        return
+      }
+      isShowSoIcon.value = true;
+    }
+    const cleanInput = () => {
+      searchInput.value = '';
+      isShowSoIcon.value = true;
+    }
     const searchTog = () => {
       isCurCollapse.value = true;
     }
@@ -109,6 +130,9 @@ export default defineComponent({
       searchInput,
       menuRef,
       routeParams,
+      isShowSoIcon,
+      handleInput,
+      cleanInput,
       searchTog,
       routeGo,
       ubfold,

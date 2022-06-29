@@ -13,10 +13,10 @@ const globalStore = defineStore('useGlobalStore', {
     return {
       routerConfig,
       currentRoute: '/',
-      routes: [],
+      routes: <any>[],
       // 常量
-      consts: [],
-      userInfo: {},
+      consts: <any>[],
+      userInfo: <any>{},
     }
   },
   getters: {
@@ -24,46 +24,48 @@ const globalStore = defineStore('useGlobalStore', {
   },
   actions: {
     setCurrentRoute(rootPath: any) {
-      const state: any = globalStore();
-      state.currentRoute = rootPath;
+      // const state: any = globalStore();
+      // state  .currentRoute = rootPath;
+      this.currentRoute = rootPath;
     },
     addRoute(route: any) {
-      const state: any = globalStore();
-      state.routes.push(route);
+      // const state: any = globalStore();
+      // state.routes.push(route);
+      this.routes.push(route);
     },
     updateRoute(options: any) {
-      const state: any = globalStore();
-      Object.keys(state.routes[options.index]).forEach((key) => {
+      // const state: any = globalStore();
+      Object.keys(this.routes[options.index]).forEach((key) => {
         if (options.route[key]) {
-          state.routes[options.index][key] = options.route[key];
+          this.routes[options.index][key] = options.route[key];
         }
       });
     },
     delRoute(options: any) {
-      const state: any = globalStore();
+      // const state: any = globalStore();
       if (options.item) {
-        state.routes.splice(options.index, options.count, options.item);
+        this.routes.splice(options.index, options.count, options.item);
       } else {
-        state.routes.splice(options.index, options.count);
+        this.routes.splice(options.index, options.count);
       }
     },
     setConsts(consts: any) {
-      const state: any = globalStore();
-      state.consts = consts;
+      // const state: any = globalStore();
+      this.consts = consts;
     },
     setUserInfo(userInfo: any) {
-      const state: any = globalStore();
-      state.userInfo = userInfo;
+      // const state: any = globalStore();
+      this.userInfo = userInfo;
     },
     logout() {
-      const state: any = globalStore();
+      // const state: any = globalStore();
       // 清空用户信息
-      state.userInfo = {};
+      this.userInfo = {};
       // 清空导航栏
-      state.currentRoute = '/';
-      state.routes = [];
+      this.currentRoute = '/';
+      this.routes = [];
       // 清空所有菜单权限
-      state.routerConfig.forEach((v: any) => { v.access = false; });
+      this.routerConfig.forEach((v: any) => { v.access = false; });
     },
   },
 });

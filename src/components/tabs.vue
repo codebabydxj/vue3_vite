@@ -90,6 +90,7 @@ export default defineComponent({
 <style scoped>
 .tabs {
   padding-top: 3px;
+  user-select: none;
 }
 
 .contextmenu {
