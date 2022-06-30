@@ -25,9 +25,9 @@ import { nextTick } from 'vue';
 import { pinia, globalStore } from '@/store'
 import routers from '@/routers'
 
-const useGlobalStore = globalStore(pinia)
-const routerConfig = useGlobalStore.routerConfig
-const backPathKey = 'backPath';
+const useGlobalStore: any = globalStore(pinia)
+const routerConfig: any = useGlobalStore.routerConfig
+const backPathKey: any = 'backPath';
 let fullPath: any = null;
 let query: any = {};
 
@@ -132,7 +132,7 @@ const globalFunc = {
 }
 
 // 根据path，从store的routerConfig查找相应的title
-function getTitleByPath(path: any) {
+const getTitleByPath = (path: any) => {
   path = path.split('?')[0];
   let result = '';
   for (let i = 0; i < routerConfig.length; i++) {
@@ -145,7 +145,7 @@ function getTitleByPath(path: any) {
   return result;
 };
 
-function addParamInPath(path: any, key: any, value: any) {
+const addParamInPath = (path: any, key: any, value: any) => {
   const symbol = path.indexOf('?') === -1 ? '?' : '&';
   return `${path}${symbol}${key}=${value}`;
 };

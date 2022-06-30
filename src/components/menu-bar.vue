@@ -13,18 +13,18 @@
       <input class="search-input" type="text" placeholder="请输入关键词" name="searchInput" autocomplete="off"
         v-model="searchInput" @input="handleInput">
       <template v-if="isShowSoIcon">
-        <el-icon color="#878d99" :size="18" style="margin-left: 15px;">
+        <el-icon :size="18" style="margin-left: 15px;" color="#d7d7d7">
           <Search />
         </el-icon>
       </template>
       <template v-else>
-        <el-icon color="#878d99" :size="18" style="margin-left: 15px; cursor: pointer;" @click="cleanInput">
+        <el-icon :size="18" color="#a5a5a5" style="margin-left: 15px; cursor: pointer;" @click="cleanInput">
           <CloseBold />
         </el-icon>
       </template>
     </div>
     <div class="search-btn" v-if="!isCurCollapse" @click="searchTog">
-      <el-icon color="#878d99" :size="18">
+      <el-icon :size="18" color="#ffffff">
         <Search />
       </el-icon>
     </div>
@@ -34,8 +34,8 @@
       <el-sub-menu v-for="routeWrap in routeParams.routerConfigFilterd" :index="routeWrap.key" :key="routeWrap.key"
         @click.native="ubfold(routeWrap.key)">
         <template #title>
-          <el-icon color="#878d99" :size="16">
-            <component :is="routeWrap.icon"></component>
+          <el-icon :size="16">
+            <component :is="routeWrap.icon" color="#ffffff"></component>
           </el-icon>
           <span slot="title">{{ routeWrap.title }}</span>
         </template>

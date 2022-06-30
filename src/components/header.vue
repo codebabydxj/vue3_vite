@@ -20,15 +20,31 @@
           </el-link>
         </el-tooltip>
         <div id="he-plugin-simple"></div>
+        <el-dropdown class="head" @command="handleCommand">
+          <el-avatar class="avatar" icon="el-icon-user-solid" :size="30"
+            src="https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png"
+            v-loading.fullscreen.lock="fullscreenLoading"></el-avatar>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item command="center">个人中心</el-dropdown-item>
+              <el-dropdown-item command="setCore">设置中心</el-dropdown-item>
+              <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </div>
     </nav>
   </header>
 </template>
 
 <script lang="ts">
-import { defineComponent, inject, onMounted } from 'vue'
+import { defineComponent, inject, onMounted, ref } from 'vue'
 import screenfull from 'screenfull'
-import { ElMessage } from 'element-plus'
+import routers from '@/routers'
+import { globalStore } from '@/store'
+import { client } from '@/utils/https/client';
+import * as API from '@/utils/server';
+import { ElMessage, ElLoading } from 'element-plus'
 
 export default defineComponent({
   setup() {
@@ -36,15 +52,15 @@ export default defineComponent({
     onMounted(() => {
       (window as any).WIDGET = {
         'CONFIG': {
-          'modules': '01234',
+          'modules': '2014',
           'background': '5',
           'tmpColor': '409eff',
-          'tmpSize': '14',
+          'tmpSize': '15',
           'cityColor': '409eff',
-          'citySize': '14',
+          'citySize': '15',
           'aqiColor': '409eff',
-          'aqiSize': '14',
-          'weatherIconSize': '20',
+          'aqiSize': '15',
+          'weatherIconSize': '24',
           'alertIconSize': '16',
           'padding': '10px 10px 5px 10px',
           'shadow': '0',
@@ -61,7 +77,9 @@ export default defineComponent({
       document.getElementsByTagName('head')[0].appendChild(script)
     })
 
+    const myStore: any = globalStore()
     const globalFunc: any = inject('globalFunc')
+    const fullscreenLoading = ref(false)
 
     const refresh = () => {
       globalFunc.refreshView()
@@ -77,15 +95,42 @@ export default defineComponent({
         })
       }
     }
+    const handleCommand = (command: any) => {
+      // 退出登录
+      if (command === 'logout') {
+        fullscreenLoading.value = true
+        // client.get(API.loginOut)
+        // .then(() => {
+        //   myStore.logout()
+        //   routers.replace('/login');
+        //   setTimeout(() => {
+        //     window.location.reload();
+        //   }, 50)
+        // }).catch(() => {
+        // }).finally(() => {
+        //   fullscreenLoading.value = false
+        // });
+
+        myStore.logout()
+        routers.replace('/login');
+        setTimeout(() => {
+          window.location.reload();
+        }, 50)
+      }
+      // 个人中心
+      // 设置中心
+    }
     return {
+      fullscreenLoading,
       refresh,
       screenfullTog,
+      handleCommand,
     };
   }
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 header {
   flex: 0 0 auto;
   background-color: #EDF2FC;
@@ -116,5 +161,13 @@ header .navbar-top .user-info .screenfull {
   padding: 0;
   color: inherit;
   cursor: pointer;
+}
+
+header .navbar-top .user-info .head {
+  margin-right: 8px;
+
+  .avatar {
+    cursor: pointer;
+  }
 }
 </style>
