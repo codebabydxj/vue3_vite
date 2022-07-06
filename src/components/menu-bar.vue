@@ -1,12 +1,13 @@
 <template>
   <nav class="navbar-side">
+    <template v-if="!isCurCollapse">
+      <img class="logo_ind" src="../assets/vite.png" alt=""/>
+    </template>
     <div class="collapse-wrap">
       <el-switch active-color="#878D99" inactive-color="#878D99" v-model="isCurCollapse"></el-switch>
     </div>
     <h4 v-if="isCurCollapse" style="textAlign: center; color: #fff">
-      <el-icon color="#2cffa7" :size="18" style="vertical-align: middle;">
-        <Platform />
-      </el-icon>
+      <img class="logo" src="../assets/vite.png" alt=""/>
       后台管理系统
     </h4>
     <div class="search-wrap" :class="{ 'search-wrap-active': isCurCollapse }">
@@ -152,6 +153,20 @@ export default defineComponent({
     text-align: center;
     padding: 5px 0;
     margin-top: 10px;
+  }
+  .logo {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+    margin-right: 4px;
+    margin-top: -4px;
+  }
+  .logo_ind {
+    display: block;
+    margin: 8px auto 0;
+    width: 24px;
+    height: 24px;
   }
 }
 
