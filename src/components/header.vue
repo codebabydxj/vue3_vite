@@ -170,4 +170,7 @@ header .navbar-top .user-info .head {
     cursor: pointer;
   }
 }
+#he-plugin-simple {
+  z-index: 10000;
+}
 </style>
