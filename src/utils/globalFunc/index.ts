@@ -30,6 +30,7 @@ const routerConfig: any = useGlobalStore.routerConfig
 const backPathKey: any = 'backPath';
 let fullPath: any = null;
 let query: any = {};
+let willOpenPath: any = '';
 
 routers.beforeEach(async (to: any) => {
   query = to.query;
@@ -42,9 +43,9 @@ const globalFunc = {
   // 初始化
   initView: () => {
     console.log('初始化-view');
-    const rootPath = fullPath.match(/^\/[a-zA-Z0-9\_\-]*/)[0];
+    const rootPath: any = fullPath.match(/^\/[a-zA-Z0-9\_\-]*/)[0];
     if (rootPath === useGlobalStore.currentRoute) return;
-    const route = {
+    const route: any = {
       title: getTitleByPath(rootPath),
       route: rootPath,
       realPath: fullPath,
@@ -60,13 +61,13 @@ const globalFunc = {
     if (needBackPath) {
       path = addParamInPath(path, backPathKey, fullPath);
     }
-    let willOpenPath = path;
+    willOpenPath = path;
     // 一级路由
-    const rootPath = path.match(/^\/[a-zA-Z0-9\_\.\-]*/)[0];
+    const rootPath: any = path.match(/^\/[a-zA-Z0-9\_\.\-]*/)[0];
     const curRoute: any = useGlobalStore.routes.find((item: any) => item.route === rootPath);
     if (!curRoute) {
       // tab没有则添加
-      const route = {
+      const route: any = {
         title: getTitleByPath(rootPath),
         route: rootPath,
         realPath: path,
@@ -77,20 +78,20 @@ const globalFunc = {
       if (curRoute.route === path) {
         willOpenPath = curRoute.realPath;
       } else {
-        const index = useGlobalStore.routes.findIndex((item: any) => item.route === curRoute.route);
+        const index: any = useGlobalStore.routes.findIndex((item: any) => item.route === curRoute.route);
         useGlobalStore.updateRoute({ index, route: { realPath: path } });
       }
     }
     useGlobalStore.setCurrentRoute(rootPath);
-    routers.replace(willOpenPath).catch(() => {});
+    routers.replace(willOpenPath).catch((err: any) => {});
   },
 
   // 关闭页面
   closeView: (path: any) => {
     console.log('关闭页面');
     // 一级路由
-    const rootPath = path.match(/^\/[a-zA-Z0-9\_\.\-]+/)[0];
-    const index = useGlobalStore.routes.findIndex((item: any) => item.route === rootPath);
+    const rootPath: any = path.match(/^\/[a-zA-Z0-9\_\.\-]+/)[0];
+    const index: any = useGlobalStore.routes.findIndex((item: any) => item.route === rootPath);
     // 切换至下一个或上一个标签
     const nextTab: any = useGlobalStore.routes[index + 1] || useGlobalStore.routes[index - 1];
     if (nextTab) {
@@ -122,7 +123,7 @@ const globalFunc = {
   refreshView: () => {
     console.log('重置页面');
     // 需要刷新的url
-    const _fullPath = fullPath;
+    const _fullPath: any = fullPath;
     routers.replace('/welcome/_empty');
     nextTick(() => {
       routers.replace(_fullPath);
@@ -134,9 +135,9 @@ const globalFunc = {
 // 根据path，从store的routerConfig查找相应的title
 const getTitleByPath = (path: any) => {
   path = path.split('?')[0];
-  let result = '';
+  let result: any = '';
   for (let i = 0; i < routerConfig.length; i++) {
-    var s = routerConfig[i].routes.find(item => item.path === path);
+    var s = routerConfig[i].routes.find((item: any) => item.path === path);
     if (s) {
       result = s.title;
       break;
@@ -146,7 +147,7 @@ const getTitleByPath = (path: any) => {
 };
 
 const addParamInPath = (path: any, key: any, value: any) => {
-  const symbol = path.indexOf('?') === -1 ? '?' : '&';
+  const symbol: any = path.indexOf('?') === -1 ? '?' : '&';
   return `${path}${symbol}${key}=${value}`;
 };
 
