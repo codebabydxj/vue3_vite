@@ -4,9 +4,9 @@
       <img class="logo_ind" src="../assets/vite.png" alt=""/>
     </template>
     <div class="collapse-wrap">
-      <el-switch active-color="#878D99" inactive-color="#878D99" v-model="isCurCollapse"></el-switch>
+      <el-switch active-color="#13ce66" inactive-color="#878D99" v-model="isCurCollapse"></el-switch>
     </div>
-    <h4 v-if="isCurCollapse" style="textAlign: center; color: #fff">
+    <h4 v-if="isCurCollapse" style="textAlign: center; color: #fff; margin-top: 5px;">
       <img class="logo" src="../assets/vite.png" alt=""/>
       后台管理系统
     </h4>
@@ -151,8 +151,7 @@ export default defineComponent({
 
   .collapse-wrap {
     text-align: center;
-    padding: 5px 0;
-    margin-top: 10px;
+    margin-top: 15px;
   }
   .logo {
     display: inline-block;
@@ -252,12 +251,6 @@ export default defineComponent({
   cursor: pointer;
   line-height: 56px;
   transition: background-color .5s, color .5s;
-}
-
-.collapse-wrap {
-  text-align: center;
-  padding: 5px 0;
-  margin-top: 10px;
 }
 
 .el-menu-vertical-demo:not(.el-menu--collapse) {

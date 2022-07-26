@@ -22,7 +22,7 @@
         <div id="he-plugin-simple"></div>
         <el-dropdown class="head" @command="handleCommand">
           <el-avatar class="avatar" icon="el-icon-user-solid" :size="30"
-            src="https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png"
+            src="/src/assets/avatar.png" fit="fill"
             v-loading.fullscreen.lock="fullscreenLoading"></el-avatar>
           <template #dropdown>
             <el-dropdown-menu>
@@ -168,6 +168,7 @@ header .navbar-top .user-info .head {
 
   .avatar {
     cursor: pointer;
+    background-color: transparent;
   }
 }
 #he-plugin-simple {
