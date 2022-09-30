@@ -13,7 +13,11 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "suppressImplicitAnyIndexErrors": true
+  },
+  "vueCompilerOptions": {
+    "experimentalDisableTemplateSupport": true
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
 }
