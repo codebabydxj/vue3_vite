@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => {
       port: 8080,
       host: true,
       proxy: { // 代理
-        "/app": {
+        "/api": {
           target: env.VITE_PROXY,
           changeOrigin: true,
         },
@@ -36,7 +36,7 @@ export default defineConfig(({ mode }) => {
         },
       },
     },
-    build: {
+    build: { // 生成环境去除 console debugger
       minify: "terser",
       terserOptions: {
         compress: {
