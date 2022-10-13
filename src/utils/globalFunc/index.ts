@@ -42,7 +42,7 @@ routers.beforeEach(async (to: any) => {
 const globalFunc = {
   // 初始化
   initView: () => {
-    console.log('初始化-view');
+    console.log(`%c【全局路由】- 初始化完成···`, 'color: #009acc')
     const rootPath: any = fullPath.match(/^\/[a-zA-Z0-9\_\-]*/)[0];
     if (rootPath === useGlobalStore.currentRoute) return;
     const route: any = {
@@ -56,7 +56,7 @@ const globalFunc = {
   
   // 打开页面
   openView: (path: any, needBackPath: any = false) => {
-    console.log('打开新页面');
+    console.log(`%c【全局路由】- 打开新页面···`, 'color: #67C23A')
     // 需要指定返回路径的情况，将返回的路径拼接到参数中
     if (needBackPath) {
       path = addParamInPath(path, backPathKey, fullPath);
@@ -88,7 +88,7 @@ const globalFunc = {
 
   // 关闭页面
   closeView: (path: any) => {
-    console.log('关闭页面');
+    console.log(`%c【全局路由】- 关闭页面···`, 'color: red')
     // 一级路由
     const rootPath: any = path.match(/^\/[a-zA-Z0-9\_\.\-]+/)[0];
     const index: any = useGlobalStore.routes.findIndex((item: any) => item.route === rootPath);
@@ -107,7 +107,7 @@ const globalFunc = {
 
   // 返回上级页面
   goView: () => {
-    console.log('返回上级页面');
+    console.log(`%c【全局路由】- 返回上级页面···`, 'color: #b88230')
     // 如果存在backPath这个查询参数，就返回到backPath
     if (query[backPathKey]) {
       globalFunc.openView(query[backPathKey]);
@@ -121,7 +121,7 @@ const globalFunc = {
 
   // 重置页面
   refreshView: () => {
-    console.log('重置页面');
+    console.log(`%c【全局路由】- 重置页面···`, 'color: #ff65fb')
     // 需要刷新的url
     const _fullPath: any = fullPath;
     routers.replace('/welcome/_empty');

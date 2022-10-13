@@ -1,8 +1,8 @@
 <template>
   <div class="tabs">
-    <el-tabs v-model="routeParams.currentRoute" type="card" closable @tab-click="tabClick" @tab-remove="removeTab"
+    <el-tabs v-model="currentRoute" type="card" closable @tab-click="tabClick" @tab-remove="removeTab"
       @contextmenu.prevent.native="openMenu($event)">
-      <el-tab-pane v-for="item in routeParams.routes" :key="item.route" :label="item.title" :name="item.route">
+      <el-tab-pane v-for="item in routes" :key="item.route" :label="item.title" :name="item.route">
       </el-tab-pane>
     </el-tabs>
     <ul class="contextmenu" v-show="visable" :style="{ left: left + 'px', top: top + 'px' }">
@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch, inject, reactive } from 'vue'
+import { defineComponent, ref, watch, inject, watchEffect } from 'vue'
 import { globalStore } from '@/store'
 
 export default defineComponent({
@@ -25,9 +25,12 @@ export default defineComponent({
     const globalFunc: any = inject('globalFunc')
     globalFunc.initView();
 
-    const routeParams: any = reactive({
-      currentRoute: computed(() => myStore.currentRoute),
-      routes: computed(() => myStore.routes)
+    // 初始化路由
+    const routes: any = ref([])
+    const currentRoute: any = ref('')
+    watchEffect(() => {
+      currentRoute.value = myStore.currentRoute;
+      routes.value = myStore.routes;
     })
 
     const visable = ref(false)
@@ -42,13 +45,15 @@ export default defineComponent({
       }
     })
 
-    const tabClick = (obj: any) => {
-      if (obj.props.name === routeParams.currentRoute) return;
+    const tabClick = (obj: any, event: any) => {
+      if (obj.props.name === currentRoute.value) return;
       globalFunc.openView(obj.props.name);
     }
+
     const removeTab = (route: any) => {
       globalFunc.closeView(route);
     }
+
     const openMenu = (e: any) => {
       visable.value = true;
       left.value = e.clientX;
@@ -56,23 +61,27 @@ export default defineComponent({
     }
 
     const closeOthers = () => {
-      const i = routeParams.routes.find((item: any) => item.route === routeParams.currentRoute);
+      const i = routes.value.find((item: any) => item.route === currentRoute.value);
       myStore.delRoute({ index: 0, count: 1000, item: i });
     }
+
     const closeLeft = () => {
-      const idx = routeParams.routes.findIndex((item: any) => item.route === routeParams.currentRoute);
+      const idx = routes.value.findIndex((item: any) => item.route === currentRoute.value);
       myStore.delRoute({ index: 0, count: idx });
     }
+
     const closeRight = () => {
-      const idx = routeParams.routes.findIndex((item: any) => item.route === routeParams.currentRoute);
+      const idx = routes.value.findIndex((item: any) => item.route === currentRoute.value);
       myStore.delRoute({ index: idx + 1, count: 1000 });
     }
+
     const closeMenu = () => {
       visable.value = false;
     }
 
     return {
-      routeParams,
+      currentRoute,
+      routes,
       visable,
       left,
       top,
