@@ -9,3 +9,6 @@ https://juejin.cn/post/7036745610954801166
 
 # 组件库Naive UI（推荐）
 https://www.naiveui.com/
+
+# Vue团队公开快如闪电的全新脚手架工具 - create-vue，未来将替代 Vue-CLI
+create-vue使用<npm init vue@next>一行命令，就能快如闪电般初始化好基于vite的Vue3项目
