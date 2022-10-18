@@ -133,8 +133,10 @@ export default defineComponent({
 <style scoped lang="scss">
 header {
   flex: 0 0 auto;
-  background-color: #EDF2FC;
-  border-bottom: 1px solid #dfe4ed;
+  // background-color: rgba(43, 55, 61, 1);
+  // border-bottom: 1px solid rgba(68, 87, 96, 1);
+  background-color: rgba(227, 219, 215, 1);
+  // border-bottom: 1px solid #dfe4ed;
 }
 
 header .navbar-top {

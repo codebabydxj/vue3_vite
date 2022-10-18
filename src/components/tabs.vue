@@ -134,6 +134,7 @@ export default defineComponent({
 }
 
 .tabs .el-tabs--card>.el-tabs__header .el-tabs__nav {
+  border: none;
   border-radius: 0;
 }
 
