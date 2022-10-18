@@ -2,7 +2,7 @@
 <template>
   <flex-card>
     <div class="base-warp">
-      <h3 class="v-h3">欢迎来到vue3的世界~</h3>
+      <h3 class="v-h3">欢迎来到vite的世界~</h3>
     </div>
   </flex-card>
 </template>
