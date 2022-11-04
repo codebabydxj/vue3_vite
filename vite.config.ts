@@ -9,6 +9,19 @@ const postcss = px2rem({
   remUnit: 16
 })
 
+const getIPAdress = (ipStart: string = '192') => {
+  var interfaces = require('os').networkInterfaces();
+  for (var devName in interfaces) {
+    var iface = interfaces[devName];
+    for (var i = 0; i < iface.length; i++) {
+      var alias = iface[i];
+      if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal && alias.address.startsWith(ipStart)) {
+        return alias.address;
+      }
+    }
+  }
+}
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, __dirname);
   return {
@@ -35,6 +48,10 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
         },
       },
+      hmr: { // 本地使用了whistle代理，此时会无效得进行刷新请求。解决方案
+        protocol: 'ws', // WebSocket协议
+        host: getIPAdress()
+      }  
     },
     build: { // 生成环境去除 console debugger
       // minify: true,
