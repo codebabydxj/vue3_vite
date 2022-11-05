@@ -137,6 +137,7 @@ header {
   // border-bottom: 1px solid rgba(68, 87, 96, 1);
   background-color: rgba(43, 55, 61, 1);
   // border-bottom: 1px solid #dfe4ed;
+  z-index: 99999;
 }
 
 header .navbar-top {
@@ -172,8 +173,5 @@ header .navbar-top .user-info .head {
     cursor: pointer;
     background-color: transparent;
   }
-}
-#he-plugin-simple {
-  z-index: 10000;
 }
 </style>
