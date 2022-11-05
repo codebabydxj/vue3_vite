@@ -130,7 +130,7 @@ export default defineComponent({
 .tabs .el-tabs--card>.el-tabs__header {
   border-bottom: none;
   margin-bottom: 0;
-  padding: 0 2px;
+  padding-right: 2px;
 }
 
 .tabs .el-tabs--card>.el-tabs__header .el-tabs__nav {
@@ -138,7 +138,16 @@ export default defineComponent({
   border-radius: 0;
 }
 
+.navbar-top .tabs-wrap .el-tabs__item {
+  color: #ffffff;
+}
+
+.navbar-top .tabs-wrap .el-tabs__item:hover {
+  color: var(--color-text);
+}
+
 .navbar-top .tabs-wrap .el-tabs__item.is-active {
   background-color: #ffffff;
+  color: var(--color-text);
 }
 </style>

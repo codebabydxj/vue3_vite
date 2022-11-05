@@ -7,14 +7,14 @@
       <div class="user-info">
         <el-tooltip effect="dark" content="刷新" placement="bottom">
           <el-link class="screenfull" @click="refresh">
-            <el-icon color="#444444" :size="20">
+            <el-icon color="#efefef" :size="20">
               <Refresh />
             </el-icon>
           </el-link>
         </el-tooltip>
         <el-tooltip effect="dark" content="全屏" placement="bottom">
           <el-link class="screenfull" @click="screenfullTog">
-            <el-icon color="#444444" :size="20">
+            <el-icon color="#efefef" :size="20">
               <FullScreen />
             </el-icon>
           </el-link>
@@ -135,7 +135,7 @@ header {
   flex: 0 0 auto;
   // background-color: rgba(43, 55, 61, 1);
   // border-bottom: 1px solid rgba(68, 87, 96, 1);
-  background-color: rgba(227, 219, 215, 1);
+  background-color: rgba(43, 55, 61, 1);
   // border-bottom: 1px solid #dfe4ed;
 }
 
