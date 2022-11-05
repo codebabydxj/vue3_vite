@@ -150,4 +150,8 @@ export default defineComponent({
   background-color: #ffffff;
   color: var(--color-text);
 }
+
+.navbar-top .tabs-wrap .el-tabs--card>.el-tabs__header .el-tabs__item {
+  border: none;
+}
 </style>
