@@ -54,13 +54,6 @@ export default defineConfig(({ mode }) => {
       }  
     },
     build: { // 生成环境去除 console debugger
-      // minify: true,
-      // terserOptions: {
-      //   compress: {
-      //     drop_console: true,
-      //     drop_debugger: true,
-      //   },
-      // },
       esbuild: {
         drop: ['console', 'debugger'],
         minify: true

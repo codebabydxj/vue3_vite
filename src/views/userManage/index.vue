@@ -18,8 +18,8 @@ export default defineComponent({
     const resetForm = () => {
       globalFunc.refreshView()
     }
-
-    return{
+  
+    return {
       resetForm,
     }
   }
