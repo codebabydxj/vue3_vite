@@ -3,8 +3,8 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite --open",
-    "serve": "vite",
+    "dev": "vite",
+    "serve": "vite --open",
     "build:dev": "vite build --mode development",
     "build:pro": "vite build --mode production",
     "preview": "vite preview",

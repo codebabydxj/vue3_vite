@@ -1,4 +1,5 @@
 import { defineConfig, loadEnv } from 'vite'
+import type { UserConfig, ConfigEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import { resolve } from "path"
 import px2rem from 'postcss-px2rem'
@@ -22,7 +23,7 @@ const getIPAdress = (ipStart: string = '192') => {
   }
 }
 
-export default defineConfig(({ mode }) => {
+export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   const env = loadEnv(mode, __dirname);
   return {
     plugins: [vue()],
