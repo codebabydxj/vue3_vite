@@ -98,7 +98,7 @@ export default defineComponent({
     const handleCommand = (command: any) => {
       // 退出登录
       if (command === 'logout') {
-        fullscreenLoading.value = true
+        // fullscreenLoading.value = true
         // client.get(API.loginOut)
         // .then(() => {
         //   myStore.logout()

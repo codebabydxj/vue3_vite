@@ -4,6 +4,8 @@
  */
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import type { Method } from 'axios';
+import axiosRetry from 'axios-retry'
+import jsonpAdapter from 'axios-jsonp'
 import { ElMessage, ElNotification } from 'element-plus';
 import qs from 'qs';
 import dayjs from 'dayjs';
@@ -20,13 +22,42 @@ const instance = axios.create({
   withCredentials: true, // 跨域允许携带cookie
 });
 
+// 取消重复请求处理
+const pending: any = [];
+const removePending = (config: requestConfig) => {
+	let pendingIndex: any = pending.findIndex((v: any) => {
+		if (
+			config.url === v.url &&
+			config.method === v.method &&
+			JSON.stringify(config.params) === JSON.stringify(v.params) &&
+			JSON.stringify(config.data) === JSON.stringify(v.data)
+		) {
+			v.controller.abort();
+			return true;
+		}
+		return false;
+	});
+	if (pendingIndex >= 0) {
+		pending.splice(pendingIndex, 1);
+	}
+};
+
+// 请求失败之后，自动重新请求，只有两次失败才是真正结束
+axiosRetry(instance, { retries: 2 })
 interface requestConfig extends AxiosRequestConfig {
   interceptors?: requestConfig,
-  headers?: any
+  headers?: any,
+  controller?: any
 }
 
 // 请求拦截
 instance.interceptors.request.use((config: requestConfig) => {
+  removePending(config);
+  const controller = new AbortController();
+  config.signal = controller.signal;
+  config.controller = controller;
+  pending.push({ ...config });
+
   const token: string | null = localStorage.getItem('TOKEN');
   if (config.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
     config.data = qs.stringify(config.data);
@@ -94,7 +125,6 @@ instance.interceptors.response.use((response: AxiosResponse) => {
   });
   return Promise.reject(error.response);
 });
-
 class Api {
   request(url: string, options: AxiosRequestConfig, headerConfig?: AxiosRequestConfig) {
     return new Promise<CustomResponseType>((resolve, reject) => {
@@ -123,7 +153,6 @@ class Api {
       data: data ?? {},
     }, headerConfig)
   }
-
   /** download(url: string, data?:any, method: Method = 'post | get') */
   download(url: string, data?: any, method: Method = 'post') {
     const reqDate: AxiosRequestConfig = {
@@ -133,6 +162,13 @@ class Api {
     if (method === 'post') reqDate.data = data
     if (method === 'get') reqDate.params = data
     return this.request(url, reqDate)
+  }
+  /** jsonp(url: string, params?:any) 这样可以让 Axios 支持 jsonp 的功能 */
+  jsonp(url: string, params?: any, headerConfig: any = { adapter: jsonpAdapter }) {
+    return this.request(url, {
+      method: 'get',
+      params: params,
+    }, headerConfig)
   }
 }
 
