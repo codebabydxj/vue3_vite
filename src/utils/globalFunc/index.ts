@@ -22,10 +22,10 @@
  */
 
 import { nextTick } from 'vue';
-import { pinia, globalStore } from '@/store'
+import { globalStore } from '@/store'
 import routers from '@/routers'
 
-const useGlobalStore: any = globalStore(pinia)
+const useGlobalStore: any = globalStore()
 const routerConfig: any = useGlobalStore.routerConfig
 const backPathKey: any = 'backPath';
 let fullPath: any = null;

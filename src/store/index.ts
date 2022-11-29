@@ -1,7 +1,7 @@
 /**
  * 使用
- * import { pinia, globalStore } from '@/store'
- * let store = globalStore(pinia);
+ * import { globalStore } from '@/store'
+ * let store = globalStore();
  */
 import { createPinia, defineStore } from 'pinia'
 import routerConfig from '@/routers/router-config';

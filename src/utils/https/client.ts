@@ -10,9 +10,9 @@ import { ElMessage, ElNotification } from 'element-plus';
 import qs from 'qs';
 import dayjs from 'dayjs';
 import routers from '@/routers'
-import { pinia, globalStore } from '@/store'
+import { globalStore } from '@/store'
 
-let store = globalStore(pinia);
+let store = globalStore();
 const instance = axios.create({
   baseURL: '',
   timeout: 100000,
