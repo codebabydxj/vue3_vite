@@ -8,7 +8,7 @@
 import { defineComponent, ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { client } from '@/utils/https/client';
-import * as API from '@/utils/server';
+import * as API from '@/api';
 
 export default defineComponent({
   setup() {

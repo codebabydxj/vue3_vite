@@ -1,6 +1,9 @@
 import { defineConfig, loadEnv } from 'vite'
 import type { UserConfig, ConfigEnv } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import viteCompression from 'vite-plugin-compression'
 import { resolve } from "path"
 import px2rem from 'postcss-px2rem'
 
@@ -26,7 +29,22 @@ const getIPAdress = (ipStart: string = '192') => {
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   const env = loadEnv(mode, __dirname);
   return {
-    plugins: [vue()],
+    plugins: [
+      vue(),
+      // Components({ // 针对 Vue 的按需组件自动导入
+      //   dts: false, // ts支持, 是否生成对应的d.ts文件
+      //   dirs: ['src/components', 'src/views'], // 自定义路径按需导入
+      //   resolvers: [ ElementPlusResolver() ] // 可配置多个 此时main.ts处组件库相关的就可以全部删除掉了
+      // }),
+      viteCompression({
+        verbose: true, // 是否在控制台输出压缩结果
+        disable: false, // 是否禁用
+        deleteOriginFile: false, // 删除源文件
+        threshold: 10240, // 体积大于 threshold 才会被压缩,单位 b
+        algorithm: 'gzip', // 压缩算法,可选 [ 'gzip' , 'brotliCompress' ,'deflate' , 'deflateRaw']
+        ext: '.gz' // 生成的压缩包后缀
+      })
+    ],
     css: {
       // postcss: {
       //   plugins: [
@@ -54,11 +72,15 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         host: getIPAdress()
       }  
     },
-    build: { // 生成环境去除 console debugger
-      esbuild: {
-        drop: ['console', 'debugger'],
-        minify: true
-      }
+    build: { // 生产环境移除 console debugger
+      minify: 'terser',
+      assetsInlineLimit: 8 * 1024, // 如果静态资源体积 >= 4KB，则提取成单独的文件 如果静态资源体积 < 4KB，则作为 base64 格式的字符串内联
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true
+        },
+      },
     },
     resolve: {
       alias: [
@@ -68,7 +90,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         },
       ],
       // 忽略后缀名的配置项
-      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'],
+      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.node', '.scss'],
     },
   };
 })

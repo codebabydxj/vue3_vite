@@ -3,6 +3,7 @@ node_modules
 node_modules.*
 dist-ssr
 /dist
+*.d.*
 
 # local env files
 *.local

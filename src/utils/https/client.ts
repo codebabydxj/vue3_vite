@@ -44,6 +44,7 @@ const removePending = (config: requestConfig) => {
 
 // 请求失败之后，自动重新请求，只有两次失败才是真正结束
 axiosRetry(instance, { retries: 2 })
+
 interface requestConfig extends AxiosRequestConfig {
   interceptors?: requestConfig,
   headers?: any,
