@@ -43,7 +43,7 @@ const removePending = (config: requestConfig) => {
 };
 
 // 请求失败之后，自动重新请求，只有两次失败才是真正结束
-axiosRetry(instance, { retries: 2 })
+axiosRetry(instance, { retries: 1 })
 
 interface requestConfig extends AxiosRequestConfig {
   interceptors?: requestConfig,
@@ -82,7 +82,7 @@ const downloadFile = (data: Blob, type: string = 'application/vnd.ms-excel', hea
   window.URL.revokeObjectURL(url)
 }
 
-interface CustomResponseType {
+interface ResponseType {
   code: number,
   data: any,
   msg?: any,
@@ -93,10 +93,11 @@ interface CustomResponseType {
 instance.interceptors.response.use((response: AxiosResponse) => {
   if (response.status === 200) {
     if (response.request.responseType === 'blob') {
-      downloadFile(response.data, response.data.type, response.headers['content-disposition'])
-      return false
+      return response
     }
-    return (response.data as CustomResponseType);
+    if ([1, 200].includes(response.data.code)) {
+      return response.data;
+    }
   }
   ElMessage({ // 其他状态提示
     showClose: true,
@@ -127,8 +128,8 @@ instance.interceptors.response.use((response: AxiosResponse) => {
   return Promise.reject(error.response);
 });
 class Api {
-  request(url: string, options: AxiosRequestConfig, headerConfig?: AxiosRequestConfig) {
-    return new Promise<CustomResponseType>((resolve, reject) => {
+  private request(url: string, options: AxiosRequestConfig, headerConfig?: AxiosRequestConfig) {
+    return new Promise<ResponseType>((resolve, reject) => {
       instance.request({
         url: url,
         ...options,
@@ -141,31 +142,44 @@ class Api {
     })
   }
   /** get(url: string, params?:any) */
-  get(url: string, params?: any, headerConfig?: any) {
+  public get(url: string, params?: any, headerConfig?: any) {
     return this.request(url, {
       method: 'get',
       params: params,
     }, headerConfig)
   }
   /** post(url: string, data?:any) */
-  post(url: string, data?: any, headerConfig?: any) {
+  public post(url: string, data?: any, headerConfig?: any) {
     return this.request(url, {
       method: 'post',
       data: data ?? {},
     }, headerConfig)
   }
   /** download(url: string, data?:any, method: Method = 'post | get') */
-  download(url: string, data?: any, method: Method = 'post') {
+  public async download(url: string, data?: any, method: Method = 'post') {
     const reqDate: AxiosRequestConfig = {
       method: method,
       responseType: 'blob',
     }
     if (method === 'post') reqDate.data = data
     if (method === 'get') reqDate.params = data
-    return this.request(url, reqDate)
+    const res = await this.request(url, reqDate)
+    downloadFile(res.data, res.data.type, res.headers['content-disposition'])
+  }
+  /** blobToBuffer(url: string, data?:any, method: Method = 'post | get') */
+  public async blobToBuffer(url: string, data?: any, method: Method = 'post') {
+    const reqDate: AxiosRequestConfig = {
+        method: method,
+        responseType: 'blob',
+    }
+    if (method === 'post') reqDate.data = data
+    if (method === 'get') reqDate.params = data
+    const res = await this.request(url, reqDate)
+    const blob = new Blob([res.data], { type: res.data.type })
+    return await blob.arrayBuffer()
   }
   /** jsonp(url: string, params?:any) 这样可以让 Axios 支持 jsonp 的功能 */
-  jsonp(url: string, params?: any, headerConfig: any = { adapter: jsonpAdapter }) {
+  public jsonp(url: string, params?: any, headerConfig: any = { adapter: jsonpAdapter }) {
     return this.request(url, {
       method: 'get',
       params: params,

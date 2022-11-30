@@ -22,4 +22,7 @@
 .base-warp {
   width: calc(100%);
 }
+.el-loading-mask.is-fullscreen {
+  z-index: 100000 !important;
+}
 </style>
