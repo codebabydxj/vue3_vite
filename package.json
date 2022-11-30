@@ -9,7 +9,9 @@
     "build:pro": "vite build --mode production",
     "preview": "vite preview",
     "lint": "vite lint",
-    "format": "prettier --write \"./**/*.{html,vue,ts,js,json,md}\""
+    "format": "prettier --write \"./**/*.{html,vue,ts,js,json,md}\"",
+    "clean": "rmdir /s /q node_modules",
+    "reinstall": "npm run clean && npm install"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.10",
