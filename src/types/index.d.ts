@@ -1,4 +1,5 @@
 declare module 'qs';
+declare module 'pinia'
 declare interface Window {
   vm: any
 }

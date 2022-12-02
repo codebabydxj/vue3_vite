@@ -15,3 +15,6 @@ create-vue使用<npm init vue@next>一行命令，就能快如闪电般初始化
 
 # node-sass安装失败
 可以使用 npm install node-sass@npm:dart-sass
+
+# 启动前
+需要在根目录配置.env.development和.env.production

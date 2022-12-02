@@ -19,10 +19,10 @@ const globalStore = defineStore('useGlobalStore', {
       userInfo: <any>{},
     }
   },
-  getters: {
+  getters: <any>{
 
   },
-  actions: {
+  actions: <any>{
     setCurrentRoute(rootPath: any) {
       // const state: any = globalStore();
       // state  .currentRoute = rootPath;
