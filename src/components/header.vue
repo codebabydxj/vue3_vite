@@ -98,24 +98,24 @@ export default defineComponent({
     const handleCommand = (command: any) => {
       // 退出登录
       if (command === 'logout') {
-        // fullscreenLoading.value = true
-        // client.get(API.loginOut)
-        // .then(() => {
-        //   myStore.logout()
-        //   routers.replace('/login');
-        //   setTimeout(() => {
-        //     window.location.reload();
-        //   }, 50)
-        // }).catch(() => {
-        // }).finally(() => {
-        //   fullscreenLoading.value = false
-        // });
+        fullscreenLoading.value = true
+        client.get(API.loginOut)
+        .then(() => {
+          myStore.logout()
+          routers.replace('/login');
+          setTimeout(() => {
+            window.location.reload();
+          }, 50)
+        }).catch(() => {
+        }).finally(() => {
+          fullscreenLoading.value = false
+        });
 
-        myStore.logout()
-        routers.replace('/login');
-        setTimeout(() => {
-          window.location.reload();
-        }, 50)
+        // myStore.logout()
+        // routers.replace('/login');
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 50)
       }
       // 个人中心
       // 设置中心
@@ -137,7 +137,7 @@ header {
   // border-bottom: 1px solid rgba(68, 87, 96, 1);
   background-color: rgba(43, 55, 61, 1);
   // border-bottom: 1px solid #dfe4ed;
-  z-index: 99999;
+  z-index: 2005;
 }
 
 header .navbar-top {
