@@ -23,5 +23,22 @@ export default {
         },
       ],
     },
+    {
+      path: '/404',
+      key: 'error404',
+      access: true,
+      meta: {
+        permission: {},
+        hidden: 1,
+      },
+      title: '404',
+      component: () => import('../../views/middleView/index.vue'),
+      children: [
+        {
+          path: '/404',
+          component: () => import('../../views/error404/index.vue'),
+        },
+      ],
+    },
   ],
 };

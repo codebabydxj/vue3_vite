@@ -40,10 +40,12 @@
           </el-icon>
           <span slot="title">{{ routeWrap.title }}</span>
         </template>
-        <el-menu-item v-for="route in routeWrap.routes" :index="route.path" :key="route.path.split('?')[0]"
-          @click="routeGo(route.path)">
-          {{ route.title }}
-        </el-menu-item>
+        <template v-for="route in routeWrap.routes" :key="route.path.split('?')[0]">
+          <el-menu-item :index="route.path" v-if="(!route.meta.hidden || route.meta.hidden !== 1)"
+            @click="routeGo(route.path)">
+            {{ route.title }}
+          </el-menu-item>
+        </template>
       </el-sub-menu>
     </el-menu>
   </nav>
