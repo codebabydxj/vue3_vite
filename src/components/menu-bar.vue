@@ -6,7 +6,7 @@
     <div class="collapse-wrap">
       <el-switch active-color="#13ce66" inactive-color="#878D99" v-model="isCurCollapse"></el-switch>
     </div>
-    <h4 v-if="isCurCollapse" style="textAlign: center; color: #fff; margin-top: 5px;">
+    <h4 v-if="isCurCollapse" class="user-sel admin-title">
       <img class="logo" src="../assets/vite.png" alt=""/>
       后台管理系统
     </h4>
@@ -29,7 +29,7 @@
         <Search />
       </el-icon>
     </div>
-    <el-menu ref="menuRef" class="el-menu-vertical-demo" background-color="#2d2f33" text-color="#f5f7fa"
+    <el-menu ref="menuRef" class="user-sel el-menu-vertical-demo" background-color="#2d2f33" text-color="#f5f7fa"
       active-text-color="#eb9e05" :unique-opened="true" :collapse="!isCurCollapse"
       :default-active="routeParams.currentRoute.split('?')[0] === '/' ? '/welcome' : routeParams.currentRoute.split('?')[0]">
       <el-sub-menu v-for="routeWrap in routeParams.routerConfigFilterd" :index="routeWrap.key" :key="routeWrap.key"
@@ -168,6 +168,11 @@ export default defineComponent({
     margin: 8px auto 0;
     width: 24px;
     height: 24px;
+  }
+  .admin-title {
+    text-align: center;
+    color: #fff;
+    margin-top: 5px;
   }
 }
 
