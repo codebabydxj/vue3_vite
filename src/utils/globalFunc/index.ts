@@ -126,7 +126,9 @@ const globalFunc = {
     const _fullPath: any = fullPath;
     routers.replace('/welcome/_empty');
     nextTick(() => {
-      routers.replace(_fullPath);
+      setTimeout(() => {
+        routers.replace(_fullPath);
+      })
     });
   },
 

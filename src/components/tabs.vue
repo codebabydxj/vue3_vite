@@ -138,6 +138,10 @@ export default defineComponent({
   border-radius: 0;
 }
 
+.tabs .el-tabs__nav .el-tabs__item:nth-child(1) i{
+  display: none;
+}
+
 .navbar-top .tabs-wrap .el-tabs__item {
   color: #ffffff;
 }

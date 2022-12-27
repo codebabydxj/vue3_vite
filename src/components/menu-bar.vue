@@ -29,7 +29,7 @@
         <Search />
       </el-icon>
     </div>
-    <el-menu ref="menuRef" class="user-sel el-menu-vertical-demo" background-color="#2d2f33" text-color="#f5f7fa"
+    <el-menu ref="menuRef" class="user-sel el-menu-vertical-demo" background-color="#191a20" text-color="#f5f7fa"
       active-text-color="#eb9e05" :unique-opened="true" :collapse="!isCurCollapse"
       :default-active="routeParams.currentRoute.split('?')[0] === '/' ? '/welcome' : routeParams.currentRoute.split('?')[0]">
       <el-sub-menu v-for="routeWrap in routeParams.routerConfigFilterd" :index="routeWrap.key" :key="routeWrap.key"
@@ -147,7 +147,7 @@ export default defineComponent({
 <style lang="scss">
 .navbar-side {
   flex: 0 0 auto;
-  background-color: #2d2f33;
+  background-color: #191a20;
   overflow-x: hidden;
   overflow-y: auto;
 
@@ -177,7 +177,7 @@ export default defineComponent({
 }
 
 .el-sub-menu__title {
-  background-color: #2d2f33 !important;
+  background-color: #191a20 !important;
   color: #ffffff !important;
 }
 
@@ -188,7 +188,7 @@ export default defineComponent({
 .navbar-side .el-menu>.el-sub-menu.is-opened>.el-sub-menu__title,
 .navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu,
 .navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item {
-  background-color: #5a5e66 !important;
+  background-color: #2c323e !important;
 }
 
 .navbar-side .el-menu>.el-sub-menu>.el-menu>.el-menu-item {
@@ -280,13 +280,13 @@ export default defineComponent({
   /*滚动条里面小方块*/
   border-radius: 10px;
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  background: #5a5e66;
+  background: #4e5158;
 }
 
 .navbar-side::-webkit-scrollbar-track {
   /*滚动条里面轨道*/
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  background: #ededed;
+  // border-radius: 10px;
+  background: #191a20;
 }
 </style>

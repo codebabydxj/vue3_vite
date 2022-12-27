@@ -8,6 +8,7 @@
 </script>
 
 <style lang="scss">
+/** 全局基本样式 */
 #app, .vite-app {
   height: 100%;
   margin: 0;
@@ -31,5 +32,20 @@
   -ms-user-select: none; // IE10
   -khtml-user-select: none; // 早期浏览器
   user-select: none;
+}
+.small-input-width {
+  width: 150px !important;
+}
+.middle-input-width {
+  width: 180px !important;
+}
+.large-input-width {
+  width: 220px !important;
+}
+.date-picker-width {
+  width: 230px !important;
+}
+.login-input-width {
+  width: 330px !important;
 }
 </style>

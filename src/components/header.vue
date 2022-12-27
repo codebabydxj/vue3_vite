@@ -28,7 +28,7 @@
             <el-dropdown-menu>
               <el-dropdown-item command="center">个人中心</el-dropdown-item>
               <el-dropdown-item command="setCore">设置中心</el-dropdown-item>
-              <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+              <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -44,7 +44,7 @@ import routers from '@/routers'
 import { globalStore } from '@/store'
 import { client } from '@/utils/https/client';
 import * as API from '@/api';
-import { ElMessage, ElLoading } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 export default defineComponent({
   setup() {
@@ -98,24 +98,35 @@ export default defineComponent({
     const handleCommand = (command: any) => {
       // 退出登录
       if (command === 'logout') {
-        fullscreenLoading.value = true
-        client.get(API.loginOut)
-        .then(() => {
+        ElMessageBox.confirm(
+          '您是否确认退出登录?',
+          '温馨提示',
+          {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning',
+          }
+        ).then(() => {
+          // fullscreenLoading.value = true
+          // client.get(API.loginOut)
+          // .then(() => {
+          //   myStore.logout()
+          //   routers.replace('/login');
+          //   setTimeout(() => {
+          //     window.location.reload();
+          //   }, 50)
+          // }).catch(() => {
+          // }).finally(() => {
+          //   fullscreenLoading.value = false
+          // });
+
           myStore.logout()
           routers.replace('/login');
           setTimeout(() => {
             window.location.reload();
           }, 50)
         }).catch(() => {
-        }).finally(() => {
-          fullscreenLoading.value = false
-        });
-
-        // myStore.logout()
-        // routers.replace('/login');
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 50)
+        })
       }
       // 个人中心
       // 设置中心
@@ -135,7 +146,7 @@ header {
   flex: 0 0 auto;
   // background-color: rgba(43, 55, 61, 1);
   // border-bottom: 1px solid rgba(68, 87, 96, 1);
-  background-color: rgba(43, 55, 61, 1);
+  background-color: #191a20;
   // border-bottom: 1px solid #dfe4ed;
   z-index: 2005;
 }
