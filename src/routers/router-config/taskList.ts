@@ -16,6 +16,7 @@ export default {
       children: [
         {
           path: '',
+          name: 'waitList',
           component: () => import('../../views/taskList/waitList/index.vue'),
         },
       ],
@@ -32,6 +33,7 @@ export default {
       children: [
         {
           path: '',
+          name: 'doneList',
           component: () => import('../../views/taskList/doneList/index.vue'),
         },
       ],

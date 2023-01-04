@@ -16,6 +16,7 @@ export default {
       children: [
         {
           path: '',
+          name: 'authManage',
           component: () => import('../../views/authManage/index.vue'),
         },
       ],

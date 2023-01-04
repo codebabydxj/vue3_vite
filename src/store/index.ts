@@ -13,7 +13,7 @@ const globalStore = defineStore('useGlobalStore', {
     return {
       routerConfig,
       currentRoute: '/',
-      routes: <any>[],
+      routes: <any>[{title: '欢迎使用', route: '/welcome', realPath: '/welcome'}],
       // 常量
       consts: <any>[],
       userInfo: <any>{},
@@ -31,7 +31,9 @@ const globalStore = defineStore('useGlobalStore', {
     addRoute(route: any) {
       // const state: any = globalStore();
       // state.routes.push(route);
-      this.routes.push(route);
+      if (route.route !== '/welcome') {
+        this.routes.push(route);
+      }
     },
     updateRoute(options: any) {
       // const state: any = globalStore();

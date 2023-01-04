@@ -16,6 +16,7 @@ export default {
       children: [
         {
           path: '',
+          name: 'userManage',
           component: () => import('../../views/userManage/index.vue'),
         },
       ],

@@ -30,7 +30,7 @@ export default defineComponent({
     const currentRoute: any = ref('')
     watchEffect(() => {
       currentRoute.value = myStore.currentRoute;
-      routes.value = myStore.routes;
+      routes.value = myStore.routes.filter((item: any) => item.route !== '/404');
     })
 
     const visable = ref(false)

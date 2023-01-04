@@ -118,6 +118,7 @@ instance.interceptors.response.use((response: AxiosResponse) => {
       message: '没有权限，请授权之后再处理！',
       type: 'error',
     });
+    routers.replace('/404');
     return Promise.reject(error.response);
   }
   ElNotification({
