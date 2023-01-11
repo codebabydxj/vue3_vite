@@ -114,7 +114,7 @@ export default defineComponent({
           //   routers.replace('/login');
           //   setTimeout(() => {
           //     window.location.reload();
-          //   }, 50)
+          //   }, 100)
           // }).catch(() => {
           // }).finally(() => {
           //   fullscreenLoading.value = false
@@ -124,7 +124,7 @@ export default defineComponent({
           routers.replace('/login');
           setTimeout(() => {
             window.location.reload();
-          }, 50)
+          }, 100)
         }).catch(() => {
         })
       }
