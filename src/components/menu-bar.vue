@@ -48,6 +48,9 @@
         </template>
       </el-sub-menu>
     </el-menu>
+    <div class="user-sel yogi">
+      <img src="../assets/yogi.png" alt=""/>
+    </div>
   </nav>
 </template>
 
@@ -173,6 +176,18 @@ export default defineComponent({
     text-align: center;
     color: #fff;
     margin-top: 5px;
+  }
+  .yogi {
+    width: 180px;
+    height: 120px;
+    overflow: hidden;
+    position: absolute;
+    left: 20px;
+    bottom: 0;
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 

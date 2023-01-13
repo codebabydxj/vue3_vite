@@ -25,7 +25,7 @@ const routers = createRouter({
     routes,
 })
 /* 路由权限方案：挂载所有路由 + 全局路由守卫判断权限 */
-const allGuardRouter: any = [...allRoutes, ...routes.slice(1)]
+const allGuardRouter: any = [...allRoutes, ...routes.slice(1), { path: '/welcome/_empty', name: 'empty' }]
 routers.beforeEach((to, from, next) => {
     const idx = allGuardRouter.findIndex((i: any) => i.path === to.fullPath)
     if (idx === -1) {

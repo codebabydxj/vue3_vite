@@ -22,6 +22,7 @@
 }
 .base-warp {
   width: calc(100%);
+  overflow: hidden !important;
 }
 .el-loading-mask.is-fullscreen {
   z-index: 9999 !important;

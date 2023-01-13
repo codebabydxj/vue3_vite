@@ -120,15 +120,13 @@ const globalFunc = {
   },
 
   // 重置页面
-  refreshView: () => {
+  refreshView: async () => {
     console.log(`%c【全局路由】- 重置页面···`, 'color: #ff65fb')
     // 需要刷新的url
     const _fullPath: any = fullPath;
-    routers.replace('/welcome/_empty');
+    await routers.replace('/welcome/_empty');
     nextTick(() => {
-      setTimeout(() => {
-        routers.replace(_fullPath);
-      })
+      routers.replace(_fullPath);
     });
   },
 
