@@ -14,10 +14,20 @@ export function exportExcel(data: any, fileName: any) {
   }
 }
 
-export const exportBase64Pdf = (code: any, name: any, type = 'application/pdf') => {
-  const byteString = atob(code)
-  const arrayBuffer = new ArrayBuffer(byteString.length)
-  const int8Array = new Uint8Array(arrayBuffer)
+export const exportPdf = (code: any, name: any, type = 'application/pdf') => {
+  // 这里写法具体看后台返回结果
+  let int8Array: any = null
+  let byteString: any = code
+  // 方案一 如果返回的是二进制对象
+  if (typeof code === 'object') {
+    int8Array = new Uint8Array(byteString)
+  }
+  // 方案二 如果返回是一起串base64编码
+  if (typeof code === 'string') {
+    byteString = atob(code)
+    const arrayBuffer = new ArrayBuffer(byteString.length)
+    int8Array = new Uint8Array(arrayBuffer)
+  }
   for (let i = 0; i < byteString.length; i++) {
     int8Array[i] = byteString.charCodeAt(i)
   }
@@ -26,9 +36,10 @@ export const exportBase64Pdf = (code: any, name: any, type = 'application/pdf') 
   const link = document.createElement('a')
   link.style.display = 'none'
   link.href = url
-  link.setAttribute('download', name + '.pdf')
+  // link.target = '_blank' // 如果要预览再下载 打开注释
+  link.setAttribute('download', name + '.pdf') // 如果要预览再下载 注释掉
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
-  window.URL.revokeObjectURL(url)
+  window.URL.revokeObjectURL(url) // 如果要预览再下载 注释掉
 }
