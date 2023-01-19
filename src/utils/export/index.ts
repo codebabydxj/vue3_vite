@@ -24,7 +24,7 @@ export const exportPdf = (code: any, name: any, type = 'application/pdf') => {
   }
   // 方案二 如果返回是一起串base64编码
   if (typeof code === 'string') {
-    byteString = atob(code)
+    byteString = window.atob(code)
     const arrayBuffer = new ArrayBuffer(byteString.length)
     int8Array = new Uint8Array(arrayBuffer)
   }
