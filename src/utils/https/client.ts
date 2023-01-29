@@ -91,6 +91,7 @@ interface ResponseType {
 
 // 响应拦截
 instance.interceptors.response.use((response: AxiosResponse) => {
+  removePending(response.config);
   if (response.status === 200) {
     if (response.request.responseType === 'blob') {
       return response
