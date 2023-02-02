@@ -2,6 +2,7 @@
 import basic from './basic';
 import userManage from './userManage';
 import taskList from './taskList';
+import toolsManage from './toolsManage';
 import authManage from './authManage';
 
 // 保持最后引入404页面!!!!!
@@ -11,6 +12,7 @@ export default [
   basic,
   userManage,
   taskList,
+  toolsManage,
   authManage,
   error
 ];

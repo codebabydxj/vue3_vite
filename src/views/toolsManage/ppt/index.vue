@@ -2,23 +2,17 @@
   <flex-card>
     <div class="base-warp">
       <el-card>
-        已办事务
+        <PPT />
       </el-card>
     </div>
   </flex-card>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script setup lang="ts">
+import PPT from '@/components/ppt.vue'
 
-export default defineComponent({
-
-  setup() {
-  
-    return{}
-  }
-})
 </script>
 
 <style scoped lang="scss">
+
 </style>

@@ -1,7 +1,7 @@
 export default {
   key: 'authManage',
-  title: '权限管理',
-  icon: 'Setting',
+  title: '系统管理',
+  icon: 'Tools',
   access: true,
   routes: [
     {

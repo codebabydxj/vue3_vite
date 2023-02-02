@@ -1,15 +1,14 @@
 <template>
   <nav class="navbar-side">
     <template v-if="!isCurCollapse">
-      <img class="logo_ind" src="../assets/vite.png" alt=""/>
+      <img class="logo_ind" src="../assets/svg/v.svg" alt="" />
     </template>
-    <div class="collapse-wrap">
-      <el-switch active-color="#13ce66" inactive-color="#878D99" v-model="isCurCollapse"></el-switch>
+    <div class="collapse" v-if="isCurCollapse">
+      <h4 class="user-sel admin-title">
+        <img class="logo" src="../assets/svg/v.svg" alt="" />
+        Vite-Admin
+      </h4>
     </div>
-    <h4 v-if="isCurCollapse" class="user-sel admin-title">
-      <img class="logo" src="../assets/vite.png" alt=""/>
-      后台管理系统
-    </h4>
     <div class="search-wrap" :class="{ 'search-wrap-active': isCurCollapse }">
       <input class="search-input" type="text" placeholder="请输入关键词" name="searchInput" autocomplete="off"
         v-model="searchInput" @input="handleInput">
@@ -29,14 +28,14 @@
         <Search />
       </el-icon>
     </div>
-    <el-menu ref="menuRef" class="user-sel el-menu-vertical-demo" background-color="#191a20" text-color="#f5f7fa"
-      active-text-color="#eb9e05" :unique-opened="true" :collapse="!isCurCollapse"
+    <el-menu ref="menuRef" class="user-sel el-menu-vertical-demo" background-color="#191a20" text-color="#fefefea6"
+      active-text-color="#409EFF" :unique-opened="true" :collapse="!isCurCollapse"
       :default-active="routeParams.currentRoute.split('?')[0] === '/' ? '/welcome' : routeParams.currentRoute.split('?')[0]">
       <el-sub-menu v-for="routeWrap in routeParams.routerConfigFilterd" :index="routeWrap.key" :key="routeWrap.key"
         @click.native="ubfold(routeWrap.key)">
         <template #title>
           <el-icon :size="16">
-            <component :is="routeWrap.icon" color="#ffffff"></component>
+            <component :is="routeWrap.icon" color="#fefefea6"></component>
           </el-icon>
           <span slot="title">{{ routeWrap.title }}</span>
         </template>
@@ -48,8 +47,12 @@
         </template>
       </el-sub-menu>
     </el-menu>
-    <div class="user-sel yogi">
-      <img src="../assets/yogi.png" alt=""/>
+    <div class="user-sel yogi" v-if="isCurCollapse"></div>
+    <div class="eo" :class="{ 'active': isActive }">
+      <el-tooltip placement="right" :visible="visible" effect="light" :content="isCurCollapse ? '点击折叠' : '点击展开'">
+        <img src="../assets/svg/enter.svg" alt="" @mouseenter="visible = true" @mouseleave="visible = false"
+          @click="handleSwitch">
+      </el-tooltip>
     </div>
   </nav>
 </template>
@@ -67,6 +70,8 @@ export default defineComponent({
     const searchInput: any = ref('');
     const isShowSoIcon: any = ref(true);
     const menuRef: any = ref(null);
+    const isActive: any = ref(false)
+    const visible = ref(false)
 
     // 通过inject获取挂载在全局的globalFunc方法，初始化view
     const globalFunc: any = inject('globalFunc')
@@ -131,17 +136,24 @@ export default defineComponent({
         }, 1000);
       }
     }
+    const handleSwitch = () => {
+      isActive.value = !isActive.value
+      isCurCollapse.value = !isActive.value
+    }
     return {
       isCurCollapse,
       searchInput,
       menuRef,
       routeParams,
       isShowSoIcon,
+      isActive,
+      visible,
       handleInput,
       cleanInput,
       searchTog,
       routeGo,
       ubfold,
+      handleSwitch,
     }
   }
 });
@@ -153,57 +165,115 @@ export default defineComponent({
   background-color: #191a20;
   overflow-x: hidden;
   overflow-y: auto;
+  position: relative;
 
-  .collapse-wrap {
-    text-align: center;
-    margin-top: 15px;
+  .collapse {
+    height: 60px;
+    // background-color: #1a3642;
+    box-shadow: 0 0 6px -2px var(--color-text);
+    position: relative;
   }
+
   .logo {
     display: inline-block;
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
     vertical-align: middle;
     margin-right: 4px;
     margin-top: -4px;
   }
+
   .logo_ind {
     display: block;
     margin: 8px auto 0;
     width: 24px;
     height: 24px;
   }
+
   .admin-title {
     text-align: center;
     color: #fff;
-    margin-top: 5px;
+    font-weight: bold;
+    font-size: 16px;
+    color: var(--color-text);
+    height: 60px;
+    line-height: 60px;
   }
+
   .yogi {
-    width: 180px;
-    height: 120px;
+    width: 165px;
+    height: 110px;
     overflow: hidden;
     position: absolute;
-    left: 20px;
+    left: 27.5px;
+    bottom: 10px;
+    opacity: 0.5;
+    background: url(../assets/yogi.png) no-repeat center;
+    background-size: 100%;
+    transition: all 1s;
+  }
+
+  .eo {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    position: absolute;
     bottom: 0;
+    box-shadow: 0 0 6px -2px var(--color-text);
+
     img {
-      width: 100%;
-      height: 100%;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      vertical-align: middle;
+      margin-left: 22px;
+      transition: all 1s;
+    }
+  }
+
+  .active {
+    img {
+      transform: rotateY(180deg);
     }
   }
 }
 
+.navbar-side:hover {
+  transition: opacity 1s;
+
+  .yogi {
+    opacity: 0.9;
+    transform: rotateY(360deg);
+  }
+}
+
 .el-sub-menu__title {
-  background-color: #191a20 !important;
-  color: #ffffff !important;
+  color: #fefefea6 !important;
 }
 
-.navbar-side .el-menu>.el-sub-menu>.el-sub-menu__title:hover {
-  color: #eb9e05 !important;
+.el-sub-menu__title>.el-icon>svg {
+  color: #fefefea6 !important;
 }
 
-.navbar-side .el-menu>.el-sub-menu.is-opened>.el-sub-menu__title,
-.navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu,
-.navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item {
-  background-color: #2c323e !important;
+.navbar-side .el-menu>.el-sub-menu:hover {
+  transition: color 0.3s;
+
+  .el-sub-menu__title,
+  .el-sub-menu__title>.el-icon>svg {
+    color: #ffffff !important;
+  }
+}
+
+.navbar-side .el-menu>.el-sub-menu.is-active {
+
+  .el-sub-menu__title,
+  .el-sub-menu__title>.el-icon>svg {
+    color: #ffffff !important;
+  }
+}
+
+.navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active {
+  background-color: #1a3642 !important;
 }
 
 .navbar-side .el-menu>.el-sub-menu>.el-menu>.el-menu-item {
@@ -211,7 +281,7 @@ export default defineComponent({
 }
 
 .navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item:hover {
-  color: #eb9e05 !important;
+  color: #409EFF !important;
 }
 
 .navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active::after {

@@ -20,7 +20,7 @@
           </el-link>
         </el-tooltip>
         <div id="he-plugin-simple"></div>
-        <el-dropdown class="head" @command="handleCommand">
+        <el-dropdown class="head" trigger="click" @command="handleCommand">
           <el-avatar class="avatar" icon="el-icon-user-solid" :size="30"
             src="/src/assets/avatar.png" fit="fill"
             v-loading.fullscreen.lock="fullscreenLoading"></el-avatar>
@@ -107,29 +107,27 @@ export default defineComponent({
             type: 'warning',
           }
         ).then(() => {
-          // fullscreenLoading.value = true
-          // client.get(API.loginOut)
-          // .then(() => {
-          //   myStore.logout()
-          //   routers.replace('/login');
-          //   setTimeout(() => {
-          //     window.location.reload();
-          //   }, 100)
-          // }).catch(() => {
-          // }).finally(() => {
-          //   fullscreenLoading.value = false
-          // });
-
-          myStore.logout()
-          routers.replace('/login');
-          setTimeout(() => {
+          fullscreenLoading.value = true
+          client.get(API.loginOut)
+          .then(async () => {
+            myStore.logout()
+            await routers.replace('/login');
             window.location.reload();
-          }, 100)
+          }).catch(() => {
+          }).finally(() => {
+            fullscreenLoading.value = false
+          });
         }).catch(() => {
         })
       }
       // 个人中心
+      if (command === 'center') {
+
+      }
       // 设置中心
+      if (command === 'setCore') {
+
+      }
     }
     return {
       fullscreenLoading,

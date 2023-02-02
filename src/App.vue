@@ -22,7 +22,6 @@
 }
 .base-warp {
   width: calc(100%);
-  overflow: hidden !important;
 }
 .el-loading-mask.is-fullscreen {
   z-index: 9999 !important;
@@ -48,5 +47,10 @@
 }
 .login-input-width {
   width: 330px !important;
+}
+
+// Wangeditor 样式
+.w-e-full-screen-container {
+  z-index: 2005 !important;
 }
 </style>

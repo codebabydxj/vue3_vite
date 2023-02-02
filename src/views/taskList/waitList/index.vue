@@ -1,38 +1,40 @@
 <template>
   <flex-card>
     <div class="base-warp">
-      <el-row>
-        <el-form ref="ruleFormRef" :model="searchForm" inline>
-          <el-form-item label="用户名" prop="userName">
-            <el-input type="text" placeholder="用户名：admin / user" v-model="searchForm.userName" />
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary">查询</el-button>
-            <el-button @click="resetForm">重置</el-button>
-          </el-form-item>
-        </el-form>
-      </el-row>
-      <el-row>
-        <el-col class="tar">
-          <table-memory :tableTitle="tableTitle" :titleList="titleListLocal" @titleChange="handleTitleChange">
-          </table-memory>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-table id="tableStyle" border stripe style="width: 100%" :data="tableData">
-          <el-table-column width="55" type="selection" align="center"></el-table-column>
-          <el-table-column align="center" prop="date" label="Date"
-            v-if="titleListLocal.some((i: any) => i.title === 'Date' && i.status)" />
-          <el-table-column align="center" prop="name" label="Name"
-            v-if="titleListLocal.some((i: any) => i.title === 'Name' && i.status)" />
-          <el-table-column align="center" prop="age" label="Age"
-            v-if="titleListLocal.some((i: any) => i.title === 'Age' && i.status)" />
-          <el-table-column align="center" prop="gender" label="Gender"
-            v-if="titleListLocal.some((i: any) => i.title === 'Gender' && i.status)" />
-          <el-table-column align="center" prop="address" label="Address"
-            v-if="titleListLocal.some((i: any) => i.title === 'Address' && i.status)" />
-        </el-table>
-      </el-row>
+      <el-card>
+        <el-row>
+          <el-form ref="ruleFormRef" :model="searchForm" inline>
+            <el-form-item label="用户名" prop="userName">
+              <el-input type="text" placeholder="用户名：admin / user" v-model="searchForm.userName" />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary">查询</el-button>
+              <el-button @click="resetForm">重置</el-button>
+            </el-form-item>
+          </el-form>
+        </el-row>
+        <el-row>
+          <el-col class="tar">
+            <table-memory :tableTitle="tableTitle" :titleList="titleListLocal" @titleChange="handleTitleChange">
+            </table-memory>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-table id="tableStyle" border stripe style="width: 100%" :data="tableData">
+            <el-table-column width="55" type="selection" align="center"></el-table-column>
+            <el-table-column align="center" prop="date" label="Date"
+              v-if="titleListLocal.some((i: any) => i.title === 'Date' && i.status)" />
+            <el-table-column align="center" prop="name" label="Name"
+              v-if="titleListLocal.some((i: any) => i.title === 'Name' && i.status)" />
+            <el-table-column align="center" prop="age" label="Age"
+              v-if="titleListLocal.some((i: any) => i.title === 'Age' && i.status)" />
+            <el-table-column align="center" prop="gender" label="Gender"
+              v-if="titleListLocal.some((i: any) => i.title === 'Gender' && i.status)" />
+            <el-table-column align="center" prop="address" label="Address"
+              v-if="titleListLocal.some((i: any) => i.title === 'Address' && i.status)" />
+          </el-table>
+        </el-row>
+      </el-card>
     </div>
   </flex-card>
 </template>

@@ -1,8 +1,10 @@
 <template>
   <flex-card>
     <div class="base-warp">
-      用户管理页面
-      <el-button type="primary" @click="resetForm">重置</el-button>
+      <el-card>
+        用户管理页面
+        <el-button type="primary" @click="resetForm">重置</el-button>
+      </el-card>
     </div>
   </flex-card>
 </template>

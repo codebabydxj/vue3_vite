@@ -4,13 +4,19 @@
       <el-card>
           <div class="contain">
             <div class="main-warp">
-              <h3 class="v-h3">使用说明</h3>
+              <h3 class="v-h3">{{ greetings }}</h3>
               <div class="letter"> 
                 <p> 1. 页面布局</p>
                 <p class="colors">
-                  <span>{{ '<template><flex-card><div class="base-warp">' }}</span>
-                  <span style="color: red; font-weight: bold;">/这里就是你需要写的dom啦/</span>
-                  <span>{{ '</div></flex-card></template>' }}</span>
+                  <el-row>{{ '<template>' }}</el-row>
+                  <el-row style="text-indent: 2em">{{ '<flex-card>' }}</el-row>
+                  <el-row style="text-indent: 4em">{{ '<div class="base-warp">' }}</el-row>
+                  <el-row style="text-indent: 6em">{{ '<el-card>' }}</el-row>
+                  <el-row style="text-indent: 8em; color: red; font-weight: bold;">/ 这里就是你需要写的dom啦 /</el-row>
+                  <el-row style="text-indent: 6em">{{ '</el-card >' }}</el-row>
+                  <el-row style="text-indent: 4em">{{ '</div>' }}</el-row>
+                  <el-row style="text-indent: 2em">{{ '</flex-card>' }}</el-row>
+                  <el-row>{{ '</template>' }}</el-row>
                 </p>
               </div>
               <div class="letter"> 
@@ -40,11 +46,13 @@
                 </p>
               </div>
               <div class="letter">
-                <p> 5. 工具包</p>
+                <p> 5. 工具 / 组件</p>
                 <p class="colors">
-                  这里封装了很多工具可以使用，例如《
+                  这里封装了很多工具/组件可以使用，&lt;<span style="color: red; font-weight: bold;">src/utils</span>&gt;、
+                    &lt;<span style="color: red; font-weight: bold;">src/components</span>&gt;例如《
                     <span style="color: red; font-weight: bold;">list和tree相互转换</span>、<span style="color: red; font-weight: bold;">导出excel和pdf</span>、
-                    <span style="color: red; font-weight: bold;">兄弟组件传值mitt</span>、<span style="color: red; font-weight: bold;">常规正则校验</span>
+                    <span style="color: red; font-weight: bold;">兄弟组件传值mitt</span>、<span style="color: red; font-weight: bold;">常规正则校验</span>、
+                    <span style="color: red; font-weight: bold;">加减乘除精确计算</span>
                   》等
                 </p>
                 <p class="colors">
@@ -65,6 +73,18 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue'
+
+const date: Date = new Date();
+const greetings = computed(() => {
+  if (date.getHours() >= 0 && date.getHours() < 12) {
+    return '上午阳光明媚，祝你薪水翻倍🌞！';
+  } else if (date.getHours() >= 12 && date.getHours() < 18) {
+    return '下午小风娇好，愿你青春不老😃！';
+  } else {
+    return '折一根天使羽毛，愿拂去您的疲惫烦恼忧伤🌛！';
+  }
+});
 </script>
 
 <style scoped lang="scss">
@@ -102,12 +122,11 @@
   background:rgba(255, 255, 255, 0.5);
 }
 .v-h3 {
-  font-size: 24px;
+  text-align: center;
+  font-size: 22px;
   color: var(--color-text);
-  padding-bottom: 10px;
 }
 .letter {
-  margin: 10px 0;
   font-size: 18px;
   p {
     margin: 5px 0;
