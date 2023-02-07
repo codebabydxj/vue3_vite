@@ -14,7 +14,8 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "types": ["vite-plugin-svg-icons/client"]
   },
   "vueCompilerOptions": {
     "experimentalDisableTemplateSupport": true

@@ -272,6 +272,10 @@ export default defineComponent({
   }
 }
 
+.navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu {
+  background-color: #090a0c !important;
+}
+
 .navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active {
   background-color: #1a3642 !important;
 }
@@ -281,7 +285,13 @@ export default defineComponent({
 }
 
 .navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item:hover {
+  color: #ffffff !important;
+  background-color: #090a0c !important;
+}
+
+.navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active:hover {
   color: #409EFF !important;
+  background-color: #1a3642 !important;
 }
 
 .navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active::after {

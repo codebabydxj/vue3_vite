@@ -146,7 +146,7 @@ header {
   // border-bottom: 1px solid rgba(68, 87, 96, 1);
   background-color: #191a20;
   // border-bottom: 1px solid #dfe4ed;
-  z-index: 2005;
+  z-index: 2003;
 }
 
 header .navbar-top {

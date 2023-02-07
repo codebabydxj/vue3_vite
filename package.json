@@ -32,6 +32,7 @@
     "qs": "^6.11.0",
     "sass": "^1.56.1",
     "screenfull": "^6.0.2",
+    "vite-plugin-svg-icons": "^2.0.1",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
   },

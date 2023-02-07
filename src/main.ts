@@ -14,6 +14,7 @@ import * as AntdIcons from '@vicons/antd'
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import '@/assets/base-style/base.scss'
+import SvgIcon from '@/icons'
 /* px转rem 自适应 */
 // import '@/utils/rem' 
 
@@ -29,6 +30,9 @@ app.provide('globalFunc', globalFunc);
 app.use(ElementUI, {
   locale: zhCN
 })
+
+// 加载全局 SVG
+app.use(SvgIcon)
 
 app.component('flex-card', flexCard);
 

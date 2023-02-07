@@ -51,6 +51,6 @@
 
 // Wangeditor 样式
 .w-e-full-screen-container {
-  z-index: 2005 !important;
+  z-index: 2003 !important;
 }
 </style>

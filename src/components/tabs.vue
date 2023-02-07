@@ -16,6 +16,7 @@
 <script lang="ts">
 import { defineComponent, ref, watch, inject, watchEffect } from 'vue'
 import { globalStore } from '@/store'
+import { ElMessage } from 'element-plus';
 
 export default defineComponent({
   setup() {
@@ -30,7 +31,7 @@ export default defineComponent({
     const currentRoute: any = ref('')
     watchEffect(() => {
       currentRoute.value = myStore.currentRoute;
-      routes.value = myStore.routes.filter((item: any) => item.route !== '/404');
+      routes.value = myStore.routes.filter((item: any) => !['/403', '/404', '/500'].includes(item.route));
     })
 
     const visable = ref(false)
@@ -62,12 +63,35 @@ export default defineComponent({
 
     const closeOthers = () => {
       const i = routes.value.find((item: any) => item.route === currentRoute.value);
-      myStore.delRoute({ index: 0, count: 1000, item: i });
+      const idx = routes.value.findIndex((item: any) => item.route === currentRoute.value);
+      if (idx === 0) {
+        myStore.delRoute({ index: 1, count: routes.value.length - 1 });
+        return
+      }
+      if (idx === 1) {
+        ElMessage({
+          showClose: true,
+          grouping: true,
+          message: '首页不能关闭',
+          type: 'warning',
+        });
+        return
+      }
+      myStore.delRoute({ index: 1, count: routes.value.length - 1, item: i });
     }
 
     const closeLeft = () => {
       const idx = routes.value.findIndex((item: any) => item.route === currentRoute.value);
-      myStore.delRoute({ index: 0, count: idx });
+      if (idx === 1) {
+        ElMessage({
+          showClose: true,
+          grouping: true,
+          message: '首页不能关闭',
+          type: 'warning',
+        });
+        return
+      }
+      myStore.delRoute({ index: 1, count: idx - 1 });
     }
 
     const closeRight = () => {

@@ -1,7 +1,9 @@
 <template>
   <flex-card>
     <div class="base-warp">
-      部门管理页面
+      <el-card>
+        部门管理页面
+      </el-card>
     </div>
   </flex-card>
 </template>
