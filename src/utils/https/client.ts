@@ -15,7 +15,7 @@ import { globalStore } from '@/store'
 let store = globalStore();
 const instance = axios.create({
   baseURL: '',
-  timeout: 100000,
+  timeout: 120000, // 默认两分钟
   headers: {
     'Content-Type': 'application/json; charset=UTF-8',
   },
