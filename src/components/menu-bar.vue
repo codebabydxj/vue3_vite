@@ -208,7 +208,7 @@ export default defineComponent({
     left: 27.5px;
     bottom: 10px;
     opacity: 0.5;
-    background: url(../assets/yogi.png) no-repeat center;
+    background: url(../assets/imgs/yogi.png) no-repeat center;
     background-size: 100%;
     transition: all 1s;
   }

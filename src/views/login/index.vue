@@ -2,11 +2,11 @@
   <div class="login-container flx-center">
     <div class="login-box">
       <div class="login-left">
-        <img src="../../assets/login_left.png" alt="login" />
+        <img src="../../assets/imgs/login_left.png" alt="login" />
       </div>
       <div class="login-form">
         <div class="login-logo">
-          <img src="../../assets/logo.png" alt="" />
+          <img src="../../assets/imgs/logo.png" alt="" />
           <h2 class="logo-text" data-v-a2265173="">Vite-Admin</h2>
         </div>
         <el-form
@@ -125,7 +125,7 @@ export default defineComponent({
   height: 100%;
   min-height: 500px;
   background-color: #eee;
-  background-image: url("../../assets/login_bg.svg");
+  background-image: url("../../assets/svg/login_bg.svg");
   background-position: 50%;
   background-size: 100% 100%;
   background-size: cover;

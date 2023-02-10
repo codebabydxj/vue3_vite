@@ -67,7 +67,6 @@
               </div>
             </div>
           </div>
-          <div style="clean"></div>
       </el-card>
     </div>
   </flex-card>
@@ -90,7 +89,7 @@ const greetings = computed(() => {
 
 <style scoped lang="scss">
 .contain {
-  background: url('../../assets/wel.png') no-repeat center;
+  background: url('../../assets/imgs/wel.png') no-repeat center;
   background-size: 70%;
   position: relative;
   height: calc(100vh - 125px);

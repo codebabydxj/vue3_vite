@@ -13,7 +13,7 @@ import zhCN from 'element-plus/es/locale/lang/zh-cn'
 import * as AntdIcons from '@vicons/antd'
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
-import '@/assets/base-style/base.scss'
+import '@/base-style/base.scss'
 import SvgIcon from '@/icons'
 /* px转rem 自适应 */
 // import '@/utils/rem' 
