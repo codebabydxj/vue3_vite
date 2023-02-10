@@ -64,6 +64,7 @@
       </div>
     </div>
   </div>
+  <verify-code v-if="isShowCode" :isShowCode="isShowCode" @verifyCb="handleVerifyCb"></verify-code>
 </template>
 
 <script lang="ts">
@@ -73,16 +74,21 @@ import * as API from '@/api';
 import routers from '@/routers'
 import { User, Lock, CircleClose } from "@element-plus/icons-vue";
 import { ElForm } from 'element-plus';
+import verifyCode from '@/components/verify-code/index.vue'
 
 export default defineComponent({
+  components: {
+    verifyCode
+  },
   setup() {
     type FormInstance = InstanceType<typeof ElForm>
     const ruleFormRef = ref<FormInstance>();
     const ruleForm = reactive({
-      userName: "",
-      password: "",
+      userName: '',
+      password: '',
     });
     const loading = ref(false)
+    const isShowCode = ref(false) // 是否显示滑块验证码，看自己逻辑需求处理
 
     const resetForm = () => {
       ruleForm.userName = ''
@@ -104,6 +110,10 @@ export default defineComponent({
         }
       })
     };
+    // 验证成功之后的回调处理
+    const handleVerifyCb = () => {
+      isShowCode.value = false // 隐藏模态框
+    }
     return {
       ruleForm,
       User,
@@ -111,8 +121,10 @@ export default defineComponent({
       CircleClose,
       ruleFormRef,
       loading,
+      isShowCode,
       resetForm,
       submitForm,
+      handleVerifyCb,
     };
   },
 });

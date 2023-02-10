@@ -34,7 +34,8 @@
     "screenfull": "^6.0.2",
     "vite-plugin-svg-icons": "^2.0.1",
     "vue": "^3.2.45",
-    "vue-router": "^4.1.6"
+    "vue-router": "^4.1.6",
+    "vue3-puzzle-vcode": "^1.0.8"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",

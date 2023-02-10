@@ -53,7 +53,8 @@
                     <span style="color: red; font-weight: bold;">list和tree相互转换</span>、<span style="color: red; font-weight: bold;">导出excel和pdf</span>、
                     <span style="color: red; font-weight: bold;">兄弟组件传值mitt</span>、<span style="color: red; font-weight: bold;">常规正则校验</span>、
                     <span style="color: red; font-weight: bold;">加减乘除精确计算</span>、
-                    <span style="color: red; font-weight: bold;">全局使用svg标签</span>
+                    <span style="color: red; font-weight: bold;">全局使用svg标签</span>、
+                    <span style="color: red; font-weight: bold;">滑块验证码</span>
                   》等
                 </p>
                 <p class="colors">
