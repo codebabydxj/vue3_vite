@@ -2,6 +2,12 @@
   <flex-card>
     <div class="base-warp">
       <el-card>
+        <el-row style="margin-bottom: 20px;">
+          <el-select v-model="valuetest">
+            <el-option v-for="item in options" :key="item.valuetest" :label="item.label" :value="item.valuetest" />
+          </el-select>
+          <el-button type="primary" @click="onPrint">打印</el-button>
+        </el-row>
         <el-row>
           <el-form ref="ruleFormRef" :model="searchForm" inline>
             <el-form-item label="用户名" prop="userName">
@@ -19,7 +25,7 @@
             </table-memory>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row class="table-box">
           <el-table id="tableStyle" border stripe style="width: 100%" :data="tableData">
             <el-table-column width="55" type="selection" align="center"></el-table-column>
             <el-table-column align="center" prop="date" label="Date"
@@ -34,14 +40,18 @@
               v-if="titleListLocal.some((i: any) => i.title === 'Address' && i.status)" />
           </el-table>
         </el-row>
+        <el-row class="img">
+          <img style="width: 300px; height: 400px" src="../../../assets/imgs/login_left.png" alt="">
+        </el-row>
       </el-card>
     </div>
   </flex-card>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, nextTick, onMounted, inject } from 'vue'
+import { defineComponent, ref, computed, inject } from 'vue'
 import { globalStore } from '@/store'
+import Print from "@/utils/print";
 import tableMemory from '@/components/table-memory/index.vue';
 
 export default defineComponent({
@@ -53,9 +63,7 @@ export default defineComponent({
     const myStore: any = globalStore()
     // 通过inject获取挂载在全局的globalFunc方法，初始化view
     const globalFunc: any = inject('globalFunc')
-    const searchForm: any = ref({
-
-    })
+    const searchForm: any = ref({})
     const tableTitle: any = computed(() => `${myStore.userInfo ? myStore.userInfo.userName : 'vite'}-${myStore.currentRoute}`)
     const tableData: any = ref([
       {
@@ -116,6 +124,24 @@ export default defineComponent({
       },
     ])
 
+    const valuetest = ref('1')
+    const options = ref([
+      {
+        valuetest: "1",
+        el: ".table-box",
+        label: "表格"
+      },
+      {
+        valuetest: "2",
+        el: ".img",
+        label: "图片"
+      },
+    ]);
+    const onPrint = () => {
+      const el = options.value.filter((v: any) => v.valuetest === valuetest.value)[0]?.el;
+      Print(el).toPrint;
+    }
+
     const handleTitleChange = (newTitleList: any) => {
       titleListLocal.value = newTitleList;
     }
@@ -127,13 +153,14 @@ export default defineComponent({
       tableData,
       tableTitle,
       titleListLocal,
+      valuetest,
+      options,
       handleTitleChange,
       resetForm,
+      onPrint
     }
   }
 })
 </script>
 
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>
