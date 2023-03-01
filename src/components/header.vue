@@ -26,9 +26,15 @@
             v-loading.fullscreen.lock="fullscreenLoading"></el-avatar>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item command="center">个人中心</el-dropdown-item>
-              <el-dropdown-item command="setCore">设置中心</el-dropdown-item>
-              <el-dropdown-item command="logout" divided>退出登录</el-dropdown-item>
+              <el-dropdown-item command="center">
+                <el-icon><User /></el-icon>个人中心
+              </el-dropdown-item>
+              <el-dropdown-item command="setCore">
+                <el-icon><Setting /></el-icon>设置中心
+              </el-dropdown-item>
+              <el-dropdown-item command="logout" divided>
+                <el-icon><SwitchButton /></el-icon>退出登录
+              </el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
@@ -106,12 +112,15 @@ export default defineComponent({
             cancelButtonText: '取消',
             type: 'warning',
           }
-        ).then(() => {
+        ).then(async() => {
           fullscreenLoading.value = true
           client.get(API.loginOut)
           .then(async () => {
+            // 1.清除store、token存储
             myStore.logout()
+            // 2.重定向登录页
             await routers.replace('/login');
+            // 3.刷新页面清除一些浏览器缓存问题
             window.location.reload();
           }).catch(() => {
           }).finally(() => {

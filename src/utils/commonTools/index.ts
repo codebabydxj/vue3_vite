@@ -1,4 +1,7 @@
-// 树形结构数扁平化处理
+/**
+ * @description 树形结构数扁平化处理
+ * @return array
+ */
 export const treeToList = (tree: any[]): any => {
   return tree.reduce((pre: any, cur: any) => {
     // 此处将对象的children属性和值都解构在空数组中，将对象的其他属性和值都解构在i里面。
@@ -7,7 +10,10 @@ export const treeToList = (tree: any[]): any => {
   }, []);
 }
 
-// 扁平化数据结构转树状形结构
+/**
+ * @description 扁平化数据结构转树状形结构
+ * @return array
+ */
 export const listToTree = (list: any[], childrenName: string = 'children'): any => {
   const result: any = []
   //第一步：将数组转换成键值对的形式(键是id值，值是对象)
@@ -30,8 +36,11 @@ export const listToTree = (list: any[], childrenName: string = 'children'): any 
   }
   return result
 }
-
-// 地区编码code转换codeList,方便级联选择器回显
+ 
+/**
+ * @description 地区编码code转换codeList,方便级联选择器回显
+ * @return array
+ */
 export const areaCodeToCodeList = (code: string, type: any = 'lang'): number[] => {
   const areaList: number[] = []
   for (let i = 2; i <= 12; i += 2) {
@@ -55,4 +64,72 @@ export const areaCodeToCodeList = (code: string, type: any = 'lang'): number[] =
     }
   }
   return areaList
+}
+
+/**
+ * @description 获取当前时间对应的提示语
+ * @return string
+ */
+export const getTimeState = (): any => {
+	// 获取当前时间
+	let timeNow = new Date();
+	// 获取当前小时
+	let hours = timeNow.getHours();
+	// 判断当前时间段
+	if (hours >= 6 && hours <= 10) return `早上好 ⛅`;
+	if (hours >= 10 && hours <= 14) return `中午好 🌞`;
+	if (hours >= 14 && hours <= 18) return `下午好 🌞`;
+	if (hours >= 18 && hours <= 24) return `晚上好 🌛`;
+	if (hours >= 0 && hours <= 6) return `凌晨好 🌛`;
+}
+
+/**
+ * @description 获取浏览器默认语言
+ * @return string
+ */
+export const getBrowserLang = (): string => {
+	let browserLang = navigator.language ? navigator.language : (navigator as any).browserLanguage;
+	let defaultBrowserLang = '';
+	if (browserLang.toLowerCase() === 'cn' || browserLang.toLowerCase() === 'zh' || browserLang.toLowerCase() === 'zh-cn') {
+		defaultBrowserLang = 'zh';
+	} else {
+		defaultBrowserLang = 'en';
+	}
+	return defaultBrowserLang;
+}
+
+/**
+ * @description 生成随机数
+ * @param {Number} min 最小值
+ * @param {Number} max 最大值
+ * @return number
+ */
+export function randomNum(min: number, max: number): number {
+	let num = Math.floor(Math.random() * (min - max) + max);
+	return num;
+}
+
+/**
+ * 判断两个对象是否相同
+ * @param a 要比较的对象一
+ * @param b 要比较的对象二
+ * @returns 相同返回 true，反之则反
+ */
+export function isObjectValueEqual(a: { [key: string]: any }, b: { [key: string]: any }) {
+	if (!a || !b) return false;
+	let aProps = Object.getOwnPropertyNames(a);
+	let bProps = Object.getOwnPropertyNames(b);
+	if (aProps.length != bProps.length) return false;
+	for (let i = 0; i < aProps.length; i++) {
+		let propName = aProps[i];
+		let propA = a[propName];
+		let propB = b[propName];
+		if (!b.hasOwnProperty(propName)) return false;
+		if (propA instanceof Object) {
+			if (!isObjectValueEqual(propA, propB)) return false;
+		} else if (propA !== propB) {
+			return false;
+		}
+	}
+	return true;
 }

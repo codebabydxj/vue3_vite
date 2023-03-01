@@ -68,13 +68,15 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref } from "vue";
+import { defineComponent, reactive, ref } from 'vue';
+import _localStorage from '@/utils/storage/localStorage';
+import { getTimeState } from '@/utils/commonTools';
 import { client } from '@/utils/https/client';
 import * as API from '@/api';
-import routers from '@/routers'
-import { User, Lock, CircleClose } from "@element-plus/icons-vue";
-import { ElForm } from 'element-plus';
-import verifyCode from '@/components/verify-code/index.vue'
+import routers from '@/routers';
+import { User, Lock, CircleClose } from '@element-plus/icons-vue';
+import { ElForm, ElNotification } from 'element-plus';
+import verifyCode from '@/components/verify-code/index.vue';
 
 export default defineComponent({
   components: {
@@ -101,8 +103,15 @@ export default defineComponent({
           loading.value = true
           const params = { ...ruleForm };
           client.post(API.login, params)
-          .then(() => {
+          .then((res: any) => {
+            _localStorage.set('TOKEN', res.data.token) // 这里存token 根据接口返回自行处理
             routers.replace('/');
+            ElNotification({
+              title: getTimeState(),
+              message: "欢迎登录 Vite-Admin",
+              type: "success",
+              duration: 3000
+            });
           }).catch(() => {
           }).finally(() => {
             loading.value = false

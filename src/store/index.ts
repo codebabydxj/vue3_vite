@@ -5,6 +5,7 @@
  */
 import { createPinia, defineStore } from 'pinia'
 import routerConfig from '@/routers/router-config';
+import _localStorage from '@/utils/storage/localStorage';
 
 const pinia = createPinia()
 
@@ -61,13 +62,15 @@ const globalStore = defineStore('useGlobalStore', {
     },
     logout() {
       // const state: any = globalStore();
-      // 清空用户信息
+      // 1.清空用户信息
       this.userInfo = {};
-      // 清空导航栏
+      // 2.清空导航栏
       this.currentRoute = '/';
       this.routes = [];
-      // 清空所有菜单权限
+      // 3.清空所有菜单权限
       this.routerConfig.forEach((v: any) => { v.access = false; });
+      // 4.清空token
+      _localStorage.remove('TOKEN')
     },
   },
 });

@@ -48,6 +48,9 @@
 .login-input-width {
   width: 330px !important;
 }
+.el-notification {
+  z-index: 3000 !important;
+}
 
 // Wangeditor 样式
 .w-e-full-screen-container {

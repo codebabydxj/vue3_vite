@@ -11,6 +11,7 @@ import qs from 'qs';
 import dayjs from 'dayjs';
 import routers from '@/routers'
 import { globalStore } from '@/store'
+import _localStorage from '@/utils/storage/localStorage';
 
 let store = globalStore();
 const instance = axios.create({
@@ -59,7 +60,7 @@ instance.interceptors.request.use((config: requestConfig) => {
   config.controller = controller;
   pending.push({ ...config });
 
-  const token: string | null = localStorage.getItem('TOKEN');
+  const token: string | null = _localStorage.get('TOKEN');
   if (config.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
     config.data = qs.stringify(config.data);
   }
