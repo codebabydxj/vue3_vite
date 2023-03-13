@@ -189,12 +189,12 @@ header .navbar-top {
 
 header .navbar-top .tabs-wrap {
   flex: 1 1 auto;
-  width: calc(100% - 250px);
+  width: calc(100% - 310px);
 }
 
 header .navbar-top .user-info {
   flex: 0 0 auto;
-  width: 250px;
+  width: 310px;
   display: flex;
   justify-content: flex-end;
   align-items: center;

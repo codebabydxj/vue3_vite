@@ -47,12 +47,12 @@
         </template>
       </el-sub-menu>
     </el-menu>
-    <div class="user-sel yogi" v-if="isCurCollapse"></div>
-    <div class="eo" :class="{ 'active': isActive }">
+    <div class="user-sel eo" :class="isActive ? 'active': 'not-active'">
       <el-tooltip placement="right" :visible="visible" effect="light" :content="isCurCollapse ? '点击折叠' : '点击展开'">
         <img src="../assets/svg/enter.svg" alt="" @mouseenter="visible = true" @mouseleave="visible = false"
           @click="handleSwitch">
       </el-tooltip>
+      <div class="user-sel yogi" v-if="isCurCollapse && delayShow"></div>
     </div>
   </nav>
 </template>
@@ -72,6 +72,7 @@ export default defineComponent({
     const menuRef: any = ref(null);
     const isActive: any = ref(false)
     const visible = ref(false)
+    const delayShow = ref(true)
 
     // 通过inject获取挂载在全局的globalFunc方法，初始化view
     const globalFunc: any = inject('globalFunc')
@@ -139,6 +140,9 @@ export default defineComponent({
     const handleSwitch = () => {
       isActive.value = !isActive.value
       isCurCollapse.value = !isActive.value
+      setTimeout(() => {
+        delayShow.value = !isActive.value
+      }, 600)
     }
     return {
       isCurCollapse,
@@ -148,6 +152,7 @@ export default defineComponent({
       isShowSoIcon,
       isActive,
       visible,
+      delayShow,
       handleInput,
       cleanInput,
       searchTog,
@@ -200,25 +205,12 @@ export default defineComponent({
     line-height: 60px;
   }
 
-  .yogi {
-    width: 165px;
-    height: 110px;
-    overflow: hidden;
-    position: absolute;
-    left: 27.5px;
-    bottom: 10px;
-    opacity: 0.5;
-    background: url(../assets/imgs/yogi.png) no-repeat center;
-    background-size: 100%;
-    transition: all 1s;
-  }
-
   .eo {
-    width: 100%;
     height: 40px;
     line-height: 40px;
-    position: absolute;
+    position: fixed;
     bottom: 0;
+    background-color: #191a20;
     box-shadow: 0 0 6px -2px var(--color-text);
 
     img {
@@ -229,9 +221,28 @@ export default defineComponent({
       margin-left: 22px;
       transition: all 1s;
     }
+
+    .yogi {
+      width: 90px;
+      height: 35px;
+      overflow: hidden;
+      position: absolute;
+      left: 85px;
+      bottom: 0px;
+      opacity: 0.7;
+      background: url(../assets/imgs/yogi.png) no-repeat center;
+      background-size: 100%;
+      transition: all 1s;
+    }
+  }
+
+  .not-active {
+    transition: width 0.48s;
+    width: 220px;
   }
 
   .active {
+    width: 64px;
     img {
       transform: rotateY(180deg);
     }
@@ -242,7 +253,7 @@ export default defineComponent({
   transition: opacity 1s;
 
   .yogi {
-    opacity: 0.9;
+    opacity: 1;
     transform: rotateY(360deg);
   }
 }
@@ -358,6 +369,7 @@ export default defineComponent({
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 220px;
   min-height: 400px;
+  padding-bottom: 40px;
 }
 
 .navbar-side .el-menu {

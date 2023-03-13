@@ -15,6 +15,7 @@ import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import '@/base-style/base.scss'
 import SvgIcon from '@/icons'
+import directives from '@/directives'
 /* px转rem 自适应 */
 // import '@/utils/rem' 
 
@@ -33,6 +34,9 @@ app.use(ElementUI, {
 
 // 加载全局 SVG
 app.use(SvgIcon)
+
+// 加载全局自定义指令
+app.use(directives)
 
 app.component('flex-card', flexCard);
 
