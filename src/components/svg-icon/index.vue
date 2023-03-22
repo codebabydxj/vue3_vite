@@ -1,6 +1,6 @@
 <template>
-  <svg class="svg-icon" aria-hidden="true">
-    <use :href="symbolId" :fill="color" :width="width" :height="height" />
+  <svg class="svg-icon" :style="iconStyle" aria-hidden="true">
+    <use :href="symbolId" :fill="color" />
   </svg>
 </template>
 
@@ -22,13 +22,9 @@ export default defineComponent({
       type: String,
       default: '#444',
     },
-    width: {
-      type: String,
-      default: '16',
-    },
-    height: {
-      type: String,
-      default: '16',
+    iconStyle: {
+      type: Object,
+      default: () => ({ width: "16px", height: "16px" })
     },
   },
   setup(props) {

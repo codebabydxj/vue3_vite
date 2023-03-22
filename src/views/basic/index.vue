@@ -128,13 +128,13 @@ const greetings = computed(() => {
   color: var(--color-text);
 }
 .letter {
-  font-size: 18px;
+  font-size: 16px;
   p {
     margin: 5px 0;
   }
   .colors {
     color: var(--color-text);
-    font-size: 16px;
+    font-size: 14px;
   }
 }
 </style>

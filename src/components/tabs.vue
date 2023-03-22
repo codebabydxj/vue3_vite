@@ -68,15 +68,12 @@ export default defineComponent({
         myStore.delRoute({ index: 1, count: routes.value.length - 1 });
         return
       }
-      if (idx === 1) {
-        ElMessage({
-          showClose: true,
-          grouping: true,
-          message: '首页不能关闭',
-          type: 'warning',
-        });
-        return
-      }
+      ElMessage({
+        showClose: true,
+        grouping: true,
+        message: '首页不能关闭',
+        type: 'warning',
+      });
       myStore.delRoute({ index: 1, count: routes.value.length - 1, item: i });
     }
 

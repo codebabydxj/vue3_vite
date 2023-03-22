@@ -3,7 +3,7 @@
     <div class="base-warp">
       <div class="error">
         <Transition name="slide-icon">
-          <svg-icon v-if="show" name="500" width="252" height="294" />
+          <svg-icon v-if="show" name="500" :iconStyle="{ width: '252px', height: '294px'}" />
         </Transition>
         <div class="ml-12">
           <Transition :duration="800" name="slide-num">
@@ -54,6 +54,7 @@ export default defineComponent({
   align-items: center;
 
   .ml-12 {
+    margin-left: 24px;
     .font-medium {
       font-weight: bold;
       font-size: 30px;

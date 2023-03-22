@@ -34,5 +34,6 @@ export default defineComponent({
     flex: 1 1 auto;
     display: flex;
     overflow: auto;
+    background-color: var(--main-bg-color);
   }
 </style>

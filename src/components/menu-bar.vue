@@ -29,7 +29,7 @@
       </el-icon>
     </div>
     <el-menu ref="menuRef" class="user-sel el-menu-vertical-demo" background-color="#191a20" text-color="#fefefea6"
-      active-text-color="#409EFF" :unique-opened="true" :collapse="!isCurCollapse"
+      active-text-color="#ffffff" :unique-opened="true" :collapse="!isCurCollapse"
       :default-active="routeParams.currentRoute.split('?')[0] === '/' ? '/welcome' : routeParams.currentRoute.split('?')[0]">
       <el-sub-menu v-for="routeWrap in routeParams.routerConfigFilterd" :index="routeWrap.key" :key="routeWrap.key"
         @click.native="ubfold(routeWrap.key)">
@@ -293,6 +293,7 @@ export default defineComponent({
 
 .navbar-side .el-menu>.el-sub-menu>.el-menu>.el-menu-item {
   padding: 0 50px !important;
+  font-size: 13px;
 }
 
 .navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item:hover {
@@ -301,7 +302,7 @@ export default defineComponent({
 }
 
 .navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active:hover {
-  color: #409EFF !important;
+  color: #ffffff !important;
   background-color: #1a3642 !important;
 }
 

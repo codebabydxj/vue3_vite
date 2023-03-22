@@ -7,4 +7,5 @@
 
  export * from './config'; // 基础服务
  export * from './auth'; // 登录、用户权限、验证码、权限等公共接口
+ export * from './upload'; // 上传
  

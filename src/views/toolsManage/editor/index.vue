@@ -14,15 +14,17 @@
             Wangeditor
           </el-link>
         </template>
-        <Editor />
+        <Editor v-model="content" />
       </el-card>
     </div>
   </flex-card>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import Editor from '@/components/editor.vue'
 
+const content = ref('hello editor~')
 </script>
 
 <style scoped lang="scss">

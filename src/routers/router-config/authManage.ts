@@ -5,8 +5,8 @@ export default {
   access: true,
   routes: [
     {
-      path: '/authManage',
-      key: 'authManage',
+      path: '/departManage',
+      key: 'departManage',
       access: true,
       meta: {
         permission: {},
@@ -16,8 +16,25 @@ export default {
       children: [
         {
           path: '',
-          name: 'authManage',
-          component: () => import('../../views/authManage/index.vue'),
+          name: 'departManage',
+          component: () => import('../../views/authManage/departManage/index.vue'),
+        },
+      ],
+    },
+    {
+      path: '/userManage',
+      key: 'userManage',
+      access: true,
+      meta: {
+        permission: {},
+      },
+      title: '角色分配',
+      component: () => import('../../views/middleView/index.vue'),
+      children: [
+        {
+          path: '',
+          name: 'userManage',
+          component: () => import('../../views/authManage/userManage/index.vue'),
         },
       ],
     },
