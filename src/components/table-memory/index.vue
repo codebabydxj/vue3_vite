@@ -1,12 +1,13 @@
 <template>
-  <div style="margin-bottom: 10px;">
-    <el-button type="primary" @click="show">
-      <el-icon>
-        <Setting />
-      </el-icon>
-      &nbsp;表格列配置
-    </el-button>
-    <dialog-table-memory v-if="dialogTableMemoryShow" :dialogShow="dialogTableMemoryShow" :titleList="titleList"
+  <div class="config-btn">
+    <el-tooltip effect="dark" content="表格列配置" placement="top">
+      <el-button circle @click="show">
+        <el-icon size="16">
+          <setting-outlined />
+        </el-icon>
+      </el-button>
+    </el-tooltip>
+    <dialog-table-memory :dialogShow="dialogTableMemoryShow" :titleList="titleList"
       @closeDialog="closeDialogTableMemory">
     </dialog-table-memory>
   </div>

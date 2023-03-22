@@ -1,12 +1,11 @@
 <template>
-  <el-dialog
-    width="600px"
+  <el-drawer
+    size="450px"
     title="表格列配置"
     :modelValue="dialogShow"
     :append-to-body="true"
-    :close-on-click-modal="false"
     :before-close="cancel">
-    <el-row type="flex" justify="center">
+    <el-row type="flex" justify="center" v-if="dialogShow">
       <el-table
         border
         stripe
@@ -27,11 +26,11 @@
         <el-button type="primary" @click="update">确定</el-button>
       </div>
     </template>
-  </el-dialog>
+  </el-drawer>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, watch } from 'vue'
 import _ from 'lodash';
 
 export default defineComponent({
@@ -47,7 +46,13 @@ export default defineComponent({
   },
   emits: ['closeDialog'],
   setup(props, { emit }) {
-    const titleListClone: any =  ref(_.cloneDeep(props.titleList));
+    const titleListClone: any =  ref([])
+
+    watch(() => props.dialogShow, (newVal: any) => {
+      if (newVal) {
+        titleListClone.value = _.cloneDeep(props.titleList);
+      }
+    })
 
     const cancel = () => {
       emit('closeDialog', false);

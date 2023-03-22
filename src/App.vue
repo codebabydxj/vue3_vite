@@ -66,4 +66,17 @@
   border-radius: 4px !important;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.05) !important;
 }
+
+// 按钮flex样式
+.flex-right {
+  display: flex !important;
+  justify-content: flex-end !important;
+}
+
+// 配置按钮样式
+.config-btn {
+  margin-bottom: 10px !important;
+  margin-left: 10px !important;
+  cursor: pointer !important;
+}
 </style>

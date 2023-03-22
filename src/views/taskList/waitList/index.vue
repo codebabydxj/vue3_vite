@@ -20,9 +20,10 @@
           </el-form>
         </el-row>
         <el-row>
-          <el-col class="tar">
+          <el-col class="flex-right">
             <table-memory :tableTitle="tableTitle" :titleList="titleListLocal" @titleChange="handleTitleChange">
             </table-memory>
+            <table-config></table-config>
           </el-col>
         </el-row>
         <el-row class="table-box">
@@ -53,10 +54,12 @@ import { defineComponent, ref, computed, inject } from 'vue'
 import { globalStore } from '@/store'
 import Print from "@/utils/print";
 import tableMemory from '@/components/table-memory/index.vue';
+import tableConfig from '@/components/tableConfig/index.vue';
 
 export default defineComponent({
   components: {
     tableMemory,
+    tableConfig,
   },
   setup() {
     // 获取全局store
