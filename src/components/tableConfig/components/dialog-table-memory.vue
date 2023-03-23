@@ -12,7 +12,7 @@
         :data="titleListClone"
         :max-height="400">
         <el-table-column type="index" align="center" label="序号" width="55"></el-table-column>
-        <el-table-column prop="name" align="center" label="列名称"></el-table-column>
+        <el-table-column prop="title" align="center" label="列名称"></el-table-column>
         <el-table-column align="center" label="是否显示">
           <template #default="scope">
             <el-switch active-color="#13ce66" inactive-color="#d8dce5" :disabled="scope.row.isDisabled" v-model="scope.row.status"></el-switch>

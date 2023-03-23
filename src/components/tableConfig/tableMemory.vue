@@ -2,7 +2,7 @@
   <div class="config-btn">
     <el-tooltip effect="dark" content="表格列配置" placement="top">
       <el-button circle @click="show">
-        <el-icon size="16">
+        <el-icon size="16" color="#383030">
           <setting-outlined />
         </el-icon>
       </el-button>
@@ -33,7 +33,7 @@ export default defineComponent({
       required: true,
     },
   },
-  emits: ['titleChange'],
+  emits: ['command'],
   setup(props, { emit }) {
     const dialogTableMemoryShow: any = ref(false);
     const titleListClone: any =  ref([]);
@@ -60,7 +60,7 @@ export default defineComponent({
     if (savedTitleList) {
       const compatibleTitleList = tableMemoryCompatible(savedTitleList, props.titleList);
       _localStorage.set(props.tableTitle, compatibleTitleList);
-      emit('titleChange', compatibleTitleList);
+      emit('command', { type: 'memory', command: compatibleTitleList });
     }
     titleListClone.value = props.titleList;
 
@@ -72,7 +72,7 @@ export default defineComponent({
       dialogTableMemoryShow.value = false;
       if (titleListClone) {
         _localStorage.set(props.tableTitle, titleListClone);
-        emit('titleChange', titleListClone);
+        emit('command', { type: 'memory', command: titleListClone });
       }
     }
 
@@ -84,4 +84,4 @@ export default defineComponent({
     };
   }
 });
-</script>>
+</script>
