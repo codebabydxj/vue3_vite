@@ -57,7 +57,7 @@ import { globalStore } from '@/store'
 import { client } from '@/utils/https/client';
 import * as API from '@/api';
 import { ElMessage, ElMessageBox } from 'element-plus'
-import Message from './message/index.vue'
+import Message from '../headerMessage/index.vue'
 
 export default defineComponent({
   components: {

@@ -76,7 +76,7 @@ import * as API from '@/api';
 import routers from '@/routers';
 import { User, Lock, CircleClose } from '@element-plus/icons-vue';
 import { ElForm, ElNotification } from 'element-plus';
-import verifyCode from '@/components/verify-code/index.vue';
+import verifyCode from '@/components/verifyCode/index.vue';
 
 export default defineComponent({
   components: {

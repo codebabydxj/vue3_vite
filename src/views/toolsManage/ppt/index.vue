@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import PPT from '@/components/ppt.vue'
+import PPT from '@/components/ppt/index.vue'
 
 </script>
 

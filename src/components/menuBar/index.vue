@@ -1,11 +1,11 @@
 <template>
   <nav class="navbar-side">
     <template v-if="!isCurCollapse">
-      <img class="logo_ind" src="../assets/svg/v.svg" alt="" />
+      <img class="logo_ind" src="../../assets/svg/v.svg" alt="" />
     </template>
     <div class="collapse" v-if="isCurCollapse">
       <h4 class="user-sel admin-title">
-        <img class="logo" src="../assets/svg/v.svg" alt="" />
+        <img class="logo" src="../../assets/svg/v.svg" alt="" />
         Vite-Admin
       </h4>
     </div>
@@ -49,7 +49,7 @@
     </el-menu>
     <div class="user-sel eo" :class="isActive ? 'active': 'not-active'">
       <el-tooltip placement="right" :visible="visible" effect="light" :content="isCurCollapse ? '点击折叠' : '点击展开'">
-        <img src="../assets/svg/enter.svg" alt="" @mouseenter="visible = true" @mouseleave="visible = false"
+        <img src="../../assets/svg/enter.svg" alt="" @mouseenter="visible = true" @mouseleave="visible = false"
           @click="handleSwitch">
       </el-tooltip>
       <div class="user-sel yogi" v-if="isCurCollapse && delayShow"></div>
@@ -230,7 +230,7 @@ export default defineComponent({
       left: 85px;
       bottom: 0px;
       opacity: 0.7;
-      background: url(../assets/imgs/yogi.png) no-repeat center;
+      background: url(../../assets/imgs/yogi.png) no-repeat center;
       background-size: 100%;
       transition: all 1s;
     }

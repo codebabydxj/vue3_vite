@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import Editor from '@/components/editor.vue'
+import Editor from '@/components/editor/index.vue'
 
 const content = ref('hello editor~')
 </script>

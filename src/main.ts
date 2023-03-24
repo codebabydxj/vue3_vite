@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { globalFunc } from '@/utils/globalFunc'
 
 // 全局组件
-import flexCard from '@/components/flex-card.vue'
+import flexCard from '@/components/flexCard/index.vue'
 
 import App from './App.vue'
 import { pinia } from './store'

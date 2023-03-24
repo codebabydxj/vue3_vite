@@ -16,10 +16,10 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue';
-import MenuBar from '@/components/menu-bar.vue';
-import Content from '@/components/content.vue';
-import ComHeader from '@/components/header.vue';
-import Tabs from '@/components/tabs.vue';
+import MenuBar from '@/components/menuBar/index.vue';
+import Content from '@/components/mainContent/index.vue';
+import ComHeader from '@/components/mainHeader/index.vue';
+import Tabs from '@/components/headerTabs/index.vue';
 
 export default defineComponent({
   components: {
