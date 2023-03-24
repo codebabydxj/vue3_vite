@@ -38,5 +38,22 @@ export default {
         }
       ],
     },
+    {
+      path: '/bachImport',
+      key: 'bachImport',
+      access: true,
+      meta: {
+        permission: {},
+      },
+      title: '批量添加数据',
+      component: () => import('../../views/middleView/index.vue'),
+      children: [
+        {
+          path: '',
+          name: 'bachImport',
+          component: () => import('../../views/assembly/bachImport/index.vue'),
+        }
+      ],
+    },
   ],
 };
