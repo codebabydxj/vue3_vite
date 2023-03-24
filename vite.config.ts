@@ -27,6 +27,8 @@ const getIPAdress = (ipStart: string = '192') => {
     }
   }
 }
+/** 当前执行node命令时文件夹的地址（工作目录） */
+const root: string = process.cwd();
 
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   const env = loadEnv(mode, __dirname);
@@ -47,7 +49,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         ext: '.gz' // 生成的压缩包后缀
       }),
       createSvgIconsPlugin({ // 全局使用svg
-        iconDirs: [path.resolve(process.cwd(), 'src/icons/svg')], // 指定需要缓存的图标文件夹
+        iconDirs: [path.resolve(root, 'src/icons/svg')], // 指定需要缓存的图标文件夹
         symbolId: 'icon-[dir]-[name]', // 指定symbolId格式
       })
     ],
@@ -67,6 +69,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         "/api": {
           target: env.VITE_PROXY,
           changeOrigin: true,
+          // rewrite: path => path.replace(/^\/api/, '')
         },
         "/upload": {
           target: env.VITE_UPLOAD,
@@ -87,6 +90,16 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
           drop_debugger: true
         },
       },
+      // 消除打包大小超过500kb警告
+      chunkSizeWarningLimit: 1500,
+			rollupOptions: {
+        // 静态资源分类打包，自动分割包名输出 chunkSizeWarningLimit 配置大小
+				output: {
+					chunkFileNames: "assets/js/[name]-[hash].js", // 入口文件名
+					entryFileNames: "assets/js/[name]-[hash].js", // 出口文件名位置
+					assetFileNames: "assets/[ext]/[name]-[hash].[ext]"  // 静态文件名位置
+				}
+			}
     },
     resolve: {
       alias: [

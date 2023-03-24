@@ -1,3 +1,8 @@
+/**
+ * 
+ * @param data 后台返回文件
+ * @param fileName 文件重命名
+ */
 export function exportExcel(data: any, fileName: any) {
   const blob = new Blob([data], { type: 'application/vnd.ms-excel' })
   if ('download' in document.createElement('a')) {
@@ -14,7 +19,14 @@ export function exportExcel(data: any, fileName: any) {
   }
 }
 
-export const exportPdf = (code: any, name: any, type = 'application/pdf') => {
+/**
+ * 
+ * @param code 后台返回文件
+ * @param name 文件重命名
+ * @param isView 是否预览
+ * @param type 文件类型格式
+ */
+export const exportPdf = (code: any, name: any = '', isView: boolean = false, type = 'application/pdf') => {
   // 这里写法具体看后台返回结果
   let int8Array: any = null
   let byteString: any = code
@@ -36,10 +48,15 @@ export const exportPdf = (code: any, name: any, type = 'application/pdf') => {
   const link = document.createElement('a')
   link.style.display = 'none'
   link.href = url
-  // link.target = '_blank' // 如果要预览再下载 打开注释
-  link.setAttribute('download', name + '.pdf') // 如果要预览再下载 注释掉
+  if (isView) {
+    link.target = '_blank' // 先预览再下载
+  } else {
+    link.setAttribute('download', name + '.pdf') // 不预览直接下载
+  }
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
-  window.URL.revokeObjectURL(url) // 如果要预览再下载 注释掉
+  if (!isView) {
+    window.URL.revokeObjectURL(url) // 不预览直接下载
+  }
 }

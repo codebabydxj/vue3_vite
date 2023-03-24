@@ -8,3 +8,4 @@ declare namespace NodeJS {
   type Timer = any;
   type Timeout = any;
 }
+declare module 'postcss-px2rem';

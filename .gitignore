@@ -1,4 +1,3 @@
-.DS_Store
 node_modules
 node_modules.*
 dist-ssr
@@ -15,8 +14,11 @@ yarn.lock
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
 # Editor directories and files
+.DS_Store
 .idea
 .vscode
 *.suo
