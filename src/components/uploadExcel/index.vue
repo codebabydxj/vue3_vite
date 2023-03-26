@@ -30,6 +30,10 @@
 				<el-switch v-model="isCover" />
 			</el-form-item>
 		</el-form>
+		<template #footer>
+      <el-button @click="cancel">取消</el-button>
+      <el-button type="primary" @click="submit">确定</el-button>
+    </template>
 	</el-dialog>
 </template>
 
@@ -55,7 +59,8 @@ const excelLimit = ref(1);
 const dialogVisible = ref(false);
 // 父组件传过来的参数
 const parameter = ref<Partial<ExcelParameterProps>>({});
-
+// 暂存文件数据
+let fileData: any = null
 // 接收父组件参数
 const acceptParams = (params?: any): void => {
 	parameter.value = params;
@@ -83,19 +88,34 @@ const uploadExcel = (param: any) => {
     })
     return;
   }
-	let excelFormData = new FormData();
-	excelFormData.append("file", param.file);
-	excelFormData.append("isCover", isCover.value as unknown as Blob);
-	client.post(parameter.value.importApi.url, parameter.value.importApi.params).then((res: any) => {
-    parameter.value.getTableList && parameter.value.getTableList();
-    dialogVisible.value = false;
-  }).catch((err: any) => {
-    dialogVisible.value = false;
-  })
+	console.log(param);
+	fileData = param
 };
 
+const cancel = () => {
+	fileData = null
+	dialogVisible.value = false;
+}
 
-
+const submit = () => {
+	if (!parameter.value.importApi.url) {
+    ElMessage.warning({
+      grouping: true,
+      message: '请先传url参数！'
+    })
+    return;
+  }
+	console.log(fileData.file);
+	let excelFormData = new FormData();
+	excelFormData.append("file", fileData.file);
+	excelFormData.append("isCover", isCover.value as unknown as Blob);
+	client.post(parameter.value.importApi.url, excelFormData).then((res: any) => {
+    parameter.value.getTableList && parameter.value.getTableList();
+    cancel()
+  }).catch((err: any) => {
+    cancel()
+  })
+}
 /**
  * @description 文件上传之前判断
  * @param file 上传的文件
