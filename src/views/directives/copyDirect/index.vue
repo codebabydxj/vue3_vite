@@ -37,8 +37,6 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  height: calc(100vh - 128px);
   .text {
     margin: 20px 0 30px;
 		font-size: 23px;

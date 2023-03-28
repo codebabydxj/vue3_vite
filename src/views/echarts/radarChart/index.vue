@@ -2,7 +2,7 @@
   <flex-card>
     <div class="base-warp">
       <el-card>
-        <div ref="echartsRef" class="content-box"></div>
+        <div ref="echartsRef" class="echart-box"></div>
       </el-card>
     </div>
   </flex-card>
@@ -62,7 +62,7 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.content-box {
+.echart-box {
   display: flex;
   flex-direction: column;
   align-items: center;

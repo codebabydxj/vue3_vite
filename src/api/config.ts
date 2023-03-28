@@ -11,6 +11,7 @@ export const formDataConfig = {
   },
 };
 
+// 上传文件 
 export const uploadConfig = {
   headers: {
     'Content-Type': 'multipart/form-data',

@@ -55,5 +55,22 @@ export default {
         }
       ],
     },
+    {
+      path: '/selectIcon',
+      key: 'selectIcon',
+      access: true,
+      meta: {
+        permission: {},
+      },
+      title: '图标选择器',
+      component: () => import('../../views/middleView/index.vue'),
+      children: [
+        {
+          path: '',
+          name: 'selectIcon',
+          component: () => import('../../views/assembly/selectIcon/index.vue'),
+        }
+      ],
+    },
   ],
 };

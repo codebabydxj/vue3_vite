@@ -3,7 +3,7 @@
  * @param data 后台返回文件
  * @param fileName 文件重命名
  */
-export function exportExcel(data: any, fileName: any) {
+export const exportExcel = (data: any, fileName: any) => {
   const blob = new Blob([data], { type: 'application/vnd.ms-excel' })
   if ('download' in document.createElement('a')) {
     const elink = document.createElement('a')

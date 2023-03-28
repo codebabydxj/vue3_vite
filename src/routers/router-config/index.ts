@@ -1,6 +1,7 @@
 // 将一级页面统一在此处导出
 import basic from './basic';
 import taskList from './taskList';
+import proTable from './proTable';
 import toolsManage from './toolsManage';
 import echarts from './echarts';
 import assembly from './assembly'
@@ -13,6 +14,7 @@ import error from './error';
 export default [
   basic,
   taskList,
+  proTable,
   toolsManage,
   echarts,
   assembly,

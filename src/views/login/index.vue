@@ -70,7 +70,7 @@
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue';
 import _localStorage from '@/utils/storage/localStorage';
-import { getTimeState } from '@/utils/commonTools';
+import { getTimeState } from '@/utils/tools';
 import { client } from '@/utils/https/client';
 import * as API from '@/api';
 import routers from '@/routers';

@@ -31,8 +31,6 @@
 
 <style scoped lang="scss">
 .content-box {
-  width: 100%;
-  height: calc(100vh - 128px);
   .icon-list {
     display: flex;
     justify-content: space-around;

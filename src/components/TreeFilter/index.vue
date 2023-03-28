@@ -142,6 +142,7 @@ defineExpose({ treeData, treeAllData });
 	padding: 18px;
 	margin-right: 10px;
   background-color: #ffffff;
+	float: left;
 	.title {
 		margin: 0 0 15px;
 		font-size: 18px;

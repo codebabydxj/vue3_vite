@@ -6,15 +6,17 @@
 			</el-form-item>
 			<el-form-item label="文件上传 :">
 				<el-upload
-					action="string"
+					ref="uploadRef"
 					class="upload"
+					:action="parameter.importApi.url"
+					:data="{ ...parameter.importApi.params, isCover: isCover }"
+					:auto-upload="false"
 					:drag="true"
-					:limit="excelLimit"
 					:multiple="true"
 					:show-file-list="true"
-					:http-request="uploadExcel"
 					:before-upload="beforeExcelUpload"
 					:on-exceed="handleExceed"
+					:on-change="handleChange"
 					:on-success="excelUploadSuccess"
 					:on-error="excelUploadError"
 					accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -41,8 +43,7 @@
 import { ref } from "vue";
 import { useDownload } from "@/hooks/useDownload";
 import { Download } from "@element-plus/icons-vue";
-import { ElMessage, ElNotification } from "element-plus";
-import { client } from "@/utils/https/client";
+import { ElMessage, ElNotification, UploadInstance, UploadFile, UploadFiles } from "element-plus";
 
 export interface ExcelParameterProps {
 	title: string; // 标题
@@ -50,7 +51,7 @@ export interface ExcelParameterProps {
 	importApi: { url: string, params: object } | any; // 批量导入的Api
 	getTableList?: () => Promise<any>; // 获取表格数据的Api
 }
-
+const uploadRef = ref<UploadInstance>()
 // 是否覆盖数据
 const isCover = ref(false);
 // 最大文件上传数
@@ -59,13 +60,12 @@ const excelLimit = ref(1);
 const dialogVisible = ref(false);
 // 父组件传过来的参数
 const parameter = ref<Partial<ExcelParameterProps>>({});
-// 暂存文件数据
-let fileData: any = null
 // 接收父组件参数
 const acceptParams = (params?: any): void => {
 	parameter.value = params;
 	dialogVisible.value = true;
 };
+let files = [] as any
 
 // Excel 导入模板下载
 const downloadTemp = async () => {
@@ -79,21 +79,29 @@ const downloadTemp = async () => {
 	useDownload(parameter.value.tempApi, `${parameter.value.title}模板`);
 };
 
-// 文件上传
-const uploadExcel = (param: any) => {
-  if (!parameter.value.importApi.url) {
-    ElMessage.warning({
-      grouping: true,
-      message: '请先传url参数！'
-    })
-    return;
-  }
-	console.log(param);
-	fileData = param
+// 覆盖默认的 Xhr 行为，自行文件上传
+const uploadExcel = async (param: any) => {
+	// if (!parameter.value.importApi.url) {
+  //   ElMessage.warning({
+  //     grouping: true,
+  //     message: '请先传url参数！'
+  //   })
+  //   return;
+  // }
+	// let excelFormData = new FormData();
+	// excelFormData.append("file", param.file);
+	// excelFormData.append("file", param.file);
+	// excelFormData.append("isCover", isCover.value as unknown as Blob);
+	// client.post(parameter.value.importApi.url, excelFormData, API.uploadConfig).then((res: any) => {
+	//   parameter.value.getTableList && parameter.value.getTableList();
+	//   cancel()
+	// }).catch((err: any) => {
+	//   cancel()
+	// })
 };
 
+
 const cancel = () => {
-	fileData = null
 	dialogVisible.value = false;
 }
 
@@ -105,16 +113,14 @@ const submit = () => {
     })
     return;
   }
-	console.log(fileData.file);
-	let excelFormData = new FormData();
-	excelFormData.append("file", fileData.file);
-	excelFormData.append("isCover", isCover.value as unknown as Blob);
-	client.post(parameter.value.importApi.url, excelFormData).then((res: any) => {
-    parameter.value.getTableList && parameter.value.getTableList();
-    cancel()
-  }).catch((err: any) => {
-    cancel()
-  })
+	if (files.length === 0) {
+		ElMessage.warning({
+      grouping: true,
+      message: '请先上传文件'
+    })
+		return
+	}
+	uploadRef.value!.submit()
 }
 /**
  * @description 文件上传之前判断
@@ -148,11 +154,16 @@ const handleExceed = (): void => {
 	});
 };
 
+// 文件发生变化
+const handleChange = (uploadFile: UploadFile, uploadFiles: UploadFiles) => {
+	files = uploadFiles
+}
+
 // 上传错误提示
 const excelUploadError = (): void => {
 	ElNotification({
 		title: "温馨提示",
-		message: `批量添加${parameter.value.title}失败，请您重新上传！`,
+		message: '附件上传失败',
 		type: "error"
 	});
 };
@@ -161,9 +172,10 @@ const excelUploadError = (): void => {
 const excelUploadSuccess = (): void => {
 	ElNotification({
 		title: "温馨提示",
-		message: `批量添加${parameter.value.title}成功！`,
+		message: '附件上传成功',
 		type: "success"
 	});
+	cancel()
 };
 
 defineExpose({

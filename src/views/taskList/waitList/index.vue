@@ -2,12 +2,6 @@
   <flex-card>
     <div class="base-warp">
       <el-card>
-        <el-row style="margin-bottom: 20px;">
-          <el-select v-model="valuetest">
-            <el-option v-for="item in options" :key="item.valuetest" :label="item.label" :value="item.valuetest" />
-          </el-select>
-          <el-button type="primary" @click="onPrint">打印</el-button>
-        </el-row>
         <el-row>
           <el-form ref="ruleFormRef" :model="searchForm" inline>
             <el-form-item label="用户名" prop="userName">
@@ -24,25 +18,28 @@
             <table-config :configType="['memory', 'size', 'column']" :tableTitle="tableTitle" :titleList="titleListLocal" @tableConfigCall="handleConfig"></table-config>
           </el-col>
         </el-row>
-        <el-row class="table-box">
-          <el-table id="tableStyle" border stripe style="width: 100%" :data="tableData" :size="tableSize">
-            <el-table-column width="55" type="selection" align="center" v-if="tableColumn.includes('selection')"></el-table-column>
-            <el-table-column width="55" type="index" align="center" label="序号" v-if="tableColumn.includes('index')"></el-table-column>
-            <el-table-column align="center" prop="date" label="日期"
-              v-if="titleListLocal.some((i: any) => i.title === '日期' && i.status)" />
-            <el-table-column align="center" prop="name" label="姓名"
-              v-if="titleListLocal.some((i: any) => i.title === '姓名' && i.status)" />
-            <el-table-column align="center" prop="age" label="年龄"
-              v-if="titleListLocal.some((i: any) => i.title === '年龄' && i.status)" />
-            <el-table-column align="center" prop="gender" label="性别"
-              v-if="titleListLocal.some((i: any) => i.title === '性别' && i.status)" />
-            <el-table-column align="center" prop="address" label="地址"
-              v-if="titleListLocal.some((i: any) => i.title === '地址' && i.status)" />
-          </el-table>
-        </el-row>
-        <el-row class="img">
-          <img style="width: 300px; height: 400px" src="../../../assets/imgs/login_left.png" alt="">
-        </el-row>
+        <el-table border stripe :data="tableData" :size="tableSize">
+          <el-table-column width="55" type="selection" align="center" v-if="tableColumn.includes('selection')"></el-table-column>
+          <el-table-column width="55" type="index" align="center" label="序号" v-if="tableColumn.includes('index')"></el-table-column>
+          <el-table-column align="center" prop="date" label="日期"
+            v-if="titleListLocal.some((i: any) => i.title === '日期' && i.status)" />
+          <el-table-column align="center" prop="name" label="姓名"
+            v-if="titleListLocal.some((i: any) => i.title === '姓名' && i.status)" />
+          <el-table-column align="center" prop="age" label="年龄"
+            v-if="titleListLocal.some((i: any) => i.title === '年龄' && i.status)" />
+          <el-table-column align="center" prop="gender" label="性别"
+            v-if="titleListLocal.some((i: any) => i.title === '性别' && i.status)" />
+          <el-table-column align="center" prop="address" label="地址"
+            v-if="titleListLocal.some((i: any) => i.title === '地址' && i.status)" />
+          <template #empty>
+            <div class="table-empty">
+              <slot name="empty">
+                <img src="@/assets/imgs/notData.png" alt="notData" />
+                <div>暂无数据</div>
+              </slot>
+            </div>
+          </template>
+        </el-table>
       </el-card>
     </div>
   </flex-card>
@@ -51,7 +48,6 @@
 <script lang="ts">
 import { defineComponent, ref, computed, inject } from 'vue'
 import { globalStore } from '@/store'
-import Print from "@/utils/print";
 import tableConfig from '@/components/tableConfig/index.vue'
 
 export default defineComponent({
@@ -121,23 +117,6 @@ export default defineComponent({
       },
     ])
 
-    const valuetest = ref('1')
-    const options = ref([
-      {
-        valuetest: "1",
-        el: ".table-box",
-        label: "表格"
-      },
-      {
-        valuetest: "2",
-        el: ".img",
-        label: "图片"
-      },
-    ]);
-    const onPrint = () => {
-      const el = options.value.filter((v: any) => v.valuetest === valuetest.value)[0]?.el;
-      Print(el).toPrint;
-    }
     // 重置查询表单
     const resetForm = () => {
       globalFunc.refreshView()
@@ -165,10 +144,7 @@ export default defineComponent({
       tableData,
       tableTitle,
       titleListLocal,
-      valuetest,
-      options,
       resetForm,
-      onPrint,
       handleConfig
     }
   }

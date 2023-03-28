@@ -59,8 +59,9 @@
 
 <script lang="ts">
 import _ from 'lodash'
-import { defineComponent, ref, watch, computed, inject, reactive } from 'vue'
+import { defineComponent, ref, watch, computed, inject, reactive, onBeforeUnmount } from 'vue'
 import { globalStore } from '@/store'
+import { useDebounceFn } from "@vueuse/core";
 
 export default defineComponent({
   props: ['isCollapse'],
@@ -144,6 +145,18 @@ export default defineComponent({
         delayShow.value = !isActive.value
       }, 600)
     }
+
+    // 监听窗口大小变化，折叠侧边栏
+    const screenWidth = ref(0);
+    const listeningWindow = useDebounceFn(() => {
+      screenWidth.value = document.body.clientWidth;
+      if (isCurCollapse.value && screenWidth.value < 1200) handleSwitch()
+      if (!isCurCollapse.value && screenWidth.value > 1200) handleSwitch()
+    }, 100);
+    window.addEventListener("resize", listeningWindow, false);
+    onBeforeUnmount(() => {
+      window.removeEventListener("resize", listeningWindow);
+    });
     return {
       isCurCollapse,
       searchInput,

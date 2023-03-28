@@ -14,6 +14,7 @@ import * as AntdIcons from '@vicons/antd'
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import '@/base-style/base.scss'
+import '@/base-style/element.scss'
 import SvgIcon from '@/icons'
 import directives from '@/directives'
 /* px转rem 自适应 */

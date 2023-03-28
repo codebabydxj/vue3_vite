@@ -14,3 +14,8 @@ setRem();
 window.onresize = function () {
   setRem();
 }
+
+//ts需要加 export 不然会报错
+export {
+
+}
