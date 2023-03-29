@@ -39,7 +39,7 @@ import { ElTree } from "element-plus";
 
 // 接收父组件参数并设置默认值
 interface TreeFilterProps {
-	request?: { url: string, method: string } | any; // 请求api包含 url和 method ==> 非必传
+	request?: { url: string, method: string = 'post' } | any; // 请求api包含 url和 method ==> 非必传
 	params?: any; // 请求分类数据的参数 ==> 非必传
 	data?: { [key: string]: any }[]; // 分类数据，如果有分类数据，则不会执行 api 请求 ==> 非必传
 	title?: string; // treeFilter 标题 ==> 非必传
@@ -83,17 +83,10 @@ onBeforeMount(async () => {
 });
 
 // res返回结构因人而异，可以活套改动
-const getInitData = () => {
-  let requestApi = props.request.method == 'post' ? client.post : client.get
-  requestApi(props.request.url, props.params)
-    .then((res: any) => {
-      if ([1, 200].includes(res.code)) {
-        treeData.value = res.data;
-	      treeAllData.value = [{ id: "", [props.label]: "全部" }, ...res.data];
-      }
-    }).catch(() => {
-    }).finally(() => {
-    });
+const getInitData = async () => {
+	const { data } = props.request.method == 'post' ? await client.post(props.request.url, props.params) : await client.get(props.request.url, props.params)
+	treeData.value = data;
+	treeAllData.value = [{ id: "", [props.label]: "全部" }, ...data];
 }
 
 watch(filterText, val => {
