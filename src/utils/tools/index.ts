@@ -104,7 +104,7 @@ export const getBrowserLang = (): string => {
  * @param {Number} max 最大值
  * @return number
  */
-export function randomNum(min: number, max: number): number {
+export const randomNum = (min: number, max: number): number => {
 	let num = Math.floor(Math.random() * (min - max) + max);
 	return num;
 }
@@ -115,7 +115,7 @@ export function randomNum(min: number, max: number): number {
  * @param b 要比较的对象二
  * @returns 相同返回 true，反之则反
  */
-export function isObjectValueEqual(a: { [key: string]: any }, b: { [key: string]: any }) {
+export const isObjectValueEqual = (a: { [key: string]: any }, b: { [key: string]: any }) => {
 	if (!a || !b) return false;
 	let aProps = Object.getOwnPropertyNames(a);
 	let bProps = Object.getOwnPropertyNames(b);
@@ -132,4 +132,27 @@ export function isObjectValueEqual(a: { [key: string]: any }, b: { [key: string]
 		}
 	}
 	return true;
+}
+
+/**
+ * @description 处理无数据情况
+ * @param {String} callValue 需要处理的值
+ * @return string
+ * */
+export const formatValue = (callValue: any) => {
+	// 如果当前值为数组,使用 / 拼接（根据需求自定义）
+	if (Array.isArray(callValue)) return callValue.length ? callValue.join(" / ") : "--";
+	return callValue ?? "--";
+}
+
+/**
+ * @description 处理 prop 为多级嵌套的情况(列如: prop:user.name)
+ * @param {Object} row 当前行数据
+ * @param {String} prop 当前 prop
+ * @return any
+ * */
+export const handleRowAccordingToProp = (row: { [key: string]: any }, prop: string) => {
+	if (!prop.includes(".")) return row[prop] ?? "--";
+	prop.split(".").forEach(item => (row = row[item] ?? "--"));
+	return row;
 }

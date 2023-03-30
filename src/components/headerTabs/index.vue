@@ -22,9 +22,9 @@ export default defineComponent({
   setup() {
     // 获取全局store
     const myStore: any = globalStore()
-    // 通过inject获取挂载在全局的globalFunc方法，初始化view
-    const globalFunc: any = inject('globalFunc')
-    globalFunc.initView();
+    // 通过inject获取挂载在全局的globalRouter方法，初始化view
+    const globalRouter: any = inject('globalRouter')
+    globalRouter.initView();
 
     // 初始化路由
     const routes: any = ref([])
@@ -48,11 +48,11 @@ export default defineComponent({
 
     const tabClick = (obj: any, event: any) => {
       if (obj.props.name === currentRoute.value) return;
-      globalFunc.openView(obj.props.name);
+      globalRouter.openView(obj.props.name);
     }
 
     const removeTab = (route: any) => {
-      globalFunc.closeView(route);
+      globalRouter.closeView(route);
     }
 
     const openMenu = (e: any) => {

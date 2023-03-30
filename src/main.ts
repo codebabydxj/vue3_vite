@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { globalFunc } from '@/utils/globalFunc'
+import { globalRouter } from '@/utils/globalRouter'
 
 // 全局组件
 import flexCard from '@/components/flexCard/index.vue'
@@ -26,8 +26,8 @@ app = createApp(App)
 app.use(pinia)
 app.use(routers)
 
-// 将globalFunc方法挂载在全局
-app.provide('globalFunc', globalFunc);
+// 将globalRouter方法挂载在全局
+app.provide('globalRouter', globalRouter);
 
 app.use(ElementUI, {
   locale: zhCN

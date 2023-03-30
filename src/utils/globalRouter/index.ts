@@ -1,20 +1,20 @@
 /**
  * 调用下面方法前必须先拿到全局注册
- * 1. const globalFunc: any = inject('globalFunc')  通过inject获取挂载在全局的globalFunc方法
+ * 1. const globalRouter: any = inject('globalRouter')  通过inject获取挂载在全局的globalRouter方法
  * 
  * 打开页面
- * 1. 一级页面（使用绝对路径） globalFunc.openView('/a');
- * 2. 二级页面（使用相对路径） globalFunc.openView('a/b');
- * 3. 如果进入到由别的路由控制下的页面，要返回前一个页面 globalFunc.openView('/a/b', true);  否则返回它自己的父级页面就不用带true
+ * 1. 一级页面（使用绝对路径） globalRouter.openView('/a');
+ * 2. 二级页面（使用相对路径） globalRouter.openView('a/b');
+ * 3. 如果进入到由别的路由控制下的页面，要返回前一个页面 globalRouter.openView('/a/b', true);  否则返回它自己的父级页面就不用带true
  *
  * 返回
- * 二级路由返回一级路由  globalFunc.goView();
+ * 二级路由返回一级路由  globalRouter.goView();
  *
  * 关闭路由
- * globalFunc.closeView();
+ * globalRouter.closeView();
  *
  * 刷新重置
- * globalFunc.refreshView();
+ * globalRouter.refreshView();
  * 
  * 需要刷新的url
  * fullPath
@@ -39,7 +39,7 @@ routers.beforeEach(async (to: any) => {
   }
 })
 
-const globalFunc = {
+const globalRouter = {
   // 初始化
   initView: () => {
     console.log(`%c【全局路由】- 初始化完成···`, 'color: #009acc')
@@ -95,13 +95,13 @@ const globalFunc = {
     // 切换至下一个或上一个标签
     const nextTab: any = useGlobalStore.routes[index + 1] || useGlobalStore.routes[index - 1];
     if (nextTab) {
-      globalFunc.openView(nextTab.route);
+      globalRouter.openView(nextTab.route);
     }
     // 点击删除tab标签
     useGlobalStore.delRoute({ index, count: 1 })
     // 全部删除时回到欢迎界面
     if (useGlobalStore.routes.length === 0) {
-      globalFunc.openView('/welcome');
+      globalRouter.openView('/welcome');
     }
   },
 
@@ -110,7 +110,7 @@ const globalFunc = {
     console.log(`%c【全局路由】- 返回上级页面···`, 'color: #b88230')
     // 如果存在backPath这个查询参数，就返回到backPath
     if (query[backPathKey]) {
-      globalFunc.openView(query[backPathKey]);
+      globalRouter.openView(query[backPathKey]);
       return;
     }
     // 清除realPath
@@ -151,4 +151,4 @@ const addParamInPath = (path: any, key: any, value: any) => {
   return `${path}${symbol}${key}=${value}`;
 };
 
-export { globalFunc };
+export { globalRouter };

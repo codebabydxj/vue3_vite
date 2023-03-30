@@ -97,8 +97,8 @@ watch(filterText, val => {
 const filterNode = (value: string, data: { [key: string]: any }, node: any) => {
 	if (!value) return true;
 	let parentNode = node.parent,
-		labels = [node.label],
-		level = 1;
+			labels = [node.label],
+			level = 1;
 	while (level < node.level) {
 		labels = [...labels, parentNode.label];
 		parentNode = parentNode.parent;

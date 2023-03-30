@@ -58,12 +58,12 @@
                   》等
                 </p>
                 <p class="colors">
-                  <div style="margin: 8px 0">重点强调常用Global方法：&lt;<span style="color: red; font-weight: bold;">const globalFunc: any = inject('globalFunc')</span>&gt;，通过inject获取挂载在全局的globalFunc方法</div>
-                  <div style="margin: 8px 0">(1). 打开一级页面 <span style="color: red; font-weight: bold;">globalFunc.openView('/a')</span></div>
-                  <div style="margin: 8px 0">(2). 打开二级页面 <span style="color: red; font-weight: bold;">globalFunc.openView('a/b')</span></div>
-                  <div style="margin: 8px 0">(3). 返回上级页面 <span style="color: red; font-weight: bold;">globalFunc.goView()</span></div>
-                  <div style="margin: 8px 0">(4). 关闭当前页面 <span style="color: red; font-weight: bold;">globalFunc.closeView()</span></div>
-                  <div style="margin: 8px 0">(5). 列表按钮重置 <span style="color: red; font-weight: bold;">globalFunc.refreshView()</span></div>
+                  <div style="margin: 8px 0">重点强调常用Global方法：&lt;<span style="color: red; font-weight: bold;">const globalRouter: any = inject('globalRouter')</span>&gt;，通过inject获取挂载在全局的globalRouter方法</div>
+                  <div style="margin: 8px 0">(1). 打开一级页面 <span style="color: red; font-weight: bold;">globalRouter.openView('/a')</span></div>
+                  <div style="margin: 8px 0">(2). 打开二级页面 <span style="color: red; font-weight: bold;">globalRouter.openView('a/b')</span></div>
+                  <div style="margin: 8px 0">(3). 返回上级页面 <span style="color: red; font-weight: bold;">globalRouter.goView()</span></div>
+                  <div style="margin: 8px 0">(4). 关闭当前页面 <span style="color: red; font-weight: bold;">globalRouter.closeView()</span></div>
+                  <div style="margin: 8px 0">(5). 列表按钮重置 <span style="color: red; font-weight: bold;">globalRouter.refreshView()</span></div>
                 </p>
               </div>
             </div>

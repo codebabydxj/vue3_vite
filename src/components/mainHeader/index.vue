@@ -94,13 +94,13 @@ export default defineComponent({
     })
 
     const myStore: any = globalStore()
-    const globalFunc: any = inject('globalFunc')
+    const globalRouter: any = inject('globalRouter')
     const fullscreenLoading = ref(false)
     const isFullscreen = ref(false)
     const isShowMessage = ref(false)
 
     const refresh = () => {
-      globalFunc.refreshView()
+      globalRouter.refreshView()
     }
     const message = () => {
       isShowMessage.value = true

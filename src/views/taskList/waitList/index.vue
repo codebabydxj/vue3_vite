@@ -57,8 +57,8 @@ export default defineComponent({
   setup() {
     // 获取全局store
     const myStore: any = globalStore()
-    // 通过inject获取挂载在全局的globalFunc方法，初始化view
-    const globalFunc: any = inject('globalFunc')
+    // 通过inject获取挂载在全局的globalRouter方法，初始化view
+    const globalRouter: any = inject('globalRouter')
     const tableSize: any = ref('')
     const tableColumn: any = ref([])
     const searchForm: any = ref({})
@@ -119,7 +119,7 @@ export default defineComponent({
 
     // 重置查询表单
     const resetForm = () => {
-      globalFunc.refreshView()
+      globalRouter.refreshView()
     }
     // 表格配置项
     const handleConfig = (data: any) => {

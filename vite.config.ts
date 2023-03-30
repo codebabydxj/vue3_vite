@@ -8,6 +8,7 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import { resolve } from 'path'
 import px2rem from 'postcss-px2rem'
 import path from 'path'
+import vueJsx from "@vitejs/plugin-vue-jsx";
 
 // 配置基本大小 实现rem px转换
 const postcss = px2rem({
@@ -40,6 +41,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       //   dirs: ['src/components', 'src/views'], // 自定义路径按需导入
       //   resolvers: [ ElementPlusResolver() ] // 可配置多个 此时main.ts处组件库相关的就可以全部删除掉了
       // }),
+      vueJsx(),
       viteCompression({
         verbose: true, // 是否在控制台输出压缩结果
         disable: false, // 是否禁用

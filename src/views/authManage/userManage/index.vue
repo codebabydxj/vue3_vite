@@ -14,11 +14,11 @@ import { defineComponent, ref, inject } from 'vue'
 
 export default defineComponent({
   setup() {
-    // 通过inject获取挂载在全局的globalFunc方法，初始化view
-    const globalFunc: any = inject('globalFunc')
+    // 通过inject获取挂载在全局的globalRouter方法，初始化view
+    const globalRouter: any = inject('globalRouter')
 
     const resetForm = () => {
-      globalFunc.refreshView()
+      globalRouter.refreshView()
     }
   
     return {

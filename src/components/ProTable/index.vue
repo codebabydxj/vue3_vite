@@ -31,6 +31,12 @@
 					<component :is="item.render" :row="scope.row" v-if="item.render"> </component>
 					<slot :name="item.type" :row="scope.row" v-else></slot>
 				</el-table-column>
+				<!-- other 循环递归 -->
+				<TableColumn v-if="!item.type && item.prop && item.isShow" :column="item">
+					<template v-for="slot in Object.keys($slots)" #[slot]="scope">
+						<slot :name="slot" :row="scope.row"></slot>
+					</template>
+				</TableColumn>
 			</template>
 			<!-- 插入表格最后一行之后的插槽 -->
 			<template #append>
@@ -54,6 +60,7 @@ import { ref, watch, computed, provide } from "vue";
 import { useTable } from "@/hooks/useTable";
 import { useSelection } from "@/hooks/useSelection";
 import { ColumnProps, BreakPoint } from "@/components/ProTable/interface";
+import TableColumn from "./components/TableColumn.vue";
 import { ElTable, TableProps } from "element-plus";
 
 interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
@@ -89,12 +96,25 @@ const { selectionChange, getRowKeys, selectedList, selectedListIds, isSelected }
 // 表格操作 Hooks
 const { tableData, pageable, searchParam, searchInitParam, getTableList, search, reset, handleSizeChange, handleCurrentChange } =
 	useTable(props.requestApiParams, props.initParam, props.pagination, props.dataCallback);
+tableData.value = [{}] // 测试使用！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 
 // 清空选中数据列表
 const clearSelection = () => tableRef.value!.clearSelection();
 
+// 扁平化 columns
+const flatColumnsFunc = (columns: ColumnProps[], flatArr: ColumnProps[] = []) => {
+	columns.forEach(async col => {
+		if (col._children?.length) flatArr.push(...flatColumnsFunc(col._children));
+		flatArr.push(col);
+
+		// 给每一项 column 添加 isShow && isFilterEnum 默认属性
+		col.isShow = col.isShow ?? true;
+	});
+	return flatArr.filter(item => !item._children?.length);
+};
+
 // 接收 columns 并设置为响应式
-const tableColumns = ref<ColumnProps[]>(props.columns);
+const tableColumns = ref<ColumnProps[]>(flatColumnsFunc(props.columns));
 
 // 暴露给父组件的参数和方法(外部需要什么，都可以从这里暴露出去)
 defineExpose({
