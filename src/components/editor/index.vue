@@ -10,7 +10,7 @@
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import { onBeforeUnmount, ref, shallowRef, onMounted } from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import * as API from '@/api'
+import * as API from '@/config/api'
 
 export default {
   components: { Editor, Toolbar },

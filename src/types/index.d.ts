@@ -9,3 +9,5 @@ declare namespace NodeJS {
   type Timeout = any;
 }
 declare module 'postcss-px2rem';
+declare module 'js-md5';
+declare module 'nprogress';

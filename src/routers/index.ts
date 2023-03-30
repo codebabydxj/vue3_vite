@@ -1,5 +1,6 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 import { pinia, globalStore } from "@/store";
+import NProgress from "@/config/nprogress";
 
 let store = globalStore(pinia);
 let allRoutes: any = [];
@@ -27,6 +28,8 @@ const routers = createRouter({
 /* 路由权限方案：挂载所有路由 + 全局路由守卫判断权限 */
 const allGuardRouter: any = [...allRoutes, ...routes.slice(1), { path: '/welcome/_empty', name: 'empty' }]
 routers.beforeEach((to, from, next) => {
+	NProgress.start();
+
     const idx = allGuardRouter.findIndex((i: any) => i.path === to.fullPath)
     if (idx === -1) {
         next({ path: '/404' });
@@ -34,5 +37,15 @@ routers.beforeEach((to, from, next) => {
         next()
     }
 })
+/** 路由跳转结束 */
+routers.afterEach(() => {
+	NProgress.done();
+});
+
+/** 路由跳转错误 */
+routers.onError(error => {
+	NProgress.done();
+	console.warn("路由错误", error.message);
+});
 
 export default routers;

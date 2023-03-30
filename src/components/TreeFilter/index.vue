@@ -39,7 +39,7 @@ import { ElTree } from "element-plus";
 
 // 接收父组件参数并设置默认值
 interface TreeFilterProps {
-	request?: { url: string, method: string = 'post' } | any; // 请求api包含 url和 method ==> 非必传
+	request?: { url: string, method: string } | any; // 请求api包含 url和 method ==> 非必传
 	params?: any; // 请求分类数据的参数 ==> 非必传
 	data?: { [key: string]: any }[]; // 分类数据，如果有分类数据，则不会执行 api 请求 ==> 非必传
 	title?: string; // treeFilter 标题 ==> 非必传

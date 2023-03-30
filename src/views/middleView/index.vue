@@ -1,32 +1,15 @@
 <template>
   <main class="main-interface">
-    <router-view v-if="loadSuccess" :key="fullPath"></router-view>
+    <router-view :key="fullPath"></router-view>
   </main>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, computed } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { client } from '@/utils/https/client';
-import * as API from '@/api';
 
-export default defineComponent({
-  setup() {
-    const loadSuccess = ref(false);
-    const route = useRoute();
-    const fullPath = computed(() => route.fullPath);
-
-    const getUserInfo = () => {
-      loadSuccess.value = true;
-    }
-    getUserInfo();
-    return {
-      loadSuccess,
-      fullPath,
-      getUserInfo,
-    };
-  }
-});
+const route = useRoute();
+const fullPath = computed(() => route.fullPath);
 </script>
 
 <style scoped lang="scss">

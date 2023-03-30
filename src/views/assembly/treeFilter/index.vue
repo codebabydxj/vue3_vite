@@ -40,7 +40,7 @@
 <script setup lang="ts" name="treeFilter">
 import { reactive } from "vue";
 import { ElMessage } from "element-plus";
-import { userInfo } from "@/api";
+import { userInfo } from "@/config/api";
 import TreeFilter from "@/components/TreeFilter/index.vue";
 import dataJson from './dataJson.json'
 
