@@ -1,7 +1,7 @@
 <template>
   <div class="table-main">
     <!-- 表格头部 操作按钮 -->
-		<div class="table-header">
+		<div class="table-header" ref="headerRef">
 			<div class="header-button-lf">
 				<slot name="tableHeader"></slot>
 			</div>
@@ -10,6 +10,7 @@
 		<el-table
 			ref="tableRef"
 			v-bind="$attrs"
+			:height="maxHeight"
 			:data="tableData"
 			:border="border"
 			:row-key="getRowKeys"
@@ -42,7 +43,7 @@
 			<template #append>
 				<slot name="append"></slot>
 			</template>
-      <!-- 表格无数据情况 -->
+			<!-- 表格无数据情况 -->
 			<template #empty>
 				<div class="table-empty">
 					<slot name="empty">
@@ -51,12 +52,13 @@
 					</slot>
 				</div>
 			</template>
-    </el-table>
+		</el-table>
   </div>
 </template>
 
 <script setup lang="ts" name="ProTable">
-import { ref, watch, computed, provide } from "vue";
+import { ref, watchEffect } from "vue";
+import { globalStore } from '@/store'
 import { useTable } from "@/hooks/useTable";
 import { useSelection } from "@/hooks/useSelection";
 import { ColumnProps, BreakPoint } from "@/components/ProTable/interface";
@@ -87,6 +89,19 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 	searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 })
 });
 
+
+// 头部 DOM 元素
+const headerRef = ref<HTMLElement>();
+// 表格最大高度计算
+const maxHeight = ref(<any>'200px')
+// 获取window 高度
+const myStore: any = globalStore()
+watchEffect(() => {
+	if (myStore.winSize!.contentHeight && headerRef.value) {
+		maxHeight.value = `${myStore.winSize.contentHeight - headerRef.value!.clientHeight}px`
+	}
+})
+
 // 表格 DOM 元素
 const tableRef = ref<InstanceType<typeof ElTable>>();
 
@@ -96,7 +111,46 @@ const { selectionChange, getRowKeys, selectedList, selectedListIds, isSelected }
 // 表格操作 Hooks
 const { tableData, pageable, searchParam, searchInitParam, getTableList, search, reset, handleSizeChange, handleCurrentChange } =
 	useTable(props.requestApiParams, props.initParam, props.pagination, props.dataCallback);
-tableData.value = [{}] // 测试使用！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+tableData.value = [
+	{ username: '111' },
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{ username: '111' },
+] // 测试使用！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 
 // 清空选中数据列表
 const clearSelection = () => tableRef.value!.clearSelection();

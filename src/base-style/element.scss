@@ -26,9 +26,6 @@
 // * card 卡片样式
 .el-card {
   flex: 1 !important;
-  .el-card__body {
-    height: calc(100% - 40px);
-  }
 }
 
 // 按钮flex样式

@@ -10,11 +10,12 @@
 <style lang="scss">
 /** 全局基本样式 */
 #app, .vite-app {
-  height: 100%;
+  height: 100vh !important;
   margin: 0;
 }
 .base-warp {
   width: calc(100%) !important;
+  height: calc(100%) !important;
   display: flex !important;
 }
 </style>

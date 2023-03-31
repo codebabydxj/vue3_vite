@@ -2,6 +2,7 @@
   <flex-card>
     <div class="base-warp">
       <el-card>
+        <el-scrollbar :height="maxHeight">
           <div class="contain">
             <div class="main-warp">
               <h3 class="v-h3">{{ greetings }}</h3>
@@ -68,13 +69,15 @@
               </div>
             </div>
           </div>
+        </el-scrollbar>
       </el-card>
     </div>
   </flex-card>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed, watchEffect } from 'vue'
+import { globalStore } from '@/store'
 
 const date: Date = new Date();
 const greetings = computed(() => {
@@ -86,6 +89,16 @@ const greetings = computed(() => {
     return '折一根天使羽毛，愿拂去您的疲惫烦恼忧伤🌛！';
   }
 });
+
+// 表格最大高度计算
+const maxHeight = ref(<any>'200px')
+// 获取window 高度
+const myStore: any = globalStore()
+watchEffect(() => {
+  if (myStore.winSize!.contentHeight) {
+    maxHeight.value = `${myStore.winSize.contentHeight}px`
+  }
+})
 </script>
 
 <style scoped lang="scss">
@@ -93,26 +106,7 @@ const greetings = computed(() => {
   background: url('../../assets/imgs/wel.png') no-repeat center;
   background-size: 70%;
   position: relative;
-  height: calc(100vh - 125px);
-  overflow-y: auto;
-}
-.contain::-webkit-scrollbar {
-  /*滚动条整体样式*/
-  width: 6px;
-  /*高宽分别对应横竖滚动条的尺寸*/
-  height: 1px;
-}
-.contain::-webkit-scrollbar-thumb {
-  /*滚动条里面小方块*/
-  border-radius: 10px;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  background: #dfd7d7;
-}
-.contain::-webkit-scrollbar-track {
-  /*滚动条里面轨道*/
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  background: transparent;
+  height: calc(100%);
 }
 .main-warp {
   position: absolute;

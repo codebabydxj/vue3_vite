@@ -18,6 +18,7 @@ const globalStore = defineStore('useGlobalStore', {
       // 常量
       consts: <any>[],
       userInfo: <any>{},
+      winSize: <any>{},
     }
   },
   getters: <any>{
@@ -59,6 +60,9 @@ const globalStore = defineStore('useGlobalStore', {
     setUserInfo(userInfo: any) {
       // const state: any = globalStore();
       this.userInfo = userInfo;
+    },
+    setWinSize(winSize: any) {
+      this.winSize = winSize;
     },
     logout() {
       // const state: any = globalStore();
