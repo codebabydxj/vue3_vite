@@ -97,6 +97,14 @@
 		margin-top: 20px;
 	}
 }
+
+// protable 没数据处理
+.pro_no_table {
+  .el-table__inner-wrapper {
+    height: 200px;
+  }
+}
+
 .el-loading-mask.is-fullscreen {
   z-index: 9999 !important;
 }

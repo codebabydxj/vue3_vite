@@ -6,6 +6,7 @@
           ref="proTable"
           title="用户列表"
           :columns="columns"
+          :stripe="true"
           :requestApiParams="requestApiParams"
 			    :dataCallback="dataCallback">
           <!-- 表格 header 按钮 -->

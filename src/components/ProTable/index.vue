@@ -10,7 +10,8 @@
 		<el-table
 			ref="tableRef"
 			v-bind="$attrs"
-			:height="maxHeight"
+			:class="{ 'pro_no_table': !tableData.length }"
+			:max-height="maxHeight"
 			:data="tableData"
 			:border="border"
 			:row-key="getRowKeys"
@@ -23,7 +24,7 @@
 				<el-table-column
 					v-bind="item"
 					:align="item.align ?? 'center'"
-					:reserve-selection="item.type == 'selection'"
+					:reserve-selection="item.type == 'selection' && item.reserve"
 					v-if="item.type == 'selection' || item.type == 'index'"
 				>
 				</el-table-column>
@@ -89,19 +90,6 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 	searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 })
 });
 
-
-// 头部 DOM 元素
-const headerRef = ref<HTMLElement>();
-// 表格最大高度计算
-const maxHeight = ref(<any>'200px')
-// 获取window 高度
-const myStore: any = globalStore()
-watchEffect(() => {
-	if (myStore.winSize!.contentHeight && headerRef.value) {
-		maxHeight.value = `${myStore.winSize.contentHeight - headerRef.value!.clientHeight}px`
-	}
-})
-
 // 表格 DOM 元素
 const tableRef = ref<InstanceType<typeof ElTable>>();
 
@@ -120,37 +108,20 @@ tableData.value = [
 	{},
 	{},
 	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
 	{ username: '111' },
 ] // 测试使用！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+
+// 头部 DOM 元素
+const headerRef = ref<HTMLElement>();
+// 表格最大高度计算
+const maxHeight = ref(<any>'200px')
+// 获取window 高度
+const myStore: any = globalStore()
+watchEffect(() => {
+	if (tableData.value.length > 0 && myStore.winSize!.contentHeight) {
+		maxHeight.value = headerRef.value ? `${myStore.winSize.contentHeight - headerRef.value!.clientHeight}px` : `${myStore.winSize.contentHeight}px`
+	}
+})
 
 // 清空选中数据列表
 const clearSelection = () => tableRef.value!.clearSelection();
@@ -170,7 +141,7 @@ const flatColumnsFunc = (columns: ColumnProps[], flatArr: ColumnProps[] = []) =>
 // 接收 columns 并设置为响应式
 const tableColumns = ref<ColumnProps[]>(flatColumnsFunc(props.columns));
 
-// 暴露给父组件的参数和方法(外部需要什么，都可以从这里暴露出去)
+// 子组件暴露给父组件的参数和方法(外部需要什么，都可以从这里暴露出去) 父组件使用ref接收（fatherRef.value.属性/方法）
 defineExpose({
 	element: tableRef,
 	tableData,
