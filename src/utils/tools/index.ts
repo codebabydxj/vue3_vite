@@ -141,7 +141,8 @@ export const isObjectValueEqual = (a: { [key: string]: any }, b: { [key: string]
 /** 导出获取窗口的宽高 */ 
 export const useWinSize = useDebounceFn(() => {
   const myStore: any = globalStore()
-  const diffH: any = 123
+  let diffH: any = 133 // header高度(43) + flexCard组件padding(40) + el-card组件padding(40) + 底部预留(10)
+  if (myStore.pagination) diffH = 185 // + 表格分页(62)
   const size = ref({ width: window.innerWidth, height: window.innerHeight, contentHeight: window.innerHeight - diffH });
   // 窗口变化时候更新 size
   myStore.setWinSize(size.value)

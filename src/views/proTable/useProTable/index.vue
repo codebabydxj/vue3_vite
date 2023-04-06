@@ -14,7 +14,7 @@
             <el-button type="primary" :icon="CirclePlus">新增用户</el-button>
             <el-button type="primary" :icon="Upload" plain>批量添加用户</el-button>
             <el-button type="primary" :icon="Download" plain>导出用户数据</el-button>
-            <el-button type="danger" :icon="Delete" plain>批量删除用户</el-button>
+            <el-button type="danger" :icon="Delete" plain @click="batchDelete(scope.selectedListIds)" :disabled="!scope.isSelected">批量删除用户</el-button>
           </template>
           <!-- 表格操作 -->
           <template #operation="scope">
@@ -31,11 +31,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import ProTable from '@/components/ProTable/index.vue'
-import { CirclePlus, Delete, EditPen, Download, Upload, View, Refresh } from "@element-plus/icons-vue";
+import { CirclePlus, Delete, EditPen, Download, Upload, View } from "@element-plus/icons-vue";
 import { ColumnProps } from "@/components/ProTable/interface";
+import { useHandleData } from "@/hooks/useHandleData";
 
 // 请求table数据
 const requestApiParams = ref({ url: '/api/getTableData' })
+
+// 获取 ProTable 元素，调用其获取刷新数据方法（还能获取到当前查询参数，方便导出携带参数）
+const proTable = ref();
 
 // dataCallback 是对于返回的表格数据做处理，如果你后台返回的数据不是 list && total && pageNum && pageSize 这些字段，那么你可以在这里进行处理成这些字段
 const dataCallback = (data: any) => {
@@ -62,6 +66,12 @@ const columns: ColumnProps[] = [
 	{ prop: "operation", label: "操作", fixed: "right", width: 330 }
 ];
 
+// 批量删除用户信息
+const batchDelete = async (ids: string[]) => {
+	await useHandleData('/batch/delete', { ids }, "删除所选用户信息");
+	proTable.value.clearSelection();
+	proTable.value.getTableList();
+};
 </script>
 
 <style scoped lang="scss">

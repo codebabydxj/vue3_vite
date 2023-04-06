@@ -4,7 +4,7 @@
       <el-dropdown trigger="click" @command="handleCommand">
         <el-button circle>
           <el-icon size="16" color="#383030">
-            <column-height-outlined />
+            <Menu />
           </el-icon>
         </el-button>
         <template #dropdown>

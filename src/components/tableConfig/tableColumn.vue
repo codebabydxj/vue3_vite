@@ -4,7 +4,7 @@
       <el-dropdown trigger="click" :hide-on-click="false" popper-class="dropdown-pop">
         <el-button circle>
           <el-icon size="16" color="#383030">
-            <appstore-add-outlined />
+            <hide />
           </el-icon>
         </el-button>
         <template #dropdown>

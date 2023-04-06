@@ -19,6 +19,7 @@ const globalStore = defineStore('useGlobalStore', {
       consts: <any>[],
       userInfo: <any>{},
       winSize: <any>{},
+      pagination: <boolean>false,
     }
   },
   getters: <any>{
@@ -63,6 +64,9 @@ const globalStore = defineStore('useGlobalStore', {
     },
     setWinSize(winSize: any) {
       this.winSize = winSize;
+    },
+    setPagination(pagination: any) {
+      this.pagination = pagination
     },
     logout() {
       // const state: any = globalStore();

@@ -164,16 +164,16 @@ export default defineComponent({
 }
 
 .navbar-top .tabs-wrap .el-tabs__item {
-  color: #ffffff;
+  color: #fefefea6 !important;
 }
 
 .navbar-top .tabs-wrap .el-tabs__item:hover {
-  color: var(--color-text);
+  color: #ffffff !important;
 }
 
 .navbar-top .tabs-wrap .el-tabs__item.is-active {
-  background-color: #ffffff;
-  color: var(--color-text);
+  background-color: #ffffff !important;
+  color: var(--color-text) !important;
 }
 
 .navbar-top .tabs-wrap .el-tabs--card>.el-tabs__header .el-tabs__item {

@@ -5,68 +5,47 @@
     :modelValue="dialogShow"
     :append-to-body="true"
     :before-close="cancel">
-    <el-row type="flex" justify="center" v-if="dialogShow">
-      <el-table
-        border
-        stripe
-        :data="titleListClone"
-        :max-height="400">
-        <el-table-column type="index" align="center" label="序号" width="55"></el-table-column>
-        <el-table-column prop="title" align="center" label="列名称"></el-table-column>
-        <el-table-column align="center" label="是否显示">
-          <template #default="scope">
-            <el-switch active-color="#13ce66" inactive-color="#d8dce5" :disabled="scope.row.isDisabled" v-model="scope.row.status"></el-switch>
+    <div class="table-main" v-if="dialogShow">
+			<el-table :data="colSetting" :border="true" row-key="prop" default-expand-all :tree-props="{ children: '_children' }">
+				<el-table-column prop="label" align="center" label="列名" />
+				<el-table-column prop="isShow" align="center" label="显示">
+          <template #default="{ row }">
+            <el-switch v-model="row.isShow"></el-switch>
           </template>
-        </el-table-column>
-      </el-table>
-    </el-row>
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="cancel">取消</el-button>
-        <el-button type="primary" @click="update">确定</el-button>
-      </div>
-    </template>
+				</el-table-column>
+				<el-table-column prop="sortable" align="center" label="排序">
+          <template #default="{ row }">
+            <el-switch :disabled="!row.isShow" v-model="row.sortable"></el-switch>
+          </template>
+				</el-table-column>
+				<template #empty>
+					<div class="table-empty">
+						<img src="@/assets/images/notData.png" alt="notData" />
+						<div>暂无可配置列</div>
+					</div>
+				</template>
+			</el-table>
+		</div>
   </el-drawer>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, watch } from 'vue'
-import _ from 'lodash';
+<script setup lang="ts">
+import { ColumnProps } from '@/components/ProTable/interface'
 
-export default defineComponent({
-  props: {
-    dialogShow: {
-      type: Boolean,
-      default: false,
-    },
-    titleList: {
-      type: Array,
-      defalut: [],
-    },
+const props = defineProps({
+  colSetting: {
+    type: Array,
+    default: () => [] as ColumnProps[]
   },
-  emits: ['closeDialog'],
-  setup(props, { emit }) {
-    const titleListClone: any =  ref([])
-
-    watch(() => props.dialogShow, (newVal: any) => {
-      if (newVal) {
-        titleListClone.value = _.cloneDeep(props.titleList);
-      }
-    })
-
-    const cancel = () => {
-      emit('closeDialog', false);
-    }
-
-    const update = () => {
-      emit('closeDialog', titleListClone.value);
-    }
-
-    return {
-      titleListClone,
-      cancel,
-      update
-    }
-  }
+  dialogShow: {
+    type: Boolean,
+    default: false,
+  },
 });
+
+const emit = defineEmits(['closeDialog'])
+
+const cancel = () => {
+  emit('closeDialog', false);
+}
 </script>

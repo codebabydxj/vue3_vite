@@ -1,32 +1,33 @@
 <template>
-  <div class="table-main">
-    <!-- 表格头部 操作按钮 -->
+	<div class="table-main">
+		<!-- 表格头部 操作按钮 -->
 		<div class="table-header" ref="headerRef">
 			<div class="header-button-lf">
-				<slot name="tableHeader"></slot>
+				<slot name="tableHeader" :selectedListIds="selectedListIds" :selectedList="selectedList" :isSelected="isSelected"></slot>
+			</div>
+			<div class="header-button-ri" v-if="toolButton">
+				<table-config ref="colRef" :colSetting="colSetting" @tableConfigCall="handleConfig">
+				</table-config>
 			</div>
 		</div>
-    <!-- 表格主体 -->
+		<!-- 表格主体 -->
 		<el-table
 			ref="tableRef"
 			v-bind="$attrs"
+			:size="tableSize"
 			:class="{ 'pro_no_table': !tableData.length }"
 			:max-height="maxHeight"
 			:data="tableData"
 			:border="border"
 			:row-key="getRowKeys"
-			@selection-change="selectionChange"
-		>
+			@selection-change="selectionChange">
 			<!-- 默认插槽 -->
 			<slot>我是默认插槽</slot>
 			<template v-for="item in tableColumns" :key="item">
 				<!-- selection || index -->
-				<el-table-column
-					v-bind="item"
-					:align="item.align ?? 'center'"
+				<el-table-column v-bind="item" :align="item.align ?? 'center'"
 					:reserve-selection="item.type == 'selection' && item.reserve"
-					v-if="item.type == 'selection' || item.type == 'index'"
-				>
+					v-if="(item.type == 'selection' && tableColumn.includes('selection')) || (item.type == 'index' && tableColumn.includes('index'))">
 				</el-table-column>
 				<!-- expand 支持 tsx 语法 && 作用域插槽 (tsx > slot) -->
 				<el-table-column v-bind="item" :align="item.align ?? 'center'" v-if="item.type == 'expand'" v-slot="scope">
@@ -54,17 +55,28 @@
 				</div>
 			</template>
 		</el-table>
-  </div>
+		<!-- 分页组件 -->
+		<slot name="pagination">
+			<Pagination
+				v-if="pagination"
+				:pageable="pageable"
+				:handleSizeChange="handleSizeChange"
+				:handleCurrentChange="handleCurrentChange"
+			/>
+		</slot>
+	</div>
 </template>
 
 <script setup lang="ts" name="ProTable">
-import { ref, watchEffect } from "vue";
+import { ref, watchEffect } from "vue"
 import { globalStore } from '@/store'
-import { useTable } from "@/hooks/useTable";
-import { useSelection } from "@/hooks/useSelection";
-import { ColumnProps, BreakPoint } from "@/components/ProTable/interface";
-import TableColumn from "./components/TableColumn.vue";
-import { ElTable, TableProps } from "element-plus";
+import { useTable } from "@/hooks/useTable"
+import { useSelection } from "@/hooks/useSelection"
+import { ColumnProps, BreakPoint } from "@/components/ProTable/interface"
+import tableConfig from '@/components/tableConfig/index.vue'
+import TableColumn from "./components/TableColumn.vue"
+import Pagination from "./components/Pagination.vue";
+import { ElTable, TableProps } from "element-plus"
 
 interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 	columns: ColumnProps[]; // 列配置项
@@ -90,6 +102,32 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 	searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 })
 });
 
+// 获取store 存储库
+const myStore: any = globalStore()
+
+// 存储是否显示分页，为了控制表格最大高度显示
+myStore.setPagination(props.pagination)
+
+// table显示大小（default/small/large）
+const tableSize = ref(<any>'')
+
+// table多选和序号配置
+const tableColumn: any = ref(<any>[])
+
+// table工具按钮配置 回调处理
+const handleConfig = (data: any) => {
+	switch (data.type) {
+		case 'size':
+			tableSize.value = data.command
+			break;
+		case 'column':
+			tableColumn.value = data.command
+			break;
+		default:
+			break;
+	}
+}
+
 // 表格 DOM 元素
 const tableRef = ref<InstanceType<typeof ElTable>>();
 
@@ -100,7 +138,7 @@ const { selectionChange, getRowKeys, selectedList, selectedListIds, isSelected }
 const { tableData, pageable, searchParam, searchInitParam, getTableList, search, reset, handleSizeChange, handleCurrentChange } =
 	useTable(props.requestApiParams, props.initParam, props.pagination, props.dataCallback);
 tableData.value = [
-	{ username: '111' },
+	{ username: '第一名' },
 	{},
 	{},
 	{},
@@ -108,7 +146,22 @@ tableData.value = [
 	{},
 	{},
 	{},
-	{ username: '111' },
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{},
+	{ username: '最后一名' },
 ] // 测试使用！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 
 // 头部 DOM 元素
@@ -116,7 +169,6 @@ const headerRef = ref<HTMLElement>();
 // 表格最大高度计算
 const maxHeight = ref(<any>'200px')
 // 获取window 高度
-const myStore: any = globalStore()
 watchEffect(() => {
 	if (tableData.value.length > 0 && myStore.winSize!.contentHeight) {
 		maxHeight.value = headerRef.value ? `${myStore.winSize.contentHeight - headerRef.value!.clientHeight}px` : `${myStore.winSize.contentHeight}px`
@@ -141,6 +193,11 @@ const flatColumnsFunc = (columns: ColumnProps[], flatArr: ColumnProps[] = []) =>
 // 接收 columns 并设置为响应式
 const tableColumns = ref<ColumnProps[]>(flatColumnsFunc(props.columns));
 
+// 列设置 ==> 过滤掉不需要设置显隐的列
+const colSetting = tableColumns.value!.filter(item => {
+	return item.type !== "selection" && item.type !== "index" && item.type !== "expand" && item.prop !== "operation";
+});
+
 // 子组件暴露给父组件的参数和方法(外部需要什么，都可以从这里暴露出去) 父组件使用ref接收（fatherRef.value.属性/方法）
 defineExpose({
 	element: tableRef,
@@ -154,8 +211,4 @@ defineExpose({
 	selectedList,
 	selectedListIds
 });
-
-const border = ref(<boolean>true)
 </script>
-
-
