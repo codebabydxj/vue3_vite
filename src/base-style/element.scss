@@ -156,6 +156,13 @@
 		width: 100%;
 	}
 }
+
+// * 开关 样式
+.el-switch {
+  --el-switch-on-color: #13ce66;
+  --el-switch-off-color: var(--el-border-color);
+}
+
 .small-input-width {
   width: 150px !important;
 }

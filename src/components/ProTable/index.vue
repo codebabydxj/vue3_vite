@@ -1,5 +1,9 @@
 <template>
 	<div class="table-main">
+		<!-- 搜索 查询表单 -->
+		<div class="table-search" ref="searchRef">
+			<slot name="tableSearch"></slot>
+		</div>
 		<!-- 表格头部 操作按钮 -->
 		<div class="table-header" ref="headerRef">
 			<div class="header-button-lf">
@@ -58,7 +62,7 @@
 		<!-- 分页组件 -->
 		<slot name="pagination">
 			<Pagination
-				v-if="pagination"
+				v-if="pagination && tableData.length > 0"
 				:pageable="pageable"
 				:handleSizeChange="handleSizeChange"
 				:handleCurrentChange="handleCurrentChange"
@@ -68,7 +72,7 @@
 </template>
 
 <script setup lang="ts" name="ProTable">
-import { ref, watchEffect } from "vue"
+import { ref, watchEffect, watch } from "vue"
 import { globalStore } from '@/store'
 import { useTable } from "@/hooks/useTable"
 import { useSelection } from "@/hooks/useSelection"
@@ -164,19 +168,36 @@ tableData.value = [
 	{ username: '最后一名' },
 ] // 测试使用！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 
-// 头部 DOM 元素
-const headerRef = ref<HTMLElement>();
+// table 表格查询区 元素
+const searchRef = ref<HTMLElement>()
+// 头部 操作按钮 元素
+const headerRef = ref<HTMLElement>()
 // 表格最大高度计算
 const maxHeight = ref(<any>'200px')
 // 获取window 高度
 watchEffect(() => {
 	if (tableData.value.length > 0 && myStore.winSize!.contentHeight) {
-		maxHeight.value = headerRef.value ? `${myStore.winSize.contentHeight - headerRef.value!.clientHeight}px` : `${myStore.winSize.contentHeight}px`
+		if (headerRef.value && searchRef.value) {
+			maxHeight.value = `${myStore.winSize.contentHeight - headerRef.value!.clientHeight - searchRef.value!.clientHeight }px`
+			return
+		}
+		if (headerRef.value) {
+			maxHeight.value = `${myStore.winSize.contentHeight - headerRef.value!.clientHeight}px`
+			return
+		}
+		if (searchRef.value) {
+			maxHeight.value = `${myStore.winSize.contentHeight - searchRef.value!.clientHeight}px`
+			return
+		}
+		maxHeight.value = `${myStore.winSize.contentHeight}px`
 	}
 })
 
 // 清空选中数据列表
 const clearSelection = () => tableRef.value!.clearSelection();
+
+// 监听页面 initParam 改化，重新获取表格数据
+watch(() => props.initParam, getTableList, { deep: true });
 
 // 扁平化 columns
 const flatColumnsFunc = (columns: ColumnProps[], flatArr: ColumnProps[] = []) => {
@@ -204,6 +225,8 @@ defineExpose({
 	tableData,
 	searchParam,
 	pageable,
+	searchInitParam,
+	search,
 	getTableList,
 	reset,
 	clearSelection,
