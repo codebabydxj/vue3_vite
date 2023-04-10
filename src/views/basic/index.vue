@@ -3,7 +3,7 @@
     <div class="base-warp">
       <el-card>
         <el-scrollbar :height="maxHeight">
-          <div class="contain">
+          <div class="contain" :style="{ height: maxHeight }">
             <div class="main-warp">
               <h3 class="v-h3">{{ greetings }}</h3>
               <div class="letter"> 
@@ -106,7 +106,6 @@ watchEffect(() => {
   background: url('../../assets/imgs/wel.png') no-repeat center;
   background-size: 70%;
   position: relative;
-  height: calc(100%);
 }
 .main-warp {
   position: absolute;
