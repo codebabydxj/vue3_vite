@@ -33,6 +33,6 @@ onDeactivated(() => {
   flex: 1 1 auto;
   display: flex;
   overflow: auto;
-  background-color: var(--main-bg-color);
+  background-color: var(--el-bg-color-page);
 }
 </style>

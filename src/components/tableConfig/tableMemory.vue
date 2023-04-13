@@ -2,7 +2,7 @@
   <div class="config-btn">
     <el-tooltip effect="dark" content="表格列配置" placement="top">
       <el-button circle @click="show">
-        <el-icon size="16" color="#383030">
+        <el-icon size="16">
           <Operation />
         </el-icon>
       </el-button>

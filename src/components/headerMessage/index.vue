@@ -14,35 +14,35 @@
             <div class="message-item">
               <img src="@/assets/imgs/msg01.png" alt="" class="message-icon" />
               <div class="message-content">
-                <span class="message-title">一键三连 Vite-Admin 🧡</span>
+                <span class="message-title text-ellipsis">上点关注下点赞，欢迎回家不迷路</span>
                 <span class="message-date">一分钟前</span>
               </div>
             </div>
             <div class="message-item">
               <img src="@/assets/imgs/msg02.png" alt="" class="message-icon" />
               <div class="message-content">
-                <span class="message-title">一键三连 Vite-Admin 💙</span>
+                <span class="message-title text-ellipsis">上点关注下点赞，欢迎回家不迷路asdasdasd</span>
                 <span class="message-date">一小时前</span>
               </div>
             </div>
             <div class="message-item">
               <img src="@/assets/imgs/msg03.png" alt="" class="message-icon" />
               <div class="message-content">
-                <span class="message-title">一键三连 Vite-Admin 💚</span>
+                <span class="message-title text-ellipsis">上点关注下点赞，欢迎回家不迷路</span>
                 <span class="message-date">半天前</span>
               </div>
             </div>
             <div class="message-item">
               <img src="@/assets/imgs/msg04.png" alt="" class="message-icon" />
               <div class="message-content">
-                <span class="message-title">一键三连 Vite-Admin 💜</span>
+                <span class="message-title text-ellipsis">上点关注下点赞，欢迎回家不迷路</span>
                 <span class="message-date">一星期前</span>
               </div>
             </div>
             <div class="message-item">
               <img src="@/assets/imgs/msg05.png" alt="" class="message-icon" />
               <div class="message-content">
-                <span class="message-title">一键三连 Vite-Admin 💛</span>
+                <span class="message-title text-ellipsis">上点关注下点赞，欢迎回家不迷路</span>
                 <span class="message-date">一个月前</span>
               </div>
             </div>
@@ -111,6 +111,7 @@ const activeName = ref('first');
       flex-direction: column;
 
       .message-title {
+        width: 200px;
         margin-bottom: 5px;
       }
 

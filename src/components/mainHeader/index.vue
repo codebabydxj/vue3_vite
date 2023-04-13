@@ -14,6 +14,13 @@
             </el-icon>
           </el-link>
         </el-tooltip>
+        <el-tooltip effect="dark" content="主题" placement="bottom">
+          <el-link class="screenfull" :underline="false" @click="handleTheme">
+            <el-icon color="#efefef" :size="20">
+              <SkinOutlined />
+            </el-icon>
+          </el-link>
+        </el-tooltip>
         <el-link class="screenfull" :underline="false">
           <Message id="message" />
         </el-link>
@@ -45,6 +52,11 @@
           </template>
         </el-dropdown>
       </div>
+      <!-- 主题配置 -->
+      <themeDialog
+        :drawerVisible="isShowTheme"
+        @drawerCloseCb="drawerCloseCb">
+      </themeDialog>
     </nav>
   </header>
 </template>
@@ -58,10 +70,12 @@ import { client } from '@/utils/https/client';
 import * as API from '@/config/api';
 import { ElMessage, ElMessageBox } from 'element-plus'
 import Message from '../headerMessage/index.vue'
+import themeDialog from './components/themeDialog.vue'
 
 export default defineComponent({
   components: {
-    Message
+    Message,
+    themeDialog
   },
   setup() {
     // 加载和风天气
@@ -97,10 +111,17 @@ export default defineComponent({
     const globalRouter: any = inject('globalRouter')
     const fullscreenLoading = ref(false)
     const isFullscreen = ref(false)
+    const isShowTheme = ref(false)
     const isShowMessage = ref(false)
 
     const refresh = () => {
       globalRouter.refreshView()
+    }
+    const handleTheme = () => {
+      isShowTheme.value = true
+    }
+    const drawerCloseCb = () => {
+      isShowTheme.value = false
     }
     const message = () => {
       isShowMessage.value = true
@@ -160,12 +181,15 @@ export default defineComponent({
     return {
       fullscreenLoading,
       isFullscreen,
+      isShowTheme,
       isShowMessage,
       refresh,
+      handleTheme,
       message,
       messageCb,
       screenfullTog,
       handleCommand,
+      drawerCloseCb,
     };
   }
 });
@@ -174,10 +198,7 @@ export default defineComponent({
 <style scoped lang="scss">
 header {
   flex: 0 0 auto;
-  // background-color: rgba(43, 55, 61, 1);
-  // border-bottom: 1px solid rgba(68, 87, 96, 1);
-  background-color: #191a20;
-  // border-bottom: 1px solid #dfe4ed;
+  background-color: var(--main-bg-color);
   z-index: 2003;
 }
 
@@ -189,12 +210,12 @@ header .navbar-top {
 
 header .navbar-top .tabs-wrap {
   flex: 1 1 auto;
-  width: calc(100% - 310px);
+  width: calc(100% - 345px);
 }
 
 header .navbar-top .user-info {
   flex: 0 0 auto;
-  width: 310px;
+  width: 345px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -209,7 +230,6 @@ header .navbar-top .user-info .screenfull {
 
 header .navbar-top .user-info .head {
   margin-right: 8px;
-
   .avatar {
     cursor: pointer;
     background-color: transparent;

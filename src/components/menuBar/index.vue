@@ -131,12 +131,12 @@ export default defineComponent({
       globalRouter.openView(route);
     }
     const ubfold = (key: any) => {
-      if (!isCurCollapse.value) {
-        isCurCollapse.value = true;
-        setTimeout(() => {
-          menuRef.value.open(key);
-        }, 1000);
-      }
+      // if (!isCurCollapse.value) {
+      //   isCurCollapse.value = true;
+      //   setTimeout(() => {
+      //     menuRef.value.open(key);
+      //   }, 1000);
+      // }
     }
     const handleSwitch = () => {
       isActive.value = !isActive.value
@@ -180,14 +180,13 @@ export default defineComponent({
 <style lang="scss">
 .navbar-side {
   flex: 0 0 auto;
-  background-color: #191a20;
+  background-color: var(--main-bg-color);
   overflow-x: hidden;
   overflow-y: auto;
   position: relative;
 
   .collapse {
     height: 60px;
-    // background-color: #1a3642;
     box-shadow: 0 0 6px -2px var(--color-text);
     position: relative;
   }
@@ -210,7 +209,7 @@ export default defineComponent({
 
   .admin-title {
     text-align: center;
-    color: #fff;
+    color: var(--color-white);
     font-weight: bold;
     font-size: 16px;
     color: var(--color-text);
@@ -223,7 +222,7 @@ export default defineComponent({
     line-height: 40px;
     position: fixed;
     bottom: 0;
-    background-color: #191a20;
+    background-color: var(--main-bg-color);
     box-shadow: 0 0 6px -2px var(--color-text);
 
     img {
@@ -251,7 +250,7 @@ export default defineComponent({
 
   .not-active {
     transition: width 0.48s;
-    width: 220px;
+    width: 219px;
   }
 
   .active {
@@ -271,11 +270,11 @@ export default defineComponent({
   }
 }
 
-.el-sub-menu__title {
+.navbar-side .el-sub-menu__title {
   color: #fefefea6 !important;
 }
 
-.el-sub-menu__title>.el-icon>svg {
+.navbar-side .el-sub-menu__title>.el-icon>svg {
   color: #fefefea6 !important;
 }
 
@@ -284,7 +283,7 @@ export default defineComponent({
 
   .el-sub-menu__title,
   .el-sub-menu__title>.el-icon>svg {
-    color: #ffffff !important;
+    color: var(--color-white) !important;
   }
 }
 
@@ -292,16 +291,20 @@ export default defineComponent({
 
   .el-sub-menu__title,
   .el-sub-menu__title>.el-icon>svg {
-    color: #ffffff !important;
+    color: var(--color-white) !important;
   }
 }
 
 .navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu {
-  background-color: #090a0c !important;
+  background-color: var(--menu-bg-color) !important;
+}
+
+.navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item {
+  background-color: var(--menu-bg-color) !important;
 }
 
 .navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active {
-  background-color: #1a3642 !important;
+  background-color: var(--el-color-primary) !important;
 }
 
 .navbar-side .el-menu>.el-sub-menu>.el-menu>.el-menu-item {
@@ -310,13 +313,13 @@ export default defineComponent({
 }
 
 .navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item:hover {
-  color: #ffffff !important;
-  background-color: #090a0c !important;
+  color: var(--color-white) !important;
+  background-color: var(--menu-bg-color) !important;
 }
 
 .navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active:hover {
-  color: #ffffff !important;
-  background-color: #1a3642 !important;
+  color: var(--color-white) !important;
+  background-color: var(--el-color-primary) !important;
 }
 
 .navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active::after {
@@ -325,7 +328,7 @@ export default defineComponent({
   position: absolute;
   width: 0px;
   height: 0px;
-  border-right: 8px solid #fff;
+  border-right: 8px solid var(--color-white);
   border-top: 8px solid transparent;
   border-bottom: 8px solid transparent;
   right: 0;
@@ -380,7 +383,7 @@ export default defineComponent({
   transition: background-color .5s, color .5s;
 }
 
-.el-menu-vertical-demo:not(.el-menu--collapse) {
+.navbar-side .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 220px;
   min-height: 400px;
   padding-bottom: 40px;
@@ -392,7 +395,7 @@ export default defineComponent({
 
 .navbar-side::-webkit-scrollbar {
   /*滚动条整体样式*/
-  width: 8px;
+  width: 6px;
   /*高宽分别对应横竖滚动条的尺寸*/
   height: 1px;
 }
@@ -408,6 +411,6 @@ export default defineComponent({
   /*滚动条里面轨道*/
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
   // border-radius: 10px;
-  background: #191a20;
+  background: var(--main-bg-color);
 }
 </style>

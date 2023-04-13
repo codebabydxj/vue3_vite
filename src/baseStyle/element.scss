@@ -17,8 +17,8 @@
   box-sizing: border-box !important;
   padding: 20px !important;
   overflow-x: hidden !important;
-  background-color: #ffffff !important;
-  border: 1px solid var(--main-bg-color) !important;
+  background-color: var(--el-bg-color);
+  border: 1px solid var(--el-border-color-light) !important;
   border-radius: 4px !important;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.05) !important;
 }
@@ -26,6 +26,7 @@
 // * card 卡片样式
 .el-card {
   flex: 1 !important;
+  background-color: var(--el-bg-color) !important;
 }
 
 // 按钮flex样式
@@ -78,12 +79,9 @@
   table {
     width: 100%;
   }
-  & th {
-    background-color: var(--table-th-bg) !important;
-    color: #444444 !important;
-  }
-  & td {
-    color: #000 !important;
+  .el-table__header th {
+    background-color: var(--el-color-info-light-9);
+    color: var(--el-text-color-primary);
   }
   // 设置 el-table 中 header 文字不换行，并省略
   .el-table__header .el-table__cell > .cell {
@@ -105,6 +103,16 @@
 		justify-content: flex-end;
 		margin-top: 20px;
 	}
+}
+
+.el-table.is-scrolling-none th.el-table-fixed-column--left,
+.el-table.is-scrolling-none th.el-table-fixed-column--right {
+  background-color: var(--el-color-info-light-9);
+}
+
+.el-table.is-scrolling-left th.el-table-fixed-column--left,
+.el-table.is-scrolling-left th.el-table-fixed-column--right {
+  background-color: var(--el-color-info-light-9);
 }
 
 // protable 没数据处理
@@ -161,6 +169,13 @@
 .el-switch {
   --el-switch-on-color: #13ce66;
   --el-switch-off-color: var(--el-border-color);
+}
+
+// * tabs 样式
+.el-tabs {
+  .el-tabs__nav-prev, .el-tabs__nav-next {
+    color: #ffffff !important;
+  }
 }
 
 .small-input-width {

@@ -3,7 +3,7 @@
     <el-tooltip effect="dark" content="列设置" placement="top">
       <el-dropdown trigger="click" :hide-on-click="false" popper-class="dropdown-pop">
         <el-button circle>
-          <el-icon size="16" color="#383030">
+          <el-icon size="16">
             <hide />
           </el-icon>
         </el-button>
@@ -36,7 +36,7 @@ const handleCommand = () => {
 <style lang="scss">
 .dropdown-pop {
   .el-dropdown-menu__item:not(.is-disabled):focus {
-    background-color: #ffffff;
+    background-color: var(--el-bg-color);
   }
 }
 </style>

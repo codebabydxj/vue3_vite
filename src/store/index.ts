@@ -1,15 +1,21 @@
 /**
  * 使用
  * import { globalStore } from '@/store'
- * let store = globalStore();
+ * const myStore: any = globalStore();
+ * 
+ * pinia可以直接使用storeToRefs响应式修改state的值
+ * import { storeToRefs } from 'pinia'
+ * let { pagination } = storeToRefs(myStore)
  */
-import { createPinia, defineStore } from 'pinia'
+import { createPinia, defineStore } from 'pinia';
 import routerConfig from '@/routers/router-config';
+import piniaPluginPersist from 'pinia-plugin-persistedstate';
+import piniaPersistConfig from "@/config/piniaPersist";
 import _localStorage from '@/utils/storage/localStorage';
 
-const pinia = createPinia()
-
-const globalStore = defineStore('useGlobalStore', {
+const globalStore = defineStore({
+  /* id: 必须存在，在所有 Store 中唯一 */
+	id: 'GlobalState',
   state: () => {
     return {
       routerConfig,
@@ -20,26 +26,33 @@ const globalStore = defineStore('useGlobalStore', {
       userInfo: <any>{},
       winSize: <any>{},
       pagination: <boolean>false,
+      themeConfig: <any>{
+        // 默认 主题颜色
+        primary: '#409EFF',
+        // 深色模式
+        isDark: false,
+        // 灰色模式
+        isGrey: false,
+        // 色弱模式
+        isWeak: false,
+        // 折叠菜单
+        isCollapse: false,
+      }
     }
   },
-  getters: <any>{
-
-  },
+  getters: <any>{},
   actions: <any>{
     setCurrentRoute(rootPath: any) {
       // const state: any = globalStore();
-      // state  .currentRoute = rootPath;
+      // state.currentRoute = rootPath;
       this.currentRoute = rootPath;
     },
     addRoute(route: any) {
-      // const state: any = globalStore();
-      // state.routes.push(route);
       if (route.route !== '/welcome') {
         this.routes.push(route);
       }
     },
     updateRoute(options: any) {
-      // const state: any = globalStore();
       Object.keys(this.routes[options.index]).forEach((key) => {
         if (options.route[key]) {
           this.routes[options.index][key] = options.route[key];
@@ -47,7 +60,6 @@ const globalStore = defineStore('useGlobalStore', {
       });
     },
     delRoute(options: any) {
-      // const state: any = globalStore();
       if (options.item) {
         this.routes.splice(options.index, options.count, options.item);
       } else {
@@ -55,11 +67,9 @@ const globalStore = defineStore('useGlobalStore', {
       }
     },
     setConsts(consts: any) {
-      // const state: any = globalStore();
       this.consts = consts;
     },
     setUserInfo(userInfo: any) {
-      // const state: any = globalStore();
       this.userInfo = userInfo;
     },
     setWinSize(winSize: any) {
@@ -68,8 +78,10 @@ const globalStore = defineStore('useGlobalStore', {
     setPagination(pagination: any) {
       this.pagination = pagination
     },
+    setThemeConfig(themeConfig: any) {
+			this.themeConfig = themeConfig;
+		},
     logout() {
-      // const state: any = globalStore();
       // 1.清空用户信息
       this.userInfo = {};
       // 2.清空导航栏
@@ -81,6 +93,11 @@ const globalStore = defineStore('useGlobalStore', {
       _localStorage.remove('TOKEN')
     },
   },
+  persist: piniaPersistConfig('GlobalState', ['themeConfig'])
 });
+
+// piniaPluginPersist(持久化存储)
+const pinia = createPinia()
+pinia.use(piniaPluginPersist);
 
 export { pinia, globalStore };

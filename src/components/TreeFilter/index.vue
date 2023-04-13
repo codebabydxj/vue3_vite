@@ -134,7 +134,7 @@ defineExpose({ treeData, treeAllData });
 	height: 100%;
 	padding: 18px;
 	margin-right: 10px;
-  background-color: #ffffff;
+  background-color: var(--el-bg-color);
 	float: left;
 	.title {
 		margin: 0 0 15px;
@@ -156,7 +156,7 @@ defineExpose({ treeData, treeAllData });
 		}
 		:deep(.el-tree--highlight-current) {
 			.el-tree-node.is-current > .el-tree-node__content {
-				background-color: var(--color-text);
+				background-color: var(--el-color-primary);
 				.el-tree-node__label,
 				.el-tree-node__expand-icon {
 					color: white;

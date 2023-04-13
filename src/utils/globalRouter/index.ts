@@ -22,17 +22,19 @@
  */
 
 import { nextTick } from 'vue';
-import { globalStore } from '@/store'
 import routers from '@/routers'
+import { globalStore } from '@/store'
 
-const useGlobalStore: any = globalStore()
-const routerConfig: any = useGlobalStore.routerConfig
+let myStore: any = null
+let routerConfig: any = []
 const backPathKey: any = 'backPath';
 let fullPath: any = null;
 let query: any = {};
 let willOpenPath: any = '';
 
 routers.beforeEach(async (to: any) => {
+  myStore = globalStore() /** 一切为成形之前，使用store，store必须放在路由守卫，否则报错，没有注册pinia??? */
+  routerConfig = myStore.routerConfig
   query = to.query;
   if (to.fullPath !== '/welcome/_empty') {
     fullPath = to.fullPath;
@@ -44,14 +46,14 @@ const globalRouter = {
   initView: () => {
     console.log(`%c【全局路由】- 初始化完成···`, 'color: #009acc')
     const rootPath: any = fullPath.match(/^\/[a-zA-Z0-9\_\-]*/)[0];
-    if (rootPath === useGlobalStore.currentRoute) return;
+    if (rootPath === myStore.currentRoute) return;
     const route: any = {
       title: getTitleByPath(rootPath),
       route: rootPath,
       realPath: fullPath,
     };
-    useGlobalStore.setCurrentRoute(rootPath);
-    useGlobalStore.addRoute(route);
+    myStore.setCurrentRoute(rootPath);
+    myStore.addRoute(route);
   },
   
   // 打开页面
@@ -64,7 +66,7 @@ const globalRouter = {
     willOpenPath = path;
     // 一级路由
     const rootPath: any = path.match(/^\/[a-zA-Z0-9\_\.\-]*/)[0];
-    const curRoute: any = useGlobalStore.routes.find((item: any) => item.route === rootPath);
+    const curRoute: any = myStore.routes.find((item: any) => item.route === rootPath);
     if (!curRoute) {
       // tab没有则添加
       const route: any = {
@@ -72,17 +74,17 @@ const globalRouter = {
         route: rootPath,
         realPath: path,
       };
-      useGlobalStore.addRoute(route);
+      myStore.addRoute(route);
     } else {
       // tab栏已存在，如果是单纯切换，则跳转至realPath，否则更新realPath
       if (curRoute.route === path) {
         willOpenPath = curRoute.realPath;
       } else {
-        const index: any = useGlobalStore.routes.findIndex((item: any) => item.route === curRoute.route);
-        useGlobalStore.updateRoute({ index, route: { realPath: path } });
+        const index: any = myStore.routes.findIndex((item: any) => item.route === curRoute.route);
+        myStore.updateRoute({ index, route: { realPath: path } });
       }
     }
-    useGlobalStore.setCurrentRoute(rootPath);
+    myStore.setCurrentRoute(rootPath);
     routers.replace(willOpenPath).catch((err: any) => {});
   },
 
@@ -91,16 +93,16 @@ const globalRouter = {
     console.log(`%c【全局路由】- 关闭页面···`, 'color: red')
     // 一级路由
     const rootPath: any = path.match(/^\/[a-zA-Z0-9\_\.\-]+/)[0];
-    const index: any = useGlobalStore.routes.findIndex((item: any) => item.route === rootPath);
+    const index: any = myStore.routes.findIndex((item: any) => item.route === rootPath);
     // 切换至下一个或上一个标签
-    const nextTab: any = useGlobalStore.routes[index + 1] || useGlobalStore.routes[index - 1];
+    const nextTab: any = myStore.routes[index + 1] || myStore.routes[index - 1];
     if (nextTab) {
       globalRouter.openView(nextTab.route);
     }
     // 点击删除tab标签
-    useGlobalStore.delRoute({ index, count: 1 })
+    myStore.delRoute({ index, count: 1 })
     // 全部删除时回到欢迎界面
-    if (useGlobalStore.routes.length === 0) {
+    if (myStore.routes.length === 0) {
       globalRouter.openView('/welcome');
     }
   },
@@ -114,9 +116,9 @@ const globalRouter = {
       return;
     }
     // 清除realPath
-    const route: any = useGlobalStore.routes.find((item: any) => item.route === useGlobalStore.currentRoute);
-    route.realPath = useGlobalStore.currentRoute;
-    routers.replace(useGlobalStore.currentRoute);
+    const route: any = myStore.routes.find((item: any) => item.route === myStore.currentRoute);
+    route.realPath = myStore.currentRoute;
+    routers.replace(myStore.currentRoute);
   },
 
   // 重置页面

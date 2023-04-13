@@ -125,7 +125,7 @@ export default defineComponent({
 
 .contextmenu {
   margin: 0;
-  background: #ffffff;
+  background: var(--el-bg-color);
   z-index: 2;
   position: absolute;
   list-style-type: none;
@@ -133,7 +133,7 @@ export default defineComponent({
   border-radius: 4px;
   font-size: 12px;
   font-weight: 400;
-  color: #333;
+  color: var(--el-text-color-primary);
   box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
 }
 
@@ -144,7 +144,7 @@ export default defineComponent({
 }
 
 .contextmenu li:hover {
-  background: #eee;
+  background: var(--contextmenu-bg-color);
 }
 </style>
 <style>
@@ -168,11 +168,11 @@ export default defineComponent({
 }
 
 .navbar-top .tabs-wrap .el-tabs__item:hover {
-  color: #ffffff !important;
+  color: var(--color-white) !important;
 }
 
 .navbar-top .tabs-wrap .el-tabs__item.is-active {
-  background-color: #ffffff !important;
+  background-color: var(--el-bg-color) !important;
   color: var(--color-text) !important;
 }
 

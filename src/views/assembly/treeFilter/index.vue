@@ -66,7 +66,7 @@ const changeTreeFilter1 = (val: string[]) => {
 		flex-direction: column;
 		align-items: center;
 		height: 100%;
-    background-color: #ffffff;
+    background-color: var(--el-bg-color);
     .text {
       margin: 20px 0 30px;
       font-size: 23px;

@@ -1,10 +1,9 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
-import { pinia, globalStore } from "@/store";
+import routerConfig from '@/routers/router-config';
 import NProgress from "@/config/nprogress";
 
-let store = globalStore(pinia);
 let allRoutes: any = [];
-store.routerConfig.forEach((item: any) => {
+routerConfig.forEach((item: any) => {
     allRoutes = allRoutes.concat(item.routes);
 });
 const routes: Array<RouteRecordRaw> = [

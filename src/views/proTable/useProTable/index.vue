@@ -6,7 +6,6 @@
           ref="proTable"
           title="用户列表"
           :columns="columns"
-          :stripe="true"
           :initParam="initParam"
           :requestApiParams="requestApiParams"
 			    :dataCallback="dataCallback">

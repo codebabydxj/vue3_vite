@@ -117,16 +117,15 @@ export default {
       customInsert(res: any, insertFn: any) {
         // res 即服务端的返回结果
         // 从 res 中找到 url alt href ，然后插图图片
-        console.log(res)
         insertFn(res.pictureUrl, '', '')
       },
       // 单个文件上传失败
       // onFailed(file, res) {
-      //     console.log(`${file.name} 上传失败`, res)
+      //     console.warn(`${file.name} 上传失败`, res)
       // },
       // 上传错误，或者触发 timeout 超时
       onError(file: any, err: any, res: any) {
-        console.log(`${file.name} 上传出错`, err, res)
+        console.warn(`${file.name} 上传出错`, err, res)
       }
     }
     // 上传视频

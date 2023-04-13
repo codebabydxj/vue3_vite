@@ -3,7 +3,7 @@
     <el-tooltip effect="dark" content="表格尺寸" placement="top">
       <el-dropdown trigger="click" @command="handleCommand">
         <el-button circle>
-          <el-icon size="16" color="#383030">
+          <el-icon size="16">
             <Menu />
           </el-icon>
         </el-button>
@@ -40,7 +40,7 @@ const handleCommand = (command: any) => {
 <style lang="scss">
 .table-size {
   .active {
-    color: #ffffff !important;
+    color: var(--color-white) !important;
     background: var(--color-text) !important;
   }
 }

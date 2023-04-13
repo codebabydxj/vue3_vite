@@ -1,0 +1,62 @@
+/* 自定义 element 暗黑模式样式 */
+html.dark {
+	// * vite-admin
+	--vite-main-bg-color: #141414;
+
+  // * wangEditor
+	--w-e-toolbar-color: #595959;
+	--w-e-toolbar-bg-color: #eeeeee;
+	--w-e-textarea-bg-color: #141414;
+	--w-e-textarea-color: #eeeeee;
+  
+	// login
+	.login-container {
+		background-color: var(--el-fill-color-extra-light) !important;
+		.login-box {
+			background-color: var(--el-mask-color) !important;
+			.login-form {
+				background-color: var(--el-bg-color) !important;
+				box-shadow: 5px 5px 15px rgb(161 161 161 / 20%) !important;
+				.logo-text {
+					color: var(--el-text-color-primary) !important;
+				}
+			}
+		}
+	}
+
+	// main layout
+	.main-interface {
+		background-color: var(--vite-main-bg-color) !important;
+	}
+
+	.navbar-side {
+		.el-menu > .el-sub-menu.is-opened > .el-menu > .el-menu-item.is-active {
+			background-color: var(--el-bg-color-page) !important;
+		}
+		.el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active::after {
+			border-right-color: var(--el-bg-color-page) !important;
+		}
+		.el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active:hover {
+			background-color: var(--el-bg-color-page) !important;
+		}
+		.eo {
+			box-shadow: 0 0 6px -4px var(--color-text);
+		}
+	}
+
+  .main-warp {
+    background-color: transparent !important;
+  }
+
+	.contextmenu li:hover {
+		background-color: var(--el-color-info-light-9) !important;
+	}
+
+	// scroll-bar
+	::-webkit-scrollbar {
+		background-color: var(--el-scrollbar-bg-color) !important;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: var(--el-border-color-darker) !important;
+	}
+}
