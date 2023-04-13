@@ -104,7 +104,7 @@ export default defineComponent({
     };
     const submitForm = async (formEl: FormInstance | undefined) => {
       if (!formEl) return;
-      formEl.validate(async (valid) => {
+      formEl.validate(async (valid: any) => {
         if (valid) {
           loading.value = true
           const params = { ...ruleForm, password: md5(ruleForm.password) };
