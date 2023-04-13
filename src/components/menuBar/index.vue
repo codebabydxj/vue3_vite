@@ -23,11 +23,6 @@
         </el-icon>
       </template>
     </div>
-    <div class="search-btn" v-if="!isCurCollapse" @click="searchTog">
-      <el-icon :size="18" color="#ffffff">
-        <Search />
-      </el-icon>
-    </div>
     <el-menu ref="menuRef" class="user-sel el-menu-vertical-demo" background-color="#191a20" text-color="#fefefea6"
       active-text-color="#ffffff" :unique-opened="true" :collapse="!isCurCollapse"
       :default-active="routeParams.currentRoute.split('?')[0] === '/' ? '/welcome' : routeParams.currentRoute.split('?')[0]">
@@ -123,9 +118,6 @@ export default defineComponent({
       searchInput.value = '';
       isShowSoIcon.value = true;
     }
-    const searchTog = () => {
-      isCurCollapse.value = true;
-    }
     const routeGo = (route: any) => {
       if (route === routeParams.currentRoute) return;
       globalRouter.openView(route);
@@ -168,7 +160,6 @@ export default defineComponent({
       delayShow,
       handleInput,
       cleanInput,
-      searchTog,
       routeGo,
       ubfold,
       handleSwitch,
@@ -254,7 +245,7 @@ export default defineComponent({
   }
 
   .active {
-    width: 64px;
+    width: 63px;
     img {
       transform: rotateY(180deg);
     }
