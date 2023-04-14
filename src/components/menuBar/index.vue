@@ -200,10 +200,9 @@ export default defineComponent({
 
   .admin-title {
     text-align: center;
-    color: var(--color-white);
     font-weight: bold;
     font-size: 16px;
-    color: var(--color-text);
+    color: var(--color-white);
     height: 60px;
     line-height: 60px;
   }
@@ -295,7 +294,7 @@ export default defineComponent({
 }
 
 .navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active {
-  background-color: var(--el-color-primary) !important;
+  background-color: var(--menu-item-active-bg-color) !important;
 }
 
 .navbar-side .el-menu>.el-sub-menu>.el-menu>.el-menu-item {
@@ -310,20 +309,31 @@ export default defineComponent({
 
 .navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active:hover {
   color: var(--color-white) !important;
-  background-color: var(--el-color-primary) !important;
+  background-color: var(--menu-item-active-bg-color) !important;
 }
 
 .navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active::after {
-  content: '';
+  content: '✨';
   display: block;
   position: absolute;
   width: 0px;
-  height: 0px;
-  border-right: 8px solid var(--color-white);
-  border-top: 8px solid transparent;
-  border-bottom: 8px solid transparent;
-  right: 0;
-  top: 18px;
+  height: 50px;
+  right: 34px;
+  top: 0;
+}
+.navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active::before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 4px;
+  height: 40px;
+  background-color: var(--menu-item-check-color) !important;
+  left: 0;
+  top: 5px;
+}
+
+.el-menu--popup-container>.el-menu--popup>.el-menu-item:hover {
+  color: var(--color-white) !important;
 }
 
 .navbar-side .search-wrap {

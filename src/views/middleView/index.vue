@@ -5,15 +5,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onActivated, onDeactivated } from 'vue';
+import { computed, onMounted, onBeforeUnmount, onActivated, onDeactivated } from 'vue';
 import { useRoute } from 'vue-router';
 import { useWinSize } from "@/utils/tools"
 
 const route = useRoute();
 const fullPath = computed(() => route.fullPath);
 
-useWinSize()
-window.addEventListener("resize", useWinSize);
+onMounted(() => {
+  useWinSize()
+  window.addEventListener("resize", useWinSize);
+})
 // 组件挂载到节点上之前执行的函数
 onBeforeUnmount(() => {
   window.removeEventListener("resize", useWinSize);

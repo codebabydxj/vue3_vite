@@ -33,8 +33,8 @@ html.dark {
 		.el-menu > .el-sub-menu.is-opened > .el-menu > .el-menu-item.is-active {
 			background-color: var(--el-bg-color-page) !important;
 		}
-		.el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active::after {
-			border-right-color: var(--el-bg-color-page) !important;
+		.el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active::before {
+			background-color: var(--el-bg-color-page) !important;
 		}
 		.el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active:hover {
 			background-color: var(--el-bg-color-page) !important;
@@ -42,6 +42,10 @@ html.dark {
 		.eo {
 			box-shadow: 0 0 6px -4px var(--color-text);
 		}
+	}
+
+	.navbar-top .tabs-wrap .el-tabs__item.is-active {
+		color: var(--color-white) !important;	
 	}
 
   .main-warp {
