@@ -173,7 +173,7 @@ const searchRef = ref<HTMLElement>()
 // 头部 操作按钮 元素
 const headerRef = ref<HTMLElement>()
 // 表格最大高度计算
-const maxHeight = ref(<any>'200px')
+const maxHeight: any = ref(myStore.maxHeight)
 // 获取window 高度
 watchEffect(() => {
 	if (tableData.value.length > 0 && myStore.winSize!.contentHeight) {

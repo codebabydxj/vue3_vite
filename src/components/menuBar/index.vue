@@ -326,10 +326,10 @@ export default defineComponent({
   display: block;
   position: absolute;
   width: 4px;
-  height: 40px;
+  height: 42px;
   background-color: var(--menu-item-check-color) !important;
   left: 0;
-  top: 5px;
+  top: 4px;
 }
 
 .el-menu--popup-container>.el-menu--popup>.el-menu-item:hover {

@@ -144,7 +144,8 @@ export const useWinSize = useDebounceFn(() => {
   let diffH: any = 133 // header高度(43) + flexCard组件padding(40) + el-card组件padding(40) + 底部预留(10)
   if (myStore.pagination) diffH = 185 // + 表格分页(62)
   const size = ref({ width: window.innerWidth, height: window.innerHeight, contentHeight: window.innerHeight - diffH });
-  // 窗口变化时候更新 size
+  // 窗口变化时候更新 size，每次重新计算需要重置一些store属性，请在APP.vue文件中修改！！！
+  myStore.setMaxHeight(`${size.value.contentHeight}px`)
   myStore.setWinSize(size.value)
 })
 

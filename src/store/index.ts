@@ -26,6 +26,7 @@ const globalStore = defineStore({
       userInfo: <any>{},
       winSize: <any>{},
       pagination: <boolean>false,
+      maxHeight: <any>'200px',
       themeConfig: <any>{
         // 默认 主题颜色
         primary: '#409EFF',
@@ -74,6 +75,9 @@ const globalStore = defineStore({
     },
     setWinSize(winSize: any) {
       this.winSize = winSize;
+    },
+    setMaxHeight(maxHeight: any) {
+      this.maxHeight = maxHeight;
     },
     setPagination(pagination: any) {
       this.pagination = pagination

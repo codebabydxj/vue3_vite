@@ -70,7 +70,7 @@ export const useTable = (
 			const { pageNum, pageSize, total } = data;
 			isPageable && updatePageable({ pageNum, pageSize, total });
 		} catch (error) {
-			// console.log(error);
+			console.log('获取列表错误-----', error);
 		}
 	};
 

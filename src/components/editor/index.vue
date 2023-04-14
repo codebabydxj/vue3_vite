@@ -119,10 +119,6 @@ export default {
         // 从 res 中找到 url alt href ，然后插图图片
         insertFn(res.pictureUrl, '', '')
       },
-      // 单个文件上传失败
-      // onFailed(file, res) {
-      //     console.warn(`${file.name} 上传失败`, res)
-      // },
       // 上传错误，或者触发 timeout 超时
       onError(file: any, err: any, res: any) {
         console.warn(`${file.name} 上传出错`, err, res)

@@ -56,6 +56,6 @@ export const useDownload = (
       fileRender.readAsText(err.response.data)
     })
   } catch (error) {
-    console.log(error);
+    console.log('下载错误-------', error);
   }
 };

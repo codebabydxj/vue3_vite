@@ -27,9 +27,9 @@
                 </p>
               </div>
               <div class="letter"> 
-                <p> 3. pinia状态管理器</p>
+                <p> 3. pinia状态管理器（封装了持久化存储功能）</p>
                 <p class="colors">
-                  <span>import { globalStore } from '@/store' | let myStore = globalStore();</span>
+                  <span>import { globalStore } from '@/store' | const myStore: any = globalStore();</span>
                 </p>
               </div>
               <div class="letter"> 
@@ -47,9 +47,9 @@
                 </p>
               </div>
               <div class="letter">
-                <p> 5. 工具 / 组件</p>
+                <p> 5. 工具 / hook组件</p>
                 <p class="colors">
-                  这里封装了很多工具/组件可以使用，&lt;<span style="color: red; font-weight: bold;">src/utils</span>&gt;、
+                  这里封装了很多工具/hook组件可以使用(详细看代码)，&lt;<span style="color: red; font-weight: bold;">src/utils、src/hooks</span>&gt;、
                     &lt;<span style="color: red; font-weight: bold;">src/components</span>&gt;例如《
                     <span style="color: red; font-weight: bold;">list和tree相互转换</span>、<span style="color: red; font-weight: bold;">导出excel和pdf</span>、
                     <span style="color: red; font-weight: bold;">兄弟组件传值mitt</span>、<span style="color: red; font-weight: bold;">常规正则校验</span>、
@@ -76,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watchEffect } from 'vue'
+import { computed } from 'vue'
 import { globalStore } from '@/store'
 
 const date: Date = new Date();
@@ -91,14 +91,8 @@ const greetings = computed(() => {
 });
 
 // 表格最大高度计算
-const maxHeight = ref(<any>'200px')
-// 获取window 高度
 const myStore: any = globalStore()
-watchEffect(() => {
-  if (myStore.winSize!.contentHeight) {
-    maxHeight.value = `${myStore.winSize.contentHeight}px`
-  }
-})
+const maxHeight: any = computed(() => myStore.maxHeight)
 </script>
 
 <style scoped lang="scss">
