@@ -20,12 +20,12 @@ export const treeToList = (tree: any[]): any => {
  */
 export const listToTree = (list: any[], childrenName: string = 'children'): any => {
   const result: any = []
-  //第一步：将数组转换成键值对的形式(键是id值，值是对象)
+  // 第一步：将数组转换成键值对的形式(键是id值，值是对象)
   const remap = list.reduce((pre: any, cur: any) => {
     pre[cur.id] = cur
     return pre
   }, {})
-  //第二步，循环遍历数组，判断是不是(树状结构最外层，祖宗层数据)第一层的数据(本处就是parentId等不等于0)
+  // 第二步，循环遍历数组，判断是不是(树状结构最外层，祖宗层数据)第一层的数据(本处就是parentId等不等于0)
   for (let item of list) {  //用普通的for循环也行，但是用for in 不行,只能获取数组的元素下标,或者对象的键
     if (item.parentId === 0) {
       result.push(item)
