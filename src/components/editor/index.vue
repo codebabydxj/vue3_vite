@@ -1,6 +1,6 @@
 <template>
   <div style="border: 1px solid #ccc">
-    <Toolbar style="border-bottom: 1px solid #ccc" :editor="editorRef" :defaultConfig="toolbarConfig" :mode="mode" />
+    <Toolbar style="border-bottom: 1px solid #ccc" :editor="editorRef" :defaultConfig="toolbarConfig" :mode="mode" v-if="!hideToolBar" />
     <Editor style="height: 500px; overflow-y: hidden;" v-model="valueHtml" :defaultConfig="editorConfig" :mode="mode"
       @onCreated="handleCreated" />
   </div>
@@ -22,6 +22,10 @@ export default {
     disabled: {
         type: Boolean,
         default: false
+    },
+    hideToolBar: {
+      type: Boolean,
+      default: false
     }
   },
   setup(props) {

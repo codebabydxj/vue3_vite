@@ -13,7 +13,8 @@ export const useTable = (
 	apiParams: object | any = { url: '', method: 'post' },
 	initParam: object = {},
 	isPageable: boolean = true,
-	dataCallback?: (data: any) => any
+	dataCallback?: (data: any) => any,
+	requestError?: (error: any) => void
 ) => {
 	const state = reactive<Table.TableStateProps>({
 		// 表格数据
@@ -70,7 +71,7 @@ export const useTable = (
 			const { pageNum, pageSize, total } = data;
 			isPageable && updatePageable({ pageNum, pageSize, total });
 		} catch (error) {
-			console.log('获取列表错误-----', error);
+			requestError && requestError(error);
 		}
 	};
 
@@ -153,6 +154,7 @@ export const useTable = (
 		search,
 		reset,
 		handleSizeChange,
-		handleCurrentChange
+		handleCurrentChange,
+		updatedTotalParam
 	};
 };

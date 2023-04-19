@@ -25,3 +25,7 @@ export namespace Table {
 export namespace HandleData {
 	export type MessageType = "" | "success" | "warning" | "info" | "error";
 }
+
+export namespace Theme {
+  export type GreyOrWeakType = "grey" | "weak";
+}

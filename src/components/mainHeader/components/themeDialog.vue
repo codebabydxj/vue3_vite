@@ -18,15 +18,15 @@
     </div>
     <div class="theme-item">
       <span>暗黑模式</span>
-      <SwitchDark></SwitchDark>
+      <SwitchDark />
     </div>
     <div class="theme-item">
       <span>灰色模式</span>
-      <el-switch v-model="themeConfig.isGrey" @change="changeGreyOrWeak($event, 'grey')" />
+      <el-switch v-model="themeConfig.isGrey" @change="changeGreyOrWeak('grey', !!$event)" />
     </div>
     <div class="theme-item">
       <span>色弱模式</span>
-      <el-switch v-model="themeConfig.isWeak" @change="changeGreyOrWeak($event, 'weak')" />
+      <el-switch v-model="themeConfig.isWeak" @change="changeGreyOrWeak('weak', !!$event)" />
     </div>
   </el-drawer>
 </template>

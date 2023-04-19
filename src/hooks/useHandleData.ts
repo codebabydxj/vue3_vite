@@ -8,7 +8,7 @@ import { HandleData } from "./interface";
  * @param {Object} params 携带的操作数据参数 {id,params}(必传)
  * @param {String} message 提示信息(必传)
  * @param {String} confirmType icon类型(不必传,默认为 warning)
- * @return Promise
+ * @return {Promise}
  */
 export const useHandleData = <P = any, R = any>(
 	apiParams: object | any = { url: '', method: 'post' },

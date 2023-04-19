@@ -218,6 +218,18 @@ export default defineComponent({
     }
   }
 }
+
+@media screen and (max-width: 1250px) {
+  .login-left {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .login-form {
+    width: 97% !important;
+  }
+}
 .flx-center {
   display: flex;
   align-items: center;

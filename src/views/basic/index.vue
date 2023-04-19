@@ -90,7 +90,7 @@ const greetings = computed(() => {
   }
 });
 
-// 表格最大高度计算
+// 最大高度计算
 const myStore: any = globalStore()
 const maxHeight: any = computed(() => myStore.maxHeight)
 </script>

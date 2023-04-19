@@ -1,5 +1,6 @@
 import { computed } from "vue";
-import { getLightColor, getDarkColor } from "@/utils/tools/theme";
+import { Theme } from "./interface";
+import { getLightColor, getDarkColor } from "@/utils/tools/color";
 import { globalStore } from "@/store";
 import { ElMessage } from "element-plus";
 
@@ -25,42 +26,38 @@ export const useTheme = () => {
       val = DEFAULT_PRIMARY;
       ElMessage({ type: "success", message: `主题颜色已重置为 ${DEFAULT_PRIMARY}` });
     }
-    myStore.setThemeConfig({ ...themeConfig.value, primary: val });
     // 为了兼容暗黑模式下主题颜色也正常，以下方法计算主题颜色 由深到浅 的具体颜色
-    document.documentElement.style.setProperty("--el-color-primary", themeConfig.value.primary);
+    document.documentElement.style.setProperty("--el-color-primary", val);
     document.documentElement.style.setProperty(
       "--el-color-primary-dark-2",
-      themeConfig.value.isDark
-        ? `${getLightColor(themeConfig.value.primary, 0.2)}`
-        : `${getDarkColor(themeConfig.value.primary, 0.3)}`
+      themeConfig.value.isDark ? `${getLightColor(val, 0.2)}` : `${getDarkColor(val, 0.3)}`
     );
     // 颜色加深或变浅
     for (let i = 1; i <= 9; i++) {
-      document.documentElement.style.setProperty(
-        `--el-color-primary-light-${i}`,
-        themeConfig.value.isDark
-          ? `${getDarkColor(themeConfig.value.primary, i / 10)}`
-          : `${getLightColor(themeConfig.value.primary, i / 10)}`
-      );
+      const primaryColor = themeConfig.value.isDark ? `${getDarkColor(val, i / 10)}` : `${getLightColor(val, i / 10)}`;
+      document.documentElement.style.setProperty(`--el-color-primary-light-${i}`, primaryColor);
     }
-  };
+    myStore.setThemeConfig({ ...themeConfig.value, primary: val });
+};
 
   // 灰色和弱色切换
-  const changeGreyOrWeak = (value: boolean, type: string) => {
+  const changeGreyOrWeak = (type: Theme.GreyOrWeakType, value: boolean) => {
     const body = document.body as HTMLElement;
-    if (!value) return body.setAttribute("style", "");
-    if (type === "grey") body.setAttribute("style", "filter: grayscale(1)");
-    if (type === "weak") body.setAttribute("style", "filter: invert(80%)");
-    let propName = type == "grey" ? "isWeak" : "isGrey";
+    if (!value) return body.removeAttribute("style");
+    const styles: Record<Theme.GreyOrWeakType, string> = {
+      grey: "filter: grayscale(1)",
+      weak: "filter: invert(80%)"
+    };
+    body.setAttribute("style", styles[type]);
+    const propName = type == "grey" ? "isWeak" : "isGrey";
     myStore.setThemeConfig({ ...themeConfig.value, [propName]: false });
   };
 
   // 初始化 theme 配置
   const initTheme = () => {
     switchDark();
-    changePrimary(themeConfig.value.primary);
-    if (themeConfig.value.isGrey) changeGreyOrWeak(true, "grey");
-    if (themeConfig.value.isWeak) changeGreyOrWeak(true, "weak");
+    if (themeConfig.value.isGrey) changeGreyOrWeak("grey", true);
+    if (themeConfig.value.isWeak) changeGreyOrWeak("weak", true);
   };
 
   return {

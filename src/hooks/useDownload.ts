@@ -8,7 +8,6 @@ import { ElNotification, ElMessage } from "element-plus";
  * @param {Object} params 导出的参数(默认为空对象)
  * @param {Boolean} isNotify 是否有导出消息提示(默认为 true)
  * @param {String} fileType 导出的文件格式(默认为.xlsx)
- * @return void
  * */
 export const useDownload = (
   apiParams: any = {},
