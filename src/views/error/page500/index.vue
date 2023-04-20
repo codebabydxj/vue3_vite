@@ -21,28 +21,19 @@
   </flex-card>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
+<script setup lang="ts" name="page500">
+import { ref, onMounted } from "vue";
 import routers from '@/routers'
 
-export default defineComponent({
-  name: 'page404',
-  setup() {
-    const show = ref(false)
+const show = ref(false)
 
-    onMounted(() => {
-      show.value = true
-    })
-    const goBack = async () => {
-      await routers.replace('/');
-      window.location.reload();
-    }
-    return {
-      show,
-      goBack
-    }
-  }
-});
+onMounted(() => {
+  show.value = true
+})
+const goBack = async () => {
+  await routers.replace('/');
+  window.location.reload();
+}
 </script>
 
 <style scoped lang="scss">

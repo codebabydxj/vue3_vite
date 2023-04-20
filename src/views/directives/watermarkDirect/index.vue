@@ -10,16 +10,8 @@
   </flex-card>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script setup lang="ts">
 
-export default defineComponent({
-
-  setup() {
-
-    return {}
-  }
-})
 </script>
 
 <style scoped lang="scss">

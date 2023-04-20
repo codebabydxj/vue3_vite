@@ -32,9 +32,9 @@
 	</div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="TreeFilter">
 import { client } from "@/utils/https/client";
-import { ref, watch, onBeforeMount } from "vue";
+import { ref, watch, onBeforeMount, nextTick } from "vue";
 import { ElTree } from "element-plus";
 
 // 接收父组件参数并设置默认值
@@ -68,18 +68,25 @@ const treeAllData = ref<{ [key: string]: any }[]>([]);
 // 选中的值
 const selected = ref();
 
+const setSelected = () => {
+  if (props.multiple) selected.value = Array.isArray(props.defaultValue) ? props.defaultValue : [props.defaultValue];
+  else selected.value = typeof props.defaultValue === "string" ? props.defaultValue : "";
+};
+
 onBeforeMount(async () => {
 	// 重新接收一下默认值
-	if (props.multiple) selected.value = Array.isArray(props.defaultValue) ? props.defaultValue : [props.defaultValue];
-	else selected.value = typeof props.defaultValue === "string" ? props.defaultValue : "";
+	setSelected()
 
 	// 有数据就直接赋值，没有数据就执行请求函数
 	if (props.data?.length) {
 		treeData.value = props.data;
-		treeAllData.value = props.data;
+		treeAllData.value = [{ id: '', [props.label]: '全部' }, ...props.data];
 		return;
 	}
-  getInitData()
+	// 没有mock数据执行api请求数据
+	if (props.request && props.request.url) {
+		getInitData()
+	}
 });
 
 // res返回结构因人而异，可以活套改动
@@ -88,6 +95,13 @@ const getInitData = async () => {
 	treeData.value = data;
 	treeAllData.value = [{ id: "", [props.label]: "全部" }, ...data];
 }
+
+// 使用 nextTick 防止打包后赋值不生效，开发环境是正常的
+watch(
+  () => props.defaultValue,
+  () => nextTick(() => setSelected()),
+  { deep: true, immediate: true }
+);
 
 watch(filterText, val => {
 	treeRef.value!.filter(val);
@@ -124,7 +138,7 @@ const handleCheckChange = () => {
 };
 
 // 暴露给父组件使用
-defineExpose({ treeData, treeAllData });
+defineExpose({ treeData, treeAllData, treeRef });
 </script>
 
 <style scoped lang="scss">

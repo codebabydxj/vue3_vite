@@ -7,7 +7,7 @@
 		<!-- 表格头部 操作按钮 -->
 		<div class="table-header" ref="headerRef">
 			<div class="header-button-lf">
-				<slot name="tableHeader" :selectedListIds="selectedListIds" :selectedList="selectedList" :isSelected="isSelected"></slot>
+				<slot name="tableHeader" :selectedListIds="selectedListIds" :selectedList="selectedList" :isSelected="isSelected" />
 			</div>
 			<div class="header-button-ri" v-if="toolButton">
 				<table-config ref="colRef" :colSetting="colSetting" @tableConfigCall="handleConfig">

@@ -11,21 +11,12 @@
   </flex-card>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script setup lang="ts">
 import { ElMessage } from "element-plus";
 
-export default defineComponent({
-
-  setup() {
-    const throttleClick = () => {
-      ElMessage.success("我是节流按钮触发的事件 🍍🍓🍌");
-    };
-    return {
-      throttleClick
-    }
-  }
-})
+const throttleClick = () => {
+  ElMessage.success("我是节流按钮触发的事件 🍍🍓🍌");
+};
 </script>
 
 <style scoped lang="scss">

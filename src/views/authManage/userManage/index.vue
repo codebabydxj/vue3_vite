@@ -9,23 +9,15 @@
   </flex-card>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, inject } from 'vue'
+<script setup lang="ts">
+import { inject } from 'vue'
 
-export default defineComponent({
-  setup() {
-    // 通过inject获取挂载在全局的globalRouter方法，初始化view
-    const globalRouter: any = inject('globalRouter')
+// 通过inject获取挂载在全局的globalRouter方法，初始化view
+const globalRouter: any = inject('globalRouter')
 
-    const resetForm = () => {
-      globalRouter.refreshView()
-    }
-  
-    return {
-      resetForm,
-    }
-  }
-})
+const resetForm = () => {
+  globalRouter.refreshView()
+}
 </script>
 
 <style scoped lang="scss">

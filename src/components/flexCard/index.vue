@@ -4,7 +4,7 @@
   </el-row>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="FlexCard">
 const props = defineProps({
   justify: {
     type: String,

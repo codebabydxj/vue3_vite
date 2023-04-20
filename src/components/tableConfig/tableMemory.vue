@@ -12,7 +12,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="TableMemory">
 import { ref } from 'vue'
 import dialogTableMemory from './components/dialog-table-memory.vue'
 

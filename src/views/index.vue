@@ -14,33 +14,18 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
+<script setup lang="ts">
+import { ref } from 'vue';
 import MenuBar from '@/components/menuBar/index.vue';
 import Content from '@/components/mainContent/index.vue';
 import ComHeader from '@/components/mainHeader/index.vue';
 import Tabs from '@/components/headerTabs/index.vue';
 
-export default defineComponent({
-  components: {
-    MenuBar,
-    Content,
-    ComHeader,
-    Tabs,
-  },
-  setup() {
-    const isCollapse: any = ref(true);
+const isCollapse: any = ref(true);
 
-    const isCurCollapseChange = (bool: any) => {
-      isCollapse.value = bool;
-    }
-
-    return {
-      isCollapse,
-      isCurCollapseChange,
-    }
-  }
-})
+const isCurCollapseChange = (bool: any) => {
+  isCollapse.value = bool;
+}
 </script>
 
 <style scoped lang="scss">

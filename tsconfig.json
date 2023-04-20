@@ -13,13 +13,13 @@
     // 跳过第三方库检查，解决打包失败
 		"skipLibCheck": true,
     "lib": ["esnext", "dom"],
+    "noEmit": true,
     // 解析非相对模块名的基准目录
     "baseUrl": "./",
     // 模块名到基于 baseUrl 的路径映射的列表。
     "paths": {
       "@/*": ["./src/*"]
     },
-    "suppressImplicitAnyIndexErrors": true,
     "types": ["vite-plugin-svg-icons/client"]
   },
   // 指定哪些文件需要编译

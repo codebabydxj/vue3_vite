@@ -4,17 +4,14 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
+<script setup lang="ts" name="MainContent">
 
-export default defineComponent({
-  props: {
-    isCollapse: {
-      type: Boolean,
-      default: false,
-    },
+const props = defineProps({
+  isCollapse: {
+    type: Boolean,
+    default: false,
   },
-});
+})
 </script>
 
 <style scoped>

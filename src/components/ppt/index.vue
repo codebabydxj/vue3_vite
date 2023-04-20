@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="PPT">
 import { ref, unref, onMounted, nextTick } from 'vue';
 
 const loading = ref(true);

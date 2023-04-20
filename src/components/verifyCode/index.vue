@@ -2,7 +2,7 @@
   <Vcode :show="isShow" @success="onSuccess" @close="onClose" :canvasWidth="410" :canvasHeight="200"/>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="VerifyCode">
 import { ref } from "vue";
 import Vcode from "vue3-puzzle-vcode";
 

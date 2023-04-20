@@ -68,8 +68,8 @@
   <verify-code v-if="isShowCode" :isShowCode="isShowCode" @verifyCb="handleVerifyCb"></verify-code>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, ref } from 'vue';
+<script setup lang="ts" name="Login">
+import { reactive, ref } from 'vue';
 import { client } from '@/utils/https/client';
 import * as API from '@/config/api';
 import routers from '@/routers';
@@ -82,74 +82,53 @@ import { ElForm, ElNotification } from 'element-plus';
 import verifyCode from '@/components/verifyCode/index.vue';
 import SwitchDark from "@/components/ThemeDark/index.vue";
 
-export default defineComponent({
-  components: {
-    verifyCode,
-    SwitchDark
-  },
-  setup() {
-    type FormInstance = InstanceType<typeof ElForm>
-    const myStore: any = globalStore()
-    const ruleFormRef = ref<FormInstance>();
-    const ruleForm = reactive({
-      userName: '',
-      password: '',
-    });
-    const loading = ref(false)
-    const isShowCode = ref(false) // 是否显示滑块验证码，看自己逻辑需求处理
-
-    const resetForm = () => {
-      ruleForm.userName = ''
-      ruleForm.password = ''
-    };
-    const submitForm = async (formEl: FormInstance | undefined) => {
-      if (!formEl) return;
-      formEl.validate(async (valid: any) => {
-        if (valid) {
-          loading.value = true
-          const params = { ...ruleForm, password: md5(ruleForm.password) };
-          client.post(API.login, params)
-          .then((res: any) => {
-            _localStorage.set('TOKEN', res.data.token) // 这里存token 根据接口返回自行处理
-            myStore.setUserInfo(res.data) // 登录完成保存用户信息
-
-            routers.replace('/');
-            ElNotification({
-              title: getTimeState(),
-              message: "欢迎登录 Vite-Admin",
-              type: "success",
-              duration: 3000
-            });
-          }).catch(() => {
-          }).finally(() => {
-            loading.value = false
-          });
-        }
-      })
-    };
-    // 验证成功之后的回调处理
-    const handleVerifyCb = () => {
-      isShowCode.value = false // 隐藏模态框
-    }
-    return {
-      ruleForm,
-      User,
-      Lock,
-      CircleClose,
-      ruleFormRef,
-      loading,
-      isShowCode,
-      resetForm,
-      submitForm,
-      handleVerifyCb,
-    };
-  },
+type FormInstance = InstanceType<typeof ElForm>
+const myStore: any = globalStore()
+const ruleFormRef = ref<FormInstance>();
+const ruleForm = reactive({
+  userName: '',
+  password: '',
 });
+const loading = ref(false)
+const isShowCode = ref(false) // 是否显示滑块验证码，看自己逻辑需求处理
+
+const resetForm = () => {
+  ruleForm.userName = ''
+  ruleForm.password = ''
+};
+const submitForm = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  formEl.validate(async (valid: any) => {
+    if (valid) {
+      loading.value = true
+      const params = { ...ruleForm, password: md5(ruleForm.password) };
+      client.post(API.login, params)
+      .then((res: any) => {
+        _localStorage.set('TOKEN', res.data.token) // 这里存token 根据接口返回自行处理
+        myStore.setUserInfo(res.data) // 登录完成保存用户信息
+
+        routers.replace('/');
+        ElNotification({
+          title: getTimeState(),
+          message: "欢迎登录 Vite-Admin",
+          type: "success",
+          duration: 3000
+        });
+      }).catch(() => {
+      }).finally(() => {
+        loading.value = false
+      });
+    }
+  })
+};
+// 验证成功之后的回调处理
+const handleVerifyCb = () => {
+  isShowCode.value = false // 隐藏模态框
+}
 </script>
 
 <style scoped lang="scss">
 .login-container {
-  position: relative;
   min-width: 550px;
   height: 100%;
   min-height: 500px;

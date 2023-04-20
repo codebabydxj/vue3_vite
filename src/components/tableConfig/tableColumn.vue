@@ -22,7 +22,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="TableColumn">
 import { ref } from 'vue'
 
 const checkList: any = ref([])

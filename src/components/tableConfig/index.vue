@@ -6,7 +6,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="TableConfig">
 import tableSize from './tableSize.vue'
 import tableColumn from './tableColumn.vue'
 import tableMemory from './tableMemory.vue'

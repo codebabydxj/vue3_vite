@@ -11,21 +11,12 @@
   </flex-card>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script setup lang="ts">
 import { ElMessage } from "element-plus";
 
-export default defineComponent({
-
-  setup() {
-    const longpress = () => {
-      ElMessage.success("长按事件触发成功 🍍🍓🍌");
-    };
-    return {
-      longpress
-    }
-  }
-})
+const longpress = () => {
+  ElMessage.success("长按事件触发成功 🍍🍓🍌");
+};
 </script>
 
 <style scoped lang="scss">

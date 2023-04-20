@@ -65,11 +65,9 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="HeaderMessage">
 import { ref } from "vue";
 
-const props = defineProps(['isShowMessage'])
-const emits = defineEmits(['messageCb'])
 const activeName = ref('first');
 </script>
 

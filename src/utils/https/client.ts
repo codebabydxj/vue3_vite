@@ -1,8 +1,9 @@
 /**
- * 使用
+ * 引用 + API
  * import { client } from '@/utils/https/client';
+ * import * as API from '@/config/api';
  */
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosError, AxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 import type { Method } from 'axios';
 import axiosRetry from 'axios-retry'
 import jsonpAdapter from 'axios-jsonp'
@@ -14,9 +15,9 @@ import { globalStore } from '@/store'
 import _localStorage from '@/utils/storage/localStorage';
 
 let store = globalStore();
-const instance = axios.create({
+const instance: AxiosInstance = axios.create({
   baseURL: '',
-  timeout: 120000, // 默认两分钟
+  timeout: 60000, // 默认一分钟
   headers: {
     'Content-Type': 'application/json; charset=UTF-8',
   },
@@ -46,9 +47,7 @@ const removePending = (config: requestConfig) => {
 // 请求失败之后，自动重新请求，只有两次失败才是真正结束
 axiosRetry(instance, { retries: 1 })
 
-interface requestConfig extends AxiosRequestConfig {
-  interceptors?: requestConfig,
-  headers?: any,
+interface requestConfig extends InternalAxiosRequestConfig {
   controller?: any
 }
 
@@ -66,7 +65,7 @@ instance.interceptors.request.use((config: requestConfig) => {
   }
   if (token) config.headers['Authorization'] = token;
   return config;
-}, (error: Error) => {
+}, (error: AxiosError) => {
   return Promise.reject(error);
 });
 
@@ -107,28 +106,41 @@ instance.interceptors.response.use((response: AxiosResponse) => {
     type: 'error',
   });
   return Promise.reject(response);
-}, (error: any) => {
-  if (error.response.status === 401) {
+}, (error: AxiosError) => {
+  const { response } = error;
+
+  // 请求超时 && 网络错误单独判断，没有 response
+  if (error.message.indexOf("timeout") !== -1) ElMessage.error("请求超时！请您稍后重试");
+  if (error.message.indexOf("Network Error") !== -1) ElMessage.error("网络错误！请您稍后重试");
+
+  if (!response) return Promise.reject(error);
+  // 根据不同状态码，做不同处理
+  if (response.status === 401) {
     // toke过期，重新登录
     store.logout()
     routers.replace('/login');
-    return Promise.reject(error.response);
+    return Promise.reject(response);
   }
-  if (error.response.status === 403) {
+
+  if (response.status === 403) {
     ElMessage({ // 没有权限、未授权/ 服务器错误
       showClose: true,
       message: '没有权限，请授权之后再处理！',
       type: 'error',
     });
-    routers.replace('/404');
-    return Promise.reject(error.response);
+    routers.replace('/403');
+    return Promise.reject(response);
   }
+
+  // 服务器结果都没有返回(可能服务器错误可能客户端断网)，断网处理:可以跳转到断网页面
+  if (!window.navigator.onLine) routers.replace("/500");
+
   ElNotification({
     title: '温馨提示',
-    message: error.response.statusText || `Error: ${error.response.request.url}`,
+    message: response.statusText || `Error: $.response.request.url}`,
     type: 'error',
   });
-  return Promise.reject(error.response);
+  return Promise.reject(response);
 });
 class Api {
   private request(url: string, options: AxiosRequestConfig, headerConfig?: AxiosRequestConfig) {

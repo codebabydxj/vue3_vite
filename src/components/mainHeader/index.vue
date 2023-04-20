@@ -61,7 +61,7 @@
   </header>
 </template>
 
-<script lang="ts">
+<script lang="ts" name="MainHeader">
 import { defineComponent, inject, onMounted, ref } from 'vue'
 import screenfull from 'screenfull'
 import routers from '@/routers'
@@ -112,7 +112,6 @@ export default defineComponent({
     const fullscreenLoading = ref(false)
     const isFullscreen = ref(false)
     const isShowTheme = ref(false)
-    const isShowMessage = ref(false)
 
     const refresh = () => {
       globalRouter.refreshView()
@@ -122,12 +121,6 @@ export default defineComponent({
     }
     const drawerCloseCb = () => {
       isShowTheme.value = false
-    }
-    const message = () => {
-      isShowMessage.value = true
-    }
-    const messageCb = () => {
-      isShowMessage.value = false
     }
     const screenfullTog = async () => {
       if (screenfull.isEnabled) {
@@ -182,11 +175,8 @@ export default defineComponent({
       fullscreenLoading,
       isFullscreen,
       isShowTheme,
-      isShowMessage,
       refresh,
       handleTheme,
-      message,
-      messageCb,
       screenfullTog,
       handleCommand,
       drawerCloseCb,

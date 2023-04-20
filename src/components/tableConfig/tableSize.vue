@@ -25,7 +25,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="TableSize">
 import { ref } from 'vue'
 
 const curValue: any = ref('')

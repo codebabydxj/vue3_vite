@@ -17,19 +17,10 @@
   </flex-card>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
 
-export default defineComponent({
-
-  setup() {
-    const data = ref<string>("我是被复制的内容 🍒 🍉 🍊");
-
-    return {
-      data
-    }
-  }
-})
+const data = ref<string>("我是被复制的内容 🍒 🍉 🍊");
 </script>
 
 <style scoped lang="scss">

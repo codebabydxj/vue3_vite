@@ -52,11 +52,11 @@
   </nav>
 </template>
 
-<script lang="ts">
-import _ from 'lodash'
+<script lang="ts" name="MenuBar">
 import { defineComponent, ref, watch, computed, inject, reactive, onBeforeUnmount } from 'vue'
 import { globalStore } from '@/store'
 import { useDebounceFn } from "@vueuse/core";
+import _ from 'lodash'
 
 export default defineComponent({
   props: ['isCollapse'],

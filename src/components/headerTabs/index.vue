@@ -13,7 +13,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" name="HeaderTabs">
 import { defineComponent, ref, watch, inject, watchEffect } from 'vue'
 import { globalStore } from '@/store'
 import { ElMessage } from 'element-plus';
