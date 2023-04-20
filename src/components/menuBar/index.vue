@@ -52,119 +52,101 @@
   </nav>
 </template>
 
-<script lang="ts" name="MenuBar">
-import { defineComponent, ref, watch, computed, inject, reactive, onBeforeUnmount } from 'vue'
+<script setup lang="ts" name="MenuBar">
+import { ref, watch, computed, inject, reactive, onBeforeUnmount } from 'vue'
 import { globalStore } from '@/store'
 import { useDebounceFn } from "@vueuse/core";
 import _ from 'lodash'
 
-export default defineComponent({
-  props: ['isCollapse'],
-  emits: ['isCurCollapseChange'],
-  setup(props, { emit }) {
-    const isCurCollapse: any = ref(props.isCollapse);
-    const searchInput: any = ref('');
-    const isShowSoIcon: any = ref(true);
-    const menuRef: any = ref(null);
-    const isActive: any = ref(false)
-    const visible = ref(false)
-    const delayShow = ref(true)
+const props = defineProps(['isCollapse'])
+const emit = defineEmits(['isCurCollapseChange'])
 
-    // 通过inject获取挂载在全局的globalRouter方法，初始化view
-    const globalRouter: any = inject('globalRouter')
-    // 获取store
-    const myStore: any = globalStore()
+const isCurCollapse: any = ref(props.isCollapse);
+const searchInput: any = ref('');
+const isShowSoIcon: any = ref(true);
+const menuRef: any = ref(null);
+const isActive: any = ref(false)
+const visible = ref(false)
+const delayShow = ref(true)
 
-    const routeParams: any = reactive(<any>{
-      currentRoute: computed(() => myStore.currentRoute),
-      routerConfig: computed(() => {
-        // 过滤没有权限的路由
-        const rc = myStore.routerConfig.filter((v: any) => v.access); // 过滤一级（router-config-->access为false的菜单）
-        rc.forEach((level: any) => {
-          level.routes = level.routes.filter((item: any) => level.access && item.access); // 过滤二级
-        });
-        // 根据sort排序
-        rc.sort((x: any, y: any) => x.sort - y.sort); // 一级菜单排序
-        rc.forEach((level: any) => {
-          level.routes.sort((x: any, y: any) => x.sort - y.sort); // 二级菜单排序
-        });
-        return rc;
-      }),
-      routerConfigFilterd: computed(() => {
-        const rc_filter = routeParams.routerConfig.map((routeWrap: any) => {
-          const routerWrapDeepClone = _.cloneDeep(routeWrap);
-          const reg = new RegExp(searchInput.value, 'i');
-          // 匹配子菜单
-          routerWrapDeepClone.routes = routeWrap.routes.filter((route: any) => reg.test(route.title));
-          return routerWrapDeepClone;
-        });
-        return rc_filter.filter((item: any) => item.routes.length);
-      })
-    })
+// 通过inject获取挂载在全局的globalRouter方法，初始化view
+const globalRouter: any = inject('globalRouter')
+// 获取store
+const myStore: any = globalStore()
 
-    watch(() => isCurCollapse.value, () => {
-      emit('isCurCollapseChange', isCurCollapse.value)
-    })
-
-    const handleInput = () => {
-      searchInput.value = searchInput.value.replace(/\s+/g, '');
-      if (searchInput.value.length > 0) {
-        isShowSoIcon.value = false;
-        return
-      }
-      isShowSoIcon.value = true;
-    }
-    const cleanInput = () => {
-      searchInput.value = '';
-      isShowSoIcon.value = true;
-    }
-    const routeGo = (route: any) => {
-      if (route === routeParams.currentRoute) return;
-      globalRouter.openView(route);
-    }
-    const ubfold = (key: any) => {
-      // if (!isCurCollapse.value) {
-      //   isCurCollapse.value = true;
-      //   setTimeout(() => {
-      //     menuRef.value.open(key);
-      //   }, 1000);
-      // }
-    }
-    const handleSwitch = () => {
-      isActive.value = !isActive.value
-      isCurCollapse.value = !isActive.value
-      setTimeout(() => {
-        delayShow.value = !isActive.value
-      }, 600)
-    }
-
-    // 监听窗口大小变化，折叠侧边栏
-    const screenWidth = ref(0);
-    const listeningWindow = useDebounceFn(() => {
-      screenWidth.value = document.body.clientWidth;
-      if (isCurCollapse.value && screenWidth.value < 1200) handleSwitch()
-      if (!isCurCollapse.value && screenWidth.value > 1200) handleSwitch()
-    }, 100);
-    window.addEventListener("resize", listeningWindow, false);
-    onBeforeUnmount(() => {
-      window.removeEventListener("resize", listeningWindow);
+const routeParams: any = reactive(<any>{
+  currentRoute: computed(() => myStore.currentRoute),
+  routerConfig: computed(() => {
+    // 过滤没有权限的路由
+    const rc = myStore.routerConfig.filter((v: any) => v.access); // 过滤一级（router-config-->access为false的菜单）
+    rc.forEach((level: any) => {
+      level.routes = level.routes.filter((item: any) => level.access && item.access); // 过滤二级
     });
-    return {
-      isCurCollapse,
-      searchInput,
-      menuRef,
-      routeParams,
-      isShowSoIcon,
-      isActive,
-      visible,
-      delayShow,
-      handleInput,
-      cleanInput,
-      routeGo,
-      ubfold,
-      handleSwitch,
-    }
+    // 根据sort排序
+    rc.sort((x: any, y: any) => x.sort - y.sort); // 一级菜单排序
+    rc.forEach((level: any) => {
+      level.routes.sort((x: any, y: any) => x.sort - y.sort); // 二级菜单排序
+    });
+    return rc;
+  }),
+  routerConfigFilterd: computed(() => {
+    const rc_filter = routeParams.routerConfig.map((routeWrap: any) => {
+      const routerWrapDeepClone = _.cloneDeep(routeWrap);
+      const reg = new RegExp(searchInput.value, 'i');
+      // 匹配子菜单
+      routerWrapDeepClone.routes = routeWrap.routes.filter((route: any) => reg.test(route.title));
+      return routerWrapDeepClone;
+    });
+    return rc_filter.filter((item: any) => item.routes.length);
+  })
+})
+
+watch(() => isCurCollapse.value, () => {
+  emit('isCurCollapseChange', isCurCollapse.value)
+})
+
+const handleInput = () => {
+  searchInput.value = searchInput.value.replace(/\s+/g, '');
+  if (searchInput.value.length > 0) {
+    isShowSoIcon.value = false;
+    return
   }
+  isShowSoIcon.value = true;
+}
+const cleanInput = () => {
+  searchInput.value = '';
+  isShowSoIcon.value = true;
+}
+const routeGo = (route: any) => {
+  if (route === routeParams.currentRoute) return;
+  globalRouter.openView(route);
+}
+const ubfold = (key: any) => {
+  // if (!isCurCollapse.value) {
+  //   isCurCollapse.value = true;
+  //   setTimeout(() => {
+  //     menuRef.value.open(key);
+  //   }, 1000);
+  // }
+}
+const handleSwitch = () => {
+  isActive.value = !isActive.value
+  isCurCollapse.value = !isActive.value
+  setTimeout(() => {
+    delayShow.value = !isActive.value
+  }, 600)
+}
+
+// 监听窗口大小变化，折叠侧边栏
+const screenWidth = ref(0);
+const listeningWindow = useDebounceFn(() => {
+  screenWidth.value = document.body.clientWidth;
+  if (isCurCollapse.value && screenWidth.value < 1200) handleSwitch()
+  if (!isCurCollapse.value && screenWidth.value > 1200) handleSwitch()
+}, 100);
+window.addEventListener("resize", listeningWindow, false);
+onBeforeUnmount(() => {
+  window.removeEventListener("resize", listeningWindow);
 });
 </script>
 

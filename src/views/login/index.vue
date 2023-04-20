@@ -65,6 +65,7 @@
       </div>
     </div>
   </div>
+  <!-- 滑块验证码 -->
   <verify-code v-if="isShowCode" :isShowCode="isShowCode" @verifyCb="handleVerifyCb"></verify-code>
 </template>
 
@@ -209,6 +210,7 @@ const handleVerifyCb = () => {
     width: 97% !important;
   }
 }
+
 .flx-center {
   display: flex;
   align-items: center;

@@ -13,108 +13,90 @@
   </div>
 </template>
 
-<script lang="ts" name="HeaderTabs">
-import { defineComponent, ref, watch, inject, watchEffect } from 'vue'
+<script setup lang="ts" name="HeaderTabs">
+import { ref, watch, inject, watchEffect } from 'vue'
 import { globalStore } from '@/store'
 import { ElMessage } from 'element-plus';
 
-export default defineComponent({
-  setup() {
-    // 获取全局store
-    const myStore: any = globalStore()
-    // 通过inject获取挂载在全局的globalRouter方法，初始化view
-    const globalRouter: any = inject('globalRouter')
-    globalRouter.initView();
+// 获取全局store
+const myStore: any = globalStore()
+// 通过inject获取挂载在全局的globalRouter方法，初始化view
+const globalRouter: any = inject('globalRouter')
+globalRouter.initView();
 
-    // 初始化路由
-    const routes: any = ref([])
-    const currentRoute: any = ref('')
-    watchEffect(() => {
-      currentRoute.value = myStore.currentRoute;
-      routes.value = myStore.routes.filter((item: any) => !['/403', '/404', '/500'].includes(item.route));
-    })
+// 初始化路由
+const routes: any = ref([])
+const currentRoute: any = ref('')
+watchEffect(() => {
+  currentRoute.value = myStore.currentRoute;
+  routes.value = myStore.routes.filter((item: any) => !['/403', '/404', '/500'].includes(item.route));
+})
 
-    const visable = ref(false)
-    const left = ref(<number>0)
-    const top = ref(<number>0)
+const visable = ref(false)
+const left = ref(<number>0)
+const top = ref(<number>0)
 
-    watch(() => visable.value, (value: any) => {
-      if (value) {
-        document.body.addEventListener('click', closeMenu);
-      } else {
-        document.body.removeEventListener('click', closeMenu);
-      }
-    })
+watch(() => visable.value, (value: any) => {
+  if (value) {
+    document.body.addEventListener('click', closeMenu);
+  } else {
+    document.body.removeEventListener('click', closeMenu);
+  }
+})
 
-    const tabClick = (obj: any, event: any) => {
-      if (obj.props.name === currentRoute.value) return;
-      globalRouter.openView(obj.props.name);
-    }
+const tabClick = (obj: any, event: any) => {
+  if (obj.props.name === currentRoute.value) return;
+  globalRouter.openView(obj.props.name);
+}
 
-    const removeTab = (route: any) => {
-      globalRouter.closeView(route);
-    }
+const removeTab = (route: any) => {
+  globalRouter.closeView(route);
+}
 
-    const openMenu = (e: any) => {
-      visable.value = true;
-      left.value = e.clientX;
-      top.value = e.clientY;
-    }
+const openMenu = (e: any) => {
+  visable.value = true;
+  left.value = e.clientX;
+  top.value = e.clientY;
+}
 
-    const closeOthers = () => {
-      const i = routes.value.find((item: any) => item.route === currentRoute.value);
-      const idx = routes.value.findIndex((item: any) => item.route === currentRoute.value);
-      if (idx === 0) {
-        myStore.delRoute({ index: 1, count: routes.value.length - 1 });
-        return
-      }
-      ElMessage({
-        showClose: true,
-        grouping: true,
-        message: '首页不能关闭',
-        type: 'warning',
-      });
-      myStore.delRoute({ index: 1, count: routes.value.length - 1, item: i });
-    }
+const closeOthers = () => {
+  const i = routes.value.find((item: any) => item.route === currentRoute.value);
+  const idx = routes.value.findIndex((item: any) => item.route === currentRoute.value);
+  if (idx === 0) {
+    myStore.delRoute({ index: 1, count: routes.value.length - 1 });
+    return
+  }
+  ElMessage({
+    showClose: true,
+    grouping: true,
+    message: '首页不能关闭',
+    type: 'warning',
+  });
+  myStore.delRoute({ index: 1, count: routes.value.length - 1, item: i });
+}
 
-    const closeLeft = () => {
-      const idx = routes.value.findIndex((item: any) => item.route === currentRoute.value);
-      if (idx === 1) {
-        ElMessage({
-          showClose: true,
-          grouping: true,
-          message: '首页不能关闭',
-          type: 'warning',
-        });
-        return
-      }
-      myStore.delRoute({ index: 1, count: idx - 1 });
-    }
+const closeLeft = () => {
+  const idx = routes.value.findIndex((item: any) => item.route === currentRoute.value);
+  if (idx === 1) {
+    ElMessage({
+      showClose: true,
+      grouping: true,
+      message: '首页不能关闭',
+      type: 'warning',
+    });
+    return
+  }
+  myStore.delRoute({ index: 1, count: idx - 1 });
+}
 
-    const closeRight = () => {
-      const idx = routes.value.findIndex((item: any) => item.route === currentRoute.value);
-      myStore.delRoute({ index: idx + 1, count: 1000 });
-    }
+const closeRight = () => {
+  const idx = routes.value.findIndex((item: any) => item.route === currentRoute.value);
+  myStore.delRoute({ index: idx + 1, count: 1000 });
+}
 
-    const closeMenu = () => {
-      visable.value = false;
-    }
-
-    return {
-      currentRoute,
-      routes,
-      visable,
-      left,
-      top,
-      tabClick,
-      removeTab,
-      openMenu,
-      closeOthers,
-      closeLeft,
-      closeRight
-    }
-  },
-});
+const closeMenu = () => {
+  visable.value = false;
+}
 </script>
 
 <style scoped>

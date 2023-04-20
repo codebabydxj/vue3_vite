@@ -61,8 +61,8 @@
   </header>
 </template>
 
-<script lang="ts" name="MainHeader">
-import { defineComponent, inject, onMounted, ref } from 'vue'
+<script setup lang="ts" name="MainHeader">
+import { inject, onMounted, ref } from 'vue'
 import screenfull from 'screenfull'
 import routers from '@/routers'
 import { globalStore } from '@/store'
@@ -72,117 +72,99 @@ import { ElMessage, ElMessageBox } from 'element-plus'
 import Message from '../headerMessage/index.vue'
 import themeDialog from './components/themeDialog.vue'
 
-export default defineComponent({
-  components: {
-    Message,
-    themeDialog
-  },
-  setup() {
-    // 加载和风天气
-    onMounted(() => {
-      (window as any).WIDGET = {
-        'CONFIG': {
-          'modules': '2014',
-          'background': '5',
-          'tmpColor': '409eff',
-          'tmpSize': '15',
-          'cityColor': '409eff',
-          'citySize': '15',
-          'aqiColor': '409eff',
-          'aqiSize': '15',
-          'weatherIconSize': '24',
-          'alertIconSize': '16',
-          'padding': '10px 10px 5px 10px',
-          'shadow': '0',
-          'language': 'auto',
-          'fixed': 'false',
-          'vertical': 'top',
-          'horizontal': 'left',
-          'key': '12e37ffc392d47e48ce3d066029270bb'
-        }
-      }
-      let script = document.createElement('script')
-      script.type = 'text/javascript'
-      script.src = 'https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0'
-      document.getElementsByTagName('head')[0].appendChild(script)
-    })
-
-    const myStore: any = globalStore()
-    const globalRouter: any = inject('globalRouter')
-    const fullscreenLoading = ref(false)
-    const isFullscreen = ref(false)
-    const isShowTheme = ref(false)
-
-    const refresh = () => {
-      globalRouter.refreshView()
+// 加载和风天气
+onMounted(() => {
+  (window as any).WIDGET = {
+    'CONFIG': {
+      'modules': '2014',
+      'background': '5',
+      'tmpColor': '409eff',
+      'tmpSize': '15',
+      'cityColor': '409eff',
+      'citySize': '15',
+      'aqiColor': '409eff',
+      'aqiSize': '15',
+      'weatherIconSize': '24',
+      'alertIconSize': '16',
+      'padding': '10px 10px 5px 10px',
+      'shadow': '0',
+      'language': 'auto',
+      'fixed': 'false',
+      'vertical': 'top',
+      'horizontal': 'left',
+      'key': '12e37ffc392d47e48ce3d066029270bb'
     }
-    const handleTheme = () => {
-      isShowTheme.value = true
-    }
-    const drawerCloseCb = () => {
-      isShowTheme.value = false
-    }
-    const screenfullTog = async () => {
-      if (screenfull.isEnabled) {
-        await screenfull.toggle();
-        isFullscreen.value = screenfull.isFullscreen
-      } else {
-        ElMessage({
-          showClose: true,
-          type: 'warning',
-          message: '浏览器不能全屏',
-        })
-      }
-    }
-    const handleCommand = (command: any) => {
-      // 退出登录
-      if (command === 'logout') {
-        ElMessageBox.confirm(
-          '您是否确认退出登录?',
-          '温馨提示',
-          {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning',
-          }
-        ).then(async() => {
-          fullscreenLoading.value = true
-          client.get(API.loginOut)
-          .then(async () => {
-            // 1.清除store、token存储
-            myStore.logout()
-            // 2.重定向登录页
-            await routers.replace('/login');
-            // 3.刷新页面清除一些浏览器缓存问题
-            window.location.reload();
-          }).catch(() => {
-          }).finally(() => {
-            fullscreenLoading.value = false
-          });
-        }).catch(() => {
-        })
-      }
-      // 个人中心
-      if (command === 'center') {
-
-      }
-      // 设置中心
-      if (command === 'setCore') {
-
-      }
-    }
-    return {
-      fullscreenLoading,
-      isFullscreen,
-      isShowTheme,
-      refresh,
-      handleTheme,
-      screenfullTog,
-      handleCommand,
-      drawerCloseCb,
-    };
   }
-});
+  let script = document.createElement('script')
+  script.type = 'text/javascript'
+  script.src = 'https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0'
+  document.getElementsByTagName('head')[0].appendChild(script)
+})
+
+const myStore: any = globalStore()
+const globalRouter: any = inject('globalRouter')
+const fullscreenLoading = ref(false)
+const isFullscreen = ref(false)
+const isShowTheme = ref(false)
+
+const refresh = () => {
+  globalRouter.refreshView()
+}
+const handleTheme = () => {
+  isShowTheme.value = true
+}
+const drawerCloseCb = () => {
+  isShowTheme.value = false
+}
+const screenfullTog = async () => {
+  if (screenfull.isEnabled) {
+    await screenfull.toggle();
+    isFullscreen.value = screenfull.isFullscreen
+  } else {
+    ElMessage({
+      showClose: true,
+      type: 'warning',
+      message: '浏览器不能全屏',
+    })
+  }
+}
+const handleCommand = (command: any) => {
+  // 退出登录
+  if (command === 'logout') {
+    ElMessageBox.confirm(
+      '您是否确认退出登录?',
+      '温馨提示',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
+      }
+    ).then(async() => {
+      fullscreenLoading.value = true
+      client.get(API.loginOut)
+      .then(async () => {
+        // 1.清除store、token存储
+        myStore.logout()
+        // 2.重定向登录页
+        await routers.replace('/login');
+        // 3.刷新页面清除一些浏览器缓存问题
+        window.location.reload();
+      }).catch(() => {
+      }).finally(() => {
+        fullscreenLoading.value = false
+      });
+    }).catch(() => {
+    })
+  }
+  // 个人中心
+  if (command === 'center') {
+
+  }
+  // 设置中心
+  if (command === 'setCore') {
+
+  }
+}
 </script>
 
 <style scoped lang="scss">
