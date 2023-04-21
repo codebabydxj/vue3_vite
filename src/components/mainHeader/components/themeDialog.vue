@@ -28,11 +28,21 @@
       <span>色弱模式</span>
       <el-switch v-model="themeConfig.isWeak" @change="changeGreyOrWeak('weak', !!$event)" />
     </div>
+    <!-- 界面设置 -->
+    <el-divider class="divider" content-position="center">
+      <el-icon><Setting /></el-icon>
+      界面设置
+    </el-divider>
+    <div class="theme-item">
+      <span>折叠菜单</span>
+      <el-switch v-model="themeConfig.isCollapse" inline-prompt :active-icon="Check" :inactive-icon="Close" @change="changeCollapse" />
+    </div>
   </el-drawer>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue"
+import { Check, Close } from "@element-plus/icons-vue"
 import { useTheme } from "@/hooks/useTheme"
 import { globalStore } from '@/store'
 import SwitchDark from "@/components/ThemeDark/index.vue"
@@ -41,9 +51,13 @@ const props = defineProps(['drawerVisible'])
 const emit = defineEmits(['drawerCloseCb'])
 
 const myStore: any = globalStore()
-const themeConfig = computed(() => myStore.themeConfig);
+const themeConfig = computed(() => myStore.themeConfig)
 
-const { changePrimary, changeGreyOrWeak } = useTheme();
+const { changePrimary, changeGreyOrWeak } = useTheme()
+
+const changeCollapse = (val: any) => {
+  myStore.setThemeConfig({ ...themeConfig.value, isCollapse: val })
+}
 
 // 预定义主题颜色
 const colorList = [

@@ -37,7 +37,7 @@ const globalStore = defineStore({
         // 色弱模式
         isWeak: false,
         // 折叠菜单
-        isCollapse: false,
+        isCollapse: true,
       }
     }
   },

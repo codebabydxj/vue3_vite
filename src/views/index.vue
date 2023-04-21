@@ -15,16 +15,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed, watch } from 'vue';
+import { globalStore } from '@/store'
 import MenuBar from '@/components/menuBar/index.vue';
 import Content from '@/components/mainContent/index.vue';
 import ComHeader from '@/components/mainHeader/index.vue';
 import Tabs from '@/components/headerTabs/index.vue';
 
-const isCollapse: any = ref(true);
+const myStore: any = globalStore()
+const themeConfig = computed(() => myStore.themeConfig)
+const isCollapse: any = ref(myStore.themeConfig.isCollapse)
 
+watch(() => myStore.themeConfig.isCollapse, (newVal: any) => {
+  isCollapse.value = newVal
+})
 const isCurCollapseChange = (bool: any) => {
-  isCollapse.value = bool;
+  myStore.setThemeConfig({ ...themeConfig.value, isCollapse: bool });
 }
 </script>
 

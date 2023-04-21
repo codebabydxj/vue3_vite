@@ -42,7 +42,7 @@
         </template>
       </el-sub-menu>
     </el-menu>
-    <div class="user-sel eo" :class="isActive ? 'active': 'not-active'">
+    <div class="user-sel eo" :class="!isCurCollapse ? 'active': 'not-active'">
       <el-tooltip placement="right" :visible="visible" effect="light" :content="isCurCollapse ? '点击折叠' : '点击展开'">
         <img src="../../assets/svg/enter.svg" alt="" @mouseenter="visible = true" @mouseleave="visible = false"
           @click="handleSwitch">
@@ -61,18 +61,18 @@ import _ from 'lodash'
 const props = defineProps(['isCollapse'])
 const emit = defineEmits(['isCurCollapseChange'])
 
-const isCurCollapse: any = ref(props.isCollapse);
+const isCurCollapse: any = computed(() => props.isCollapse);
 const searchInput: any = ref('');
 const isShowSoIcon: any = ref(true);
 const menuRef: any = ref(null);
-const isActive: any = ref(false)
 const visible = ref(false)
-const delayShow = ref(true)
+const delayShow = computed(() => props.isCollapse);
 
 // 通过inject获取挂载在全局的globalRouter方法，初始化view
 const globalRouter: any = inject('globalRouter')
 // 获取store
 const myStore: any = globalStore()
+const themeConfig = computed(() => myStore.themeConfig)
 
 const routeParams: any = reactive(<any>{
   currentRoute: computed(() => myStore.currentRoute),
@@ -130,11 +130,7 @@ const ubfold = (key: any) => {
   // }
 }
 const handleSwitch = () => {
-  isActive.value = !isActive.value
-  isCurCollapse.value = !isActive.value
-  setTimeout(() => {
-    delayShow.value = !isActive.value
-  }, 600)
+  myStore.setThemeConfig({ ...themeConfig.value, isCollapse: !isCurCollapse.value })
 }
 
 // 监听窗口大小变化，折叠侧边栏
@@ -221,11 +217,12 @@ onBeforeUnmount(() => {
   }
 
   .not-active {
-    transition: width 0.48s;
+    transition: width 0.45s;
     width: 219px;
   }
 
   .active {
+    transition: width 0.35s;
     width: 63px;
     img {
       transform: rotateY(180deg);
@@ -244,6 +241,10 @@ onBeforeUnmount(() => {
 
 .navbar-side .el-sub-menu__title {
   color: #fefefea6 !important;
+}
+
+.navbar-side .el-menu--collapse>.el-sub-menu.is-active>.el-sub-menu__title {
+  background-color: var(--menu-item-active-bg-color) !important;
 }
 
 .navbar-side .el-sub-menu__title>.el-icon>svg {
