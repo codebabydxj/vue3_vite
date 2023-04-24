@@ -1,6 +1,8 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
 import routerConfig from '@/routers/router-config';
+import { errorRouter } from './router-config/error';
 import NProgress from "@/config/nprogress";
+import _localStorage from '@/utils/storage/localStorage';
 
 let allRoutes: any = [];
 routerConfig.forEach((item: any) => {
@@ -22,19 +24,31 @@ const routes: Array<RouteRecordRaw> = [
 ]
 const routers = createRouter({
     history: createWebHistory(),
-    routes,
+    routes: [...routes, ...errorRouter],
+    strict: false,
+    scrollBehavior: () => ({ left: 0, top: 0 })
 })
 /* 路由权限方案：挂载所有路由 + 全局路由守卫判断权限 */
-const allGuardRouter: any = [...allRoutes, ...routes.slice(1), { path: '/welcome/_empty', name: 'empty' }]
+// const allGuardRouter: any = [...allRoutes, ...routes.slice(1), { path: '/welcome/_empty', name: 'empty' }]
 routers.beforeEach((to, from, next) => {
-	NProgress.start();
+    NProgress.start();
 
-    const idx = allGuardRouter.findIndex((i: any) => i.path === to.fullPath)
-    if (idx === -1) {
-        next({ path: '/404' });
-    } else {
-        next()
+    /** 1.判断是否是访问登陆页，有 Token 就在当前页面，没有 Token 重置路由到登陆页 */
+    if (to.path.toLocaleLowerCase() === '/login') {
+        if (_localStorage.get('TOKEN')) return routers.back()
+        return next();
     }
+    /** 2.判断是否有 Token，没有重定向到 login 页面 */
+    if (!_localStorage.get('TOKEN')) {
+        return next({ path: '/login', replace: true });
+    }
+
+    /** 3.判断如果是路由不存在的页面，直接进入404页面 */
+    // const idx = allGuardRouter.findIndex((i: any) => i.path === to.path)
+    // if (idx === -1) return next({ path: '/404' });
+
+    /** 4.正常访问页面 */
+    next()
 })
 /** 路由跳转结束 */
 routers.afterEach(() => {

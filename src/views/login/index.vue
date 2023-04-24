@@ -13,9 +13,9 @@
         <el-form
           ref="ruleFormRef"
           :model="ruleForm"
-          status-icon
           label-width="0px"
           class="ruleForm"
+          @keyup.enter.native="submitForm(ruleFormRef)"
         >
           <el-form-item
             label=""
@@ -42,25 +42,16 @@
             <el-input
               type="password"
               autocomplete="off"
-              placeholder="密码：123456"
+              placeholder="密码：aa123456"
+              show-password
               :prefix-icon="Lock"
               v-model="ruleForm.password"
             />
           </el-form-item>
         </el-form>
         <div class="login-btn">
-          <el-button class="btn" round :icon="CircleClose" @click="resetForm"
-            >重 置</el-button
-          >
-          <el-button
-            class="btn"
-            round
-            type="primary"
-            :icon="User"
-            :loading="loading"
-            @click="submitForm(ruleFormRef)"
-            >登 录</el-button
-          >
+          <el-button class="btn" round :icon="CircleClose" @click="resetForm">重 置</el-button>
+          <el-button class="btn" round type="primary" :icon="User" :loading="loading" @click="submitForm(ruleFormRef)">登 录</el-button>
         </div>
       </div>
     </div>
@@ -73,7 +64,7 @@
 import { reactive, ref } from 'vue';
 import { client } from '@/utils/https/client';
 import * as API from '@/config/api';
-import routers from '@/routers';
+import { useRouter } from 'vue-router';
 import md5 from 'js-md5';
 import _localStorage from '@/utils/storage/localStorage';
 import { getTimeState } from '@/utils/tools';
@@ -85,6 +76,7 @@ import SwitchDark from "@/components/ThemeDark/index.vue";
 
 type FormInstance = InstanceType<typeof ElForm>
 const myStore: any = globalStore()
+const router = useRouter()
 const ruleFormRef = ref<FormInstance>();
 const ruleForm = reactive({
   userName: '',
@@ -108,7 +100,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         _localStorage.set('TOKEN', res.data.token) // 这里存token 根据接口返回自行处理
         myStore.setUserInfo(res.data) // 登录完成保存用户信息
 
-        routers.replace('/');
+        router.replace('/');
         ElNotification({
           title: getTimeState(),
           message: "欢迎登录 Vite-Admin",

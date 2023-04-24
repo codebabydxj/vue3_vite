@@ -21,7 +21,7 @@
  * 
  */
 
-import { nextTick } from 'vue';
+import { nextTick } from 'vue'
 import routers from '@/routers'
 import { globalStore } from '@/store'
 
@@ -32,7 +32,7 @@ let fullPath: any = null;
 let query: any = {};
 let willOpenPath: any = '';
 
-routers.beforeEach(async (to: any) => {
+routers.beforeEach((to: any) => {
   myStore = globalStore() /** 一切为成形之前，使用store，store必须放在路由守卫，否则报错，没有注册pinia??? */
   routerConfig = myStore.routerConfig
   query = to.query;

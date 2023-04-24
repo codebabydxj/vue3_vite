@@ -110,8 +110,8 @@ instance.interceptors.response.use((response: AxiosResponse) => {
   const { response } = error;
 
   // 请求超时 && 网络错误单独判断，没有 response
-  if (error.message.indexOf("timeout") !== -1) ElMessage.error("请求超时！请您稍后重试");
-  if (error.message.indexOf("Network Error") !== -1) ElMessage.error("网络错误！请您稍后重试");
+  if (error.message.indexOf('timeout') !== -1) ElMessage.error('请求超时！请您稍后重试');
+  if (error.message.indexOf('Network Error') !== -1) ElMessage.error('网络错误！请您稍后重试');
 
   if (!response) return Promise.reject(error);
   // 根据不同状态码，做不同处理
@@ -133,7 +133,7 @@ instance.interceptors.response.use((response: AxiosResponse) => {
   }
 
   // 服务器结果都没有返回(可能服务器错误可能客户端断网)，断网处理:可以跳转到断网页面
-  if (!window.navigator.onLine) routers.replace("/500");
+  if (!window.navigator.onLine) routers.replace('/500');
 
   ElNotification({
     title: '温馨提示',

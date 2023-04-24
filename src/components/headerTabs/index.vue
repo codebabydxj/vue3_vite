@@ -29,7 +29,7 @@ const routes: any = ref([])
 const currentRoute: any = ref('')
 watchEffect(() => {
   currentRoute.value = myStore.currentRoute;
-  routes.value = myStore.routes.filter((item: any) => !['/403', '/404', '/500'].includes(item.route));
+  routes.value = myStore.routes;
 })
 
 const visable = ref(false)

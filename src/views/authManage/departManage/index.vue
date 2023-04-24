@@ -2,7 +2,7 @@
   <flex-card>
     <div class="base-warp">
       <el-card>
-        部门管理页面
+        <span class="text">🍓🍇🍈🍉 （待开发，请耐心等待...）</span>
       </el-card>
     </div>
   </flex-card>
@@ -13,4 +13,13 @@
 </script>
 
 <style scoped lang="scss">
+.text {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0 30px;
+  font-size: 23px;
+  font-weight: bold;
+  text-align: center;
+  color: var(--el-text-color-regular);
+}
 </style>
