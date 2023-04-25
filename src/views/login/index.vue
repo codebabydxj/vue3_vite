@@ -42,7 +42,7 @@
             <el-input
               type="password"
               autocomplete="off"
-              placeholder="密码：aa123456"
+              placeholder="密码：123456"
               show-password
               :prefix-icon="Lock"
               v-model="ruleForm.password"
@@ -66,7 +66,6 @@ import { client } from '@/utils/https/client';
 import * as API from '@/config/api';
 import { useRouter } from 'vue-router';
 import md5 from 'js-md5';
-import _localStorage from '@/utils/storage/localStorage';
 import { getTimeState } from '@/utils/tools';
 import { globalStore } from '@/store'
 import { User, Lock, CircleClose } from '@element-plus/icons-vue';
@@ -97,7 +96,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       const params = { ...ruleForm, password: md5(ruleForm.password) };
       client.post(API.login, params)
       .then((res: any) => {
-        _localStorage.set('TOKEN', res.data.token) // 这里存token 根据接口返回自行处理
         myStore.setUserInfo(res.data) // 登录完成保存用户信息
 
         router.replace('/');

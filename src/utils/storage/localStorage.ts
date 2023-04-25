@@ -1,5 +1,3 @@
-const prefix = '__vite__';
-
 export default {
   /**
    * 获取本地存储
@@ -8,7 +6,7 @@ export default {
    * @return {any}
    */
   get(key: any) {
-    const ret = window.localStorage.getItem(prefix + key);
+    const ret = window.localStorage.getItem(key);
     if (ret) {
       return JSON.parse(ret);
     }
@@ -23,7 +21,7 @@ export default {
    * @return {boolean}
    */
   set(key: any, value: any) {
-    window.localStorage.setItem(prefix + key, JSON.stringify(value));
+    window.localStorage.setItem(key, JSON.stringify(value));
     return true;
   },
 
@@ -34,7 +32,7 @@ export default {
    * @return {boolean}
    */
   remove(key: any) {
-    window.localStorage.removeItem(prefix + key);
+    window.localStorage.removeItem(key);
     return true;
   },
 };

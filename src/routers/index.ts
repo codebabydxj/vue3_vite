@@ -1,8 +1,8 @@
 import { RouteRecordRaw, createRouter, createWebHistory } from 'vue-router'
+import { globalStore } from '@/store'
 import routerConfig from '@/routers/router-config';
 import { errorRouter } from './router-config/error';
 import NProgress from "@/config/nprogress";
-import _localStorage from '@/utils/storage/localStorage';
 
 let allRoutes: any = [];
 routerConfig.forEach((item: any) => {
@@ -31,15 +31,18 @@ const routers = createRouter({
 /* 路由权限方案：挂载所有路由 + 全局路由守卫判断权限 */
 // const allGuardRouter: any = [...allRoutes, ...routes.slice(1), { path: '/welcome/_empty', name: 'empty' }]
 routers.beforeEach((to, from, next) => {
+    const myStore = globalStore()
+
     NProgress.start();
 
     /** 1.判断是否是访问登陆页，有 Token 就在当前页面，没有 Token 重置路由到登陆页 */
     if (to.path.toLocaleLowerCase() === '/login') {
-        if (_localStorage.get('TOKEN')) return routers.back()
+        if (myStore.userInfo.token) return routers.back()
         return next();
     }
+    
     /** 2.判断是否有 Token，没有重定向到 login 页面 */
-    if (!_localStorage.get('TOKEN')) {
+    if (!myStore.userInfo.token) {
         return next({ path: '/login', replace: true });
     }
 

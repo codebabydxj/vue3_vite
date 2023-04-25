@@ -12,9 +12,8 @@ import qs from 'qs';
 import dayjs from 'dayjs';
 import routers from '@/routers'
 import { globalStore } from '@/store'
-import _localStorage from '@/utils/storage/localStorage';
 
-let store = globalStore();
+const myStore = globalStore();
 const instance: AxiosInstance = axios.create({
   baseURL: '',
   timeout: 60000, // 默认一分钟
@@ -58,8 +57,7 @@ instance.interceptors.request.use((config: requestConfig) => {
   config.signal = controller.signal;
   config.controller = controller;
   pending.push({ ...config });
-
-  const token: string | null = _localStorage.get('TOKEN');
+  const token: string | null | undefined = myStore.userInfo.token;
   if (config.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
     config.data = qs.stringify(config.data);
   }
@@ -117,7 +115,7 @@ instance.interceptors.response.use((response: AxiosResponse) => {
   // 根据不同状态码，做不同处理
   if (response.status === 401) {
     // toke过期，重新登录
-    store.logout()
+    myStore.logout()
     routers.replace('/login');
     return Promise.reject(response);
   }

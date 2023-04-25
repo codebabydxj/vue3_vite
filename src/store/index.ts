@@ -43,8 +43,8 @@ const globalStore = defineStore({
   getters: <any>{},
   actions: <any>{
     setCurrentRoute(rootPath: any) {
-      // const state: any = globalStore();
-      // state.currentRoute = rootPath;
+      // const myStore: any = globalStore();
+      // myStore.currentRoute = rootPath;
       this.currentRoute = rootPath;
     },
     addRoute(route: any) {
@@ -99,7 +99,7 @@ const globalStore = defineStore({
       window.sessionStorage.clear()
     },
   },
-  persist: piniaPersistConfig('GlobalState', ['themeConfig'])
+  persist: piniaPersistConfig('GlobalState', ['themeConfig', 'userInfo'])
 });
 
 // piniaPluginPersist(持久化存储)
