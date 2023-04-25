@@ -150,32 +150,6 @@ const { selectionChange, selectedList, selectedListIds, isSelected } = useSelect
 // 表格操作 Hooks
 const { tableData, pageable, searchParam, searchInitParam, getTableList, search, reset, handleSizeChange, handleCurrentChange } =
 	useTable(props.requestApiParams, props.initParam, props.pagination, props.dataCallback, props.requestError);
-tableData.value = [
-	{ username: '第一名' },
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{},
-	{ username: '最后一名' },
-] // 测试使用！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 
 // table 表格查询区 元素
 const searchRef = ref<HTMLElement>()

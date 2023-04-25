@@ -104,7 +104,7 @@ onMounted(() => {
 
 const router = useRouter()
 const myStore: any = globalStore()
-const userName: any = computed(() => myStore.userInfo.userInfo.userName)
+const userName: any = computed(() => myStore.userInfo.userInfo ? myStore.userInfo.userInfo.userName : '')
 const globalRouter: any = inject('globalRouter')
 const fullscreenLoading = ref(false)
 const isFullscreen = ref(false)

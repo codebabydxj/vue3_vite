@@ -1,4 +1,4 @@
-import { reactive, computed, onMounted, toRefs } from "vue";
+import { reactive, computed, toRefs } from "vue";
 import { client } from '@/utils/https/client';
 import { Table } from "./interface";
 
@@ -49,11 +49,6 @@ export const useTable = (
 		set: (newVal: any) => {
 			console.log("我是分页更新之后的值", newVal);
 		}
-	});
-
-	// 初始化的时候需要做的事情就是 设置表单查询默认值 && 获取表格数据(reset函数的作用刚好是这两个功能)
-	onMounted(() => {
-		reset();
 	});
 
 	/**

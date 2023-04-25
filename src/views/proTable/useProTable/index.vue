@@ -57,7 +57,7 @@ import { useHandleData } from "@/hooks/useHandleData";
 const globalRouter: any = inject('globalRouter')
 
 // 请求table数据
-const requestApiParams = ref({ url: '/api/getTableData' })
+const requestApiParams = ref({ url: '/api/proTable' })
 
 // 获取 ProTable 元素，调用其获取刷新数据方法（还能获取到当前查询参数，方便导出携带参数）
 const proTable = ref();
@@ -67,8 +67,8 @@ const dataCallback = (data: any) => {
 	return {
 		list: data.list,
 		total: data.total,
-		pageNum: data.pageNum,
-		pageSize: data.pageSize
+		pageNum: data.page,
+		pageSize: data.size
 	};
 };
 
