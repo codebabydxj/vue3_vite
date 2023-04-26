@@ -41,13 +41,19 @@ export type SearchProps = {
 	defaultValue?: string | number | boolean | any[]; // 搜索项默认值
 } & Partial<Record<BreakPoint, Responsive>>;
 
+export type FieldNamesProps = {
+  label: string;
+  value: string;
+  children?: string;
+};
+
 export interface ColumnProps<T = any> extends Partial<Omit<TableColumnCtx<T>, "children" | "renderHeader" | "renderCell">> {
 	tag?: boolean; // 是否是标签展示
 	isShow?: boolean; // 是否显示在表格当中
-	search?: SearchProps | undefined; // 搜索项配置
+	search?: SearchProps | undefined; // 搜索项配置, 不写则不会成为搜索条件
 	enum?: EnumProps[] | ((params?: any) => Promise<any>); // 枚举类型（渲染值的字典）
 	isFilterEnum?: boolean; // 当前单元格值是否根据 enum 格式化（示例：enum 只作为搜索项数据）
-	fieldNames?: { label: string; value: string }; // 指定 label && value 的 key 值
+	fieldNames?: FieldNamesProps; // 指定 label && value 的 key 值
 	reserve?: boolean; // 翻页刷新数据后是否保留选项，仅对  type=selection 的列有效， 请注意， 需指定 row-key 来让这个功能生效。
 	headerRender?: (row: ColumnProps) => any; // 自定义表头内容渲染（tsx语法）
 	render?: (scope: { row: T }) => any; // 自定义单元格内容渲染（tsx语法）

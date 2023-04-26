@@ -1,8 +1,13 @@
 <template>
 	<div class="table-main">
 		<!-- 搜索 查询表单 -->
-		<div class="table-search" ref="searchRef">
-			<slot name="tableSearch"></slot>
+		<div class="table-search" ref="searchRef" v-if="columns.length">
+			<SearchForm 
+				:columns="columns.filter((i: any) => !['selection', 'index', 'operation'].includes(i.type || i.prop))"
+				:search="search"
+				:searchParam="searchParam"
+				:searchLoading="searchLoading"
+			/>
 		</div>
 		<!-- 表格头部 操作按钮 -->
 		<div class="table-header" ref="headerRef">
@@ -84,6 +89,7 @@ import { useTable } from "@/hooks/useTable"
 import { useSelection } from "@/hooks/useSelection"
 import { ColumnProps, BreakPoint } from "@/components/ProTable/interface"
 import tableConfig from '@/components/tableConfig/index.vue'
+import SearchForm from "@/components/SearchForm/index.vue";
 import TableColumn from "./components/TableColumn.vue"
 import Pagination from "./components/Pagination.vue";
 import { ElTable, TableProps } from "element-plus"
@@ -148,7 +154,7 @@ const tableRef = ref<InstanceType<typeof ElTable>>();
 const { selectionChange, selectedList, selectedListIds, isSelected } = useSelection(props.rowKey);
 
 // 表格操作 Hooks
-const { tableData, pageable, searchParam, searchInitParam, getTableList, search, reset, handleSizeChange, handleCurrentChange } =
+const { tableData, pageable, searchParam, searchInitParam, searchLoading, getTableList, search, reset, handleSizeChange, handleCurrentChange } =
 	useTable(props.requestApiParams, props.initParam, props.pagination, props.dataCallback, props.requestError);
 
 // table 表格查询区 元素

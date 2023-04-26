@@ -19,6 +19,7 @@ export namespace Table {
 		icon?: {
 			[key: string]: any;
 		};
+		searchLoading: boolean;
 	}
 }
 
