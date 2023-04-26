@@ -1,11 +1,5 @@
 import { TableColumnCtx } from "element-plus/es/components/table/src/table-column/defaults";
-
-export type BreakPoint = "xs" | "sm" | "md" | "lg" | "xl";
-
-export type Responsive = {
-	span?: number;
-	offset?: number;
-};
+import { BreakPoint, Responsive } from "@/components/Grid/interface";
 
 export interface EnumProps {
 	label: string; // 选项框显示的文字

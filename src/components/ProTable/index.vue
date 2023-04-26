@@ -6,6 +6,7 @@
 				:columns="columns.filter((i: any) => !['selection', 'index', 'operation'].includes(i.type || i.prop))"
 				:search="search"
 				:searchParam="searchParam"
+				:search-col="searchCol"
 				:searchLoading="searchLoading"
 			/>
 		</div>
