@@ -1,9 +1,9 @@
-import { defineConfig, loadEnv } from 'vite'
-import type { UserConfig, ConfigEnv } from 'vite'
+import { defineConfig, loadEnv, ConfigEnv, UserConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import Components from 'unplugin-vue-components/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import viteCompression from 'vite-plugin-compression'
+import vueSetupExtend from "unplugin-vue-setup-extend-plus/vite"
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import { resolve } from 'path'
 import px2rem from 'postcss-px2rem'
@@ -42,6 +42,8 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       //   resolvers: [ ElementPlusResolver() ] // 可配置多个 此时main.ts处组件库相关的就可以全部删除掉了
       // }),
       vueJsx(),
+      // name 可以写在 script 标签上
+      vueSetupExtend({}),
       viteCompression({
         verbose: true, // 是否在控制台输出压缩结果
         disable: false, // 是否禁用

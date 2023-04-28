@@ -27,6 +27,7 @@
 <script setup lang="ts" name="SearchFormItem">
 import { computed, inject, ref } from "vue";
 import { ColumnProps } from "@/components/ProTable/interface";
+import { handleProp } from "@/utils/tools/index";
 
 interface SearchFormItem {
   column: ColumnProps;
@@ -55,12 +56,6 @@ const columnEnum = computed(() => {
   }
   return enumData;
 });
-
-const handleProp = (prop: string) => {
-  const propArr = prop.split(".");
-  if (propArr.length == 1) return prop;
-  return propArr[propArr.length - 1];
-}
 
 // 处理透传的 searchProps (el 为 tree-select、cascader 的时候需要给下默认 label && value && children)
 const handleSearchProps = computed(() => {

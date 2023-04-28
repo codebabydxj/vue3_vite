@@ -74,6 +74,7 @@ const activeName = ref('first');
 <style scoped lang="scss">
 .badge {
   margin-top: 14px;
+  font-style: normal;
 }
 .message-empty {
   display: flex;

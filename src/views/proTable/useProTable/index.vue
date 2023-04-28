@@ -61,13 +61,13 @@ const columns: ColumnProps[] = [
 	{ type: 'selection', fixed: 'left', width: 80 },
 	{ type: 'index', label: '序号', width: 80 },
 	{ prop: 'username', search: { el: 'input',}, label: '用户姓名' },
-	{ prop: 'gender', search: { el: 'select' }, label: '性别' },
+	{ prop: 'gender', enum: [{ label: '男', value: 1 },{ label: '女', value: 2 }], search: { el: 'select' }, label: '性别' },
 	{ prop: 'age', search: { el: 'input' }, label: '年龄' },
 	{ prop: 'idCard', search: { el: 'input' }, label: '身份证号' },
-	{ prop: 'email', search: { el: 'input' }, label: '邮箱' },
-	{ prop: 'address', search: { el: 'input' }, label: '居住地址' },
-	{ prop: 'status', search: { el: 'select' }, label: '用户状态' },
-	{ prop: 'createTime', search: { el: 'date-picker', props: { type: "daterange", valueFormat: "YYYY-MM-DD HH:mm:ss" } }, label: '创建时间', width: 180 },
+	{ prop: 'email', label: '邮箱' },
+	{ prop: 'address', label: '居住地址' },
+	{ prop: 'status', enum: [{ label: '启用', value: 1 },{ label: '禁用', value: 0 }], search: { el: 'select' }, label: '用户状态' },
+	{ prop: 'createTime', search: { el: 'date-picker', span: 2, props: { type: "daterange", valueFormat: "YYYY-MM-DD HH:mm:ss" } }, label: '创建时间', width: 180 },
 	{ prop: 'operation', label: '操作', fixed: 'right', width: 330 }
 ];
 

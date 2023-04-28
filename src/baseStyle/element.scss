@@ -59,6 +59,9 @@
   .table-search {
     margin-bottom: 10px;
     .el-form {
+      .el-form-item {
+        width: 100%;
+      }
       .el-form-item__content > * {
         width: 100%;
       }
