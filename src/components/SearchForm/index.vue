@@ -10,7 +10,7 @@
         <div class="search-operation">
           <el-button type="primary" :icon="Search" :loading="searchLoading" @click="search(columns)">查询</el-button>
           <el-button :icon="Delete" @click="reset">重置</el-button>
-          <el-button v-if="showCollapse" type="primary" link class="search-isOpen" @click="collapsed = !collapsed">
+          <el-button v-if="showCollapse" type="primary" link class="search-isOpen" @click="handleCollapse">
             {{ collapsed ? "展开" : "合并" }}
             <el-icon class="el-icon--right">
               <component :is="collapsed ? ArrowDown : ArrowUp"></component>
@@ -24,6 +24,7 @@
 
 <script setup lang="ts" name="SearchForm">
 import { inject, ref, computed } from 'vue'
+import { useWinSize } from "@/utils/tools"
 import { ColumnProps } from "@/components/ProTable/interface";
 import { BreakPoint } from "@/components/Grid/interface";
 import { Delete, Search, ArrowDown, ArrowUp } from "@element-plus/icons-vue";
@@ -60,6 +61,12 @@ const getResponsive = (item: ColumnProps) => {
 
 // 是否默认折叠搜索项
 const collapsed = ref(true);
+
+// 处理折叠
+const handleCollapse = () => {
+  collapsed.value = !collapsed.value
+  useWinSize()
+}
 
 // 获取响应式断点
 const gridRef = ref();
