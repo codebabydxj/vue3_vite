@@ -27,16 +27,10 @@ const batchAdd = () => {
 	let params: any = {
 		title: "数据",
 		tempApi: { url: '', params: {} },
-		importApi: { url: '/api/geeker/user/import', params: { type: 'sx', id: '123'} },
-    getTableList: () => {
-      getList()
-    }
+		importApi: { url: '/api/geeker/user/import', params: { type: 'sx', id: '123'} }
 	};
 	importRef.value.acceptParams(params);
 };
-const getList = () => {
-  // 刷新表格数据
-}
 </script>
 
 <style scoped lang="scss">

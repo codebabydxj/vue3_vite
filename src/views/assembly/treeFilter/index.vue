@@ -5,8 +5,7 @@
         <TreeFilter
           label="name"
           title="部门列表(单选)"
-          :request="{ url: userInfo, method: 'get' }"
-          :data="dataJson"
+          :request="{ url: '/api/user/department', method: 'get' }"
           :defaultValue="treeFilterValue.departmentId"
           @change="changeTreeFilter"
         />
@@ -14,8 +13,7 @@
           title="部门列表(多选)"
           multiple
           label="name"
-          :request="{ url: userInfo, method: 'post' }"
-          :data="dataJson"
+          :request="{ url: '/api/user/department1', method: 'get' }"
           :defaultValue="treeFilterValue1.departmentId"
           @change="changeTreeFilter1"
         />
@@ -40,9 +38,7 @@
 <script setup lang="ts" name="treeFilter">
 import { reactive } from "vue";
 import { ElMessage } from "element-plus";
-import { userInfo } from "@/config/api";
 import TreeFilter from "@/components/TreeFilter/index.vue";
-import dataJson from './dataJson.json'
 
 const treeFilterValue = reactive({ departmentId: "1" });
 const changeTreeFilter = (val: string) => {

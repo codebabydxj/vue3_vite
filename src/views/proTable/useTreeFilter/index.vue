@@ -1,34 +1,43 @@
 <template>
   <flex-card>
     <div class="base-warp">
-      <el-card>
-        <ProTable
-          ref="proTable"
-          title="用户列表"
-          :columns="columns"
-          :initParam="initParam"
-          :requestApiParams="requestApiParams"
-			    :dataCallback="dataCallback">
-          <!-- 表格 header 按钮 -->
-          <template #tableHeader="scope">
-            <el-button type="primary" :icon="CirclePlus">新增用户</el-button>
-            <el-button type="primary" :icon="Upload" plain @click="batchAdd">批量添加用户</el-button>
-            <el-button type="primary" :icon="Download" plain @click="exportData">导出用户数据</el-button>
-            <el-button type="danger" :icon="Delete" plain @click="batchDelete(scope.selectedListIds)" :disabled="!scope.isSelected">批量删除用户</el-button>
-          </template>
-          <!-- 表格操作 -->
-          <template #operation="scope">
-            <el-link type="primary" :icon="View">查看</el-link>
-            <el-link type="primary" :icon="EditPen">编辑</el-link>
-            <el-popconfirm title="确定删除吗?" @confirm="handleDel(scope.row)">
-              <template #reference>
-                <el-link type="danger" :icon="Delete">删除</el-link>
-              </template>
-            </el-popconfirm>
-          </template>
-        </ProTable>
-        <uploadExcel ref="importRef" />
-      </el-card>
+      <div class="main-box">
+        <TreeFilter
+          label="name"
+          title="部门列表(单选)"
+          :request="{ url: '/api/user/department', method: 'get' }"
+          :defaultValue="treeFilterValue.departmentId"
+          @change="changeTreeFilter"
+        />
+        <div class="over-card table-box">
+          <ProTable
+            ref="proTable"
+            title="用户列表"
+            :columns="columns"
+            :initParam="initParam"
+            :requestApiParams="requestApiParams"
+            :dataCallback="dataCallback">
+            <!-- 表格 header 按钮 -->
+            <template #tableHeader="scope">
+              <el-button type="primary" :icon="CirclePlus">新增用户</el-button>
+              <el-button type="primary" :icon="Upload" plain @click="batchAdd">批量添加用户</el-button>
+              <el-button type="primary" :icon="Download" plain @click="exportData">导出用户数据</el-button>
+              <el-button type="danger" :icon="Delete" plain @click="batchDelete(scope.selectedListIds)" :disabled="!scope.isSelected">批量删除用户</el-button>
+            </template>
+            <!-- 表格操作 -->
+            <template #operation="scope">
+              <el-link type="primary" :icon="View">查看</el-link>
+              <el-link type="primary" :icon="EditPen">编辑</el-link>
+              <el-popconfirm title="确定删除吗?" @confirm="handleDel(scope.row)">
+                <template #reference>
+                  <el-link type="danger" :icon="Delete">删除</el-link>
+                </template>
+              </el-popconfirm>
+            </template>
+          </ProTable>
+          <uploadExcel ref="importRef" />
+        </div>
+      </div>
     </div>
   </flex-card>
 </template>
@@ -36,13 +45,20 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { client } from "@/utils/https/client"
-import { CirclePlus, Delete, EditPen, Download, Upload, View } from "@element-plus/icons-vue"
 import { ElMessage, ElMessageBox } from "element-plus"
+import { CirclePlus, Delete, EditPen, Download, Upload, View } from "@element-plus/icons-vue"
+import TreeFilter from "@/components/TreeFilter/index.vue"
 import ProTable from '@/components/ProTable/index.vue'
 import { useHandleData } from "@/hooks/useHandleData"
 import { useDownload } from "@/hooks/useDownload";
 import { ColumnProps } from "@/components/ProTable/interface"
 import uploadExcel from '@/components/uploadExcel/index.vue'
+
+const treeFilterValue = reactive({ departmentId: "1" });
+const changeTreeFilter = (val: string) => {
+	ElMessage.success(`你选择了 id 为 ${val} 的数据🤔`);
+	treeFilterValue.departmentId = val;
+};
 
 // 请求table数据
 const requestApiParams = ref({ url: '/api/proTable' })
@@ -71,26 +87,12 @@ const columns: ColumnProps[] = [
 	{ type: 'index', label: '序号', width: 80 },
 	{ prop: 'username', label: '用户姓名', search: { el: 'input' } },
 	{ prop: 'gender', label: '性别', enum: [{ label: '男', value: 1 },{ label: '女', value: 2 }], search: { el: 'select' } },
-	{ prop: 'age', label: '年龄', search: { el: 'input' } },
-	{ prop: 'idCard', label: '身份证号', search: { el: 'input' } },
+	{ prop: 'age', label: '年龄' },
+	{ prop: 'idCard', label: '身份证号' },
 	{ prop: 'email', label: '邮箱' },
 	{ prop: 'address', label: '居住地址' },
-	{ prop: 'status', label: '用户状态', enum: [{ label: '启用', value: 1 },{ label: '禁用', value: 0 }], search: { el: 'select' } },
-	{ 
-    prop: 'createTime',
-    label: '创建时间',
-    search: {
-      el: 'date-picker',
-      span: 2,
-      props: {
-        type: 'daterange',
-        valueFormat: 'YYYY-MM-DD HH:mm:ss',
-        defaultTime: [new Date(2000, 1, 1, 0, 0, 0), new Date(2000, 2, 1, 23, 59, 59)]
-      },
-      resetValue: [ 'startTime', 'endTime' ]
-    },
-    width: 180
-  },
+	{ prop: 'status', label: '用户状态' },
+	{ prop: 'createTime', label: '创建时间', width: 180 },
 	{ prop: 'operation', label: '操作', fixed: 'right', width: 330 }
 ];
 

@@ -189,7 +189,7 @@ watchEffect(() => {
 const clearSelection = () => tableRef.value!.clearSelection();
 
 // 初始化请求
-onMounted(() => props.requestAuto && getTableList());
+onMounted(() => props.requestAuto && search());
 
 // 监听页面 initParam 改化，重新获取表格数据
 watch(() => props.initParam, getTableList, { deep: true });
@@ -254,13 +254,12 @@ defineExpose({
 	tableData,
 	searchParam,
 	pageable,
-	searchInitParam,
-	search,
-	getTableList,
-	reset,
-	clearSelection,
+	enumMap,
 	isSelected,
 	selectedList,
-	selectedListIds
+	selectedListIds,
+	getTableList,
+	reset,
+	clearSelection
 });
 </script>

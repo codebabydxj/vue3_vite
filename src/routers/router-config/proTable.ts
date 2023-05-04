@@ -11,13 +11,30 @@ export default {
       meta: {
         permission: {},
       },
-      title: '使用ProTable',
+      title: '使用 ProTable',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
           name: 'useProTable',
           component: () => import('../../views/proTable/useProTable/index.vue'),
+        },
+      ],
+    },
+    {
+      path: '/useTreeFilter',
+      key: 'useTreeFilter',
+      access: true,
+      meta: {
+        permission: {},
+      },
+      title: '使用 TreeFilter',
+      component: () => import('../../views/middleView/index.vue'),
+      children: [
+        {
+          path: '',
+          name: 'useTreeFilter',
+          component: () => import('../../views/proTable/useTreeFilter/index.vue'),
         },
       ],
     },

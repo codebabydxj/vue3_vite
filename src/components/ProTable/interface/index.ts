@@ -33,6 +33,7 @@ export type SearchProps = {
 	span?: number; // 搜索项所占用的列数，默认为1列
 	offset?: number; // 搜索字段左侧偏移列数
 	defaultValue?: string | number | boolean | any[]; // 搜索项默认值
+	resetValue?: any[]; // 重置prop，查询入参使用
 } & Partial<Record<BreakPoint, Responsive>>;
 
 export type FieldNamesProps = {

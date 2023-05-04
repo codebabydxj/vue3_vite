@@ -93,6 +93,17 @@
   }
 }
 
+/* main-box (树形表格 treeFilter 页面会使用，左右布局 flex) */
+.main-box {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  .table-box {
+    // 这里减去的是 treeFilter 组件宽度
+    width: calc(100% - 230px);
+  }
+}
+
 // 表格样式
 .el-table {
   flex: 1;
@@ -197,6 +208,11 @@
   .el-tabs__nav-prev, .el-tabs__nav-next {
     color: #ffffff !important;
   }
+}
+
+// * el-link 样式
+.el-link {
+  margin-right: 8px;
 }
 
 .small-input-width {

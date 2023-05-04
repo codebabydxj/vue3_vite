@@ -78,7 +78,7 @@ export const useTable = (
 	 * @description 更新查询参数
 	 * @return void
 	 * */
-	const updatedTotalParam = () => {
+	const updatedTotalParam = (defaultParams: any = null) => {
 		state.totalParam = {};
 		// 处理查询参数，可以给查询参数加自定义前缀操作
 		let nowSearchParam: { [key: string]: any } = {};
@@ -88,6 +88,16 @@ export const useTable = (
 			if (state.searchParam[key] || state.searchParam[key] === false || state.searchParam[key] === 0) {
 				nowSearchParam[key] = state.searchParam[key];
 			}
+		}
+		// 针对一些查询参数作为入参时，根据后台所需做一些变动处理
+		if (defaultParams) {
+			defaultParams.forEach((item: any) => {
+				// 时间范围剔除数组参数，改造成 开始&&结束 时间参数
+				if (item.search && item.search.el === 'date-picker' && item.search.resetValue.length && nowSearchParam[item.prop]) {
+					[nowSearchParam[item.search.resetValue[0]], nowSearchParam[item.search.resetValue[1]]] = nowSearchParam[item.prop]
+					delete nowSearchParam[item.prop]
+				}
+			})
 		}
 		Object.assign(state.totalParam, nowSearchParam, isPageable ? pageParam.value : {});
 	};
@@ -105,10 +115,10 @@ export const useTable = (
 	 * @description 表格数据查询
 	 * @return void
 	 * */
-	const search = () => {
+	const search = (params: any = null) => {
 		state.pageable.pageNum = 1;
 		state.searchLoading = true;
-		updatedTotalParam();
+		updatedTotalParam(params);
 		getTableList();
 	};
 

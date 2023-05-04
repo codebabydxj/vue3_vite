@@ -8,7 +8,7 @@
       </GridItem>
       <GridItem suffix>
         <div class="search-operation">
-          <el-button type="primary" :icon="Search" :loading="searchLoading" @click="search">查询</el-button>
+          <el-button type="primary" :icon="Search" :loading="searchLoading" @click="search(columns)">查询</el-button>
           <el-button :icon="Delete" @click="reset">重置</el-button>
           <el-button v-if="showCollapse" type="primary" link class="search-isOpen" @click="collapsed = !collapsed">
             {{ collapsed ? "展开" : "合并" }}
