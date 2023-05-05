@@ -85,8 +85,8 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         host: getIPAdress()
       }
     },
-    build: { // 生产环境移除 console debugger
-      minify: 'terser',
+    build: { // esbuild 打包更快，但是不能去除 console.log，terser打包慢，但能去除 console.log
+      minify: 'terser', // esbuild
       assetsInlineLimit: 8 * 1024, // 如果静态资源体积 >= 4KB，则提取成单独的文件 如果静态资源体积 < 4KB，则作为 base64 格式的字符串内联
       terserOptions: {
         compress: {

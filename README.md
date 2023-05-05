@@ -44,7 +44,7 @@ Vite-Admin 一款基于 Vue3.2、TypeScript、Vite3、Pinia、Element-Plus 开�
 
 ### 启动前
 
-- 需要在根目录配置.env.development和.env.production
+- 需要在根目录配置.env.development （生产：.env.production、 测试：.env.test）
 
 ### 启动
 
