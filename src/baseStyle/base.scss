@@ -116,4 +116,28 @@ a {
   display: block;
 }
 
-/*表格table和td有边框*/
+/* fade-transform 页面转场动画 */
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all 0.2s;
+}
+.fade-transform-enter-from {
+  opacity: 0;
+  transition: all 0.2s;
+  transform: translateX(-30px);
+}
+.fade-transform-leave-to {
+  opacity: 0;
+  transition: all 0.2s;
+  transform: translateX(30px);
+}
+
+/* nprogress 进度条 */
+#nprogress {
+  .bar {
+    z-index: 2003 !important;
+  }
+  .spinner {
+    z-index: 2003 !important;
+  }
+}

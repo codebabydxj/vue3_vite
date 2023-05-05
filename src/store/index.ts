@@ -37,6 +37,8 @@ const globalStore = defineStore({
         isWeak: false,
         // 折叠菜单
         isCollapse: true,
+        // 转场动画
+        isTransition: true,
       }
     }
   },

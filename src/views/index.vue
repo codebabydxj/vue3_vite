@@ -8,7 +8,11 @@
             <Tabs></Tabs>
           </template>
         </ComHeader>
-        <router-view></router-view>
+        <router-view v-slot="{ Component, route }">
+          <transition appear :name="isTransition ? 'fade-transform' : ''" mode="out-in">
+            <component :is="Component" :key="route.fullPath" />
+          </transition>
+        </router-view>
       </template>
     </Content>
   </div>
@@ -25,10 +29,16 @@ import Tabs from '@/components/headerTabs/index.vue';
 const myStore: any = globalStore()
 const themeConfig = computed(() => myStore.themeConfig)
 const isCollapse: any = ref(myStore.themeConfig.isCollapse)
+const isTransition: any = ref(myStore.themeConfig.isTransition)
 
 watch(() => myStore.themeConfig.isCollapse, (newVal: any) => {
   isCollapse.value = newVal
 })
+
+watch(() => myStore.themeConfig.isTransition, (newVal: any) => {
+  isTransition.value = newVal
+})
+
 const isCurCollapseChange = (bool: any) => {
   myStore.setThemeConfig({ ...themeConfig.value, isCollapse: bool });
 }

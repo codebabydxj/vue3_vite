@@ -37,12 +37,16 @@
       <span>折叠菜单</span>
       <el-switch v-model="themeConfig.isCollapse" inline-prompt :active-icon="Check" :inactive-icon="Close" @change="changeCollapse" />
     </div>
+    <div class="theme-item">
+      <span>页面转场动画</span>
+      <el-switch v-model="themeConfig.isTransition" inline-prompt :active-icon="Lock" :inactive-icon="Unlock" @change="changeTransition" />
+    </div>
   </el-drawer>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue"
-import { Check, Close } from "@element-plus/icons-vue"
+import { Check, Close, Lock, Unlock } from "@element-plus/icons-vue"
 import { useTheme } from "@/hooks/useTheme"
 import { globalStore } from '@/store'
 import SwitchDark from "@/components/ThemeDark/index.vue"
@@ -57,6 +61,10 @@ const { changePrimary, changeGreyOrWeak } = useTheme()
 
 const changeCollapse = (val: any) => {
   myStore.setThemeConfig({ ...themeConfig.value, isCollapse: val })
+}
+
+const changeTransition = (val: any) => {
+  myStore.setThemeConfig({ ...themeConfig.value, isTransition: val })
 }
 
 // 预定义主题颜色
