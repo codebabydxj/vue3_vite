@@ -9,6 +9,7 @@
       <li @click="closeOthers">关闭其他</li>
       <li @click="closeLeft">关闭左侧</li>
       <li @click="closeRight">关闭右侧</li>
+      <li @click="closeAll">全部关闭</li>
     </ul>
   </div>
 </template>
@@ -59,6 +60,15 @@ const openMenu = (e: any) => {
   top.value = e.clientY;
 }
 
+const messageTip = () => {
+  ElMessage({
+    showClose: true,
+    grouping: true,
+    message: '首页不能关闭',
+    type: 'warning',
+  });
+}
+
 const closeOthers = () => {
   const i = routes.value.find((item: any) => item.route === currentRoute.value);
   const idx = routes.value.findIndex((item: any) => item.route === currentRoute.value);
@@ -66,24 +76,14 @@ const closeOthers = () => {
     myStore.delRoute({ index: 1, count: routes.value.length - 1 });
     return
   }
-  ElMessage({
-    showClose: true,
-    grouping: true,
-    message: '首页不能关闭',
-    type: 'warning',
-  });
+  messageTip();
   myStore.delRoute({ index: 1, count: routes.value.length - 1, item: i });
 }
 
 const closeLeft = () => {
   const idx = routes.value.findIndex((item: any) => item.route === currentRoute.value);
   if (idx === 1) {
-    ElMessage({
-      showClose: true,
-      grouping: true,
-      message: '首页不能关闭',
-      type: 'warning',
-    });
+    messageTip();
     return
   }
   myStore.delRoute({ index: 1, count: idx - 1 });
@@ -92,6 +92,12 @@ const closeLeft = () => {
 const closeRight = () => {
   const idx = routes.value.findIndex((item: any) => item.route === currentRoute.value);
   myStore.delRoute({ index: idx + 1, count: 1000 });
+}
+
+const closeAll = () => {
+  myStore.delRoute({ index: 1, count: routes.value.length });
+  globalRouter.openView(routes.value[0].route)
+  messageTip();
 }
 
 const closeMenu = () => {

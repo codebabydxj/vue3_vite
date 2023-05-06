@@ -13,7 +13,7 @@
           title="部门列表(多选)"
           multiple
           label="name"
-          :request="{ url: '/api/user/department1', method: 'get' }"
+          :request="{ url: '/api/user/department', method: 'get' }"
           :defaultValue="treeFilterValue1.departmentId"
           @change="changeTreeFilter1"
         />

@@ -33,7 +33,9 @@ const removePending = (config: requestConfig) => {
 			JSON.stringify(config.params) === JSON.stringify(v.params) &&
 			JSON.stringify(config.data) === JSON.stringify(v.data)
 		) {
-			v.controller.abort();
+      setTimeout(() => {
+        v.controller.abort();
+      }, 1000)
 			return true;
 		}
 		return false;

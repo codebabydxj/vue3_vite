@@ -5,36 +5,36 @@ export default {
   access: true,
   routes: [
     {
-      path: '/departManage',
-      key: 'departManage',
+      path: '/routerLimit',
+      key: 'routerLimit',
       access: true,
       meta: {
         permission: {},
       },
-      title: '部门管理',
+      title: '路由权限',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'departManage',
-          component: () => import('../../views/authManage/departManage/index.vue'),
+          name: 'routerLimit',
+          component: () => import('../../views/authManage/routerLimit/index.vue'),
         },
       ],
     },
     {
-      path: '/userManage',
-      key: 'userManage',
+      path: '/buttonLimit',
+      key: 'buttonLimit',
       access: true,
       meta: {
         permission: {},
       },
-      title: '角色分配',
+      title: '按钮权限',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'userManage',
-          component: () => import('../../views/authManage/userManage/index.vue'),
+          name: 'buttonLimit',
+          component: () => import('../../views/authManage/buttonLimit/index.vue'),
         },
       ],
     },
