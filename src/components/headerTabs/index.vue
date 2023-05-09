@@ -16,11 +16,16 @@
 
 <script setup lang="ts" name="HeaderTabs">
 import { ref, watch, inject, watchEffect } from 'vue'
+import { useRoute } from 'vue-router'
 import { globalStore } from '@/store'
-import { ElMessage } from 'element-plus';
+import { useKeepAliveStore } from '@/store/keepAlive'
+import { ElMessage } from 'element-plus'
+
+const route = useRoute()
 
 // 获取全局store
 const myStore: any = globalStore()
+const keepAliveStore = useKeepAliveStore();
 // 通过inject获取挂载在全局的globalRouter方法，初始化view
 const globalRouter: any = inject('globalRouter')
 globalRouter.initView();
@@ -45,7 +50,14 @@ watch(() => visable.value, (value: any) => {
   }
 })
 
-const tabClick = (obj: any, event: any) => {
+// 监听路由的变化，设定keepAlive
+watch(() => route.fullPath, (newVal: any, oldVal: any) => {
+  if (newVal && ![newVal, oldVal].includes('/home/_empty') && (newVal !== oldVal)) {
+    route.meta.isKeepAlive && keepAliveStore.addKeepAliveName(route.name as string);
+  }
+}, { immediate: true });
+
+const tabClick = (obj: any) => {
   if (obj.props.name === currentRoute.value) return;
   globalRouter.openView(obj.props.name);
 }
@@ -72,6 +84,7 @@ const messageTip = () => {
 const closeOthers = () => {
   const i = routes.value.find((item: any) => item.route === currentRoute.value);
   const idx = routes.value.findIndex((item: any) => item.route === currentRoute.value);
+  keepAliveStore.updateKeepAliveName([route.name] as string[]);
   if (idx === 0) {
     myStore.delRoute({ index: 1, count: routes.value.length - 1 });
     return
@@ -87,15 +100,20 @@ const closeLeft = () => {
     return
   }
   myStore.delRoute({ index: 1, count: idx - 1 });
+  const updateName = routes.value.map((i: any) => i.name);
+  keepAliveStore.updateKeepAliveName(updateName as string[]);
 }
 
 const closeRight = () => {
   const idx = routes.value.findIndex((item: any) => item.route === currentRoute.value);
   myStore.delRoute({ index: idx + 1, count: 1000 });
+  const updateName = routes.value.map((i: any) => i.name);
+  keepAliveStore.updateKeepAliveName(updateName as string[]);
 }
 
 const closeAll = () => {
   myStore.delRoute({ index: 1, count: routes.value.length });
+  keepAliveStore.updateKeepAliveName();
   globalRouter.openView(routes.value[0].route)
   messageTip();
 }

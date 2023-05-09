@@ -11,7 +11,7 @@
   </flex-card>
 </template>
 
-<script setup lang="ts" name="dragDirect">
+<script setup lang="ts" name="DragDirect">
 import { computed } from 'vue'
 import { globalStore } from '@/store'
 

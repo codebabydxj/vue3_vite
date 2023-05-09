@@ -21,7 +21,7 @@
   </flex-card>
 </template>
 
-<script setup lang="ts" name="page403">
+<script setup lang="ts" name="Page403">
 import { ref, onMounted } from "vue"
 import { useRouter } from "vue-router"
 

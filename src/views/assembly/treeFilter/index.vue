@@ -35,7 +35,7 @@
   </flex-card>
 </template>
 
-<script setup lang="ts" name="treeFilter">
+<script setup lang="ts" name="TreeFilter">
 import { reactive } from "vue";
 import { ElMessage } from "element-plus";
 import TreeFilter from "@/components/TreeFilter/index.vue";

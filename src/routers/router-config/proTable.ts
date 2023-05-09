@@ -10,14 +10,28 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '使用 ProTable',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'useProTable',
+          name: 'UseProTable',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/proTable/useProTable/index.vue'),
+        },
+        {
+          path: 'details',
+          name: 'Details',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
+          component: () => import('../../views/proTable/useProTable/details.vue'),
         },
       ],
     },
@@ -27,13 +41,18 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '使用 TreeFilter',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'useTreeFilter',
+          name: 'UseTreeFilter',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/proTable/useTreeFilter/index.vue'),
         },
       ],

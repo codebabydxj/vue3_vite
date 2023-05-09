@@ -8,7 +8,7 @@
   </flex-card>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="PPTPage">
 import PPT from '@/components/ppt/index.vue'
 
 </script>

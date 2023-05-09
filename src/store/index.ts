@@ -19,7 +19,7 @@ const globalStore = defineStore({
     return {
       routerConfig,
       currentRoute: '/',
-      routes: <any>[{title: '欢迎使用', route: '/welcome', realPath: '/welcome'}],
+      routes: <any>[{title: '欢迎使用',  name: 'Home', route: '/home', realPath: '/home' }],
       // 常量
       consts: <any>[],
       userInfo: <any>{},
@@ -50,7 +50,7 @@ const globalStore = defineStore({
       this.currentRoute = rootPath;
     },
     addRoute(route: any) {
-      if (route.route !== '/welcome') {
+      if (route.route !== '/home') {
         this.routes.push(route);
       }
     },

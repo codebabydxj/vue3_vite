@@ -28,7 +28,7 @@
 	</div>
 </template>
 
-<script setup lang="ts" name="SelectIcon">
+<script setup lang="ts" name="SelectIconChild">
 import { ref, computed } from "vue";
 import * as ElementIcon from '@element-plus/icons-vue'
 import * as AntdIcons from '@vicons/antd'

@@ -10,13 +10,18 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '水球图',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'waterChart',
+          name: 'WaterChart',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/echarts/waterChart/index.vue'),
         }
       ],
@@ -27,13 +32,18 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '柱状图',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'columnChart',
+          name: 'ColumnChart',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/echarts/columnChart/index.vue'),
         }
       ],
@@ -44,13 +54,18 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '折线图',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'lineChart',
+          name: 'LineChart',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/echarts/lineChart/index.vue'),
         }
       ],
@@ -61,13 +76,18 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '饼图',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'pieChart',
+          name: 'PieChart',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/echarts/pieChart/index.vue'),
         }
       ],
@@ -78,13 +98,18 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '雷达图',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'radarChart',
+          name: 'RadarChart',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/echarts/radarChart/index.vue'),
         }
       ],
@@ -95,13 +120,18 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '嵌套环形图',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'nestedChart',
+          name: 'NestedChart',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/echarts/nestedChart/index.vue'),
         }
       ],

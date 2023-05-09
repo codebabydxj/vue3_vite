@@ -11,7 +11,7 @@
   </flex-card>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="LongpressDirect">
 import { ElMessage } from "element-plus";
 
 const longpress = () => {

@@ -8,7 +8,7 @@
   </flex-card>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="WaterChart">
 import { ref, onMounted } from "vue";
 import { useEcharts } from "@/hooks/useEcharts";
 import * as echarts from "echarts";

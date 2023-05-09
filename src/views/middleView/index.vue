@@ -1,15 +1,32 @@
 <template>
   <main class="main-interface">
-    <router-view :key="fullPath"></router-view>
+    <router-view v-slot="{ Component, route }">
+      <transition appear :name="isTransition ? 'fade-transform' : ''" mode="out-in">
+        <keep-alive :include="keepAliveName">
+          <component :is="Component" :key="route.fullPath" />
+        </keep-alive>
+      </transition>
+    </router-view>
   </main>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, watch } from 'vue';
+import { storeToRefs } from "pinia";
+import { globalStore } from '@/store';
+import { useKeepAliveStore } from "@/store/keepAlive";
 
-const route = useRoute();
-const fullPath = computed(() => route.fullPath);
+// 入场动画配置
+const myStore: any = globalStore()
+const isTransition: any = ref(myStore.themeConfig.isTransition)
+
+// keep页面缓存
+const keepAliveStore = useKeepAliveStore()
+const { keepAliveName } = storeToRefs(keepAliveStore);
+
+watch(() => myStore.themeConfig.isTransition, (newVal: any) => {
+  isTransition.value = newVal
+})
 </script>
 
 <style scoped lang="scss">

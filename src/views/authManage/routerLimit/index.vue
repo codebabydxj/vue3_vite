@@ -8,7 +8,7 @@
   </flex-card>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="RouterLimit">
 
 </script>
 

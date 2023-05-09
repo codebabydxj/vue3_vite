@@ -10,13 +10,18 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '复制指令',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'copyDirect',
+          name: 'CopyDirect',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/directives/copyDirect/index.vue'),
         }
       ],
@@ -27,13 +32,18 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '水印指令',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'watermarkDirect',
+          name: 'WatermarkDirect',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/directives/watermarkDirect/index.vue'),
         }
       ],
@@ -44,13 +54,18 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '拖拽指令',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'dragDirect',
+          name: 'DragDirect',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/directives/dragDirect/index.vue'),
         }
       ],
@@ -61,13 +76,18 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '防抖指令',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'debounceDirect',
+          name: 'DebounceDirect',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/directives/debounceDirect/index.vue'),
         }
       ],
@@ -78,13 +98,18 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '节流指令',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'throttleDirect',
+          name: 'ThrottleDirect',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/directives/throttleDirect/index.vue'),
         }
       ],
@@ -95,13 +120,18 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '长按指令',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'longpressDirect',
+          name: 'LongpressDirect',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/directives/longpressDirect/index.vue'),
         }
       ],

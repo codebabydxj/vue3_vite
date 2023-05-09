@@ -17,7 +17,7 @@
   </flex-card>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="SelectIcon">
 import { ref } from "vue";
 import SelectIcon from "@/components/selectIcon/index.vue";
 const iconValue = ref('');

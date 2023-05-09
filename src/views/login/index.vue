@@ -60,7 +60,7 @@
   <verify-code v-if="isShowCode" :isShowCode="isShowCode" @verifyCb="handleVerifyCb"></verify-code>
 </template>
 
-<script setup lang="ts" name="Login">
+<script setup lang="ts">
 import { reactive, ref } from 'vue';
 import { client } from '@/utils/https/client';
 import * as API from '@/config/api';
@@ -68,6 +68,7 @@ import { useRouter } from 'vue-router';
 import md5 from 'js-md5';
 import { getTimeState } from '@/utils/tools';
 import { globalStore } from '@/store'
+import { useKeepAliveStore } from "@/store/keepAlive";
 import { User, Lock, CircleClose } from '@element-plus/icons-vue';
 import { ElForm, ElNotification } from 'element-plus';
 import verifyCode from '@/components/verifyCode/index.vue';
@@ -75,6 +76,7 @@ import SwitchDark from "@/components/ThemeDark/index.vue";
 
 type FormInstance = InstanceType<typeof ElForm>
 const myStore: any = globalStore()
+const keepAliveStore = useKeepAliveStore();
 const router = useRouter()
 const ruleFormRef = ref<FormInstance>();
 const ruleForm = reactive({
@@ -96,9 +98,15 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       const params = { ...ruleForm, password: md5(ruleForm.password) };
       client.post(API.login, params)
       .then((res: any) => {
-        myStore.setUserInfo(res.data) // 登录完成保存用户信息
+        // 1.登录完成保存用户信息
+        myStore.setUserInfo(res.data) 
 
+        // 2.清空 keepAlive 数据
+        keepAliveStore.updateKeepAliveName();
+
+        // 3.跳转到首页
         router.replace('/');
+
         ElNotification({
           title: getTimeState(),
           message: "欢迎登录 Vite-Admin",

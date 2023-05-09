@@ -18,9 +18,9 @@
   </flex-card>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="BatchImport">
 import { ref } from "vue";
-import uploadExcel from '@/components/uploadExcel/index.vue'
+import uploadExcel from "@/components/uploadExcel/index.vue";
 
 const importRef = ref();
 const batchAdd = () => {

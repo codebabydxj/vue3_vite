@@ -32,7 +32,7 @@
 	</div>
 </template>
 
-<script setup lang="ts" name="TreeFilter">
+<script setup lang="ts" name="TreeFilterChild">
 import { client } from "@/utils/https/client";
 import { ref, watch, onBeforeMount, nextTick } from "vue";
 import { ElTree } from "element-plus";
@@ -76,14 +76,7 @@ const setSelected = () => {
 onBeforeMount(async () => {
 	// 重新接收一下默认值
 	setSelected()
-
-	// 有数据就直接赋值，没有数据就执行请求函数
-	if (props.data?.length) {
-		treeData.value = props.data;
-		treeAllData.value = [{ id: '', [props.label]: '全部' }, ...props.data];
-		return;
-	}
-	// 没有mock数据执行api请求数据
+	// 执行api请求数据
 	if (props.request && props.request.url) {
 		getInitData()
 	}
@@ -100,6 +93,17 @@ const getInitData = async () => {
 watch(
   () => props.defaultValue,
   () => nextTick(() => setSelected()),
+  { deep: true, immediate: true }
+);
+
+watch(
+  () => props.data,
+  () => {
+    if (props.data?.length && !props.request) {
+      treeData.value = props.data;
+      treeAllData.value = [{ id: '', [props.label]: '全部' }, ...props.data];
+    }
+  },
   { deep: true, immediate: true }
 );
 

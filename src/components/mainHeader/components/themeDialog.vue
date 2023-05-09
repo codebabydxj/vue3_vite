@@ -44,7 +44,7 @@
   </el-drawer>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="ThemeConfigPage">
 import { computed } from "vue"
 import { Check, Close, Lock, Unlock } from "@element-plus/icons-vue"
 import { useTheme } from "@/hooks/useTheme"

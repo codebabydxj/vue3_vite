@@ -29,7 +29,7 @@
   </el-drawer>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="TableMemoryPage">
 import { ColumnProps } from '@/components/ProTable/interface'
 
 const props = defineProps({

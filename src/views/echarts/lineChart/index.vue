@@ -8,7 +8,7 @@
   </flex-card>
 </template>
 
-<script setup lang="ts" name="lineChart">
+<script setup lang="ts" name="LineChart">
 import { ref, onMounted } from "vue";
 import * as echarts from "echarts";
 import { useEcharts } from "@/hooks/useEcharts";

@@ -10,13 +10,18 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '编辑器',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'editor',
+          name: 'Editor',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/toolsManage/editor/index.vue'),
         },
       ],
@@ -27,13 +32,18 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '幻灯片',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'ppt',
+          name: 'PPT',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/toolsManage/ppt/index.vue'),
         },
       ],

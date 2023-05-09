@@ -15,6 +15,7 @@
             <el-button type="primary" :icon="Upload" plain @click="batchAdd">批量添加用户</el-button>
             <el-button type="primary" :icon="Download" plain @click="exportData">导出用户数据</el-button>
             <el-button type="danger" :icon="Delete" plain @click="batchDelete(scope.selectedListIds)" :disabled="!scope.isSelected">批量删除用户</el-button>
+            <el-button type="primary" @click="goToDetail">二级详情页面</el-button>
           </template>
           <!-- 表格操作 -->
           <template #operation="scope">
@@ -33,16 +34,16 @@
   </flex-card>
 </template>
 
-<script setup lang="ts">
-import { ref, reactive } from 'vue'
-import { client } from "@/utils/https/client"
+<script setup lang="ts" name="UseProTable">
+import { ref, reactive, inject } from 'vue'
 import { CirclePlus, Delete, EditPen, Download, Upload, View } from "@element-plus/icons-vue"
 import { ElMessage, ElMessageBox } from "element-plus"
-import ProTable from '@/components/ProTable/index.vue'
+import { client } from "@/utils/https/client"
 import { useHandleData } from "@/hooks/useHandleData"
 import { useDownload } from "@/hooks/useDownload";
+import ProTable from '@/components/ProTable/index.vue'
 import { ColumnProps } from "@/components/ProTable/interface"
-import uploadExcel from '@/components/uploadExcel/index.vue'
+import uploadExcel from "@/components/uploadExcel/index.vue"
 
 // 请求table数据
 const requestApiParams = ref({ url: '/api/proTable' })
@@ -60,12 +61,15 @@ const dataCallback = (data: any) => {
 	};
 };
 
-// 如果表格需要初始化请求参数，直接定义传给 ProTable(之后每次请求都会自动带上该参数，此参数更改之后也会一直带上，改变此参数会自动刷新表格数据)
-const initParam = reactive({
+/** 
+ * 如果表格需要初始化请求参数，直接定义传给 ProTable(之后每次请求都会自动带上该参数，此参数更改之后也会一直带上，改变此参数会自动刷新表格数据)
+ * 如果是结合了tree，给proTable组件 的 requestAuto 属性设为 false，不会自动请求表格数据，等待 treeFilter 数据回来之后，更改 initParam 的值，才会触发请求 proTable 数据
+*/
+const initParam = reactive(<any>{
 	type: 1
 });
 
-// 表格配置项 ---- 不加search就不会成为搜索条件，enum也可以通过接口获取常量值
+// 表格配置项 ---- 不加search就不会成为搜索条件，enum 也可以通过接口获取常量值
 const columns: ColumnProps[] = [
 	{ type: 'selection', fixed: 'left', width: 80 },
 	{ type: 'index', label: '序号', width: 80 },
@@ -130,6 +134,12 @@ const handleDel = async (row: any) => {
     });
     proTable.value.getTableList();
   })
+}
+
+// 跳转二级页面
+const globalRouter: any = inject('globalRouter')
+const goToDetail = () => {
+  globalRouter.openView('/useProTable/details')
 }
 </script>
 

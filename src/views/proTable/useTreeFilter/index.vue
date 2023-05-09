@@ -5,8 +5,8 @@
         <TreeFilter
           label="name"
           title="部门列表(单选)"
-          :request="{ url: '/api/user/department', method: 'get' }"
-          :defaultValue="treeFilterValue.departmentId"
+          :data="treeFilterData"
+          :defaultValue="initParam.departmentId"
           @change="changeTreeFilter"
         />
         <div class="over-card table-box">
@@ -16,6 +16,7 @@
             :columns="columns"
             :initParam="initParam"
             :requestApiParams="requestApiParams"
+            :requestAuto="false"
             :dataCallback="dataCallback">
             <!-- 表格 header 按钮 -->
             <template #tableHeader="scope">
@@ -42,23 +43,17 @@
   </flex-card>
 </template>
 
-<script setup lang="ts">
-import { ref, reactive } from 'vue'
+<script setup lang="ts" name="UseTreeFilter">
+import { ref, reactive, onMounted } from 'vue'
 import { client } from "@/utils/https/client"
 import { ElMessage, ElMessageBox } from "element-plus"
 import { CirclePlus, Delete, EditPen, Download, Upload, View } from "@element-plus/icons-vue"
 import TreeFilter from "@/components/TreeFilter/index.vue"
 import ProTable from '@/components/ProTable/index.vue'
 import { useHandleData } from "@/hooks/useHandleData"
-import { useDownload } from "@/hooks/useDownload";
+import { useDownload } from "@/hooks/useDownload"
 import { ColumnProps } from "@/components/ProTable/interface"
 import uploadExcel from '@/components/uploadExcel/index.vue'
-
-const treeFilterValue = reactive({ departmentId: "1" });
-const changeTreeFilter = (val: string) => {
-	ElMessage.success(`你选择了 id 为 ${val} 的数据🤔`);
-	treeFilterValue.departmentId = val;
-};
 
 // 请求table数据
 const requestApiParams = ref({ url: '/api/proTable' })
@@ -76,10 +71,31 @@ const dataCallback = (data: any) => {
 	};
 };
 
-// 如果表格需要初始化请求参数，直接定义传给 ProTable(之后每次请求都会自动带上该参数，此参数更改之后也会一直带上，改变此参数会自动刷新表格数据)
-const initParam = reactive({
-	type: 1
+/** 
+ * 如果表格需要初始化请求参数，直接定义传给 ProTable(之后每次请求都会自动带上该参数，此参数更改之后也会一直带上，改变此参数会自动刷新表格数据)
+ * 如果是结合了tree，给proTable组件 的 requestAuto 属性设为 false，不会自动请求表格数据，等待 treeFilter 数据回来之后，更改 initParam 的值，才会触发请求 proTable 数据
+*/
+const initParam = reactive(<any>{
+	departmentId: ''
 });
+
+// 获取 treeFilter 数据
+const treeFilterData = ref<any>([]);
+const getTreeFilter = async () => {
+  const { data } = await client.get('/api/user/department')
+  treeFilterData.value = data;
+  initParam.departmentId = treeFilterData.value[0].id;
+};
+
+onMounted(() => {
+  getTreeFilter()
+})
+
+const changeTreeFilter = (val: string) => {
+	ElMessage.success("请注意查看请求参数变化 🤔");
+  proTable.value.pageable.pageNum = 1;
+  initParam.departmentId = val;
+};
 
 // 表格配置项 ---- 不加search就不会成为搜索条件，enum也可以通过接口获取常量值
 const columns: ColumnProps[] = [

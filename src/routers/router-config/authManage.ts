@@ -10,13 +10,18 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '路由权限',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'routerLimit',
+          name: 'RouterLimit',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/authManage/routerLimit/index.vue'),
         },
       ],
@@ -27,13 +32,18 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '按钮权限',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'buttonLimit',
+          name: 'ButtonLimit',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/authManage/buttonLimit/index.vue'),
         },
       ],

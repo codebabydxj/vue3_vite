@@ -8,11 +8,7 @@
             <Tabs></Tabs>
           </template>
         </ComHeader>
-        <router-view v-slot="{ Component, route }">
-          <transition appear :name="isTransition ? 'fade-transform' : ''" mode="out-in">
-            <component :is="Component" :key="route.fullPath" />
-          </transition>
-        </router-view>
+        <router-view></router-view>
       </template>
     </Content>
   </div>
@@ -20,23 +16,19 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { globalStore } from '@/store'
+import { globalStore } from '@/store';
 import MenuBar from '@/components/menuBar/index.vue';
 import Content from '@/components/mainContent/index.vue';
 import ComHeader from '@/components/mainHeader/index.vue';
 import Tabs from '@/components/headerTabs/index.vue';
 
+// 主题配置
 const myStore: any = globalStore()
 const themeConfig = computed(() => myStore.themeConfig)
 const isCollapse: any = ref(myStore.themeConfig.isCollapse)
-const isTransition: any = ref(myStore.themeConfig.isTransition)
 
 watch(() => myStore.themeConfig.isCollapse, (newVal: any) => {
   isCollapse.value = newVal
-})
-
-watch(() => myStore.themeConfig.isTransition, (newVal: any) => {
-  isTransition.value = newVal
 })
 
 const isCurCollapseChange = (bool: any) => {

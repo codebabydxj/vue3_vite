@@ -37,7 +37,7 @@
   </flex-card>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts" name="EditorPage">
 import { ref, computed } from 'vue'
 import { globalStore } from '@/store'
 import Editor from '@/components/editor/index.vue'

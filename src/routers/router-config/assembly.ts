@@ -10,13 +10,18 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: 'SVG 图标',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'svgIcon',
+          name: 'SvgIcon',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/assembly/svgIcon/index.vue'),
         }
       ],
@@ -27,31 +32,41 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '树形筛选器',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'treeFilter',
+          name: 'TreeFilter',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/assembly/treeFilter/index.vue'),
         }
       ],
     },
     {
-      path: '/bachImport',
-      key: 'bachImport',
+      path: '/batchImport',
+      key: 'batchImport',
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '批量添加数据',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'bachImport',
-          component: () => import('../../views/assembly/bachImport/index.vue'),
+          name: 'BatchImport',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
+          component: () => import('../../views/assembly/batchImport/index.vue'),
         }
       ],
     },
@@ -61,13 +76,18 @@ export default {
       access: true,
       meta: {
         permission: {},
+        isKeepAlive: true
       },
       title: '图标选择器',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {
           path: '',
-          name: 'selectIcon',
+          name: 'SelectIcon',
+          meta: {
+            permission: {},
+            isKeepAlive: true
+          },
           component: () => import('../../views/assembly/selectIcon/index.vue'),
         }
       ],
