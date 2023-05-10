@@ -145,8 +145,7 @@ const globalRouter = {
       keepAliveStore.addKeepAliveName(curName as string)
       routers.replace(_fullPath);
     });
-  },
-
+  }
 }
 
 // 根据path，从store的routerConfig查找相应的title
