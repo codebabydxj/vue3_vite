@@ -6,22 +6,22 @@
           <div class="contain" :style="{ height: maxHeight }">
             <div class="main-warp">
               <h3 class="v-h3">{{ greetings }}</h3>
-              <div class="letter"> 
+              <div class="letter">
                 <p> 1. 页面布局</p>
                 <p class="colors">
-                  <el-row>{{ '<template>' }}</el-row>
-                  <el-row style="text-indent: 2em">{{ '<flex-card>' }}</el-row>
-                  <el-row style="text-indent: 4em">{{ '<div class="base-warp">' }}</el-row>
-                  <el-row style="text-indent: 6em">{{ '<el-card>' }}</el-row>
-                  <el-row style="text-indent: 8em; color: red; font-weight: bold;">/ 这里就是你需要写的dom啦 /</el-row>
-                  <el-row style="text-indent: 6em">{{ '</el-card >' }}</el-row>
-                  <el-row style="text-indent: 4em">{{ '</div>' }}</el-row>
-                  <el-row style="text-indent: 2em">{{ '</flex-card>' }}</el-row>
-                  <el-row>{{ '</template>' }}</el-row>
+                  <div>{{ '<template>' }}</div>
+                  <div style="text-indent: 2em">{{ '<flex-card>' }}</div>
+                  <div style="text-indent: 4em">{{ '<div class="base-warp">' }}</div>
+                  <div style="text-indent: 6em">{{ '<el-card>' }}</div>
+                  <div style="text-indent: 8em; color: red; font-weight: bold;">/ 这里就是你需要写的dom啦 /</div>
+                  <div style="text-indent: 6em">{{ '</el-card >' }}</div>
+                  <div style="text-indent: 4em">{{ '</div>' }}</div>
+                  <div style="text-indent: 2em">{{ '</flex-card>' }}</div>
+                  <div>{{ '</template>' }}</div>
                 </p>
               </div>
               <div class="letter"> 
-                <p> 2. 页面路由的创建</p>
+                <p> 2. 页面路由的创建（使用了keep-alive缓存页面）</p>
                 <p class="colors">
                   不同的菜单就在<span style="color: red; font-weight: bold;">router/router-config</span>文件夹下建不同的ts文件，最后在<span style="color: red; font-weight: bold;">router-config/index.ts</span>统一导出即可。（除了目录清晰，多人开发防止冲突很有必要）
                 </p>
@@ -76,8 +76,8 @@
 </template>
 
 <script setup lang="ts" name="Home">
-import { computed } from 'vue'
-import { globalStore } from '@/store'
+import { computed } from "vue";
+import { globalStore } from "@/store";
 
 const date: Date = new Date();
 const greetings = computed(() => {

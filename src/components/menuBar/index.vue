@@ -35,7 +35,7 @@
           <span slot="title">{{ routeWrap.title }}</span>
         </template>
         <template v-for="route in routeWrap.routes" :key="route.path.split('?')[0]">
-          <el-menu-item :index="route.path" v-if="(!route.meta.hidden || route.meta.hidden !== 1)"
+          <el-menu-item :index="route.path" v-if="(route.meta && (!route.meta.hidden || route.meta.hidden !== 1))"
             @click="routeGo(route.path)">
             {{ route.title }}
           </el-menu-item>
