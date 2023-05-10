@@ -1,6 +1,6 @@
 export default {
   key: 'basic',
-  title: '基本信息',
+  title: '欢迎使用',
   icon: 'HomeFilled',
   access: true,
   routes: [
@@ -12,7 +12,7 @@ export default {
         permission: {},
         isKeepAlive: false
       },
-      title: '欢迎使用',
+      title: '首页',
       component: () => import('../../views/middleView/index.vue'),
       children: [
         {

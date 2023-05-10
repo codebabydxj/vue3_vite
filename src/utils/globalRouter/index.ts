@@ -156,8 +156,8 @@ const getByPath = (rootpath: any, fullpath: any) => {
   let result: any = {};
   for (let i = 0; i < routerConfig.length; i++) {
     const s: any = routerConfig[i].routes.find((item: any) => item.path === rootpath);
-    const sname: any = s && s.children.find((i: any) => i.path === '').name
-    const n: any = routerConfig[i].routes[0].children.find((item: any) => item.path === childs[childs.length - 1]);
+    const sname: any = s && s.children && s.children.find((i: any) => i.path === '').name
+    const n: any = routerConfig[i].routes[0].children && routerConfig[i].routes[0].children.find((item: any) => item.path === childs[childs.length - 1]);
     if (s && n) {
       result = {
         title: s.title,
