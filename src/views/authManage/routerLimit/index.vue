@@ -84,7 +84,7 @@ const handleDel = async (row: any) => {
 // 新增/查看/编辑 菜单
 const drawerRef = ref<InstanceType<typeof UserDrawer> | null>(null);
 const openDrawer = (title: string, row: any = {}) => {
-  const treeList: any = [{ meta: { title: '顶级菜单' }, parentId: '' }, ...menuProTable.value.tableData];
+  const treeList: any = [{ meta: { title: '顶级菜单' }, parentId: '0' }, ...menuProTable.value.tableData];
   const params = {
     title,
     row: { ...row, status: 1 },
