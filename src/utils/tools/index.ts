@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import { useDebounceFn } from "@vueuse/core";
-import { globalStore } from '@/store'
+import { globalStore } from '@/store';
+import { FieldNamesProps } from "@/components/ProTable/interface";
 
 /**
  * @description 树形结构数扁平化处理
@@ -141,8 +142,8 @@ export const isObjectValueEqual = (a: { [key: string]: any }, b: { [key: string]
 /** 导出获取窗口的宽高 */ 
 export const useWinSize = useDebounceFn(() => {
   const myStore: any = globalStore()
-  let diffH: any = 133 // header高度(43) + flexCard组件padding(40) + el-card组件padding(40) + 底部预留(10)
-  if (myStore.pagination) diffH = 185 // + 表格分页(62)
+  let diffH: any = 148 // header高度(43) + flexCard组件padding(40) + el-card组件padding(40) + 底部预留(25)
+  if (myStore.pagination) diffH = 210 // + 表格分页(62)
   const size = ref({ width: window.innerWidth, height: window.innerHeight, contentHeight: window.innerHeight - diffH });
   // 窗口变化时候更新 size，每次重新计算需要重置一些store属性，请在APP.vue文件中修改！！！
   myStore.setMaxHeight(`${size.value.contentHeight}px`)
@@ -181,4 +182,51 @@ export function handleProp(prop: string) {
   const propArr = prop.split(".");
   if (propArr.length == 1) return prop;
   return propArr[propArr.length - 1];
+}
+
+/**
+ * @description 根据枚举列表查询当需要的数据（如果指定了 label 和 value 的 key值，会自动识别格式化）
+ * @param {String} callValue 当前单元格值
+ * @param {Array} enumData 字典列表
+ * @param {Array} fieldNames label && value && children 的 key 值
+ * @param {String} type 过滤类型（目前只有 tag）
+ * @returns {String}
+ * */
+export function filterEnum(callValue: any, enumData?: any, fieldNames?: FieldNamesProps, type?: "tag") {
+  const value = fieldNames?.value ?? "value";
+  const label = fieldNames?.label ?? "label";
+  const children = fieldNames?.children ?? "children";
+  let filterData: { [key: string]: any } = {};
+  // 判断 enumData 是否为数组
+  if (Array.isArray(enumData)) filterData = findItemNested(enumData, callValue, value, children);
+  // 判断是否输出的结果为 tag 类型
+  if (type == "tag") {
+    return filterData?.tagType ? filterData.tagType : "";
+  } else {
+    return filterData ? filterData[label] : "--";
+  }
+}
+
+/**
+ * @description 递归查找 callValue 对应的 enum 值
+ * */
+export function findItemNested(enumData: any, callValue: any, value: string, children: string) {
+  return enumData.reduce((accumulator: any, current: any) => {
+    if (accumulator) return accumulator;
+    if (current[value] === callValue) return current;
+    if (current[children]) return findItemNested(current[children], callValue, value, children);
+  }, null);
+}
+
+/**
+ * @description 使用递归过滤出需要渲染在左侧菜单的列表 (需剔除 isHide == true 的菜单)
+ * @param {Array} menuList 菜单列表
+ * @returns {Array}
+ * */
+export function getShowMenuList(menuList: any[]) {
+  let newMenuList: any[] = JSON.parse(JSON.stringify(menuList));
+  return newMenuList.filter((item: any) => {
+    item.children?.length && (item.children = getShowMenuList(item.children));
+    return !item.meta?.isHide;
+  });
 }

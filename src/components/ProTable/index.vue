@@ -1,13 +1,14 @@
 <template>
 	<div class="table-main">
 		<!-- 搜索 查询表单 -->
-		<div class="table-search" ref="searchRef" v-if="columns.length">
-			<SearchForm 
-				:search="search"
+		<div class="table-search" ref="searchRef" v-if="isSearch">
+			<SearchForm
 				:columns="searchColumns"
 				:search-param="searchParam"
 				:search-col="searchCol"
 				:searchLoading="searchLoading"
+				:search="search"
+				:reset="reset"
 			/>
 		</div>
 		<!-- 表格头部 操作按钮 -->
@@ -22,6 +23,7 @@
 		</div>
 		<!-- 表格主体 -->
 		<el-table
+			v-if="refreshTable"
 			ref="tableRef"
 			v-bind="$attrs"
 			:size="tableSize"
@@ -30,6 +32,7 @@
 			:data="tableData"
 			:border="border"
 			:row-key="rowKey"
+			:default-expand-all="isExpand"
 			@selection-change="selectionChange">
 			<!-- 默认插槽 -->
 			<slot>我是默认插槽</slot>
@@ -84,18 +87,18 @@
 </template>
 
 <script setup lang="ts" name="ProTable">
-import { ref, onMounted, watchEffect, watch, provide } from "vue"
-import { globalStore } from '@/store'
-import { useTable } from "@/hooks/useTable"
-import { useSelection } from "@/hooks/useSelection"
-import { handleProp } from "@/utils/tools/index";
-import { ElTable, TableProps } from "element-plus"
-import { ColumnProps } from "@/components/ProTable/interface"
-import { BreakPoint } from "@/components/Grid/interface"
-import tableConfig from '@/components/tableConfig/index.vue'
-import SearchForm from "@/components/SearchForm/index.vue"
-import TableColumn from "./components/TableColumn.vue"
-import Pagination from "./components/Pagination.vue"
+import { ref, onMounted, watchEffect, watch, provide, nextTick } from "vue";
+import { globalStore } from "@/store";
+import { useTable } from "@/hooks/useTable";
+import { useSelection } from "@/hooks/useSelection";
+import { handleProp } from "@/utils/tools";
+import { ElTable, TableProps } from "element-plus";
+import { ColumnProps } from "@/components/ProTable/interface";
+import { BreakPoint } from "@/components/Grid/interface";
+import tableConfig from "@/components/tableConfig/index.vue";
+import SearchForm from "@/components/SearchForm/index.vue";
+import TableColumn from "./components/TableColumn.vue";
+import Pagination from "./components/Pagination.vue";
 
 interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 	columns: ColumnProps[]; // 列配置项
@@ -110,6 +113,7 @@ interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 	toolButton?: boolean; // 是否显示表格功能按钮 ==> 非必传（默认为true）
 	rowKey?: string; // 行数据的 Key，用来优化 Table 的渲染，当表格数据多选时，所指定的 id ==> 非必传（默认为 id）
 	searchCol?: number | Record<BreakPoint, number>; // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }
+	isSearch?: boolean; // 是否需要搜索
 }
 
 // 接受父组件参数，配置默认值
@@ -121,6 +125,7 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 	border: true,
 	toolButton: true,
 	rowKey: 'id',
+	isSearch: true,
 	searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 })
 });
 
@@ -184,6 +189,17 @@ watchEffect(() => {
 		maxHeight.value = `${myStore.winSize.contentHeight}px`
 	}
 })
+
+// 存在树形 table 时， 展开和合并调用
+const isExpand = ref(<boolean>false);
+const refreshTable = ref(<boolean>true);
+const setExpand = () => {
+	refreshTable.value = false;
+	isExpand.value = !isExpand.value;
+	nextTick(() => {
+		refreshTable.value = true;
+	})
+}
 
 // 清空选中数据列表
 const clearSelection = () => tableRef.value!.clearSelection();
@@ -260,6 +276,7 @@ defineExpose({
 	selectedListIds,
 	getTableList,
 	reset,
-	clearSelection
+	clearSelection,
+	setExpand
 });
 </script>

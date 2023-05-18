@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts" name="HeaderTabs">
-import { ref, watch, inject, watchEffect } from 'vue'
+import { ref, watch, inject, watchEffect, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import { globalStore } from '@/store'
 import { useKeepAliveStore } from '@/store/keepAlive'
@@ -52,7 +52,7 @@ watch(() => visable.value, (value: any) => {
 
 // 监听路由的变化，设定keepAlive
 watch(() => route.fullPath, (newVal: any, oldVal: any) => {
-  if (newVal && ![newVal, oldVal].includes('/home/_empty') && (newVal !== oldVal)) {
+  if (newVal && ![newVal, oldVal].includes('/empty') && (newVal !== oldVal)) {
     route.meta.isKeepAlive && keepAliveStore.addKeepAliveName(route.name as string);
   }
 }, { immediate: true });

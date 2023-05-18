@@ -21,14 +21,14 @@
  * 
  */
 
-import { nextTick } from 'vue'
-import routers from '@/routers'
-import { globalStore } from '@/store'
-import { useKeepAliveStore } from '@/store/keepAlive'
+import { nextTick } from 'vue';
+import routers from '@/routers';
+import { globalStore } from '@/store';
+import { useKeepAliveStore } from '@/store/keepAlive';
 
 let myStore: any = null
 let keepAliveStore: any = null
-let routerConfig: any = []
+let flatMenuList: any = []
 const backPathKey: any = 'backPath';
 let fullPath: any = null;
 let curName: any = null;
@@ -37,9 +37,9 @@ let query: any = null;
 routers.beforeEach((to: any) => {
   myStore = globalStore() /** 一切为成形之前，使用store，store必须放在路由守卫，否则报错，没有注册pinia??? */
   keepAliveStore = useKeepAliveStore();
-  routerConfig = myStore.routerConfig
+  flatMenuList = myStore.flatMenuList
   query = to.query;
-  if (to.fullPath !== '/home/_empty') {
+  if (to.fullPath !== '/empty') {
     curName = to.name;
     fullPath = to.fullPath;
   }
@@ -49,11 +49,11 @@ const globalRouter = {
   // 初始化
   initView: () => {
     console.log(`%c【全局路由】- 初始化完成···`, 'color: #009acc')
-    const rootPath: any = fullPath.match(/^\/[a-zA-Z0-9\_\-]*/)[0];
+    const rootPath: any = fullPath.match(/^\/[a-zA-Z0-9\_\-\/]*/)[0];
     if (rootPath === myStore.currentRoute) return;
     const route: any = {
-      title: getByPath(rootPath, fullPath).title,
-      name: getByPath(rootPath, fullPath).name,
+      title: getByPath(fullPath).title,
+      name: getByPath(fullPath).name,
       route: rootPath,
       realPath: fullPath,
     };
@@ -62,7 +62,7 @@ const globalRouter = {
   },
   
   // 打开页面
-  openView: (path: any, needBackPath: any = false) => {
+  openView: async (path: any, needBackPath: any = false) => {
     console.log(`%c【全局路由】- 打开新页面···`, 'color: #67C23A')
     // 需要指定返回路径的情况，将返回的路径拼接到参数中
     if (needBackPath) {
@@ -70,13 +70,18 @@ const globalRouter = {
     }
     let willOpenPath: any = path;
     // 一级路由
-    const rootPath: any = path.match(/^\/[a-zA-Z0-9\_\.\-]*/)[0];
-    const curRoute: any = myStore.routes.find((item: any) => item.route === rootPath);
+    const matchPath: any = path.match(/^\/[a-zA-Z0-9\_\.\-\/]*/)[0];
+    let rootPath: any = matchPath;
+    // 出现二级路由截取处理成一级路由
+    if (matchPath && matchPath.split('/').length > 3) {
+      rootPath = matchPath.slice(0, matchPath.lastIndexOf('/'))
+    }
+    const curRoute: any = await myStore.routes.find((item: any) => item.route === rootPath);
     if (!curRoute) {
       // tab没有则添加
       const route: any = {
-        title: getByPath(rootPath, path).title,
-        name: getByPath(rootPath, path).name,
+        title: getByPath(path).title,
+        name: getByPath(path).name,
         route: rootPath,
         realPath: path,
       };
@@ -87,7 +92,7 @@ const globalRouter = {
         willOpenPath = curRoute.realPath;
       } else {
         const index: any = myStore.routes.findIndex((item: any) => item.route === curRoute.route);
-        myStore.updateRoute({ index, route: { realPath: path, name: getByPath(rootPath, path).name } });
+        myStore.updateRoute({ index, route: { realPath: path, name: getByPath(path).name } });
       }
     }
     myStore.setCurrentRoute(rootPath);
@@ -98,7 +103,7 @@ const globalRouter = {
   closeView: (path: any) => {
     console.log(`%c【全局路由】- 关闭页面···`, 'color: red')
     // 一级路由
-    const rootPath: any = path.match(/^\/[a-zA-Z0-9\_\.\-]+/)[0];
+    const rootPath: any = path.match(/^\/[a-zA-Z0-9\_\.\-\/]+/)[0];
     const index: any = myStore.routes.findIndex((item: any) => item.route === rootPath);
     // 切换至下一个或上一个标签
     const nextTab: any = myStore.routes[index + 1] || myStore.routes[index - 1];
@@ -107,9 +112,9 @@ const globalRouter = {
     }
     // 点击删除tab标签
     myStore.delRoute({ index, count: 1 })
-    // 全部删除时回到欢迎界面
+    // 全部删除时回到首页
     if (myStore.routes.length === 0) {
-      globalRouter.openView('/home');
+      globalRouter.openView('/basic/home');
     }
     // 更新缓存
     const updateName = myStore.routes.map((i: any) => i.name);
@@ -129,7 +134,7 @@ const globalRouter = {
     // 重置 realPath、name
     const route: any = myStore.routes.find((item: any) => item.route === myStore.currentRoute);
     route.realPath = myStore.currentRoute;
-    route.name = getByPath(myStore.currentRoute, route.route).name;
+    route.name = getByPath(route.realPath).name;
     routers.replace(myStore.currentRoute);
   },
 
@@ -140,7 +145,7 @@ const globalRouter = {
     keepAliveStore.removeKeepAliveName(curName as string)
     // 需要刷新的url
     const _fullPath: any = fullPath;
-    await routers.replace('/home/_empty');
+    await routers.replace('/empty');
     nextTick(() => {
       keepAliveStore.addKeepAliveName(curName as string)
       routers.replace(_fullPath);
@@ -148,30 +153,17 @@ const globalRouter = {
   }
 }
 
-// 根据path，从store的routerConfig查找相应的title
-const getByPath = (rootpath: any, fullpath: any) => {
-  rootpath = rootpath.split('?')[0];
-  const childs: any = fullpath.split('/').filter((i: any) => i !== '');
-  let result: any = {};
-  for (let i = 0; i < routerConfig.length; i++) {
-    const s: any = routerConfig[i].routes.find((item: any) => item.path === rootpath);
-    const sname: any = s && s.children && s.children.find((i: any) => i.path === '').name
-    const n: any = routerConfig[i].routes[0].children && routerConfig[i].routes[0].children.find((item: any) => item.path === childs[childs.length - 1]);
-    if (s && n) {
-      result = {
-        title: s.title,
-        name: n.name
-      }
-      break;
+// 根据path，从store的flatMenuList查找相应的title
+const getByPath = (fullpath: any) => {
+  fullpath = fullpath.split('?')[0];
+  let result: any = { title: '', name: '' };
+  const s: any = flatMenuList.find((item: any) => item.path === fullpath);
+  if (s) {
+    result = {
+      title: s.meta.title,
+      name: s.name
     }
-    if (s) {
-      result = {
-        title: s.title,
-        name: sname
-      }
-      break;
-    }
-  };
+  }
   return result;
 };
 

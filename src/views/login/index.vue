@@ -69,6 +69,7 @@ import md5 from 'js-md5';
 import { getTimeState } from '@/utils/tools';
 import { globalStore } from '@/store';
 import { useKeepAliveStore } from "@/store/keepAlive";
+import { initDynamicRouter } from "@/routers/modules/dynamicRouter";
 import { User, Lock, CircleClose } from '@element-plus/icons-vue';
 import { ElForm, ElNotification } from 'element-plus';
 import verifyCode from '@/components/verifyCode/index.vue';
@@ -96,15 +97,18 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     if (valid) {
       loading.value = true
       const params = { ...ruleForm, password: md5(ruleForm.password) }
-      client.post(API.login, params)
-      .then((res: any) => {
+      client.post(API.login, params, API.loadingConfig)
+      .then(async (res: any) => {
         // 1.登录完成保存用户信息
         myStore.setUserInfo(res.data) 
 
-        // 2.清空 keepAlive 数据
+        // 2.添加动态路由
+        await initDynamicRouter();
+        
+        // 3.清空 keepAlive 数据
         keepAliveStore.updateKeepAliveName()
 
-        // 3.跳转到首页
+        // 4.跳转到首页
         router.replace('/')
 
         ElNotification({

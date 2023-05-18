@@ -21,10 +21,8 @@
                 </p>
               </div>
               <div class="letter"> 
-                <p> 2. 页面路由的创建（使用了keep-alive缓存页面）</p>
-                <p class="colors">
-                  不同的菜单就在<span style="color: red; font-weight: bold;">router/router-config</span>文件夹下建不同的ts文件，最后在<span style="color: red; font-weight: bold;">router-config/index.ts</span>统一导出即可。（除了目录清晰，多人开发防止冲突很有必要）
-                </p>
+                <p> 2. 动态路由 + 权限按钮配置</p>
+                <p class="colors">使用 keep-alive组件 缓存页面</p>
               </div>
               <div class="letter"> 
                 <p> 3. pinia状态管理器（封装了持久化存储功能）</p>
@@ -36,7 +34,7 @@
                 <p> 4. axios使用</p>
                 <p class="colors">
                   <div>首先是API的使用：同样不同的模块就在<span style="color: red; font-weight: bold;">src/api</span>下创建不同的ts文件，最后在<span style="color: red; font-weight: bold;">api/index.ts</span>统一导出即可。 （除了目录清晰，多人开发防止冲突很有必要）</div>
-                  <div style="margin: 8px 0"><span style="color: red; font-weight: bold;">import * API from '@/config/api'</span></div>
+                  <div style="margin: 8px 0"><span style="color: red; font-weight: bold;">import * as API from "@/config/api"</span></div>
                   <div style="margin: 8px 0"><span style="color: red; font-weight: bold;">import { client } from '@/utils/https/client';</span></div>
                   <div style="margin: 8px 0">调用
                     <span style="color: red; font-weight: bold;">client.get</span>、
@@ -117,7 +115,7 @@ const maxHeight: any = computed(() => myStore.maxHeight)
 .letter {
   font-size: 16px;
   p {
-    margin: 5px 0;
+    margin: 4px 0;
   }
   .colors {
     color: var(--color-text);

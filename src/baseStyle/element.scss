@@ -86,6 +86,7 @@
       float: right;
     }
   }
+  // 表格 分页 pagination 样式
   .el-pagination {
     display: flex;
     justify-content: flex-end;
@@ -129,12 +130,6 @@
       line-height: 30px;
     }
   }
-  // 表格 pagination 样式
-	.el-pagination {
-		display: flex;
-		justify-content: flex-end;
-		margin-top: 20px;
-	}
 }
 
 .el-table.is-scrolling-none th.el-table-fixed-column--left,
@@ -154,9 +149,16 @@
   }
 }
 
+// * el-loading-mask 样式
 .el-loading-mask.is-fullscreen {
   z-index: 9999 !important;
 }
+
+// * el-loading-text 样式
+.el-loading-spinner .el-loading-text {
+  font-weight: 600;
+}
+
 // 侧边消息弹窗
 .el-message,.el-notification {
   z-index: 3000 !important;
@@ -199,7 +201,7 @@
 
 // * 开关 样式
 .el-switch {
-  --el-switch-on-color: #13ce66;
+  --el-switch-on-color: var(--color-text);
   --el-switch-off-color: var(--el-border-color);
 }
 
@@ -212,7 +214,7 @@
 
 // * el-link 样式
 .el-link {
-  margin-right: 8px;
+  margin-right: 12px;
 }
 
 .small-input-width {

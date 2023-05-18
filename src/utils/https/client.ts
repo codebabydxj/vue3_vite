@@ -3,17 +3,17 @@
  * import { client } from '@/utils/https/client';
  * import * as API from '@/config/api';
  */
-import axios, { AxiosInstance, AxiosError, AxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
-import type { Method } from 'axios';
-import axiosRetry from 'axios-retry'
-import jsonpAdapter from 'axios-jsonp'
-import { ElMessage, ElNotification } from 'element-plus';
-import qs from 'qs';
-import dayjs from 'dayjs';
-import routers from '@/routers'
-import { globalStore } from '@/store'
+import axios, { AxiosInstance, AxiosError, AxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse } from "axios";
+import type { Method } from "axios";
+import axiosRetry from "axios-retry";
+import jsonpAdapter from "axios-jsonp";
+import { showLoading, hideLoading } from "@/config/fullLoading";
+import { ElMessage, ElNotification } from "element-plus";
+import qs from "qs";
+import dayjs from "dayjs";
+import routers from "@/routers"
+import { globalStore } from "@/store";
 
-const myStore = globalStore();
 const instance: AxiosInstance = axios.create({
   baseURL: '',
   timeout: 60000, // 默认一分钟
@@ -49,13 +49,17 @@ const removePending = (config: requestConfig) => {
 axiosRetry(instance, { retries: 1 })
 
 interface requestConfig extends InternalAxiosRequestConfig {
-  controller?: any
+  controller?: any;
+  noLoading?: boolean;
 }
 
 // 请求拦截
 instance.interceptors.request.use((config: requestConfig) => {
   removePending(config);
+  const myStore: any = globalStore();
   const controller = new AbortController();
+  // 当前请求不需要显示 loading，在 api 服务中通过指定的第三个参数: API.loadingConfig -> { noLoading: true } 来控制
+  config.noLoading || showLoading();
   config.signal = controller.signal;
   config.controller = controller;
   pending.push({ ...config });
@@ -92,6 +96,7 @@ interface ResponseType {
 // 响应拦截
 instance.interceptors.response.use((response: AxiosResponse) => {
   removePending(response.config);
+  hideLoading();
   if (response.status === 200) {
     if (response.request.responseType === 'blob') {
       return response
@@ -107,7 +112,9 @@ instance.interceptors.response.use((response: AxiosResponse) => {
   });
   return Promise.reject(response);
 }, (error: AxiosError) => {
+  const myStore: any = globalStore();
   const { response } = error;
+  hideLoading();
 
   // 请求超时 && 网络错误单独判断，没有 response
   if (error.message.indexOf('timeout') !== -1) ElMessage.error('请求超时！请您稍后重试');

@@ -12,7 +12,8 @@
     "lint": "vite lint",
     "format": "prettier --write \"./**/*.{html,vue,ts,js,json,md}\"",
     "clean": "rmdir /s /q node_modules",
-    "reinstall": "npm run clean && npm install"
+    "reinstall": "npm run clean && npm install",
+    "commit": "git add -A && czg && git push"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.10",
@@ -43,9 +44,13 @@
     "vue3-puzzle-vcode": "^1.0.11"
   },
   "devDependencies": {
+    "@types/js-md5": "^0.7.0",
     "@types/node": "^18.11.9",
+    "@types/nprogress": "^0.2.0",
+    "@types/qs": "^6.9.7",
     "@vitejs/plugin-vue": "^4.2.1",
     "@vitejs/plugin-vue-jsx": "^3.0.1",
+    "czg": "^1.6.1",
     "sass": "^1.62.0",
     "terser": "^5.16.0",
     "typescript": "^5.0.4",

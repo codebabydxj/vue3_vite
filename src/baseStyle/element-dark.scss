@@ -24,11 +24,6 @@ html.dark {
 		}
 	}
 
-	// main layout
-	.main-interface {
-		background-color: var(--vite-main-bg-color) !important;
-	}
-
 	.navbar-side {
 		.el-menu > .el-sub-menu.is-opened > .el-menu > .el-menu-item.is-active {
 			background-color: var(--el-bg-color-page) !important;

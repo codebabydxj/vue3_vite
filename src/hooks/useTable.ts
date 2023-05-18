@@ -128,7 +128,6 @@ export const useTable = (
 	 * */
 	const reset = () => {
 		state.pageable.pageNum = 1;
-		state.searchLoading = true;
 		state.searchParam = {};
 		// 重置搜索表单的时，如果有默认搜索参数，则重置默认的搜索参数
 		Object.keys(state.searchInitParam).forEach(key => {

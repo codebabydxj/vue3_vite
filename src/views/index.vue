@@ -8,7 +8,13 @@
             <Tabs></Tabs>
           </template>
         </ComHeader>
-        <router-view></router-view>
+        <router-view v-slot="{ Component, route }">
+          <transition appear :name="isTransition ? 'fade-transform' : ''" mode="out-in">
+            <keep-alive :include="keepAliveName">
+              <component :is="Component" :key="route.fullPath" />
+            </keep-alive>
+          </transition>
+        </router-view>
       </template>
     </Content>
   </div>
@@ -16,7 +22,9 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
+import { storeToRefs } from "pinia";
 import { globalStore } from '@/store';
+import { useKeepAliveStore } from "@/store/keepAlive";
 import MenuBar from '@/components/menuBar/index.vue';
 import Content from '@/components/mainContent/index.vue';
 import ComHeader from '@/components/mainHeader/index.vue';
@@ -26,9 +34,18 @@ import Tabs from '@/components/headerTabs/index.vue';
 const myStore: any = globalStore()
 const themeConfig = computed(() => myStore.themeConfig)
 const isCollapse: any = ref(myStore.themeConfig.isCollapse)
+const isTransition: any = ref(myStore.themeConfig.isTransition)
+
+// keep页面缓存
+const keepAliveStore = useKeepAliveStore()
+const { keepAliveName } = storeToRefs(keepAliveStore);
 
 watch(() => myStore.themeConfig.isCollapse, (newVal: any) => {
   isCollapse.value = newVal
+})
+
+watch(() => myStore.themeConfig.isTransition, (newVal: any) => {
+  isTransition.value = newVal
 })
 
 const isCurCollapseChange = (bool: any) => {

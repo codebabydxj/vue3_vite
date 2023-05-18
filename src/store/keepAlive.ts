@@ -14,14 +14,17 @@ export const useKeepAliveStore = defineStore({
     // 新增 KeepAliveName
     addKeepAliveName(name: string) {
       !this.keepAliveName.includes(name) && !['Home', 'Empty'].includes(name) && this.keepAliveName.push(name);
+      console.log(this.keepAliveName);
     },
     // 移除 KeepAliveName
     removeKeepAliveName(name: string) {
       this.keepAliveName = this.keepAliveName.filter((item: any) => item !== name);
+      console.log(this.keepAliveName);
     },
     // 更新 KeepAliveName
     updateKeepAliveName(keepAliveName: string[] = []) {
       this.keepAliveName = keepAliveName.filter((item: any) => item !== 'Home');
+      console.log(this.keepAliveName);
     }
   }
 });

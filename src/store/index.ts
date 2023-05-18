@@ -8,18 +8,19 @@
  * let { pagination } = storeToRefs(myStore)
  */
 import { createPinia, defineStore } from 'pinia';
-import routerConfig from '@/routers/router-config';
 import piniaPluginPersist from 'pinia-plugin-persistedstate';
 import piniaPersistConfig from "@/config/piniaPersist";
+import { getShowMenuList } from "@/utils/tools";
 
 const globalStore = defineStore({
   /* id: 必须存在，在所有 Store 中唯一 */
 	id: 'GlobalState',
   state: () => {
     return {
-      routerConfig,
       currentRoute: '/',
-      routes: <any>[{title: '首页',  name: 'Home', route: '/home', realPath: '/home' }],
+      menuList: <any>[],
+      flatMenuList: <any>[],
+      routes: <any>[{title: '首页',  name: 'Home', route: '/basic/home', realPath: '/basic/home' }],
       // 常量
       consts: <any>[],
       userInfo: <any>{},
@@ -42,13 +43,25 @@ const globalStore = defineStore({
       }
     }
   },
-  getters: <any>{},
+  getters: <any>{
+    // 菜单权限列表 ==> 这里的菜单没有经过任何处理
+    getMenuList: (state: any) => state.menuList,
+    // 菜单权限列表 ==> 左侧菜单栏渲染，需要剔除 isHide == true
+    authMenuListGet: (state: any) => getShowMenuList(state.menuList),
+  },
   actions: <any>{
+    setMenuList(menuList: any) {
+      this.menuList = menuList;
+    },
+    setFlatMenuList(flatMenuList: any) {
+      this.flatMenuList = flatMenuList;
+    },
     setCurrentRoute(rootPath: any) {
       this.currentRoute = rootPath;
     },
     addRoute(route: any) {
-      if (route.route !== '/home') {
+      // 首页不能关闭，过滤掉
+      if (route.route !== '/basic/home') {
         this.routes.push(route);
       }
     },
@@ -90,11 +103,9 @@ const globalStore = defineStore({
       // 2.清空导航栏
       this.currentRoute = '/';
       this.routes = [];
-      // 3.清空所有菜单权限
-      this.routerConfig.forEach((v: any) => { v.access = false; });
-      // 4. 清空常量
+      // 3. 清空常量
       this.consts = [];
-      // 5.清空缓存
+      // 4.清空缓存
       window.localStorage.clear()
       window.sessionStorage.clear()
     },

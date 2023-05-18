@@ -136,8 +136,16 @@ a {
 #nprogress {
   .bar {
     z-index: 2003 !important;
+    background: var(--el-color-primary) !important;
   }
   .spinner {
     z-index: 2003 !important;
+  }
+  .spinner-icon {
+    border-top-color: var(--el-color-primary) !important;
+    border-left-color: var(--el-color-primary) !important;
+  }
+  .peg {
+    box-shadow: 0 0 10px var(--el-color-primary), 0 0 5px var(--el-color-primary) !important;
   }
 }

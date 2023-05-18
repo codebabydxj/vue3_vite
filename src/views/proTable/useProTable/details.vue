@@ -5,7 +5,7 @@
   </div>
 </template>
 
-<script setup lang="ts" name="Details">
+<script setup lang="ts" name="Pro_Details">
 import { inject } from 'vue'
 
 const globalRouter: any = inject('globalRouter')

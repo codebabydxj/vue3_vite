@@ -36,8 +36,7 @@
         <span class="username">{{ userName }}</span>
         <el-dropdown class="head" trigger="click" @command="handleCommand">
           <el-avatar class="avatar" icon="el-icon-user-solid" :size="30"
-            src="/src/assets/imgs/avatar.gif" fit="fill"
-            v-loading.fullscreen.lock="fullscreenLoading"></el-avatar>
+            src="/src/assets/imgs/avatar.gif" fit="fill"></el-avatar>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item command="center">
@@ -106,7 +105,6 @@ const router = useRouter()
 const myStore: any = globalStore()
 const userName: any = computed(() => myStore.userInfo.userInfo ? myStore.userInfo.userInfo.userName : '')
 const globalRouter: any = inject('globalRouter')
-const fullscreenLoading = ref(false)
 const isFullscreen = ref(false)
 const isShowTheme = ref(false)
 
@@ -143,7 +141,6 @@ const handleCommand = (command: any) => {
         type: 'warning',
       }
     ).then(() => {
-      fullscreenLoading.value = true
       client.post(API.loginOut)
       .then(async () => {
         // 1.清除store、token存储
@@ -156,7 +153,6 @@ const handleCommand = (command: any) => {
         window.location.reload();
       }).catch(() => {
       }).finally(() => {
-        fullscreenLoading.value = false
       });
     }).catch(() => {
     })

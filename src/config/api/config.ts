@@ -22,3 +22,8 @@ export const uploadConfig = {
 export const timeOutConfig = {
   timeout: 300000,
 };
+
+// 请求取消全局 loading
+export const loadingConfig = {
+  noLoading: true
+};

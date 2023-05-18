@@ -25,19 +25,17 @@
     </div>
     <el-menu ref="menuRef" class="user-sel el-menu-vertical-demo" background-color="#191a20" text-color="#fefefea6"
       active-text-color="#ffffff" :unique-opened="true" :collapse="!isCurCollapse"
-      :default-active="routeParams.currentRoute.split('?')[0] === '/' ? '/home' : routeParams.currentRoute.split('?')[0]">
-      <el-sub-menu v-for="routeWrap in routeParams.routerConfigFilterd" :index="routeWrap.key" :key="routeWrap.key"
-        @click.native="ubfold(routeWrap.key)">
+      :default-active="routeParams.currentRoute.split('?')[0] === '/' ? '/basic/home' : routeParams.currentRoute.split('?')[0]">
+      <el-sub-menu v-for="routeWrap in routeParams.menuListFilterd" :index="routeWrap.path" :key="routeWrap.path">
         <template #title>
           <el-icon :size="16">
-            <component :is="routeWrap.icon" color="#fefefea6"></component>
+            <component :is="routeWrap.meta.icon" color="#fefefea6"></component>
           </el-icon>
-          <span slot="title">{{ routeWrap.title }}</span>
+          <span slot="title">{{ routeWrap.meta.title }}</span>
         </template>
-        <template v-for="route in routeWrap.routes" :key="route.path.split('?')[0]">
-          <el-menu-item :index="route.path" v-if="(route.meta && (!route.meta.hidden || route.meta.hidden !== 1))"
-            @click="routeGo(route.path)">
-            {{ route.title }}
+        <template v-for="route in routeWrap.children" :key="route.path.split('?')[0]">
+          <el-menu-item :index="route.path" @click="routeGo(route.path)">
+            {{ route.meta.title }}
           </el-menu-item>
         </template>
       </el-sub-menu>
@@ -76,28 +74,18 @@ const themeConfig = computed(() => myStore.themeConfig)
 
 const routeParams: any = reactive(<any>{
   currentRoute: computed(() => myStore.currentRoute),
-  routerConfig: computed(() => {
-    // 过滤没有权限的路由
-    const rc = myStore.routerConfig.filter((v: any) => v.access); // 过滤一级（router-config-->access为false的菜单）
-    rc.forEach((level: any) => {
-      level.routes = level.routes.filter((item: any) => level.access && item.access); // 过滤二级
-    });
-    // 根据sort排序
-    rc.sort((x: any, y: any) => x.sort - y.sort); // 一级菜单排序
-    rc.forEach((level: any) => {
-      level.routes.sort((x: any, y: any) => x.sort - y.sort); // 二级菜单排序
-    });
-    return rc;
-  }),
-  routerConfigFilterd: computed(() => {
-    const rc_filter = routeParams.routerConfig.map((routeWrap: any) => {
+  // 过滤没有权限的路由
+  menuList: computed(() => myStore.authMenuListGet),
+  // 过滤出搜索菜单
+  menuListFilterd: computed(() => {
+    const rc_filter = routeParams.menuList.map((routeWrap: any) => {
       const routerWrapDeepClone = _.cloneDeep(routeWrap);
       const reg = new RegExp(searchInput.value, 'i');
       // 匹配子菜单
-      routerWrapDeepClone.routes = routeWrap.routes.filter((route: any) => reg.test(route.title));
+      routerWrapDeepClone.children = routeWrap.children.filter((route: any) => reg.test(route.meta && route.meta.title));
       return routerWrapDeepClone;
     });
-    return rc_filter.filter((item: any) => item.routes.length);
+    return rc_filter.filter((item: any) => item.children.length);
   })
 })
 
@@ -120,14 +108,6 @@ const cleanInput = () => {
 const routeGo = (route: any) => {
   if (route === routeParams.currentRoute) return;
   globalRouter.openView(route);
-}
-const ubfold = (key: any) => {
-  // if (!isCurCollapse.value) {
-  //   isCurCollapse.value = true;
-  //   setTimeout(() => {
-  //     menuRef.value.open(key);
-  //   }, 1000);
-  // }
 }
 const handleSwitch = () => {
   myStore.setThemeConfig({ ...themeConfig.value, isCollapse: !isCurCollapse.value })
