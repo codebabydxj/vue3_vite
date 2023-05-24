@@ -87,7 +87,7 @@ const openDrawer = (title: string, row: any = {}) => {
   const treeList: any = [{ meta: { title: '顶级菜单' }, parentId: '0' }, ...menuProTable.value.tableData];
   const params = {
     title,
-    row: { ...row, status: 1 },
+    row: { ...row, icon: row.meta.icon, isHide: row.meta.isHide, isKeepAlive: row.meta.isKeepAlive, title: row.meta.title, status: 1 },
     treeList,
     isView: title === "查看",
     api: title === "新增" ? '/api/add/router' : title === "编辑" ? '/api/update/router' : undefined,

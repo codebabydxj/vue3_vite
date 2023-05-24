@@ -1,9 +1,8 @@
 import { createApp } from 'vue'
+import App from './App.vue'
 
 // 全局组件
 import flexCard from '@/components/flexCard/index.vue'
-
-import App from './App.vue'
 
 // 样式组件
 import '@/baseStyle/base.scss'

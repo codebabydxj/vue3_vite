@@ -81,7 +81,10 @@ const logout = () => {
 }
 
 const goSys = () => {
-  if (!unLockPass.value) return;
+  if (!unLockPass.value) {
+    ElMessage.warning('干嘛！！想越狱？？')
+    return
+  }
   if (md5(unLockPass.value) !== myStore.lockScreen.lockScreenPassword) {
     ElMessage.warning('锁屏密码错误')
     return

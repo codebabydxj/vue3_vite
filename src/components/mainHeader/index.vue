@@ -33,10 +33,12 @@
           </el-link>
         </el-tooltip>
         <div id="he-plugin-simple"></div>
-        <span class="username">{{ userName }}</span>
         <el-dropdown class="head" trigger="click" @command="handleCommand">
-          <el-avatar class="avatar" icon="el-icon-user-solid" :size="30"
-            src="/src/assets/imgs/avatar.gif" fit="fill"></el-avatar>
+          <div class="drop-box">
+            <span class="username">{{ userName }}</span>
+            <el-avatar class="avatar" icon="el-icon-user-solid" :size="30"
+              src="/src/assets/imgs/avatar.gif" fit="fill"></el-avatar>
+          </div>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item command="lockScreen">
@@ -216,15 +218,19 @@ header .navbar-top .user-info .screenfull {
 
 header .navbar-top .user-info .head {
   margin-right: 8px;
-  .avatar {
+  .drop-box {
+    display: flex;
+    align-items: center;
     cursor: pointer;
-    background-color: transparent;
+    .username {
+      font-size: 15px;
+      margin-right: 15px;
+      color: var(--color-white);
+    }
+    .avatar {
+      background-color: transparent;
+    }
   }
 }
 
-.username {
-  font-size: 15px;
-  margin-right: 15px;
-  color: var(--color-white);
-}
 </style>

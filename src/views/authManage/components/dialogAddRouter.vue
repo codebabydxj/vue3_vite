@@ -51,8 +51,8 @@
         <el-form-item label="菜单路径" prop="path">
           <el-input v-model="drawerProps.row.path" placeholder="请填写菜单路径"></el-input>
         </el-form-item>
-        <el-form-item label="组件路径" prop="component">
-          <el-input v-model="drawerProps.row.component" placeholder="请填写组件路径">
+        <el-form-item label="子组件路径" prop="component">
+          <el-input v-model="drawerProps.row.component" placeholder="请填写子组件路径">
             <template #prepend>
               <el-button>src/views</el-button>
             </template>

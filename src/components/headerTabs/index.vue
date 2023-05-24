@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts" name="HeaderTabs">
-import { ref, watch, inject, watchEffect, nextTick } from 'vue'
+import { ref, watch, inject, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { globalStore } from '@/store'
 import { useKeepAliveStore } from '@/store/keepAlive'
