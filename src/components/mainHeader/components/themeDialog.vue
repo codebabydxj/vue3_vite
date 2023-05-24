@@ -30,7 +30,7 @@
     </div>
     <!-- 界面设置 -->
     <el-divider class="divider" content-position="center">
-      <el-icon><Setting /></el-icon>
+      <el-icon><DesktopOutlined /></el-icon>
       界面设置
     </el-divider>
     <div class="theme-item">
@@ -41,21 +41,34 @@
       <span>页面转场动画</span>
       <el-switch v-model="themeConfig.isTransition" inline-prompt :active-icon="Lock" :inactive-icon="Unlock" @change="changeTransition" />
     </div>
+    <!-- 系统设置 -->
+    <el-divider class="divider" content-position="center">
+      <el-icon><Setting /></el-icon>
+      系统设置
+    </el-divider>
+    <div class="theme-item">
+      <span>锁定屏幕</span>
+      <el-switch v-model="themeConfig.isLockScreen" inline-prompt :active-icon="Lock" :inactive-icon="Unlock" @change="changeLockScreen" />
+    </div>
+    <!-- 锁定屏幕 -->
+    <lockScreenDialog ref="lockScreenRef" />
   </el-drawer>
 </template>
 
 <script setup lang="ts" name="ThemeConfigPage">
-import { computed } from "vue"
+import { ref, computed } from "vue"
 import { Check, Close, Lock, Unlock } from "@element-plus/icons-vue"
 import { useTheme } from "@/hooks/useTheme"
 import { globalStore } from '@/store'
 import SwitchDark from "@/components/ThemeDark/index.vue"
+import lockScreenDialog from "@/components/mainHeader/components/lockScreenDialog.vue";
 
 const props = defineProps(['drawerVisible'])
 const emit = defineEmits(['drawerCloseCb'])
 
 const myStore: any = globalStore()
 const themeConfig = computed(() => myStore.themeConfig)
+const lockScreenRef = ref();
 
 const { changePrimary, changeGreyOrWeak } = useTheme()
 
@@ -65,6 +78,10 @@ const changeCollapse = (val: any) => {
 
 const changeTransition = (val: any) => {
   myStore.setThemeConfig({ ...themeConfig.value, isTransition: val })
+}
+
+const changeLockScreen = (val: any) => {
+  lockScreenRef.value.acceptParams();
 }
 
 // 预定义主题颜色

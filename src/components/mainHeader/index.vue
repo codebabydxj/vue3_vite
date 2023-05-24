@@ -39,7 +39,10 @@
             src="/src/assets/imgs/avatar.gif" fit="fill"></el-avatar>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item command="center">
+              <el-dropdown-item command="lockScreen">
+                <el-icon><Lock /></el-icon>锁定屏幕
+              </el-dropdown-item>
+              <el-dropdown-item command="center" divided>
                 <el-icon><User /></el-icon>个人中心
               </el-dropdown-item>
               <el-dropdown-item command="setCore">
@@ -57,20 +60,23 @@
         :drawerVisible="isShowTheme"
         @drawerCloseCb="drawerCloseCb">
       </themeDialog>
+      <!-- 锁定屏幕 -->
+      <lockScreenDialog ref="lockScreenRef" />
     </nav>
   </header>
 </template>
 
 <script setup lang="ts" name="MainHeader">
-import { inject, onMounted, ref, computed } from 'vue'
-import screenfull from 'screenfull'
-import { useRouter } from 'vue-router'
-import { globalStore } from '@/store'
+import { inject, onMounted, ref, computed } from 'vue';
+import screenfull from 'screenfull';
+import { useRouter } from 'vue-router';
+import { globalStore } from '@/store';
 import { client } from '@/utils/https/client';
 import * as API from '@/config/api';
-import { ElMessage, ElMessageBox } from 'element-plus'
-import Message from '../headerMessage/index.vue'
-import themeDialog from './components/themeDialog.vue'
+import { ElMessage, ElMessageBox } from 'element-plus';
+import Message from '../headerMessage/index.vue';
+import themeDialog from './components/themeDialog.vue';
+import lockScreenDialog from "./components/lockScreenDialog.vue";
 
 // 加载和风天气
 onMounted(() => {
@@ -107,6 +113,7 @@ const userName: any = computed(() => myStore.userInfo.userInfo ? myStore.userInf
 const globalRouter: any = inject('globalRouter')
 const isFullscreen = ref(false)
 const isShowTheme = ref(false)
+const lockScreenRef = ref()
 
 const refresh = () => {
   globalRouter.refreshView()
@@ -150,12 +157,16 @@ const handleCommand = (command: any) => {
         // 3. 提示
         ElMessage.success("退出登录成功！");
         // 4.刷新页面清除一些浏览器缓存问题，不合理页面会刷新两次！！！！ 寻找好办法
-        window.location.reload();
+        // window.location.reload();
       }).catch(() => {
       }).finally(() => {
       });
     }).catch(() => {
     })
+  }
+  // 锁定屏幕
+  if (command === 'lockScreen') {
+    lockScreenRef.value.acceptParams();
   }
   // 个人中心
   if (command === 'center') {

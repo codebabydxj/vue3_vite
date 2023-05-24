@@ -57,7 +57,7 @@ const globalRouter = {
       route: rootPath,
       realPath: fullPath,
     };
-    myStore.setCurrentRoute(rootPath);
+    myStore.setRoute(rootPath, fullPath);
     myStore.addRoute(route);
   },
   
@@ -95,7 +95,7 @@ const globalRouter = {
         myStore.updateRoute({ index, route: { realPath: path, name: getByPath(path).name } });
       }
     }
-    myStore.setCurrentRoute(rootPath);
+    myStore.setRoute(rootPath, willOpenPath);
     routers.replace(willOpenPath).catch((err: any) => {});
   },
 

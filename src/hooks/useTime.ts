@@ -1,9 +1,10 @@
-import { ref } from "vue"
+import { ref } from "vue";
+import { tryOnMounted, tryOnUnmounted } from '@vueuse/core';
 
 /**
  * @description 获取本地时间
  */
-export const useTime = () => {
+export const useTime = (immediate: any = false) => {
   const year = ref(0); // 年份
   const month = ref(0); // 月份
   const week = ref(""); // 星期几
@@ -12,13 +13,14 @@ export const useTime = () => {
   const minute = ref<number | string>(0); // 分钟
   const second = ref<number | string>(0); // 秒
   const nowTime = ref<string>(""); // 当前时间
+  let timer: any = null;
 
   // 更新时间
   const updateTime = () => {
     const date = new Date();
     year.value = date.getFullYear();
     month.value = date.getMonth() + 1;
-    week.value = "周" + "日一二三四五六".charAt(date.getDay());
+    week.value = "星期" + "日一二三四五六".charAt(date.getDay());
     day.value = date.getDate();
     hour.value =
       (date.getHours() + "")?.padStart(2, "0") ||
@@ -32,7 +34,25 @@ export const useTime = () => {
     nowTime.value = `${year.value}年${month.value}月${day.value} ${hour.value}:${minute.value}:${second.value}`;
   };
 
-  updateTime();
+  !immediate && updateTime();
+  
+  function start() {
+    updateTime();
+    clearInterval(timer);
+    timer = setInterval(() => updateTime(), 1000);
+  }
 
+  function stop() {
+    clearInterval(timer);
+  }
+
+  tryOnMounted(() => {
+    immediate && start();
+  });
+
+  tryOnUnmounted(() => {
+    stop();
+  });
+  
   return { year, month, day, hour, minute, second, week, nowTime };
 };

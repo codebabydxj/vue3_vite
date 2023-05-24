@@ -141,7 +141,7 @@ const defaultProps = {
 // 提交数据（新增/编辑）
 const ruleFormRef = ref<FormInstance>();
 const handleSubmit = () => {
-  ruleFormRef.value!.validate(async valid => {
+  ruleFormRef.value!.validate(async (valid: any) => {
     if (!valid) return;
     try {
       const params: any = {}

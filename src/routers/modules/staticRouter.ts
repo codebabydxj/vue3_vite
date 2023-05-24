@@ -20,13 +20,21 @@ export const staticRouter: RouteRecordRaw[] = [
     component: () => import('@/views/basic/empty/index.vue'),
   },
   {
+    path: "/lockScreen",
+    name: "LockScreen",
+    meta: {
+      title: "锁屏页面"
+    },
+    component: () => import('@/views/lockScreen/index.vue'),
+  },
+  {
     path: '/login',
     name: 'Login',
     meta: {
       title: "登录"
     },
     component: () => import('@/views/login/index.vue'),
-  },
+  }
 ];
 
 export const errorRouter = [

@@ -61,7 +61,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
+import { reactive, ref, computed } from 'vue';
 import { client } from '@/utils/https/client';
 import * as API from '@/config/api';
 import { useRouter } from 'vue-router';
@@ -77,6 +77,7 @@ import SwitchDark from "@/components/ThemeDark/index.vue";
 
 type FormInstance = InstanceType<typeof ElForm>
 const myStore: any = globalStore()
+const themeConfig = computed(() => myStore.themeConfig)
 const keepAliveStore = useKeepAliveStore()
 const router = useRouter()
 const ruleFormRef = ref<FormInstance>()
@@ -108,7 +109,10 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         // 3.清空 keepAlive 数据
         keepAliveStore.updateKeepAliveName()
 
-        // 4.跳转到首页
+        // 4.如果是锁屏状态，重置状态
+        myStore.setThemeConfig({ ...themeConfig.value, isLockScreen: false })
+
+        // 5.跳转到首页
         router.replace('/')
 
         ElNotification({

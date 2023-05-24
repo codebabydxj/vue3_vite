@@ -182,6 +182,7 @@ defineExpose({
 	acceptParams
 });
 </script>
+
 <style lang="scss" scoped>
 .upload {
 	width: 80%;

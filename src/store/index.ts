@@ -18,6 +18,7 @@ const globalStore = defineStore({
   state: () => {
     return {
       currentRoute: '/',
+      realRoute: <any>'',
       menuList: <any>[],
       flatMenuList: <any>[],
       routes: <any>[{title: '首页',  name: 'Home', route: '/basic/home', realPath: '/basic/home' }],
@@ -27,6 +28,10 @@ const globalStore = defineStore({
       winSize: <any>{},
       pagination: <boolean>false,
       maxHeight: <any>'200px',
+      lockScreen: <any>{
+        lockScreenPassword: <any>'',
+        unLockBackRoute: <any>'',
+      },
       themeConfig: <any>{
         // 默认 主题颜色
         primary: '#409EFF',
@@ -40,6 +45,8 @@ const globalStore = defineStore({
         isCollapse: true,
         // 转场动画
         isTransition: true,
+        // 锁定屏幕
+        isLockScreen: false,
       }
     }
   },
@@ -56,8 +63,9 @@ const globalStore = defineStore({
     setFlatMenuList(flatMenuList: any) {
       this.flatMenuList = flatMenuList;
     },
-    setCurrentRoute(rootPath: any) {
+    setRoute(rootPath: any, fullPath: any) {
       this.currentRoute = rootPath;
+      this.realRoute = fullPath;
     },
     addRoute(route: any) {
       // 首页不能关闭，过滤掉
@@ -97,20 +105,26 @@ const globalStore = defineStore({
     setThemeConfig(themeConfig: any) {
 			this.themeConfig = themeConfig;
 		},
+    setLockPassword(lockScreen: any) {
+      this.lockScreen = lockScreen;
+    },
     logout() {
       // 1.清空用户信息
       this.userInfo = {};
       // 2.清空导航栏
       this.currentRoute = '/';
+      this.realRoute = '';
       this.routes = [];
-      // 3. 清空常量
+      // 3.清空常量
       this.consts = [];
-      // 4.清空缓存
+      // 4.重置锁屏
+      this.isLockScreen = false;
+      // 5.清空缓存
       window.localStorage.clear()
       window.sessionStorage.clear()
     },
   },
-  persist: piniaPersistConfig('GlobalState', ['themeConfig', 'userInfo'])
+  persist: piniaPersistConfig('GlobalState', ['themeConfig', 'userInfo', 'lockScreen'])
 });
 
 // piniaPluginPersist(持久化存储)

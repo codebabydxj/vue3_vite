@@ -25,6 +25,8 @@ const routers = createRouter({
     scrollBehavior: () => ({ left: 0, top: 0 })
 })
 
+let lockFlag: any = true;
+
 /* 路由权限方案：挂载所有路由 + 全局路由守卫判断权限 */
 routers.beforeEach(async (to, from, next) => {
     const myStore = globalStore()
@@ -41,13 +43,19 @@ routers.beforeEach(async (to, from, next) => {
         return next({ path: '/login', replace: true });
     }
 
-    /** 3.如果没有菜单列表，就重新请求菜单列表并添加动态路由 */
+    /** 3.判断是否是锁屏状态 */
+    if (myStore.themeConfig.isLockScreen && lockFlag) {
+        lockFlag = false;
+        return next({ path: '/lockScreen', replace: true });
+    }
+    
+    /** 4.如果没有菜单列表，就重新请求菜单列表并添加动态路由 */
     if (!myStore.getMenuList.length) {
         await initDynamicRouter();
         return next({ ...to, replace: true });
     }
 
-    /** 4.正常访问页面 */
+    /** 5.正常访问页面 */
     next()
 })
 /** 路由跳转结束 */
