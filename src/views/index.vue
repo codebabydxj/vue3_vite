@@ -11,7 +11,7 @@
         <router-view v-slot="{ Component, route }">
           <transition appear :name="isTransition ? 'fade-transform' : ''" mode="out-in">
             <keep-alive :include="keepAliveName">
-              <component :is="Component" :key="route.fullPath" />
+              <component :is="Component" :key="route.fullPath" v-if="isRefreshRouter" />
             </keep-alive>
           </transition>
         </router-view>
@@ -21,14 +21,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, provide, watchEffect } from "vue";
 import { storeToRefs } from "pinia";
-import { globalStore } from '@/store';
+import { globalStore } from "@/store";
 import { useKeepAliveStore } from "@/store/keepAlive";
-import MenuBar from '@/components/menuBar/index.vue';
-import Content from '@/components/mainContent/index.vue';
-import ComHeader from '@/components/mainHeader/index.vue';
-import Tabs from '@/components/headerTabs/index.vue';
+import MenuBar from "@/components/menuBar/index.vue";
+import Content from "@/components/mainContent/index.vue";
+import ComHeader from "@/components/mainHeader/index.vue";
+import Tabs from "@/components/headerTabs/index.vue";
 
 // 主题配置
 const myStore: any = globalStore()
@@ -39,6 +39,17 @@ const isTransition: any = ref(myStore.themeConfig.isTransition)
 // keep页面缓存
 const keepAliveStore = useKeepAliveStore()
 const { keepAliveName } = storeToRefs(keepAliveStore);
+
+/**
+ * desc: 注入全局刷新路由方法
+ * use: const refreshCurrentRouter: Function = inject("refresh") as Function; refreshCurrentRouter(true/false);
+ */
+const isRefreshRouter = ref(true);
+const refreshCurrentRouter = (val: boolean) => (isRefreshRouter.value = val);
+provide("refresh", refreshCurrentRouter);
+watchEffect(() => {
+  console.log('isRefreshRouter-------', keepAliveName.value);
+})
 
 watch(() => myStore.themeConfig.isCollapse, (newVal: any) => {
   isCollapse.value = newVal

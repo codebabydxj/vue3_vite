@@ -1,5 +1,5 @@
 import { App } from "vue";
-// import auth from "./modules/auth";
+import auth from "./modules/auth";
 import copy from "./modules/copy";
 import waterMarker from "./modules/waterMarker";
 import draggable from "./modules/draggable";
@@ -8,8 +8,7 @@ import throttle from "./modules/throttle";
 import longpress from "./modules/longpress";
 
 const directivesList: any = {
-	// Custom directives
-	// auth,
+	auth,
 	copy,
 	waterMarker,
 	draggable,

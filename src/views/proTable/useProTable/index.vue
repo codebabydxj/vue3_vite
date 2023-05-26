@@ -11,7 +11,7 @@
 			    :dataCallback="dataCallback">
           <!-- 表格 header 按钮 -->
           <template #tableHeader="scope">
-            <el-button type="primary" :icon="CirclePlus">新增用户</el-button>
+            <el-button type="primary" v-auth="'add'" :icon="CirclePlus">新增用户</el-button>
             <el-button type="primary" :icon="Upload" plain @click="batchAdd">批量添加用户</el-button>
             <el-button type="primary" :icon="Download" plain @click="exportData">导出用户数据</el-button>
             <el-button type="danger" :icon="Delete" plain @click="batchDelete(scope.selectedListIds)" :disabled="!scope.isSelected">批量删除用户</el-button>

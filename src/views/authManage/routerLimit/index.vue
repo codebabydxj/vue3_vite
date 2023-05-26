@@ -6,6 +6,7 @@
           ref="menuProTable"
           title="菜单管理"
           row-key="path"
+          :isShowSelIdx="true"
           :columns="columns"
           :requestApiParams="requestApiParams"
           :pagination="false">
@@ -26,15 +27,17 @@
           </template>
           <!-- 表格操作 -->
           <template #operation="scope">
-            <el-link type="primary" :icon="EditPen" @click="openDrawer('编辑', scope.row)">编辑</el-link>
+            <el-link type="primary" :icon="EditPen" style="margin-left: 30px;" @click="openDrawer('编辑', scope.row)">编辑</el-link>
             <el-popconfirm title="确定删除吗?" @confirm="handleDel(scope.row)">
               <template #reference>
                 <el-link type="danger" :icon="Delete">删除</el-link>
               </template>
             </el-popconfirm>
+            <el-link type="warning" :icon="Lock" @click="authConfig(scope.row)" v-if="scope.row.component">按钮权限</el-link>
           </template>
         </ProTable>
         <UserDrawer ref="drawerRef" />
+        <authButtonDialog ref="authButtonRef" />
       </el-card>
     </div>
   </flex-card>
@@ -42,12 +45,13 @@
 
 <script setup lang="ts" name="RouterLimit">
 import { ref } from "vue";
-import { CirclePlus, Delete, EditPen, View } from "@element-plus/icons-vue";
+import { CirclePlus, Delete, EditPen, View, Lock } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { client } from "@/utils/https/client";
 import * as API from "@/config/api";
 import ProTable from "@/components/ProTable/index.vue";
 import UserDrawer from "../components/dialogAddRouter.vue";
+import authButtonDialog from "../components/dialogAuthButton.vue";
 import { ColumnProps } from "@/components/ProTable/interface";
 
 // 请求table数据
@@ -66,7 +70,7 @@ const columns: ColumnProps[] = [
 	{ prop: 'path', label: '菜单路径', search: { el: 'input' } },
 	{ prop: 'component', label: '组件路径' },
 	{ prop: 'sort', label: '排序', width: 120 },
-	{ prop: 'operation', label: '操作', fixed: 'right', width: 250 }
+	{ prop: 'operation', label: '操作', align: 'left', fixed: 'right', width: 250 }
 ];
 
 // 删除单个用户
@@ -81,18 +85,34 @@ const handleDel = async (row: any) => {
   })
 }
 
+// 按钮权限配置
+const authButtonRef = ref<InstanceType<typeof authButtonDialog> | null>(null);
+const authConfig = (row: any) => {
+  const treeList: any = [{ meta: { title: '顶级菜单' }, parentId: '0' }, ...menuProTable.value.tableData];
+  const params: any = {
+    row: { ...row, status: 1 },
+    treeList,
+    api: '/api/auth',
+    getTableList: menuProTable.value.getTableList
+  };
+  authButtonRef.value?.acceptParams(params);
+}
+
 // 新增/查看/编辑 菜单
 const drawerRef = ref<InstanceType<typeof UserDrawer> | null>(null);
 const openDrawer = (title: string, row: any = {}) => {
   const treeList: any = [{ meta: { title: '顶级菜单' }, parentId: '0' }, ...menuProTable.value.tableData];
-  const params = {
+  const params: any = {
     title,
-    row: { ...row, icon: row.meta.icon, isHide: row.meta.isHide, isKeepAlive: row.meta.isKeepAlive, title: row.meta.title, status: 1 },
+    row: { ...row, status: 1 },
     treeList,
     isView: title === "查看",
     api: title === "新增" ? '/api/add/router' : title === "编辑" ? '/api/update/router' : undefined,
     getTableList: menuProTable.value.getTableList
   };
+  if (title == '编辑') {
+    params.row = { ...row, icon: row.meta.icon, isHide: row.meta.isHide, isKeepAlive: row.meta.isKeepAlive, title: row.meta.title, status: 1 }
+  }
   drawerRef.value?.acceptParams(params);
 };
 

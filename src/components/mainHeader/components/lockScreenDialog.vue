@@ -53,7 +53,7 @@ const submitForm = () => {
   formRef.value!.validate(async (valid: any) => {
     if (!valid) return;
     try {
-      myStore.setLockPassword({ lockScreenPassword: md5(paramsForm.value.lockPass), unLockBackRoute: myStore.realRoute })
+      myStore.setLockPassword({ lockScreenCode: md5(paramsForm.value.lockPass), unLockBackRoute: myStore.realRoute })
       myStore.setThemeConfig({ ...themeConfig.value, isLockScreen: true })
       dialogVisible.value = false;
       router.replace('/lockScreen');
@@ -64,7 +64,7 @@ const submitForm = () => {
 }
 
 const cancel = () => {
-  myStore.setLockPassword({ lockScreenPassword: '', unLockBackRoute: '' })
+  myStore.setLockPassword({ lockScreenCode: '', unLockBackRoute: '' })
   myStore.setThemeConfig({ ...themeConfig.value, isLockScreen: false })
   dialogVisible.value = false;
 }

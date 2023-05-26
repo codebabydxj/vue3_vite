@@ -17,7 +17,7 @@
 				<slot name="tableHeader" :selectedListIds="selectedListIds" :selectedList="selectedList" :isSelected="isSelected" />
 			</div>
 			<div class="header-button-ri" v-if="toolButton">
-				<table-config ref="colRef" :colSetting="colSetting" @tableConfigCall="handleConfig">
+				<table-config ref="colRef" :colSetting="colSetting" :isShowSelIdx="isShowSelIdx" @tableConfigCall="handleConfig">
 				</table-config>
 			</div>
 		</div>
@@ -114,6 +114,7 @@ interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 	rowKey?: string; // 行数据的 Key，用来优化 Table 的渲染，当表格数据多选时，所指定的 id ==> 非必传（默认为 id）
 	searchCol?: number | Record<BreakPoint, number>; // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }
 	isSearch?: boolean; // 是否需要搜索
+	isShowSelIdx?: boolean; // 是否显示table选择框和序号列
 }
 
 // 接受父组件参数，配置默认值
@@ -126,6 +127,7 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 	toolButton: true,
 	rowKey: 'id',
 	isSearch: true,
+	isShowSelIdx: false,
 	searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 })
 });
 
@@ -191,7 +193,7 @@ watchEffect(() => {
 })
 
 // 存在树形 table 时， 展开和合并调用
-const isExpand = ref(<boolean>false);
+const isExpand = ref(<boolean>true);
 const refreshTable = ref(<boolean>true);
 const setExpand = () => {
 	refreshTable.value = false;

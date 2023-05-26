@@ -25,12 +25,27 @@
 <script setup lang="ts" name="TableColumn">
 import { ref } from 'vue'
 
-const checkList: any = ref([])
+interface ProTableProps {
+  isShowSelIdx?: boolean; // 选择框和序号列
+}
+
+// 接受父组件参数，配置默认值
+const props = withDefaults(defineProps<ProTableProps>(), {
+  isShowSelIdx: false
+})
+
 const emit = defineEmits(['command'])
+
+const checkList: any = ref([])
 
 const handleCommand = () => {
   emit('command', { type: 'column', command: checkList.value })
 }
+
+if (props.isShowSelIdx) {
+  checkList.value = ['selection', 'index']
+  handleCommand()
+} 
 </script>
 
 <style lang="scss">

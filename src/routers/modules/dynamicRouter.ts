@@ -17,6 +17,7 @@ export const initDynamicRouter = async () => {
   try {
     // 1.获取菜单列表 && 按钮权限列表
     await getAuthMenuList(myStore)
+    await getAuthButtonList(myStore)
 
     // 2.判断当前用户有没有菜单权限
     if (!myStore.getMenuList.length) {
@@ -49,6 +50,12 @@ export const initDynamicRouter = async () => {
     return Promise.reject(error);
   }
 };
+
+// 获取权限按钮列表
+const getAuthButtonList = async (store: any) => {
+  let res: any = await client.get(API.buttonList, {}, API.loadingConfig)
+  store.setAuthButtonList((res.data && Object.keys(res.data).length > 0) ? res.data : {})
+}
 
 // 获取菜单列表
 const getAuthMenuList = async (store: any) => {

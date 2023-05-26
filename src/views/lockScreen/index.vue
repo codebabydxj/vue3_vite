@@ -29,7 +29,8 @@
               autocomplete="off"
               placeholder="请填写锁屏密码"
               show-password
-              v-model="unLockPass" />
+              v-model="unLockPass"
+              @keyup.enter.native="goSys" />
           </span>
           <div class="bot enter-form">
             <el-link type="primary" :underline="false" @click="goBack">返回</el-link>
@@ -44,11 +45,11 @@
 
 <script setup lang="ts" name="LockScreen">
 import  { ref, computed, inject } from "vue";
-import { useRouter } from 'vue-router';
-import md5 from 'js-md5';
+import { useRouter } from "vue-router";
+import md5 from "js-md5";
 import { globalStore } from "@/store";
-import { client } from '@/utils/https/client';
-import * as API from '@/config/api';
+import { client } from "@/utils/https/client";
+import * as API from "@/config/api";
 import { useTime } from "@/hooks/useTime";
 import { getTimeState } from "@/utils/tools";
 import { ElMessage } from "element-plus";
@@ -85,13 +86,13 @@ const goSys = () => {
     ElMessage.warning('干嘛！！想越狱？？')
     return
   }
-  if (md5(unLockPass.value) !== myStore.lockScreen.lockScreenPassword) {
+  if (md5(unLockPass.value) !== myStore.lockScreen.lockScreenCode) {
     ElMessage.warning('锁屏密码错误')
     return
   }
   globalRouter.openView(myStore.lockScreen.unLockBackRoute)
   myStore.setThemeConfig({ ...themeConfig.value, isLockScreen: false })
-  myStore.setLockPassword({ lockScreenPassword: '', unLockBackRoute: '' })
+  myStore.setLockPassword({ lockScreenCode: '', unLockBackRoute: '' })
 }
 </script>
 
@@ -233,7 +234,6 @@ const goSys = () => {
       color: rgba(0, 0, 0, 0.85);
       font-size: 14px;
       line-height: 1.5715;
-      background-color: rgb(255, 255, 255);
       background-image: none;
       display: inline-flex;
       border-width: 1px;

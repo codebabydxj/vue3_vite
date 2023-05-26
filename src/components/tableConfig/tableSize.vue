@@ -28,7 +28,7 @@
 <script setup lang="ts" name="TableSize">
 import { ref } from 'vue'
 
-const curValue: any = ref('')
+const curValue: any = ref('default')
 const emit = defineEmits(['command'])
 
 const handleCommand = (command: any) => {

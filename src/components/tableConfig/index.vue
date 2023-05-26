@@ -2,7 +2,7 @@
   <div class="tb-config" v-if="configType.length > 0">
     <table-memory v-if="configType.includes('memory') && colSetting.length > 0" :colSetting="colSetting"></table-memory>
     <table-size v-if="configType.includes('size')" @command="handleConfig"></table-size>
-    <table-column v-if="configType.includes('column')" @command="handleConfig"></table-column>
+    <table-column v-if="configType.includes('column')" :isShowSelIdx="isShowSelIdx"  @command="handleConfig"></table-column>
   </div>
 </template>
 
@@ -13,6 +13,7 @@ import tableMemory from './tableMemory.vue'
 import { ColumnProps } from '@/components/ProTable/interface'
 
 interface ProTableProps {
+  isShowSelIdx?: boolean; // 选择框和序号列
   configType?: [] | any; // 列配置项 => 非比传
   colSetting: ColumnProps[]; // 表格列属性 => 必传
 }

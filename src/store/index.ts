@@ -1,14 +1,14 @@
 /**
  * 使用
- * import { globalStore } from '@/store'
+ * import { globalStore } from "@/store";
  * const myStore: any = globalStore();
  * 
  * pinia可以直接使用storeToRefs响应式修改state的值
- * import { storeToRefs } from 'pinia'
- * let { pagination } = storeToRefs(myStore)
+ * import { storeToRefs } from "pinia";
+ * let { pagination } = storeToRefs(myStore);
  */
-import { createPinia, defineStore } from 'pinia';
-import piniaPluginPersist from 'pinia-plugin-persistedstate';
+import { createPinia, defineStore } from "pinia";
+import piniaPluginPersist from "pinia-plugin-persistedstate";
 import piniaPersistConfig from "@/config/piniaPersist";
 import { getShowMenuList } from "@/utils/tools";
 
@@ -21,6 +21,7 @@ const globalStore = defineStore({
       realRoute: <any>'',
       menuList: <any>[],
       flatMenuList: <any>[],
+      authButtonList: <any>{},
       routes: <any>[{title: '首页',  name: 'Home', route: '/basic/home', realPath: '/basic/home' }],
       // 常量
       consts: <any>[],
@@ -29,7 +30,7 @@ const globalStore = defineStore({
       pagination: <boolean>false,
       maxHeight: <any>'200px',
       lockScreen: <any>{
-        lockScreenPassword: <any>'',
+        lockScreenCode: <any>'',
         unLockBackRoute: <any>'',
       },
       themeConfig: <any>{
@@ -47,10 +48,14 @@ const globalStore = defineStore({
         isTransition: true,
         // 锁定屏幕
         isLockScreen: false,
-      }
+      },
+      // 当前页面的 router name，用来做按钮权限筛选
+      routeName: '',
     }
   },
   getters: <any>{
+    // 按钮权限列表
+    authButtonListGet: (state: any) => state.authButtonList,
     // 菜单权限列表 ==> 这里的菜单没有经过任何处理
     getMenuList: (state: any) => state.menuList,
     // 菜单权限列表 ==> 左侧菜单栏渲染，需要剔除 isHide == true
@@ -62,6 +67,9 @@ const globalStore = defineStore({
     },
     setFlatMenuList(flatMenuList: any) {
       this.flatMenuList = flatMenuList;
+    },
+    setAuthButtonList(authButtonList: any) {
+      this.authButtonList = authButtonList;
     },
     setRoute(rootPath: any, fullPath: any) {
       this.currentRoute = rootPath;
@@ -100,13 +108,16 @@ const globalStore = defineStore({
       this.maxHeight = maxHeight;
     },
     setPagination(pagination: any) {
-      this.pagination = pagination
+      this.pagination = pagination;
     },
     setThemeConfig(themeConfig: any) {
 			this.themeConfig = themeConfig;
 		},
     setLockPassword(lockScreen: any) {
       this.lockScreen = lockScreen;
+    },
+    setRouteName(name: string) {
+      this.routeName = name;
     },
     logout() {
       // 1.清空用户信息
@@ -120,15 +131,15 @@ const globalStore = defineStore({
       // 4.重置锁屏
       this.isLockScreen = false;
       // 5.清空缓存
-      window.localStorage.clear()
-      window.sessionStorage.clear()
+      window.localStorage.clear();
+      window.sessionStorage.clear();
     },
   },
   persist: piniaPersistConfig('GlobalState', ['themeConfig', 'userInfo', 'lockScreen'])
 });
 
 // piniaPluginPersist(持久化存储)
-const pinia = createPinia()
+const pinia = createPinia();
 pinia.use(piniaPluginPersist);
 
 export { pinia, globalStore };

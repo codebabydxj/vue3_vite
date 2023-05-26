@@ -16,7 +16,7 @@ const postcss = px2rem({
   remUnit: 16
 })
 
-const getIPAdress = (ipStart: string = '192') => {
+const getIPAddress = (ipStart: string = '192') => {
   var interfaces = require('os').networkInterfaces();
   for (var devName in interfaces) {
     var iface = interfaces[devName];
@@ -82,7 +82,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       },
       hmr: { // 本地使用了whistle代理，此时会无效得进行刷新请求。解决方案
         protocol: 'ws', // WebSocket协议
-        host: getIPAdress()
+        host: getIPAddress()
       }
     },
     build: { // esbuild 打包更快，但是不能去除 console.log，terser打包慢，但能去除 console.log
