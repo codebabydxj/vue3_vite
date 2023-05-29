@@ -36,7 +36,6 @@ import { ref, reactive } from "vue";
 import { ElMessage, FormInstance } from "element-plus";
 
 const rules = reactive({
-  parentId: [{ required: true, message: "请选择上级菜单", trigger: 'change' }],
   btnName: [{ required: true, message: "请填写按钮名称", trigger: 'blur' }],
 });
 

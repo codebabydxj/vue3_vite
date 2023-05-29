@@ -21,9 +21,9 @@
       <el-form-item label="按钮名称" prop="btnName" v-if="menuType == 2">
         <el-input v-model="drawerProps.row.btnName" placeholder="请填写按钮名称"></el-input>
       </el-form-item>
-      <el-form-item label="上级菜单" prop="parentId">
+      <el-form-item label="上级菜单" prop="id">
         <el-tree-select
-          v-model="drawerProps.row.parentId"
+          v-model="drawerProps.row.id"
           :data="drawerProps.treeList"
           check-strictly
           placeholder="请选择上级菜单"
@@ -92,7 +92,6 @@ const rules = reactive({
   title: [{ required: true, message: "请填写菜单名称", trigger: 'blur' }],
   icon: [{ required: true, message: "请选择菜单图标", trigger: 'change' }],
   path: [{ required: true, message: "请填写菜单路径", trigger: 'blur' }],
-  parentId: [{ required: true, message: "请选择上级菜单", trigger: 'change' }],
   btnName: [{ required: true, message: "请填写按钮名称", trigger: 'blur' }],
 });
 
@@ -135,7 +134,7 @@ const defaultProps = {
   label: (data: any) => {
     return data.meta.title
   },
-  value: 'parentId'
+  value: 'id'
 }
 
 // 提交数据（新增/编辑）

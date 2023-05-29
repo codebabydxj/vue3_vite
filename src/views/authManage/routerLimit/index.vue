@@ -50,7 +50,7 @@ import { ElMessage } from "element-plus";
 import { client } from "@/utils/https/client";
 import * as API from "@/config/api";
 import ProTable from "@/components/ProTable/index.vue";
-import UserDrawer from "../components/dialogAddRouter.vue";
+import UserDrawer from "../components/drawerAddRouter.vue";
 import authButtonDialog from "../components/dialogAuthButton.vue";
 import { ColumnProps } from "@/components/ProTable/interface";
 
@@ -88,10 +88,9 @@ const handleDel = async (row: any) => {
 // 按钮权限配置
 const authButtonRef = ref<InstanceType<typeof authButtonDialog> | null>(null);
 const authConfig = (row: any) => {
-  const treeList: any = [{ meta: { title: '顶级菜单' }, parentId: '0' }, ...menuProTable.value.tableData];
   const params: any = {
     row: { ...row, status: 1 },
-    treeList,
+    treeList: [ ...menuProTable.value.tableData ],
     api: '/api/auth',
     getTableList: menuProTable.value.getTableList
   };
@@ -101,11 +100,10 @@ const authConfig = (row: any) => {
 // 新增/查看/编辑 菜单
 const drawerRef = ref<InstanceType<typeof UserDrawer> | null>(null);
 const openDrawer = (title: string, row: any = {}) => {
-  const treeList: any = [{ meta: { title: '顶级菜单' }, parentId: '0' }, ...menuProTable.value.tableData];
   const params: any = {
     title,
     row: { ...row, status: 1 },
-    treeList,
+    treeList: [ ...menuProTable.value.tableData ],
     isView: title === "查看",
     api: title === "新增" ? '/api/add/router' : title === "编辑" ? '/api/update/router' : undefined,
     getTableList: menuProTable.value.getTableList
