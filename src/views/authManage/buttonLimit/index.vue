@@ -44,10 +44,14 @@ const { BUTTONS } = useAuthButtons();
 
 <style scoped lang="scss">
 .content-box {
-  align-items: flex-start;
-  span {
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  .text {
+    margin: 20px 0 30px;
+    font-size: 23px;
+    font-weight: bold;
     text-align: center;
+    color: var(--el-text-color-regular);
   }
 }
 

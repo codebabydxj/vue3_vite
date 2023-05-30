@@ -5,6 +5,18 @@ import { RouteRecordRaw } from "vue-router";
  */
 export const staticRouter: RouteRecordRaw[] = [
   {
+    path: '/login',
+    name: 'Login',
+    meta: {
+      title: "登录"
+    },
+    component: () => import('@/views/login/index.vue'),
+  },
+  {
+    path: '/',
+    redirect: '/basic/home'
+  },
+  {
     path: '/',
     name: 'Main',
     component: () => import('@/views/index.vue'),
@@ -26,14 +38,6 @@ export const staticRouter: RouteRecordRaw[] = [
       title: "锁屏页面"
     },
     component: () => import('@/views/lockScreen/index.vue'),
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    meta: {
-      title: "登录"
-    },
-    component: () => import('@/views/login/index.vue'),
   }
 ];
 
