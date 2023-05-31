@@ -72,7 +72,7 @@ export const areaCodeToCodeList = (code: string, type: any = 'lang'): number[] =
 }
 
 /**
- * @description 获取当前时间对应的提示语
+ * @description 获取当前时间对应的提示语 | 获取当前时间制 AM-PM
  * @return string
  */
 export const getTimeState = (ap: boolean = false): any => {
@@ -146,7 +146,7 @@ export const isObjectValueEqual = (a: { [key: string]: any }, b: { [key: string]
 /**
  * 提交表单时，滚动自动回到还没有填写的表单处
  */
-export const locateToErr = () => {
+export const formScrollToError = () => {
   setTimeout(() => {
     const errorDiv = document.getElementsByClassName('is-error')
     errorDiv[0].scrollIntoView()

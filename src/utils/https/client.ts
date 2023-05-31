@@ -1,7 +1,7 @@
 /**
  * 引用 + API
- * import { client } from '@/utils/https/client';
- * import * as API from '@/config/api';
+ * import { client } from "@/utils/https/client";
+ * import * as API from "@/config/api";
  */
 import axios, { AxiosInstance, AxiosError, AxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse } from "axios";
 import type { Method } from "axios";
