@@ -2,58 +2,107 @@
   <div class="login-container flx-center">
     <div class="login-box">
       <SwitchDark class="dark" />
-      <div class="login-left">
-        <img src="../../assets/imgs/login_left.png" alt="login" />
-      </div>
-      <div class="login-form">
-        <div class="login-logo">
-          <img src="../../assets/imgs/logo.png" alt="" />
-          <h2 class="logo-text" data-v-a2265173="">Vite-Admin</h2>
+      <template v-if="!themeConfig.isDark">
+        <div class="login-left">
+          <img src="../../assets/imgs/login_left.png" alt="login" />
         </div>
-        <el-form
-          ref="ruleFormRef"
-          :model="ruleForm"
-          label-width="0px"
-          class="ruleForm"
-          @keyup.enter.native="submitForm(ruleFormRef)"
-        >
-          <el-form-item
-            label=""
-            prop="userName"
-            :rules="[
-              { required: true, message: '请输入用户名', trigger: 'blur' },
-            ]"
+        <div class="login-form">
+          <div class="login-logo">
+            <img src="../../assets/imgs/logo.png" alt="" />
+            <h2 class="logo-text" data-v-a2265173="">Vite-Admin</h2>
+          </div>
+          <el-form
+            ref="ruleFormRef"
+            :model="ruleForm"
+            label-width="0px"
+            class="ruleForm"
+            @keyup.enter.native="submitForm(ruleFormRef)"
           >
-            <el-input
-              type="text"
-              autocomplete="off"
-              placeholder="用户名：admin / user"
-              :prefix-icon="User"
-              v-model.trim="ruleForm.userName"
-            />
-          </el-form-item>
-          <el-form-item
-            label=""
-            prop="password"
-            :rules="[
-              { required: true, message: '请输入密码', trigger: 'blur' },
-            ]"
-          >
-            <el-input
-              type="password"
-              autocomplete="off"
-              placeholder="密码：123456"
-              show-password
-              :prefix-icon="Lock"
-              v-model="ruleForm.password"
-            />
-          </el-form-item>
-        </el-form>
-        <div class="login-btn">
-          <el-button class="btn" round :icon="CircleClose" @click="resetForm">重 置</el-button>
-          <el-button class="btn" round type="primary" :icon="User" :loading="loading" @click="submitForm(ruleFormRef)">登 录</el-button>
+            <el-form-item
+              label=""
+              prop="userName"
+              :rules="[
+                { required: true, message: '请输入用户名', trigger: 'blur' },
+              ]"
+            >
+              <el-input
+                type="text"
+                autocomplete="off"
+                placeholder="用户名：admin / user"
+                :prefix-icon="User"
+                v-model.trim="ruleForm.userName"
+              />
+            </el-form-item>
+            <el-form-item
+              label=""
+              prop="password"
+              :rules="[
+                { required: true, message: '请输入密码', trigger: 'blur' },
+              ]"
+            >
+              <el-input
+                type="password"
+                autocomplete="off"
+                placeholder="密码：123456"
+                show-password
+                :prefix-icon="Lock"
+                v-model="ruleForm.password"
+              />
+            </el-form-item>
+          </el-form>
+          <div class="login-btn">
+            <el-button class="btn" round :icon="CircleClose" @click="resetForm">重 置</el-button>
+            <el-button class="btn" round type="primary" :icon="User" :loading="loading" @click="submitForm(ruleFormRef)">登 录</el-button>
+          </div>
         </div>
-      </div>
+      </template>
+      <template v-else>
+        <div class="login-main">
+          <el-form
+            ref="ruleFormRef"
+            :model="ruleForm"
+            label-width="0px"
+            class="ruleForm"
+            @keyup.enter.native="submitForm(ruleFormRef)"
+          >
+            <el-form-item
+              label=""
+              prop="userName"
+              :rules="[
+                { required: true, message: '请输入用户名', trigger: 'blur' },
+              ]"
+            >
+              <el-input
+                type="text"
+                autocomplete="off"
+                placeholder="用户名：admin / user"
+                :prefix-icon="User"
+                v-model.trim="ruleForm.userName"
+              />
+            </el-form-item>
+            <el-form-item
+              label=""
+              prop="password"
+              :rules="[
+                { required: true, message: '请输入密码', trigger: 'blur' },
+              ]"
+            >
+              <el-input
+                type="password"
+                autocomplete="off"
+                placeholder="密码：123456"
+                show-password
+                :prefix-icon="Lock"
+                v-model="ruleForm.password"
+              />
+            </el-form-item>
+          </el-form>
+          <div class="login-btn">
+            <el-button class="btn" round :icon="CircleClose" @click="resetForm">重 置</el-button>
+            <el-button class="btn" round type="primary" :icon="User" :loading="loading" @click="submitForm(ruleFormRef)">登 录</el-button>
+          </div>
+        </div>
+      </template>
     </div>
   </div>
   <!-- 滑块验证码 -->
@@ -200,6 +249,103 @@ const handleVerifyCb = () => {
           width: 185px;
           height: 40px;
         }
+      }
+    }
+
+    .login-main {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 500px;
+      box-sizing: border-box;
+      border-radius: 50%;
+      background: transparent;
+      box-shadow: inset 15px 10px 40px rgba(158, 158, 158, 0.303), 10px 10px 20px rgba(117, 117, 117, 0.3), 15px 15px 30px rgba(72, 70, 70, 0.193), inset -10px -10px 20px rgba(233, 229, 229, 0.873);
+      animation: move 6s linear infinite;
+      :deep(.ruleForm) {
+        width: 60%;
+        margin: 150px auto 0;
+      }
+
+      .login-btn {
+        display: flex;
+        justify-content: space-between;
+        width: 60%;
+        margin: 0 auto;
+        white-space: nowrap;
+        .btn {
+          width: 120px;
+          height: 30px;
+        }
+      }
+    }
+
+    .login-main::after {
+      position: absolute;
+      content: "";
+      width: 40px;
+      height: 40px;
+      background: rgba(254, 254, 254, 0.667);
+      left: 80px;
+      top: 80px;
+      border-radius: 50%;
+      animation: move2 6s linear infinite;
+      filter:blur(1px);
+    }
+
+    .login-main::before {
+      position: absolute;
+      content: "";
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.5);
+      left: 130px;
+      top: 70px;
+      border-radius: 50%;
+      animation: move3 6s linear infinite;
+      filter:blur(1px);
+    }
+    @keyframes move {
+      50% {
+          border-radius: 42% 58% 49% 51% / 52% 36% 64% 48% ;
+      }
+      75% {
+          border-radius: 52% 48% 49% 51% / 43% 49% 51% 57%  ;
+      }
+      25% {
+          border-radius: 52% 48% 59% 41% / 43% 49% 51% 57%  ;
+      }
+    }
+
+    @keyframes move2 {
+      25% {
+          left: 80px;
+          top: 110px;
+      }
+      50% {
+          left: 50px;
+          top: 80px;
+      }
+      75% {
+          left: 80px;
+          top: 120px;
+      }
+    }
+
+    @keyframes move3 {
+      25% {
+          left: 100px;
+          top: 90px;
+      }
+      50% {
+          left: 110px;
+          top: 75px;
+      }
+      75% {
+          left: 130px;
+          top: 100px;
       }
     }
   }
