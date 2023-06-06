@@ -7,100 +7,12 @@
           <img src="../../assets/imgs/login_left.png" alt="login" />
         </div>
         <div class="login-form">
-          <div class="login-logo">
-            <img src="../../assets/imgs/logo.png" alt="" />
-            <h2 class="logo-text" data-v-a2265173="">Vite-Admin</h2>
-          </div>
-          <el-form
-            ref="ruleFormRef"
-            :model="ruleForm"
-            label-width="0px"
-            class="ruleForm"
-            @keyup.enter.native="submitForm(ruleFormRef)"
-          >
-            <el-form-item
-              label=""
-              prop="userName"
-              :rules="[
-                { required: true, message: '请输入用户名', trigger: 'blur' },
-              ]"
-            >
-              <el-input
-                type="text"
-                autocomplete="off"
-                placeholder="用户名：admin / user"
-                :prefix-icon="User"
-                v-model.trim="ruleForm.userName"
-              />
-            </el-form-item>
-            <el-form-item
-              label=""
-              prop="password"
-              :rules="[
-                { required: true, message: '请输入密码', trigger: 'blur' },
-              ]"
-            >
-              <el-input
-                type="password"
-                autocomplete="off"
-                placeholder="密码：123456"
-                show-password
-                :prefix-icon="Lock"
-                v-model="ruleForm.password"
-              />
-            </el-form-item>
-          </el-form>
-          <div class="login-btn">
-            <el-button class="btn" round :icon="CircleClose" @click="resetForm">重 置</el-button>
-            <el-button class="btn" round type="primary" :icon="User" :loading="loading" @click="submitForm(ruleFormRef)">登 录</el-button>
-          </div>
+          <LoginForm :darkTheme="false" />
         </div>
       </template>
       <template v-else>
         <div class="login-main">
-          <el-form
-            ref="ruleFormRef"
-            :model="ruleForm"
-            label-width="0px"
-            class="ruleForm"
-            @keyup.enter.native="submitForm(ruleFormRef)"
-          >
-            <el-form-item
-              label=""
-              prop="userName"
-              :rules="[
-                { required: true, message: '请输入用户名', trigger: 'blur' },
-              ]"
-            >
-              <el-input
-                type="text"
-                autocomplete="off"
-                placeholder="用户名：admin / user"
-                :prefix-icon="User"
-                v-model.trim="ruleForm.userName"
-              />
-            </el-form-item>
-            <el-form-item
-              label=""
-              prop="password"
-              :rules="[
-                { required: true, message: '请输入密码', trigger: 'blur' },
-              ]"
-            >
-              <el-input
-                type="password"
-                autocomplete="off"
-                placeholder="密码：123456"
-                show-password
-                :prefix-icon="Lock"
-                v-model="ruleForm.password"
-              />
-            </el-form-item>
-          </el-form>
-          <div class="login-btn">
-            <el-button class="btn" round :icon="CircleClose" @click="resetForm">重 置</el-button>
-            <el-button class="btn" round type="primary" :icon="User" :loading="loading" @click="submitForm(ruleFormRef)">登 录</el-button>
-          </div>
+          <LoginForm :darkTheme="true" />
         </div>
       </template>
     </div>
@@ -110,73 +22,16 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, computed } from 'vue';
-import { client } from '@/utils/https/client';
-import * as API from '@/config/api';
-import { useRouter } from 'vue-router';
-import md5 from 'js-md5';
-import { getTimeState } from '@/utils/tools';
+import { ref, computed } from 'vue';
 import { globalStore } from '@/store';
-import { useKeepAliveStore } from "@/store/keepAlive";
-import { initDynamicRouter } from "@/routers/modules/dynamicRouter";
-import { User, Lock, CircleClose } from '@element-plus/icons-vue';
-import { ElForm, ElNotification } from 'element-plus';
 import verifyCode from '@/components/verifyCode/index.vue';
 import SwitchDark from "@/components/ThemeDark/index.vue";
+import LoginForm from "./loginForm.vue";
 
-type FormInstance = InstanceType<typeof ElForm>
 const myStore: any = globalStore()
 const themeConfig = computed(() => myStore.themeConfig)
-const keepAliveStore = useKeepAliveStore()
-const router = useRouter()
-const ruleFormRef = ref<FormInstance>()
-const ruleForm = reactive({
-  userName: '',
-  password: '',
-});
-const loading = ref(false)
 const isShowCode = ref(false) // 是否显示滑块验证码，看自己逻辑需求处理
 
-const resetForm = () => {
-  ruleForm.userName = ''
-  ruleForm.password = ''
-};
-const submitForm = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return;
-  formEl.validate(async (valid: any) => {
-    if (valid) {
-      loading.value = true
-      const params = { ...ruleForm, password: md5(ruleForm.password) }
-      client.post(API.login, params, API.loadingConfig)
-      .then(async (res: any) => {
-        // 1.登录完成保存用户信息
-        myStore.setUserInfo(res.data) 
-
-        // 2.添加动态路由
-        await initDynamicRouter();
-        
-        // 3.清空 keepAlive 数据
-        keepAliveStore.updateKeepAliveName()
-
-        // 4.如果是锁屏状态，重置状态
-        myStore.setThemeConfig({ ...themeConfig.value, isLockScreen: false })
-
-        // 5.跳转到首页
-        router.replace('/')
-
-        ElNotification({
-          title: getTimeState(),
-          message: "欢迎登录 Vite-Admin",
-          type: "success",
-          duration: 3000
-        });
-      }).catch(() => {
-      }).finally(() => {
-        loading.value = false
-      });
-    }
-  })
-};
 // 验证成功之后的回调处理
 const handleVerifyCb = () => {
   isShowCode.value = false // 隐藏模态框
@@ -216,40 +71,12 @@ const handleVerifyCb = () => {
         height: 100%;
       }
     }
+    
     .login-form {
       width: 420px;
       padding: 50px 40px 45px;
       border-radius: 10px;
       box-shadow: 2px 3px 7px #0003;
-      .login-logo {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 45px;
-        img {
-          width: 60px;
-          height: 52px;
-        }
-        .logo-text {
-          padding: 0 0 0 25px;
-          margin: 0;
-          font-size: 42px;
-          font-weight: 700;
-          color: #34495e;
-          white-space: nowrap;
-        }
-      }
-      .login-btn {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        margin: 0 auto;
-        white-space: nowrap;
-        .btn {
-          width: 185px;
-          height: 40px;
-        }
-      }
     }
 
     .login-main {
@@ -264,22 +91,6 @@ const handleVerifyCb = () => {
       background: transparent;
       box-shadow: inset 15px 10px 40px rgba(158, 158, 158, 0.303), 10px 10px 20px rgba(117, 117, 117, 0.3), 15px 15px 30px rgba(72, 70, 70, 0.193), inset -10px -10px 20px rgba(233, 229, 229, 0.873);
       animation: move 6s linear infinite;
-      :deep(.ruleForm) {
-        width: 60%;
-        margin: 150px auto 0;
-      }
-
-      .login-btn {
-        display: flex;
-        justify-content: space-between;
-        width: 60%;
-        margin: 0 auto;
-        white-space: nowrap;
-        .btn {
-          width: 120px;
-          height: 30px;
-        }
-      }
     }
 
     .login-main::after {
@@ -367,15 +178,5 @@ const handleVerifyCb = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-</style>
-<style lang="scss">
-.ruleForm {
-  .el-form-item {
-    margin-bottom: 40px;
-  }
-  .el-input__wrapper {
-    height: 40px;
-  }
 }
 </style>
