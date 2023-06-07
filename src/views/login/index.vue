@@ -89,7 +89,7 @@ const handleVerifyCb = () => {
       box-sizing: border-box;
       border-radius: 50%;
       background: transparent;
-      box-shadow: inset 15px 10px 40px rgba(158, 158, 158, 0.303), 10px 10px 20px rgba(117, 117, 117, 0.3), 15px 15px 30px rgba(72, 70, 70, 0.193), inset -10px -10px 20px rgba(233, 229, 229, 0.873);
+      box-shadow: inset 15px 10px 40px rgba(158, 158, 180, 0.303), 10px 10px 20px rgba(117, 117, 117, 0.3), 15px 15px 30px rgba(72, 70, 70, 0.193), inset -10px -10px 20px rgba(233, 229, 229, 0.873);
       animation: move 6s linear infinite;
     }
 

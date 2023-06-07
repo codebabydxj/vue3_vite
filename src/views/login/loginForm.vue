@@ -142,7 +142,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     margin-top: 80px;
     .logo-text {
       color: #CFD3DC;
-      font-size: 38px;
+      font-size: 32px;
     }
   }
   .login-btn {
