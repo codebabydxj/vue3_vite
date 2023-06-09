@@ -74,8 +74,10 @@
 </template>
 
 <script setup lang="ts" name="Home">
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { globalStore } from "@/store";
+import Driver from "driver.js";
+import "driver.js/dist/driver.min.css";
 
 const date: Date = new Date();
 const greetings = computed(() => {
@@ -91,6 +93,72 @@ const greetings = computed(() => {
 // 最大高度计算
 const myStore: any = globalStore()
 const maxHeight: any = computed(() => myStore.maxHeight)
+const themeConfig = computed(() => myStore.themeConfig)
+
+onMounted(() => {
+  // 加载引导页
+  setTimeout(() => {
+    if (myStore.themeConfig.isOpenGuide) {
+      guide()
+    }
+  }, 1000)
+})
+
+// 引导页
+const guide = () => {
+  const driver: Driver = new Driver({
+    className: 'psm-driver-box',
+    opacity: 0.75,
+    padding: 4,
+    allowClose: false,
+    overlayClickNext: false,
+    stageBackground: '#20c6ce',
+    doneBtnText: "关闭",
+    closeBtnText: '不再提示',
+    nextBtnText: "下一步",
+    prevBtnText: "上一步",
+    onReset: (Element) => {
+      console.log(Element);
+      myStore.setThemeConfig({ ...themeConfig.value, isOpenGuide: false })
+    },
+  });
+  driver.defineSteps(steps);
+  driver.start();
+};
+const steps = [
+  {
+    element: "#Refreshs",
+    popover: {
+      title: "刷新面",
+      description: "操作此按钮可以刷新重置页面",
+      position: "left"
+    }
+  },
+  {
+    element: "#Theme",
+    popover: {
+      title: "主题配置",
+      description: "该功能主要是全局主题配置，不妨点击试试",
+      position: "left"
+    }
+  },
+  {
+    element: "#Message",
+    popover: {
+      title: "消息中心",
+      description: "包含一些通知/公告/待办",
+      position: "left"
+    }
+  },
+  {
+    element: "#Full",
+    popover: {
+      title: "全屏功能",
+      description: "点击此按钮，可以将浏览器进入全屏模式",
+      position: "left"
+    }
+  }
+]
 </script>
 
 <style scoped lang="scss">
@@ -121,5 +189,63 @@ const maxHeight: any = computed(() => myStore.maxHeight)
     color: var(--color-text);
     font-size: 14px;
   }
+}
+</style>
+
+<style lang="scss">
+// 引导页样式
+div#driver-popover-item::before {
+  position: absolute;
+  top: -36px;
+  right: 0;
+  width: 98px;
+  height: 90px;
+  content: '';
+}
+
+div#driver-popover-item {
+  min-width: 280px;
+  max-width: 320px;
+  color: #fff;
+  background: #20c6ce;
+}
+
+div#driver-popover-item .driver-popover-tip.left {
+  left: -9px;
+  border-color: transparent #20c6ce transparent transparent;
+}
+
+div#driver-popover-item .driver-popover-footer button {
+  padding: 4px 10px;
+  color: #20c6ce;
+  background-color: #fff;
+  border: 1px solid #fff;
+}
+
+div#driver-popover-item .driver-popover-footer button.driver-prev-btn {
+  color: grey;
+}
+
+div#driver-popover-item .driver-popover-footer button.driver-disabled {
+  display: none !important;
+}
+
+div#driver-popover-item .driver-popover-footer .driver-close-btn {
+  color: #fff;
+  text-shadow: 0 0 0 #fff;
+  background-color: rgb(255 255 255 / 30%);
+  border: 1px solid rgb(255 255 255 / 30%);
+}
+
+div#driver-popover-item .driver-popover-title {
+  margin: 0 0 15px;
+}
+
+div#driver-popover-item .driver-popover-description {
+  color: #fff;
+}
+
+div#driver-highlighted-element-stage {
+  border: 1px dashed #20c6ce;
 }
 </style>

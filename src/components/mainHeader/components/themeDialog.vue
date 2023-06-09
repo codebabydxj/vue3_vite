@@ -50,6 +50,10 @@
       <span>锁定屏幕</span>
       <el-switch v-model="themeConfig.isLockScreen" inline-prompt :active-icon="Lock" :inactive-icon="Unlock" @change="changeLockScreen" />
     </div>
+    <div class="theme-item">
+      <span>是否开启引导页</span>
+      <el-switch v-model="themeConfig.isOpenGuide" inline-prompt :active-icon="Lock" :inactive-icon="Unlock" @change="changeGuide" />
+    </div>
     <!-- 锁定屏幕 -->
     <lockScreenDialog ref="lockScreenRef" />
   </el-drawer>
@@ -82,6 +86,10 @@ const changeTransition = (val: any) => {
 
 const changeLockScreen = (val: any) => {
   lockScreenRef.value.acceptParams();
+}
+
+const changeGuide = (val: any) => {
+  myStore.setThemeConfig({ ...themeConfig.value, isOpenGuide: val })
 }
 
 // 预定义主题颜色

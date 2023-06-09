@@ -25,6 +25,7 @@
     "axios-jsonp": "^1.0.4",
     "axios-retry": "^3.3.1",
     "dayjs": "^1.11.6",
+    "driver.js": "^0.9.8",
     "echarts": "^5.4.1",
     "echarts-liquidfill": "^3.1.0",
     "element-plus": "^2.3.3",

@@ -48,6 +48,8 @@ const globalStore = defineStore({
         isTransition: true,
         // 锁定屏幕
         isLockScreen: false,
+        // 引导页
+        isOpenGuide: true,
       },
       // 当前页面的 router name，用来做按钮权限筛选
       routeName: '',

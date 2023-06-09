@@ -8,24 +8,26 @@
       </div>
       <div class="user-info">
         <el-tooltip effect="dark" content="刷新" placement="bottom">
-          <el-link class="screenfull" :underline="false" @click="refresh">
+          <el-link id="Refreshs" class="screenfull" :underline="false" @click="refresh">
             <el-icon color="#efefef" :size="20">
               <Refresh />
             </el-icon>
           </el-link>
         </el-tooltip>
         <el-tooltip effect="dark" content="主题" placement="bottom">
-          <el-link class="screenfull" :underline="false" @click="handleTheme">
+          <el-link id="Theme" class="screenfull" :underline="false" @click="handleTheme">
             <el-icon color="#efefef" :size="20">
               <SkinOutlined />
             </el-icon>
           </el-link>
         </el-tooltip>
-        <el-link class="screenfull" :underline="false">
-          <Message id="message" />
-        </el-link>
+        <el-tooltip effect="dark" content="消息" placement="bottom">
+          <el-link id="Message" class="screenfull" :underline="false">
+            <Message id="message" />
+          </el-link>
+        </el-tooltip>
         <el-tooltip effect="dark" content="全屏" placement="bottom">
-          <el-link class="screenfull" :underline="false" @click="screenfullTog">
+          <el-link id="Full" class="screenfull" :underline="false" @click="screenfullTog">
             <el-icon color="#efefef" :size="20">
               <fullscreen-outlined v-if="!isFullscreen" />
               <fullscreen-exit-outlined v-else />
@@ -230,5 +232,4 @@ header .navbar-top .user-info .head {
     }
   }
 }
-
 </style>
