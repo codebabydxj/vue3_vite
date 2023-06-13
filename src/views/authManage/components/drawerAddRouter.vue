@@ -21,9 +21,9 @@
       <el-form-item label="按钮名称" prop="btnName" v-if="menuType == 2">
         <el-input v-model="drawerProps.row.btnName" placeholder="请填写按钮名称"></el-input>
       </el-form-item>
-      <el-form-item label="上级菜单" prop="id">
+      <el-form-item label="上级菜单" prop="parentId">
         <el-tree-select
-          v-model="drawerProps.row.id"
+          v-model="drawerProps.row.parentId"
           :data="drawerProps.treeList"
           check-strictly
           placeholder="请选择上级菜单"
