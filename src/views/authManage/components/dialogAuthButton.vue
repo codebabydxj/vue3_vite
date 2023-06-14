@@ -68,7 +68,7 @@ const defaultProps = {
   label: (data: any) => {
     return data.meta.title
   },
-  value: 'parentId'
+  value: 'id'
 }
 
 const ruleFormRef = ref<FormInstance>();
