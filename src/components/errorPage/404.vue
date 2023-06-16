@@ -31,7 +31,7 @@ const show = ref(false)
 onMounted(() => {
   show.value = true
 })
-const goBack = async () => {
+const goBack = () => {
   router.push('/');
 }
 </script>
