@@ -19,7 +19,6 @@ export const useKeepAliveStore = defineStore({
     // 移除 KeepAliveName
     removeKeepAliveName(name: string) {
       this.keepAliveName = this.keepAliveName.filter((item: any) => item !== name);
-      console.log(this.keepAliveName);
     },
     // 更新 KeepAliveName
     updateKeepAliveName(keepAliveName: string[] = []) {
