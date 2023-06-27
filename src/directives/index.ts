@@ -6,6 +6,7 @@ import draggable from "./modules/draggable";
 import debounce from "./modules/debounce";
 import throttle from "./modules/throttle";
 import longpress from "./modules/longpress";
+import inputNumber from "./modules/inputNumber";
 
 const directivesList: any = {
 	auth,
@@ -14,7 +15,8 @@ const directivesList: any = {
 	draggable,
 	debounce,
 	throttle,
-	longpress
+	longpress,
+	inputNumber
 };
 
 const directives = {

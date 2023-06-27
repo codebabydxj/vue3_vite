@@ -43,7 +43,7 @@
       </template>
       <template v-if="menuType == 1">
         <el-form-item label="组件name" prop="name">
-          <el-input v-model="drawerProps.row.name" placeholder="请用英文命名，用作keep-alive缓存"></el-input>
+          <el-input v-model="drawerProps.row.name" placeholder="请用英文命名（确保唯一），用于keep-alive缓存"></el-input>
         </el-form-item>
         <el-form-item label="菜单图标" prop="icon">
           <SelectIcon v-model:iconValue="drawerProps.row.icon" />
