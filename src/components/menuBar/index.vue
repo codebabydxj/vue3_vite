@@ -23,23 +23,25 @@
         </el-icon>
       </template>
     </div>
-    <el-menu ref="menuRef" class="user-sel el-menu-vertical-demo" background-color="#191a20" text-color="#fefefea6"
-      active-text-color="#ffffff" :unique-opened="true" :collapse="!isCurCollapse" :collapse-transition="false"
-      :default-active="routeParams.currentRoute.split('?')[0]">
-      <el-sub-menu v-for="routeWrap in routeParams.menuListFilterd" :index="routeWrap.path" :key="routeWrap.path">
-        <template #title>
-          <el-icon :size="16">
-            <component :is="routeWrap.meta.icon" color="#fefefea6"></component>
-          </el-icon>
-          <span slot="title">{{ routeWrap.meta.title }}</span>
-        </template>
-        <template v-for="route in routeWrap.children" :key="route.path.split('?')[0]">
-          <el-menu-item :index="route.path" @click="routeGo(route.path)">
-            {{ route.meta.title }}
-          </el-menu-item>
-        </template>
-      </el-sub-menu>
-    </el-menu>
+    <el-scrollbar height="calc(100vh - 160px)">
+      <el-menu ref="menuRef" class="user-sel el-menu-vertical-demo" background-color="#191a20" text-color="#fefefea6"
+        active-text-color="#ffffff" :unique-opened="true" :collapse="!isCurCollapse" :collapse-transition="false"
+        :default-active="routeParams.currentRoute.split('?')[0]">
+        <el-sub-menu v-for="routeWrap in routeParams.menuListFilterd" :index="routeWrap.path" :key="routeWrap.path">
+          <template #title>
+            <el-icon :size="16">
+              <component :is="routeWrap.meta.icon" color="#fefefea6"></component>
+            </el-icon>
+            <span slot="title">{{ routeWrap.meta.title }}</span>
+          </template>
+          <template v-for="route in routeWrap.children" :key="route.path.split('?')[0]">
+            <el-menu-item :index="route.path" @click="routeGo(route.path)">
+              {{ route.meta.title }}
+            </el-menu-item>
+          </template>
+        </el-sub-menu>
+      </el-menu>
+    </el-scrollbar>
     <div class="user-sel eo" :class="!isCurCollapse ? 'active': 'not-active'">
       <el-tooltip placement="right" :visible="visible" effect="light" :content="isCurCollapse ? '点击折叠' : '点击展开'">
         <img src="../../assets/svg/enter.svg" alt="" @mouseenter="visible = true" @mouseleave="visible = false"
@@ -130,8 +132,7 @@ onBeforeUnmount(() => {
 .navbar-side {
   flex: 0 0 auto;
   background-color: var(--main-bg-color);
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
   position: relative;
 
   .collapse {
@@ -355,26 +356,5 @@ onBeforeUnmount(() => {
 
 .navbar-side .el-menu {
   border-right: none;
-}
-
-.navbar-side::-webkit-scrollbar {
-  /*滚动条整体样式*/
-  width: 6px;
-  /*高宽分别对应横竖滚动条的尺寸*/
-  height: 1px;
-}
-
-.navbar-side::-webkit-scrollbar-thumb {
-  /*滚动条里面小方块*/
-  border-radius: 10px;
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  background: #4e5158;
-}
-
-.navbar-side::-webkit-scrollbar-track {
-  /*滚动条里面轨道*/
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
-  // border-radius: 10px;
-  background: var(--main-bg-color);
 }
 </style>

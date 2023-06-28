@@ -1,6 +1,7 @@
 /**
  * v-inputNumber
  * 数字输入框，可限制小数点后几位，默认两位
+ * 设定 decimal 数字即可
  */
 import { Directive, DirectiveBinding } from 'vue'
 

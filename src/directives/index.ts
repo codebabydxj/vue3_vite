@@ -7,6 +7,7 @@ import debounce from "./modules/debounce";
 import throttle from "./modules/throttle";
 import longpress from "./modules/longpress";
 import inputNumber from "./modules/inputNumber";
+import tooltip from "./modules/tooltip";
 
 const directivesList: any = {
 	auth,
@@ -16,7 +17,8 @@ const directivesList: any = {
 	debounce,
 	throttle,
 	longpress,
-	inputNumber
+	inputNumber,
+	tooltip
 };
 
 const directives = {
