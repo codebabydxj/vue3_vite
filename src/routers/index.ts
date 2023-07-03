@@ -37,7 +37,8 @@ routers.beforeEach(async (to, from, next) => {
 
     /** 3.判断是否是访问登陆页，有 Token 就在当前页面，没有 Token 重置路由到登陆页 */
     if (to.path.toLocaleLowerCase() === '/login') {
-        if (myStore.userInfo.token) return routers.back()
+        if (myStore.userInfo.token) return routers.back();
+        resetRouter();
         return next();
     }
     
@@ -64,6 +65,19 @@ routers.beforeEach(async (to, from, next) => {
     /** 8.正常访问页面 */
     next()
 })
+
+/**
+ * @description 重置路由
+ * */
+export const resetRouter = () => {
+    const myStore = globalStore()
+    console.log(myStore.flatMenuList);
+    myStore.flatMenuList.forEach((route: any) => {
+        const { name } = route;
+        if (name && routers.hasRoute(name)) routers.removeRoute(name);
+    });
+};
+
 /** 路由跳转结束 */
 routers.afterEach(() => {
 	NProgress.done();
