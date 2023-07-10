@@ -108,7 +108,7 @@ const openDrawer = (title: string, row: any = {}) => {
     api: title === "新增" ? '/api/add/router' : title === "编辑" ? '/api/update/router' : undefined,
     getTableList: menuProTable.value.getTableList
   };
-  if (title == '编辑') {
+  if (['编辑', '查看'].includes(title)) {
     params.row = { ...row, icon: row.meta.icon, isHide: row.meta.isHide, isKeepAlive: row.meta.isKeepAlive, title: row.meta.title, status: 1 }
   }
   drawerRef.value?.acceptParams(params);
