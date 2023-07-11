@@ -120,6 +120,20 @@ const drawerProps = ref<DrawerProps>({
 // 接收父组件传过来的参数
 const acceptParams = (params: DrawerProps) => {
   drawerProps.value = params;
+  if (drawerProps.value.title === '新增') {
+    drawerProps.value.row.parentId = '0'
+    const obj: any = {
+      id: '0',
+      meta: {
+        icon: "",
+        title: "顶级菜单",
+        isHide: false,
+        isKeepAlive: true
+      },
+      children: []
+    }
+    drawerProps.value.treeList = [obj, ...params.treeList]
+  }
   drawerVisible.value = true;
 };
 
@@ -140,22 +154,23 @@ const defaultProps = {
 // 提交数据（新增/编辑）
 const ruleFormRef = ref<FormInstance>();
 const handleSubmit = () => {
-  ruleFormRef.value!.validate(async (valid: any) => {
+  ruleFormRef.value!.validate((valid: any) => {
     if (!valid) return;
-    try {
-      const params: any = {}
-      Object.keys(drawerProps.value.row).forEach((k: any) => {
-        if (drawerProps.value.row[k] && drawerProps.value.row[k] !== '') {
-          params[k] = drawerProps.value.row[k]
-        }
+    const params: any = {}
+    Object.keys(drawerProps.value.row).forEach((k: any) => {
+      if (drawerProps.value.row[k] && drawerProps.value.row[k] !== '') {
+        params[k] = drawerProps.value.row[k]
+      }
+    })
+    client.post(drawerProps.value.api, params)
+      .then((res: any) => {
+        ElMessage.success({ message: '操作成功！' });
+        drawerProps.value.getTableList!();
+      }).finally(() => {
+        drawerVisible.value = false;
+      }).catch((error: any) => {
+        console.log(error);
       })
-      let res: any = await client.post(drawerProps.value.api, params)
-      ElMessage.success({ message: '操作成功！' });
-      drawerProps.value.getTableList!();
-      drawerVisible.value = false;
-    } catch (error) {
-      console.log(error);
-    }
   });
 };
 
