@@ -146,9 +146,9 @@ export const isObjectValueEqual = (a: { [key: string]: any }, b: { [key: string]
 /**
  * 提交表单时，滚动自动回到还没有填写的表单处
  */
-export const formScrollToError = () => {
+export const formScrollToError = (className: string = 'is-error') => {
   setTimeout(() => {
-    const errorDiv = document.getElementsByClassName('is-error')
+    const errorDiv = document.getElementsByClassName(className)
     errorDiv[0].scrollIntoView()
   }, 0)
 }
