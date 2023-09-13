@@ -1,5 +1,6 @@
 <template>
   <svg class="svg-icon" :style="iconStyle" aria-hidden="true">
+    <!-- 想要修改color，必须把引入的svg自带的fill清空，否则无法覆盖 -->
     <use :href="symbolId" :fill="color" />
   </svg>
 </template>
