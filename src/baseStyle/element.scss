@@ -78,12 +78,14 @@
     }
   }
   .table-header {
-    margin-bottom: 15px;
     .header-button-lf {
       float: left;
     }
     .header-button-ri {
       float: right;
+    }
+    .el-button {
+      margin: 0 12px 12px 0 !important;
     }
   }
   // 表格 分页 pagination 样式
