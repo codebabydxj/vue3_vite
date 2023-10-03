@@ -42,8 +42,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       //   resolvers: [ ElementPlusResolver() ] // 可配置多个 此时main.ts处组件库相关的就可以全部删除掉了
       // }),
       vueJsx(),
-      // name 可以写在 script 标签上
-      vueSetupExtend({}),
+      vueSetupExtend({}), // name 可以写在 script 标签上
       viteCompression({
         verbose: true, // 是否在控制台输出压缩结果
         disable: false, // 是否禁用
