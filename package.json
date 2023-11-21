@@ -28,7 +28,7 @@
     "driver.js": "^0.9.8",
     "echarts": "^5.4.1",
     "echarts-liquidfill": "^3.1.0",
-    "element-plus": "^2.3.3",
+    "element-plus": "^2.4.2",
     "js-md5": "^0.7.3",
     "lodash": "^4.17.21",
     "mitt": "^3.0.0",
