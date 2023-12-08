@@ -123,7 +123,7 @@ const closeMenu = () => {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .tabs {
   padding-top: 3px;
   user-select: none;

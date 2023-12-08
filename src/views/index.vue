@@ -17,6 +17,7 @@
         </router-view>
       </template>
     </Content>
+    <Toolbar />
   </div>
 </template>
 
@@ -28,6 +29,7 @@ import { useKeepAliveStore } from "@/store/keepAlive";
 import MenuBar from "@/components/menuBar/index.vue";
 import Content from "@/components/mainContent/index.vue";
 import ComHeader from "@/components/mainHeader/index.vue";
+import Toolbar from "@/components/mainToolBar/index.vue";
 import Tabs from "@/components/headerTabs/index.vue";
 
 // 主题配置

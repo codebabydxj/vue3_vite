@@ -2,6 +2,7 @@
 html.dark {
 	// * vite-admin
 	--vite-main-bg-color: #141414;
+	--vite-bg-dark-color: #ffffff;
 
   // * wangEditor
 	--w-e-toolbar-color: #595959;
@@ -52,6 +53,11 @@ html.dark {
 
 	.contextmenu li:hover {
 		background-color: var(--el-color-info-light-9) !important;
+	}
+
+	.el_toolbar {
+		background-color: var(--vite-bg-dark-color);
+		color: var(--vite-main-bg-color);
 	}
 
 	// scroll-bar
