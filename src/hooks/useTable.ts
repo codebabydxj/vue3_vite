@@ -4,12 +4,14 @@ import { Table } from "./interface";
 
 /**
  * @description table 页面操作方法封装
+ * @param {Function} resetParams 请求之前对查询参数进行处理 (非必传)
  * @param {Function} apiParams 获取表格数据 apiParams (必传)
  * @param {Object} initParam 获取数据初始化参数(非必传，默认为{})
  * @param {Boolean} isPageable 是否有分页(非必传，默认为true)
- * @param {Function} dataCallback 对后台返回的数据进行处理的方法(非必传)
+ * @param {Function} dataCallback 对后台返回的数据进行处理的方法 (非必传)
  * */
 export const useTable = (
+	resetParams?: (params: any) => Promise<any>,
 	apiParams: object | any = { url: '', method: 'post' },
 	initParam: object = {},
 	isPageable: boolean = true,
@@ -58,16 +60,23 @@ export const useTable = (
 	 * @return void
 	 * */
 	const getTableList = async () => {
+		if (!apiParams.url) return;
 		try {
 			// 先把初始化参数和分页参数放到总参数里面
-			Object.assign(state.totalParam, initParam, isPageable ? pageParam.value : {});
-      let { data } = apiParams.method === 'get' ? await client.get(apiParams.url, state.totalParam) : await client.post(apiParams.url, state.totalParam)
+			Object.assign(state.totalParam, state.searchInitParam, initParam, isPageable ? pageParam.value : {});
+			let newParams: any = { ...state.totalParam }
+			if (resetParams) {
+				newParams = resetParams({...newParams})
+			}
+      let { data } = apiParams.method === 'get' ? await client.get(apiParams.url, newParams) : await client.post(apiParams.url, newParams)
 			state.searchLoading = false;
 			dataCallback && (data = dataCallback(data));
 			state.tableData = isPageable ? data.list : data;
 			// 解构后台返回的分页数据 (如果有分页更新分页信息)
-			const { pageNum, pageSize, total } = data;
-			isPageable && updatePageable({ pageNum, pageSize, total });
+      if (isPageable) {
+        const { pageNum, pageSize, total } = data;
+        updatePageable({ pageNum, pageSize, total });
+      }
 		} catch (error) {
 			state.searchLoading = false;
 			requestError && requestError(error);
@@ -78,7 +87,7 @@ export const useTable = (
 	 * @description 更新查询参数
 	 * @return void
 	 * */
-	const updatedTotalParam = (defaultParams: any = null) => {
+	const updatedTotalParam = () => {
 		state.totalParam = {};
 		// 处理查询参数，可以给查询参数加自定义前缀操作
 		let nowSearchParam: { [key: string]: any } = {};
@@ -88,16 +97,6 @@ export const useTable = (
 			if (state.searchParam[key] || state.searchParam[key] === false || state.searchParam[key] === 0) {
 				nowSearchParam[key] = state.searchParam[key];
 			}
-		}
-		// 针对一些查询参数作为入参时，根据后台所需做一些变动处理
-		if (defaultParams) {
-			defaultParams.forEach((item: any) => {
-				// 时间范围剔除数组参数，改造成 开始&&结束 时间参数
-				if (item.search && item.search.el === 'date-picker' && item.search.resetValue.length && nowSearchParam[item.prop]) {
-					[nowSearchParam[item.search.resetValue[0]], nowSearchParam[item.search.resetValue[1]]] = nowSearchParam[item.prop]
-					delete nowSearchParam[item.prop]
-				}
-			})
 		}
 		Object.assign(state.totalParam, nowSearchParam, isPageable ? pageParam.value : {});
 	};
@@ -115,10 +114,10 @@ export const useTable = (
 	 * @description 表格数据查询
 	 * @return void
 	 * */
-	const search = (params: any = null) => {
+	const search = () => {
 		state.pageable.pageNum = 1;
 		state.searchLoading = true;
-		updatedTotalParam(params);
+		updatedTotalParam();
 		getTableList();
 	};
 
@@ -128,11 +127,8 @@ export const useTable = (
 	 * */
 	const reset = () => {
 		state.pageable.pageNum = 1;
-		state.searchParam = {};
 		// 重置搜索表单的时，如果有默认搜索参数，则重置默认的搜索参数
-		Object.keys(state.searchInitParam).forEach(key => {
-			state.searchParam[key] = state.searchInitParam[key];
-		});
+		state.searchParam = { ...state.searchInitParam };
 		updatedTotalParam();
 		getTableList();
 	};

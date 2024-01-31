@@ -105,12 +105,9 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 			}
     },
     resolve: {
-      alias: [
-        {
-          find: "@",
-          replacement: resolve(__dirname, "src"),
-        },
-      ],
+      alias: {
+          "@": resolve(__dirname, "./src"),
+      },
       // 忽略后缀名的配置项
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.node', '.scss'],
     },

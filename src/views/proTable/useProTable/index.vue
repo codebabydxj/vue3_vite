@@ -6,9 +6,12 @@
           ref="proTable"
           title="用户列表"
           :columns="columns"
+          :resetParams="resetParams"
           :initParam="initParam"
           :requestApiParams="requestApiParams"
-			    :dataCallback="dataCallback">
+			    :dataCallback="dataCallback"
+          @dragSort="sortTable"
+          @search="searchCb">
           <!-- 表格 header 按钮 -->
           <template #tableHeader="scope">
             <el-button type="primary" v-auth="'add'" :icon="CirclePlus">新增用户</el-button>
@@ -17,7 +20,7 @@
             <el-button type="danger" :icon="Delete" plain @click="batchDelete(scope.selectedListIds)" :disabled="!scope.isSelected">批量删除用户</el-button>
             <el-button type="primary" @click="goToDetail">二级详情页面</el-button>
           </template>
-          <!-- 表格操作 -->
+          <!-- 表格操作列 -->
           <template #operation="scope">
             <el-link type="primary" :icon="View">查看</el-link>
             <el-link type="primary" :icon="EditPen">编辑</el-link>
@@ -35,21 +38,29 @@
 </template>
 
 <script setup lang="ts" name="UseProTable">
-import { ref, reactive, inject } from 'vue'
+import { ref, inject } from 'vue'
 import { CirclePlus, Delete, EditPen, Download, Upload, View } from "@element-plus/icons-vue"
 import { ElMessage, ElMessageBox } from "element-plus"
 import { client } from "@/utils/https/client"
 import { useHandleData } from "@/hooks/useHandleData"
 import { useDownload } from "@/hooks/useDownload";
 import ProTable from '@/components/ProTable/index.vue'
-import { ColumnProps } from "@/components/ProTable/interface"
+import { ProTableInstance, ColumnProps } from "@/components/ProTable/interface"
 import uploadExcel from "@/components/uploadExcel/index.vue"
 
 // 请求table数据
 const requestApiParams = ref({ url: '/api/proTable' })
 
 // 获取 ProTable 元素，调用其获取刷新数据方法（还能获取到当前查询参数，方便导出携带参数）
-const proTable = ref();
+const proTable = ref<ProTableInstance>();
+
+/** 
+ * 如果表格需要初始化请求参数，直接定义传给 ProTable(之后每次请求都会自动带上该参数，此参数更改之后也会一直带上，改变此参数会自动刷新表格数据)
+ * 如果是结合了tree，给proTable组件 的 requestAuto 属性设为 false，不会自动请求表格数据，等待 treeFilter 数据回来之后，更改 initParam 的值，才会触发请求 proTable 数据
+*/
+const initParam = ref(<any>{
+	type: 1
+});
 
 // dataCallback 是对于返回的表格数据做处理，如果你后台返回的数据不是 list && total && pageNum && pageSize 这些字段，那么你可以在这里进行处理成这些字段
 const dataCallback = (data: any) => {
@@ -61,19 +72,21 @@ const dataCallback = (data: any) => {
 	};
 };
 
-/** 
- * 如果表格需要初始化请求参数，直接定义传给 ProTable(之后每次请求都会自动带上该参数，此参数更改之后也会一直带上，改变此参数会自动刷新表格数据)
- * 如果是结合了tree，给proTable组件 的 requestAuto 属性设为 false，不会自动请求表格数据，等待 treeFilter 数据回来之后，更改 initParam 的值，才会触发请求 proTable 数据
-*/
-const initParam = reactive(<any>{
-	type: 1
-});
+// 如果你想在请求之前对当前请求参数做一些操作，可以自定义如下函数：params 为当前所有的请求查询参数（包括分页），最后返回修改后的查询参数
+const resetParams = (params: any) => {
+  const _params: any = { ...params }
+  _params.createTime && (_params.startTime = _params.createTime[0]);
+  _params.createTime && (_params.endTime = _params.createTime[1]);
+  delete _params.createTime
+  return _params
+};
 
 // 表格配置项 ---- 不加search就不会成为搜索条件，enum 也可以通过接口获取常量值
 const columns: ColumnProps[] = [
 	{ type: 'selection', fixed: 'left', width: 80 },
 	{ type: 'index', label: '序号', width: 80 },
-	{ prop: 'username', label: '用户姓名', search: { el: 'input' } },
+  { type: "sort", label: "拖拽排序", width: 100 },
+	{ prop: 'username', label: '用户姓名', search: { el: 'input', tooltip: '搜索提示信息' } },
 	{ prop: 'gender', label: '性别', enum: [{ label: '男', value: 1 },{ label: '女', value: 2 }], search: { el: 'select' } },
 	{ prop: 'age', label: '年龄', search: { el: 'input' } },
 	{ prop: 'idCard', label: '身份证号', search: { el: 'input' } },
@@ -98,6 +111,18 @@ const columns: ColumnProps[] = [
 	{ prop: 'operation', label: '操作', fixed: 'right', width: 330 }
 ];
 
+// 表格拖拽排序回调
+const sortTable = (data: any) => {
+  console.log(data);
+  console.log(proTable.value?.tableData);
+  ElMessage.success("修改列表排序成功");
+};
+
+// 查询表格回调
+const searchCb = (data: any) => {
+  console.log(data);
+}
+
 // 批量添加用户
 const importRef = ref<InstanceType<typeof uploadExcel> | null>(null);
 const batchAdd = () => {
@@ -105,7 +130,7 @@ const batchAdd = () => {
     title: "用户",
     tempApi: { url: '', params: {} },
 		importApi: { url: '/api/geeker/user/import', params: { type: 'sx', id: '123'} },
-    getTableList: proTable.value.getTableList
+    getTableList: proTable.value?.getTableList
   };
   importRef.value?.acceptParams(params);
 };
@@ -113,15 +138,15 @@ const batchAdd = () => {
 // 导出数据
 const exportData = async () => {
   ElMessageBox.confirm("确认导出用户数据?", "温馨提示", { type: "warning" }).then(() =>
-    useDownload({ url: '/api/user/export', params: proTable.value.searchParam }, '用户列表')
+    useDownload({ url: '/api/user/export', params: proTable.value?.searchParam }, '用户列表')
   );
 }
 
 // 批量删除用户信息
 const batchDelete = async (ids: string[]) => {
 	await useHandleData('/batch/delete', { ids }, '删除所选用户信息');
-	proTable.value.clearSelection();
-	proTable.value.getTableList();
+	proTable.value?.clearSelection();
+	proTable.value?.getTableList();
 };
 
 // 删除单个用户
@@ -132,7 +157,7 @@ const handleDel = async (row: any) => {
       type: "success",
       message: '删除成功!'
     });
-    proTable.value.getTableList();
+    proTable.value?.getTableList();
   })
 }
 

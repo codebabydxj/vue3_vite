@@ -23,7 +23,7 @@
 					</div>
 				</div>
 			</el-scrollbar>
-			<el-empty description="未搜索到您要找的图标~" v-else />
+			<el-empty v-else description="未搜索到您要找的图标~" />
 		</el-dialog>
 	</div>
 </template>
@@ -55,16 +55,18 @@ const valueIcon = ref(props.iconValue);
 const dialogVisible = ref(false);
 const openDialog = () => (dialogVisible.value = true);
 
+const inputRef = ref();
+const emit = defineEmits<{"update:iconValue": [value: string]}>();
+
 // 选择图标(触发更新父组件数据)
-const emit = defineEmits(["update:iconValue"]);
 const selectIcon = (item: any) => {
 	dialogVisible.value = false;
 	valueIcon.value = item.name;
 	emit("update:iconValue", item.name);
+	setTimeout(() => inputRef.value.blur(), 0);
 };
 
 // 清空图标
-const inputRef = ref();
 const clearIcon = () => {
 	valueIcon.value = "";
 	emit("update:iconValue", "");

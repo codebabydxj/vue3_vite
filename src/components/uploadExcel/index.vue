@@ -1,5 +1,5 @@
 <template>
-	<el-dialog v-model="dialogVisible" :title="`批量添加${parameter.title}`" :destroy-on-close="true" width="580px" draggable>
+	<el-dialog v-model="dialogVisible" :title="`批量添加${parameter.title}`" :destroy-on-close="true" width="40%" draggable>
 		<el-form ref="batchRef" label-width="100px">
 			<el-form-item label="模板下载 :">
 				<el-button type="primary" :icon="Download" @click="downloadTemp">点击下载</el-button>
@@ -19,12 +19,16 @@
 					:on-change="handleChange"
 					:on-success="excelUploadSuccess"
 					:on-error="excelUploadError"
-					accept="application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+					:accept="parameter.fileType!.join(',')"
 				>
-					<el-icon class="el-icon--upload"><upload-filled /></el-icon>
-					<div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+					<slot name="empty">
+            <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+          </slot>
 					<template #tip>
-						<div class="el-upload__tip">请上传 .xls , .xlsx 标准格式文件</div>
+						<slot name="tip">
+							<div class="el-upload__tip">请上传 .xls , .xlsx 标准格式文，文件最大为 {{ parameter.fileSize }}M</div>
+						</slot>
 					</template>
 				</el-upload>
 			</el-form-item>
@@ -47,9 +51,11 @@ import { ElMessage, ElNotification, UploadInstance, UploadFile, UploadFiles } fr
 
 export interface ExcelParameterProps {
 	title: string; // 标题
-	tempApi: { url: string, params: object } | any; // 下载模板的Api
-	importApi: { url: string, params: object } | any; // 批量导入的Api
-	getTableList?: () => Promise<any>; // 获取表格数据的Api
+	fileSize?: number; // 上传文件的大小
+	fileType?: [] | any; // 上传文件的类型
+	tempApi?: { url: string, params: object } | any; // 下载模板的Api
+	importApi?: { url: string, params: object } | any; // 批量导入的Api
+	getTableList?: () => void; // 获取表格数据的Api
 }
 const uploadRef = ref<UploadInstance>()
 // 是否覆盖数据
@@ -59,10 +65,14 @@ const excelLimit = ref(1);
 // dialog状态
 const dialogVisible = ref(false);
 // 父组件传过来的参数
-const parameter = ref<Partial<ExcelParameterProps>>({});
+const parameter = ref<ExcelParameterProps>({
+	title: '',
+  fileSize: 5,
+  fileType: ["application/vnd.ms-excel", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"]
+});
 // 接收父组件参数
 const acceptParams = (params?: any): void => {
-	parameter.value = params;
+	parameter.value = { ...parameter.value, ...params };
 	dialogVisible.value = true;
 };
 let files = [] as any
@@ -127,9 +137,8 @@ const submit = () => {
  * @param file 上传的文件
  * */
 const beforeExcelUpload = (file: any) => {
-	const isExcel =
-		file.type === "application/vnd.ms-excel" || file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-	const fileSize = file.size / 1024 / 1024 < 5;
+	const isExcel = parameter.value.fileType!.includes(file.type as string);
+	const fileSize = file.size / 1024 / 1024 < parameter.value.fileSize!;
 	if (!isExcel)
 		ElNotification({
 			title: "温馨提示",
@@ -139,7 +148,7 @@ const beforeExcelUpload = (file: any) => {
 	if (!fileSize)
 		ElNotification({
 			title: "温馨提示",
-			message: "上传文件大小不能超过 5MB！",
+			message: `上传文件大小不能超过 ${parameter.value.fileSize}MB！`,
 			type: "warning"
 		});
 	return isExcel && fileSize;
@@ -163,7 +172,7 @@ const handleChange = (uploadFile: UploadFile, uploadFiles: UploadFiles) => {
 const excelUploadError = (): void => {
 	ElNotification({
 		title: "温馨提示",
-		message: '附件上传失败',
+		message: `添加${parameter.value.title}失败，请您重新上传！`,
 		type: "error"
 	});
 };
@@ -172,7 +181,7 @@ const excelUploadError = (): void => {
 const excelUploadSuccess = (): void => {
 	ElNotification({
 		title: "温馨提示",
-		message: '附件上传成功',
+		message: `添加${parameter.value.title}成功！`,
 		type: "success"
 	});
 	cancel()

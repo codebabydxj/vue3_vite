@@ -11,8 +11,8 @@
           <el-dropdown-menu>
             <el-dropdown-item>
               <el-checkbox-group v-model="checkList" @change="handleCommand">
-                <el-checkbox label="index">序号列</el-checkbox>
                 <el-checkbox label="selection">勾选列</el-checkbox>
+                <el-checkbox label="index">序号列</el-checkbox>
               </el-checkbox-group>
             </el-dropdown-item>
           </el-dropdown-menu>
@@ -36,7 +36,7 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 
 const emit = defineEmits(['command'])
 
-const checkList: any = ref([])
+const checkList: any = ref(['selection', 'index'])
 
 const handleCommand = () => {
   emit('command', { type: 'column', command: checkList.value })

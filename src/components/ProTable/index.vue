@@ -1,14 +1,14 @@
 <template>
 	<div class="table-main">
 		<!-- 搜索 查询表单 -->
-		<div class="table-search" ref="searchRef" v-if="isSearch">
+		<div class="table-search" ref="searchRef" v-if="isShowSearch">
 			<SearchForm
 				:columns="searchColumns"
 				:search-param="searchParam"
 				:search-col="searchCol"
 				:searchLoading="searchLoading"
-				:search="search"
-				:reset="reset"
+				:search="_search"
+				:reset="_reset"
 			/>
 		</div>
 		<!-- 表格头部 操作按钮 -->
@@ -35,23 +35,34 @@
 			:default-expand-all="isExpand"
 			@selection-change="selectionChange">
 			<!-- 默认插槽 -->
-			<slot>我是默认插槽</slot>
+			<slot />
 			<template v-for="item in tableColumns" :key="item">
-				<!-- selection || index -->
+				<!-- selection || radio || index || expand || sort -->
 				<el-table-column
+					v-if="(item.type == 'selection' && tableColumn.includes('selection')) || (item.type == 'index' && tableColumn.includes('index'))"
 					v-bind="item"
 					:align="item.align ?? 'center'"
-					:reserve-selection="item.type == 'selection' && item.reserve"
-					v-if="(item.type == 'selection' && tableColumn.includes('selection')) || (item.type == 'index' && tableColumn.includes('index'))">
+					:reserve-selection="item.type == 'selection'">
 				</el-table-column>
-				<!-- expand 支持 tsx 语法 && 作用域插槽 (tsx > slot) -->
 				<el-table-column
+					v-else-if="item.type && columnTypes.includes(item.type)"
 					v-bind="item"
-					:align="item.align ?? 'center'"
-					v-if="item.type == 'expand'"
-					v-slot="scope">
-					<component :is="item.render" v-bind="scope" v-if="item.render"> </component>
-					<slot :name="item.type" v-bind="scope" v-else></slot>
+					:align="item.align ?? 'center'">
+					<template #default="scope">
+						<!-- expand 支持 tsx 语法 && 作用域插槽 (tsx > slot) -->
+						<template v-if="item.type == 'expand'">
+							<component v-if="item.render" :is="item.render" v-bind="scope" />
+							<slot v-else :name="item.type" v-bind="scope" />
+						</template>
+						<!-- radio 单选 -->
+            <el-radio v-if="item.type == 'radio'" v-model="radio" :label="scope.row[rowKey]">
+              <i></i>
+            </el-radio>
+						<!-- sort 拖动排序 -->
+            <el-tag v-if="item.type == 'sort'" class="move">
+              <el-icon> <DCaret /></el-icon>
+            </el-tag>
+					</template>
 				</el-table-column>
 				<!-- other 循环递归 -->
 				<TableColumn v-if="!item.type && item.prop && item.isShow" :column="item">
@@ -87,46 +98,29 @@
 </template>
 
 <script setup lang="ts" name="ProTable">
-import { ref, onMounted, watchEffect, watch, provide, nextTick } from "vue";
+import { ref, unref, onMounted, watchEffect, watch, provide, nextTick, computed } from "vue";
 import { globalStore } from "@/store";
 import { useTable } from "@/hooks/useTable";
 import { useSelection } from "@/hooks/useSelection";
 import { handleProp } from "@/utils/tools";
-import { ElTable, TableProps } from "element-plus";
-import { ColumnProps } from "@/components/ProTable/interface";
-import { BreakPoint } from "@/components/Grid/interface";
+import { ElTable } from "element-plus";
+import { ProTableProps, ColumnProps, TypeProps } from "@/components/ProTable/interface";
 import tableConfig from "@/components/tableConfig/index.vue";
 import SearchForm from "@/components/SearchForm/index.vue";
 import TableColumn from "./components/TableColumn.vue";
 import Pagination from "./components/Pagination.vue";
-
-interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
-	columns: ColumnProps[]; // 列配置项
-	requestApiParams: object | any; // 请求表格数据的api参数 ==> 必传 接口url和请求方法类型
-	requestAuto?: boolean; // 是否自动执行请求 api ==> 非必传（默认为true）
-	requestError?: (params: any) => void; // 表格 api 请求错误监听 ==> 非必传
-	dataCallback?: (data: any) => any; // 返回数据的回调函数，可以对数据进行处理 ==> 非必传
-	title?: string; // 表格标题，目前只在打印的时候用到 ==> 非必传
-	pagination?: boolean; // 是否需要分页组件 ==> 非必传（默认为true）
-	initParam?: any; // 初始化请求参数 ==> 非必传（默认为{}）
-	border?: boolean; // 是否带有纵向边框 ==> 非必传（默认为true）
-	toolButton?: boolean; // 是否显示表格功能按钮 ==> 非必传（默认为true）
-	rowKey?: string; // 行数据的 Key，用来优化 Table 的渲染，当表格数据多选时，所指定的 id ==> 非必传（默认为 id）
-	searchCol?: number | Record<BreakPoint, number>; // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }
-	isSearch?: boolean; // 是否需要搜索
-	isShowSelIdx?: boolean; // 是否显示table选择框和序号列
-}
+import Sortable from "sortablejs";
 
 // 接受父组件参数，配置默认值
 const props = withDefaults(defineProps<ProTableProps>(), {
-	requestAuto: true,
 	columns: () => [],
+	requestAuto: true,
 	pagination: true,
 	initParam: {},
 	border: true,
 	toolButton: true,
 	rowKey: 'id',
-	isSearch: true,
+	isShowSearch: true,
 	isShowSelIdx: false,
 	searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 })
 });
@@ -140,8 +134,8 @@ myStore.setPagination(props.pagination)
 // table显示大小（default/small/large）
 const tableSize = ref(<any>'')
 
-// table多选和序号配置
-const tableColumn: any = ref(<any>[])
+// table 勾选框和序号配，，默认都显示
+const tableColumn: any = ref(<any>['selection', 'index'])
 
 // table工具按钮配置 回调处理
 const handleConfig = (data: any) => {
@@ -160,12 +154,18 @@ const handleConfig = (data: any) => {
 // 表格 DOM 元素
 const tableRef = ref<InstanceType<typeof ElTable>>();
 
+// column 列类型
+const columnTypes: TypeProps[] = ["radio", "expand", "sort"];
+
+// 单选值
+const radio = ref('');
+
 // 表格多选 Hooks
 const { selectionChange, selectedList, selectedListIds, isSelected } = useSelection(props.rowKey);
 
 // 表格操作 Hooks
 const { tableData, pageable, searchParam, searchInitParam, searchLoading, getTableList, search, reset, handleSizeChange, handleCurrentChange } =
-	useTable(props.requestApiParams, props.initParam, props.pagination, props.dataCallback, props.requestError);
+	useTable(props.resetParams, props.requestApiParams, props.initParam, props.pagination, props.dataCallback, props.requestError);
 
 // table 表格查询区 元素
 const searchRef = ref<HTMLElement>()
@@ -206,8 +206,11 @@ const setExpand = () => {
 // 清空选中数据列表
 const clearSelection = () => tableRef.value!.clearSelection();
 
-// 初始化请求
-onMounted(() => props.requestAuto && search());
+// 初始化表格 默认发起请求 具体看 requestAuto 属性 &&  拖拽排序
+onMounted(() => {
+	_dragSort()
+	props.requestAuto && search()
+});
 
 // 监听页面 initParam 改化，重新获取表格数据
 watch(() => props.initParam, getTableList, { deep: true });
@@ -215,16 +218,30 @@ watch(() => props.initParam, getTableList, { deep: true });
 // 接收 columns 并设置为响应式
 const tableColumns = ref<ColumnProps[]>(props.columns);
 
+// 扁平化 columns
+const flatColumns = computed(() => flatColumnsFunc(tableColumns.value));
+
 // 定义 enumMap 存储 enum 值（避免异步请求无法格式化单元格内容 || 无法填充搜索下拉选择）
 const enumMap = ref(new Map<string, { [key: string]: any }[]>());
-provide("enumMap", enumMap);
-const setEnumMap = async (col: ColumnProps) => {
-  if (!col.enum) return;
-  // 如果当前 enum 为后台数据需要请求数据，则调用该请求接口，并存储到 enumMap
-  if (typeof col.enum !== "function") return enumMap.value.set(col.prop!, col.enum!);
-  const { data } = await col.enum();
-  enumMap.value.set(col.prop!, data);
+const setEnumMap = async ({ prop, enum: enumValue }: ColumnProps) => {
+	if (!enumValue) return;
+
+  // 如果当前 enumMap 存在相同的值 return
+  if (enumMap.value.has(prop!) && (typeof enumValue === "function" || enumMap.value.get(prop!) === enumValue)) return;
+
+  // 当前 enum 为静态数据，则直接存储到 enumMap
+  if (typeof enumValue !== "function") return enumMap.value.set(prop!, unref(enumValue!));
+
+  // 为了防止接口执行慢，而存储慢，导致重复请求，所以预先存储为[]，接口返回后再二次存储
+  enumMap.value.set(prop!, []);
+
+  // 当前 enum 为后台数据需要请求数据，则调用该请求接口，并存储到 enumMap
+  const { data } = await enumValue();
+  enumMap.value.set(prop!, data);
 };
+
+// 注入 enumMap
+provide("enumMap", enumMap);
 
 // 扁平化 columns
 const flatColumnsFunc = (columns: ColumnProps[], flatArr: ColumnProps[] = []) => {
@@ -237,40 +254,74 @@ const flatColumnsFunc = (columns: ColumnProps[], flatArr: ColumnProps[] = []) =>
 		col.isFilterEnum = col.isFilterEnum ?? true;
 
 		// 设置 enumMap
-		setEnumMap(col);
+		await setEnumMap(col);
 	});
 	return flatArr.filter(item => !item._children?.length);
 };
 
-// flatColumns
-const flatColumns = ref<ColumnProps[]>();
-flatColumns.value = flatColumnsFunc(tableColumns.value);
-
-// 过滤需要搜索的配置项
-const searchColumns = flatColumns.value.filter(item => item.search?.el);
+// 过滤需要搜索的配置项 && 排序
+const searchColumns = computed(() => {
+  return flatColumns.value
+    ?.filter(item => item.search?.el || item.search?.render)
+    .sort((a, b) => a.search!.order! - b.search!.order!);
+});
 
 // 设置搜索表单排序默认值 && 设置搜索表单项的默认值
-searchColumns.forEach((column, index) => {
-  column.search!.order = column.search!.order ?? index + 2;
-  if (column.search?.defaultValue !== undefined && column.search?.defaultValue !== null) {
-    searchInitParam.value[column.search.key ?? handleProp(column.prop!)] = column.search?.defaultValue;
-    searchParam.value[column.search.key ?? handleProp(column.prop!)] = column.search?.defaultValue;
+searchColumns.value?.forEach((column, index) => {
+  column.search!.order = column.search?.order ?? index + 2;
+	const key = column.search?.key ?? handleProp(column.prop!);
+	const defaultValue = column.search?.defaultValue;
+  if (defaultValue !== undefined && defaultValue !== null) {
+    searchInitParam.value[key] = defaultValue;
+    searchParam.value[key] = defaultValue;
   }
 });
 
-// 排序搜索表单项
-searchColumns.sort((a, b) => a.search!.order! - b.search!.order!);
-
 // 列设置 ==> 过滤掉不需要设置显隐的列
 const colSetting = tableColumns.value!.filter(item => {
-	return item.type !== "selection" && item.type !== "index" && item.type !== "expand" && item.prop !== "operation";
+	const { type, prop, isShow } = item;
+	return !columnTypes.includes(type!) && prop !== "operation" && isShow;
 });
+
+// 定义 emit 事件
+const emit = defineEmits<{
+  search: [];
+  reset: [];
+  dragSort: [{ newIndex?: number; oldIndex?: number }];
+}>();
+
+const _search = () => {
+  search();
+  emit("search");
+};
+
+const _reset = () => {
+  reset();
+  emit("reset");
+};
+
+// 拖拽排序
+const _dragSort = () => {
+  const tbody = document.querySelector(".el-table__body-wrapper tbody") as HTMLElement;
+  Sortable.create(tbody, {
+    handle: ".move",
+    animation: 300,
+    onEnd(e: any) {
+			const item = tableData.value[e.oldIndex];
+      const [removedItem] = tableData.value.splice(e.oldIndex!, 1);
+      tableData.value.splice(e.newIndex!, 0, removedItem);
+			emit("dragSort", item);
+    }
+  });
+};
 
 // 子组件暴露给父组件的参数和方法(外部需要什么，都可以从这里暴露出去) 父组件使用ref接收（fatherRef.value.属性/方法）
 defineExpose({
 	element: tableRef,
 	tableData,
+	radio,
 	searchParam,
+	searchInitParam,
 	pageable,
 	enumMap,
 	isSelected,

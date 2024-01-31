@@ -1,14 +1,16 @@
 <template>
   <nav class="navbar-side">
     <template v-if="!isCurCollapse">
-      <img class="logo_ind" src="../../assets/svg/v.svg" alt="" />
+      <img class="logo_ind" src="../../assets/svg/v.svg" alt="" @click="goHome" />
     </template>
-    <div class="collapse" v-if="isCurCollapse">
-      <h4 class="user-sel admin-title">
-        <img class="logo" src="../../assets/svg/v.svg" alt="" />
-        Vite-Admin
-      </h4>
-    </div>
+    <template v-if="isCurCollapse">
+      <div class="collapse" @click="goHome">
+        <h4 class="user-sel admin-title">
+          <img class="logo" src="../../assets/svg/v.svg" alt="" />
+          Vite-Admin
+        </h4>
+      </div>
+    </template>
     <div class="search-wrap" :class="{ 'search-wrap-active': isCurCollapse }">
       <input class="search-input" type="text" placeholder="请输入关键词" name="searchInput" autocomplete="off"
         v-model="searchInput" @input="handleInput">
@@ -95,6 +97,10 @@ watch(() => isCurCollapse.value, () => {
   emit('isCurCollapseChange', isCurCollapse.value)
 })
 
+const goHome = () => {
+  globalRouter.openView('/basic/home');
+}
+
 const handleInput = () => {
   searchInput.value = searchInput.value.replace(/\s+/g, '');
   if (searchInput.value.length > 0) {
@@ -138,6 +144,7 @@ onBeforeUnmount(() => {
   .collapse {
     height: 60px;
     box-shadow: 0 0 6px -2px var(--color-text);
+    cursor: pointer;
     position: relative;
   }
 
@@ -155,6 +162,7 @@ onBeforeUnmount(() => {
     margin: 8px auto 0;
     width: 24px;
     height: 24px;
+    cursor: pointer;
   }
 
   .admin-title {

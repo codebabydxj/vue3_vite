@@ -1,17 +1,15 @@
 <template>
   <component
-    v-if="column.search?.el"
-    :is="`el-${column.search.el}`"
-    v-bind="{ ...handleSearchProps, ...placeholder }"
-    v-model.trim="searchParam[column.search.key ?? handleProp(column.prop!)]"
+    :is="column.search?.render ?? `el-${column.search?.el}`"
+    v-bind="{ ...handleSearchProps, ...placeholder, searchParam: _searchParam, clearable }"
+    v-model.trim="_searchParam[column.search?.key ?? handleProp(column.prop!)]"
     :data="column.search?.el === 'tree-select' ? columnEnum : []"
-    :options="['cascader', 'select-v2'].includes(column.search?.el) ? columnEnum : []"
-    :clearable="clearable"
+    :options="['cascader', 'select-v2'].includes(column.search?.el!) ? columnEnum : []"
   >
-    <template #default="{ data }" v-if="column.search.el === 'cascader'">
+    <template v-if="column.search?.el === 'cascader'" #default="{ data }">
       <span>{{ data[fieldNames.label] }}</span>
     </template>
-    <template v-if="column.search.el === 'select'">
+    <template v-if="column.search?.el === 'select'">
       <component
         :is="`el-option`"
         v-for="(col, index) in columnEnum"
@@ -34,6 +32,8 @@ interface SearchFormItem {
   searchParam: { [key: string]: any };
 }
 const props = defineProps<SearchFormItem>();
+
+const _searchParam = computed(() => props.searchParam);
 
 // 判断 fieldNames 设置 label && value && children 的 key 值
 const fieldNames = computed(() => {
@@ -77,9 +77,13 @@ const handleSearchProps = computed(() => {
 const placeholder = computed(() => {
   const search = props.column.search;
   if (["datetimerange", "daterange", "monthrange"].includes(search?.props?.type) || search?.props?.isRange) {
-    return { rangeSeparator: "至", startPlaceholder: "开始时间", endPlaceholder: "结束时间" };
+    return {
+      rangeSeparator: search?.props?.rangeSeparator ?? "至",
+      startPlaceholder: search?.props?.startPlaceholder ?? "开始时间",
+      endPlaceholder: search?.props?.endPlaceholder ?? "结束时间"
+    }
   }
-  const placeholder = search?.props?.placeholder ?? (search?.el.includes("input") ? "请输入" : "请选择");
+  const placeholder = search?.props?.placeholder ?? (search?.el?.includes("input") ? "请输入" : "请选择");
   return { placeholder };
 });
 

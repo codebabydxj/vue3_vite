@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "vite",
     "serve": "vite --open",
-    "build:dev": "vue-tsc && vite build --mode development",
-    "build:pro": "vue-tsc && vite build --mode production",
+    "build:dev": "vite build --mode development",
+    "build:pro": "vite build --mode production",
     "type:check": "vue-tsc --noEmit --skipLibCheck",
     "preview": "vite preview",
     "lint": "vite lint",
@@ -40,8 +40,9 @@
     "px2rem-loader": "^0.1.9",
     "qs": "^6.11.0",
     "screenfull": "^6.0.2",
-    "vue": "^3.2.47",
-    "vue-router": "^4.1.6",
+    "sortablejs": "^1.15.2",
+    "vue": "^3.4.5",
+    "vue-router": "^4.2.5",
     "vue3-puzzle-vcode": "^1.0.11"
   },
   "devDependencies": {
@@ -49,6 +50,7 @@
     "@types/node": "^18.11.9",
     "@types/nprogress": "^0.2.0",
     "@types/qs": "^6.9.7",
+    "@types/sortablejs": "^1.15.7",
     "@vitejs/plugin-vue": "^4.2.1",
     "@vitejs/plugin-vue-jsx": "^3.0.1",
     "czg": "^1.6.1",

@@ -11,12 +11,13 @@ import { showLoading, hideLoading } from "@/config/fullLoading";
 import { ElMessage, ElNotification } from "element-plus";
 import qs from "qs";
 import dayjs from "dayjs";
+import { checkStatus } from "./checkStatus"
 import routers from "@/routers"
 import { globalStore } from "@/store";
 
 const instance: AxiosInstance = axios.create({
   baseURL: '',
-  timeout: 60000, // 默认一分钟
+  timeout: 30000,
   headers: {
     'Content-Type': 'application/json; charset=UTF-8',
   },
@@ -53,7 +54,11 @@ interface requestConfig extends InternalAxiosRequestConfig {
   noLoading?: boolean;
 }
 
-// 请求拦截
+/**
+ * @description 请求拦截器
+ * 客户端发送请求 -> [请求拦截器] -> 服务器
+ * token校验(JWT) : 接受服务器返回的 token,存储到 vuex/pinia/本地储存当中
+ */
 instance.interceptors.request.use((config: requestConfig) => {
   removePending(config);
   const myStore: any = globalStore();
@@ -93,21 +98,26 @@ interface ResponseType {
   [x: string]: any
 }
 
-// 响应拦截
+/**
+ * @description 响应拦截器
+ *  服务器换返回信息 -> [拦截统一处理] -> 客户端JS获取到信息
+ */
 instance.interceptors.response.use((response: AxiosResponse) => {
-  removePending(response.config);
+  const { data, config } = response;
+  removePending(config);
   hideLoading();
   if (response.status === 200) {
     if (response.request.responseType === 'blob') {
       return response
     }
-    if ([1, 200].includes(response.data.code)) {
-      return response.data;
+    if ([1, 200].includes(data.code)) {
+      return data;
     }
   }
-  ElMessage({ // 其他状态提示
+  // 其他错误信息拦截
+  ElMessage({
     showClose: true,
-    message: response.data.msg || `Error: ${response.request.url}`,
+    message: data.msg || `Error: ${response.request.url}`,
     type: 'error',
   });
   return Promise.reject(response);
@@ -120,34 +130,31 @@ instance.interceptors.response.use((response: AxiosResponse) => {
   if (error.message.indexOf('timeout') !== -1) ElMessage.error('请求超时！请您稍后重试');
   if (error.message.indexOf('Network Error') !== -1) ElMessage.error('网络错误！请您稍后重试');
 
-  if (!response) return Promise.reject(error);
-  // 根据不同状态码，做不同处理
-  if (response.status === 401) {
-    // toke过期，重新登录
-    myStore.logout()
-    routers.replace('/login');
-    return Promise.reject(response);
-  }
+  // 根据服务器响应的错误状态码，做不同的处理
+  if (response) checkStatus(response.status, routers, myStore);
 
-  if (response.status === 403) {
-    ElMessage({ // 没有权限、未授权/ 服务器错误
-      showClose: true,
-      message: '没有权限，请授权之后再处理！',
-      type: 'error',
-    });
-    routers.replace('/403');
-    return Promise.reject(response);
-  }
+  // // 根据不同状态码，做不同处理
+  // if (response.status === 401) {
+  //   // toke过期，重新登录
+  //   myStore.logout()
+  //   routers.replace('/login');
+  //   return Promise.reject(response);
+  // }
+
+  // if (response.status === 403) {
+  //   ElMessage({ // 没有权限、未授权/ 服务器错误
+  //     showClose: true,
+  //     message: '没有权限，请授权之后再处理！',
+  //     type: 'error',
+  //   });
+  //   routers.replace('/403');
+  //   return Promise.reject(response);
+  // }
 
   // 服务器结果都没有返回(可能服务器错误可能客户端断网)，断网处理:可以跳转到断网页面
   if (!window.navigator.onLine) routers.replace('/500');
 
-  ElNotification({
-    title: '温馨提示',
-    message: response.statusText || `Error: $.response.request.url}`,
-    type: 'error',
-  });
-  return Promise.reject(response);
+  return Promise.reject(error);
 });
 class Api {
   private request(url: string, options: AxiosRequestConfig, headerConfig?: AxiosRequestConfig) {

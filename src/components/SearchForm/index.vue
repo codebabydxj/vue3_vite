@@ -3,13 +3,21 @@
     <el-form ref="ruleFormRef" :model="searchParam" inline>
       <Grid ref="gridRef" :collapsed="collapsed" :gap="[20, 0]" :cols="searchCol">
         <GridItem v-for="(item, index) in columns" :key="item.prop" v-bind="getResponsive(item)" :index="index">
-          <el-form-item :label="item.label" :prop="item.prop">
+          <el-form-item :prop="item.prop">
+            <template #label>
+              <el-space :size="4">
+                <span>{{ `${item.search?.label ?? item.label}` }}</span>
+                <el-tooltip v-if="item.search?.tooltip" effect="dark" :content="item.search?.tooltip" placement="top">
+                  <el-icon :size="16"><QuestionCircleOutlined /></el-icon>
+                </el-tooltip>
+              </el-space>
+            </template>
             <SearchFormItem :column="item" :search-param="searchParam" />
           </el-form-item>
         </GridItem>
         <GridItem suffix>
           <div class="search-operation">
-            <el-button type="primary" :icon="Search" :loading="searchLoading" @click="search(columns)">查询</el-button>
+            <el-button type="primary" :icon="Search" :loading="searchLoading" @click="search">查询</el-button>
             <el-button :icon="Delete" @click="reset">重置</el-button>
             <el-button v-if="showCollapse" type="primary" link class="search-isOpen" @click="handleCollapse">
               {{ collapsed ? "展开" : "合并" }}
@@ -30,6 +38,7 @@ import { useWinSize } from "@/utils/tools";
 import { ColumnProps } from "@/components/ProTable/interface";
 import { BreakPoint } from "@/components/Grid/interface";
 import { Delete, Search, ArrowDown, ArrowUp } from "@element-plus/icons-vue";
+import { QuestionCircleOutlined } from "@vicons/antd";
 import Grid from "@/components/Grid/index.vue";
 import GridItem from "@/components/Grid/components/GridItem.vue";
 import SearchFormItem from "./components/SearchFormItem.vue";
