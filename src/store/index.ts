@@ -22,7 +22,7 @@ const globalStore = defineStore({
       menuList: <any>[],
       flatMenuList: <any>[],
       authButtonList: <any>{},
-      routes: <any>[{title: '首页',  name: 'Home', route: '/basic/home', realPath: '/basic/home' }],
+      routes: <any>[{ title: '首页',  name: 'Home', route: '/basic/home', realPath: '/basic/home' }],
       // 常量
       consts: <any>[],
       userInfo: <any>{},
@@ -127,7 +127,7 @@ const globalStore = defineStore({
       // 2.清空导航栏
       this.currentRoute = '/';
       this.realRoute = '';
-      this.routes = [];
+      this.routes = [{ title: '首页',  name: 'Home', route: '/basic/home', realPath: '/basic/home' }];
       // 3.清空常量
       this.consts = [];
       // 4.重置锁屏
