@@ -185,7 +185,7 @@ const handleCommand = (command: any) => {
 header {
   flex: 0 0 auto;
   background-color: var(--main-bg-color);
-  z-index: 2003;
+  z-index: 2000;
 }
 
 header .navbar-top {

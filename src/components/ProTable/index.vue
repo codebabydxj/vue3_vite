@@ -280,7 +280,7 @@ searchColumns.value?.forEach((column, index) => {
 // 列设置 ==> 过滤掉不需要设置显隐的列
 const colSetting = tableColumns.value!.filter(item => {
 	const { type, prop, isShow } = item;
-	return !columnTypes.includes(type!) && prop !== "operation" && isShow;
+	return !columnTypes.includes(type!) && prop && prop !== "operation" && isShow;
 });
 
 // 定义 emit 事件
