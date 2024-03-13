@@ -30,6 +30,7 @@
               placeholder="请填写锁屏密码"
               show-password
               v-model="unLockPass"
+              @submit.native.prevent
               @keyup.enter.native="goSys" />
           </span>
           <div class="bot enter-form">

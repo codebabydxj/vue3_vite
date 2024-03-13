@@ -5,7 +5,7 @@
       <h2 class="logo-text" data-v-a2265173="">Vite-Admin</h2>
     </div>
     <el-form ref="ruleFormRef" :model="ruleForm" label-width="0px" class="loginForm"
-      @keyup.enter.native="submitForm(ruleFormRef)">
+      @submit.native.prevent @keyup.enter.native="submitForm(ruleFormRef)">
       <el-form-item label="" prop="userName" :rules="[
         { required: true, message: '请输入用户名', trigger: 'blur' },
       ]">
