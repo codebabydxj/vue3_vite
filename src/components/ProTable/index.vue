@@ -55,7 +55,7 @@
 							<slot v-else :name="item.type" v-bind="scope" />
 						</template>
 						<!-- radio 单选 -->
-            <el-radio v-if="item.type == 'radio'" v-model="radio" :label="scope.row[rowKey]">
+            <el-radio v-if="item.type == 'radio'" v-model="radio" :value="scope.row[rowKey]">
               <i></i>
             </el-radio>
 						<!-- sort 拖动排序 -->

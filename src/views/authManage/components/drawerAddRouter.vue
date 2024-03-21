@@ -11,8 +11,8 @@
     >
       <el-form-item label="菜单类型" prop="menuType">
         <el-radio-group v-model="menuType" @change="changeType">
-          <el-radio-button :label="1">菜单</el-radio-button>
-          <el-radio-button :label="2">按钮</el-radio-button>
+          <el-radio-button :value="1">菜单</el-radio-button>
+          <el-radio-button :value="2">按钮</el-radio-button>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="菜单名称" prop="title" v-if="menuType == 1">
@@ -36,8 +36,8 @@
         </el-form-item>
         <el-form-item label="状态" prop="status">
           <el-radio-group v-model="drawerProps.row.status">
-            <el-radio :label="0">无效</el-radio>
-            <el-radio :label="1">有效</el-radio>
+            <el-radio :value="0">无效</el-radio>
+            <el-radio :value="1">有效</el-radio>
           </el-radio-group>
         </el-form-item>
       </template>

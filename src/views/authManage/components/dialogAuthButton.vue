@@ -19,8 +19,8 @@
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-radio-group v-model="dialogProps.row.status">
-          <el-radio :label="0">无效</el-radio>
-          <el-radio :label="1">有效</el-radio>
+          <el-radio :value="0">无效</el-radio>
+          <el-radio :value="1">有效</el-radio>
         </el-radio-group>
       </el-form-item>
 		</el-form>

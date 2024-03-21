@@ -7,10 +7,8 @@
     :before-close="cancel">
     <!-- 全局主题 -->
     <el-divider class="divider" content-position="center">
-      <el-icon>
-        <ColdDrink />
-      </el-icon>
-      全局主题
+      <el-icon><ColdDrink /></el-icon>
+      <el-text truncated>全局主题</el-text>
     </el-divider>
     <div class="theme-item">
       <span>主题颜色</span>
@@ -31,7 +29,7 @@
     <!-- 界面设置 -->
     <el-divider class="divider" content-position="center">
       <el-icon><DesktopOutlined /></el-icon>
-      界面设置
+      <el-text truncated>界面设置</el-text>
     </el-divider>
     <div class="theme-item">
       <span>折叠菜单</span>
@@ -44,7 +42,7 @@
     <!-- 系统设置 -->
     <el-divider class="divider" content-position="center">
       <el-icon><Setting /></el-icon>
-      系统设置
+      <el-text truncated>系统设置</el-text>
     </el-divider>
     <div class="theme-item">
       <span>锁定屏幕</span>
@@ -114,10 +112,14 @@ const cancel = () => {
 <style lang="scss" scoped>
 .divider {
 	margin-top: 15px;
+  :deep(.el-divider__text) {
+    display: flex;
+    align-items: center;
+  }
 	.el-icon {
 		position: relative;
-		top: 2px;
-		right: 5px;
+		top: 0px;
+		right: 6px;
 		font-size: 15px;
 	}
 }
