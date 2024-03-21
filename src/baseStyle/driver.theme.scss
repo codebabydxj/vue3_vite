@@ -1,0 +1,77 @@
+.driver-popover {
+  background-color: #20c6ce;
+  color: white;
+}
+.driver-popover-footer {
+  margin-top: 28px;
+}
+.driver-popover .driver-popover-title {
+  font-size: 20px;
+}
+.driver-popover .driver-popover-title,
+.driver-popover .driver-popover-description,
+.driver-popover .driver-popover-progress-text {
+  color: white;
+}
+.driver-popover button {
+  background-color: white;
+  color: #20c6ce;
+  padding: 7px 16px;
+  border: none;
+}
+.driver-popover .driver-popover-navigation-btns {
+  justify-content: flex-end;
+  gap: 3px;
+}
+.driver-popover .driver-popover-close-btn {
+  visibility: hidden;
+  color: white;
+  background-color: transparent;
+  padding: 0;
+  right: -5px;
+  top: -5px;
+  font-size: 13px;
+}
+// .driver-popover .driver-popover-close-btn:hover {
+//   color: #000;
+// }
+.driver-popover .driver-popover-arrow-side-left.driver-popover-arrow {
+  border-left-color: #20c6ce;
+}
+.driver-popover .driver-popover-arrow-side-right.driver-popover-arrow {
+  border-right-color: #20c6ce;
+}
+.driver-popover .driver-popover-arrow-side-top.driver-popover-arrow {
+  border-top-color: #20c6ce;
+}
+.driver-popover .driver-popover-arrow-side-bottom.driver-popover-arrow {
+  border-bottom-color: #20c6ce;
+}
+*[aria-controls='driver-popover-content'] {
+  &:after {
+    content: '';
+    position: absolute;
+    border: 1px dashed white;
+    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+    padding: 18px;
+    box-sizing: content-box;
+    left: -19px;
+    top: -19px;
+  }
+}
+.driver-dom {
+  z-index: 10001;
+}
+button.driver-popover-prev-btn {
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+  text-shadow: none !important;
+  &:hover,
+  &:focus {
+    background-color: transparent;
+    color: white;
+  }
+}
