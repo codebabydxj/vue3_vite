@@ -28,11 +28,42 @@ const getIPAddress = (ipStart: string = '192') => {
     }
   }
 }
-/** 当前执行node命令时文件夹的地址（工作目录） */
-const root: string = process.cwd();
+
+interface Env {
+  VITE_USER_NODE_ENV: "development" | "production" | "test";
+  VITE_GLOB_APP_TITLE: string;
+  VITE_PORT: number;
+  VITE_OPEN: boolean;
+  VITE_HOST: string;
+  VITE_PROXY: string;
+  VITE_UPLOAD: string;
+  VITE_DROP_CONSOLE: boolean;
+}
+declare type Recordable<T = any> = Record<string, T>;
+const wrapperEnv = (envConf: Recordable): Env => {
+  const ret: any = {};
+
+  for (const envName of Object.keys(envConf)) {
+    let realName = envConf[envName].replace(/\\n/g, "\n");
+    realName = realName === "true" ? true : realName === "false" ? false : realName;
+    if (envName === "VITE_PORT") realName = Number(realName);
+    if (envName === "VITE_PROXY") {
+      try {
+        realName = JSON.parse(realName);
+      } catch (error) {}
+    }
+    ret[envName] = realName;
+  }
+  return ret;
+}
 
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
-  const env = loadEnv(mode, __dirname);
+  /** 当前执行node命令时文件夹的地址（工作目录） */
+  const root: string = process.cwd();
+  const env = loadEnv(mode, root);
+  const viteEnv = wrapperEnv(env)
+  console.log(viteEnv);
+
   return {
     plugins: [
       vue(),
@@ -63,19 +94,20 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       //   ]
       // }
     },
-    base: env.VITE_HOST,
+    base: viteEnv.VITE_HOST,
     server: {
       cors: true,
-      port: 8080,
+      port: viteEnv.VITE_PORT,
+      open: viteEnv.VITE_OPEN,
       host: true,
       proxy: { // 代理
         "/api": {
-          target: env.VITE_PROXY,
+          target: viteEnv.VITE_PROXY,
           changeOrigin: true,
           // rewrite: path => path.replace(/^\/api/, '')
         },
         "/upload": {
-          target: env.VITE_UPLOAD,
+          target: viteEnv.VITE_UPLOAD,
           changeOrigin: true,
         },
       },
@@ -84,17 +116,22 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         host: getIPAddress()
       }
     },
+    esbuild: {
+      pure: viteEnv.VITE_DROP_CONSOLE ? ["console", "debugger"] : []
+    },
     build: { // esbuild 打包更快，但是不能去除 console.log，terser打包慢，但能去除 console.log
-      minify: 'terser', // esbuild
-      assetsInlineLimit: 8 * 1024, // 如果静态资源体积 >= 4KB，则提取成单独的文件 如果静态资源体积 < 4KB，则作为 base64 格式的字符串内联
-      terserOptions: {
-        compress: {
-          drop_console: true,
-          drop_debugger: true
-        },
-      },
-      // 消除打包大小超过500kb警告
-      chunkSizeWarningLimit: 1500,
+      outDir: 'dist', // 构建得包名  默认：dist
+      minify: 'esbuild', // 项目压缩 :boolean | 'terser' | 'esbuild'
+      sourcemap: false, // 构建后是否生成 source map 文件
+      reportCompressedSize: false, // 禁用 gzip 压缩大小报告，可略微减少打包时间
+      // assetsInlineLimit: 8 * 1024, // 如果静态资源体积 >= 4KB，则提取成单独的文件 如果静态资源体积 < 4KB，则作为 base64 格式的字符串内联
+      // terserOptions: {
+      //   compress: {
+      //     drop_console: true,
+      //     drop_debugger: true
+      //   },
+      // },
+      chunkSizeWarningLimit: 2000, // 消除 chunk 大小警告的限制（以 kbs 为单位）默认：500
 			rollupOptions: {
         // 静态资源分类打包，自动分割包名输出 chunkSizeWarningLimit 配置大小
 				output: {
@@ -106,7 +143,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
     },
     resolve: {
       alias: {
-          "@": resolve(__dirname, "./src"),
+          "@": resolve(root, "./src"),
       },
       // 忽略后缀名的配置项
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.node', '.scss'],
