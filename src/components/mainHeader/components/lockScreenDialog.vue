@@ -27,7 +27,7 @@
 <script setup lang="ts" name="LockScreenDialog">
 import { ref, computed } from "vue";
 import { useRouter } from 'vue-router';
-import md5 from 'js-md5';
+import { md5 } from 'js-md5';
 import { globalStore } from "@/store";
 import { FormInstance } from "element-plus";
 

@@ -1,9 +1,9 @@
 <template>
   <flex-card>
     <div class="base-warp">
-      <el-card>
+      <div class="over-card">
         <div ref="echartsRef" class="echart-box"></div>
-      </el-card>
+      </div>
     </div>
   </flex-card>
 </template>

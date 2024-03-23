@@ -1,7 +1,7 @@
 <template>
   <flex-card>
     <div class="base-warp">
-      <el-card>
+      <div class="over-card">
         <div class="card content-box">
           <span class="text"> 按钮权限 🍓🍇🍈🍉</span>
           <el-alert class="mb20" :title="`当前用户按钮权限：${JSON.stringify(Object.keys(BUTTONS))}`" type="success" :closable="false" />
@@ -30,7 +30,7 @@
             <el-button type="info" plain :icon="Download" v-auth="['add', 'edit', 'delete', 'import', 'export']">导出数据</el-button>
           </el-row>
         </div>
-      </el-card>
+      </div>
     </div>
   </flex-card>
 </template>
@@ -43,16 +43,5 @@ const { BUTTONS } = useAuthButtons();
 </script>
 
 <style scoped lang="scss">
-.content-box {
-  display: flex;
-  flex-direction: column;
-  .text {
-    margin: 20px 0 30px;
-    font-size: 23px;
-    font-weight: bold;
-    text-align: center;
-    color: var(--el-text-color-regular);
-  }
-}
 
 </style>

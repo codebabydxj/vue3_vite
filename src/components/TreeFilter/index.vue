@@ -154,6 +154,7 @@ defineExpose({ treeData, treeAllData, treeRef });
 	margin-right: 10px;
   background-color: var(--el-bg-color);
 	float: left;
+	overflow: hidden;
 	.title {
 		margin: 0 0 15px;
 		font-size: 18px;

@@ -1,7 +1,7 @@
 <template>
   <flex-card>
     <div class="base-warp">
-      <el-card>
+      <div class="over-card">
         <div class="content-box">
           <div class="text">复制指令 🍇🍇🍇🍓🍓🍓</div>
           <div class="box-content">
@@ -12,7 +12,7 @@
             </el-input>
           </div>
         </div>
-      </el-card>
+      </div>
     </div>
   </flex-card>
 </template>
@@ -24,15 +24,5 @@ const data = ref<string>("我是被复制的内容 🍒 🍉 🍊");
 </script>
 
 <style scoped lang="scss">
-.content-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .text {
-    margin: 20px 0 30px;
-		font-size: 23px;
-		font-weight: bold;
-		color: var(--el-text-color-regular);
-  }
-}
+
 </style>

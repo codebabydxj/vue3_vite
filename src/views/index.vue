@@ -73,7 +73,8 @@ const isCurCollapseChange = (bool: any) => {
 
   .el_content {
     height: 100%;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden ;
   }
 }
 </style>

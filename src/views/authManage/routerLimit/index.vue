@@ -1,7 +1,7 @@
 <template>
   <flex-card>
     <div class="base-warp">
-      <el-card>
+      <div class="over-card">
         <ProTable
           ref="menuProTable"
           title="菜单管理"
@@ -38,7 +38,7 @@
         </ProTable>
         <UserDrawer ref="drawerRef" />
         <authButtonDialog ref="authButtonRef" />
-      </el-card>
+      </div>
     </div>
   </flex-card>
 </template>

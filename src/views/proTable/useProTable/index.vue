@@ -1,7 +1,7 @@
 <template>
   <flex-card>
     <div class="base-warp">
-      <el-card>
+      <div class="over-card">
         <ProTable
           ref="proTable"
           title="用户列表"
@@ -9,7 +9,7 @@
           :resetParams="resetParams"
           :initParam="initParam"
           :requestApiParams="requestApiParams"
-			    :dataCallback="dataCallback"
+          :dataCallback="dataCallback"
           @dragSort="sortTable"
           @search="searchCb">
           <!-- 表格 header 按钮 -->
@@ -32,7 +32,7 @@
           </template>
         </ProTable>
         <uploadExcel ref="importRef" />
-      </el-card>
+      </div>
     </div>
   </flex-card>
 </template>

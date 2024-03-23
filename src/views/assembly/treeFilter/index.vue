@@ -17,7 +17,7 @@
           :defaultValue="treeFilterValue1.departmentId"
           @change="changeTreeFilter1"
         />
-        <div class="descriptions-box over-card">
+        <div class="over-card descriptions-box">
           <span class="text"> 树形筛选器 🍓🍇🍈🍉</span>
           <el-descriptions title="配置项 📚" :column="1" border>
             <el-descriptions-item label="request"> 请求分类的api包含 url 和 method， { url: '', method: '' }</el-descriptions-item>
@@ -55,23 +55,15 @@ const changeTreeFilter1 = (val: string[]) => {
 
 <style scoped lang="scss">
 .content-box {
-  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
   .descriptions-box {
     display: flex;
-		flex: 1;
-		flex-direction: column;
-		align-items: center;
-		height: 100%;
-    background-color: var(--el-bg-color);
-    .text {
-      margin: 20px 0 30px;
-      font-size: 23px;
-      font-weight: bold;
-      color: var(--el-text-color-regular);
-    }
-    .el-descriptions {
-      width: 100%;
-    }
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
   }
 }
 </style>

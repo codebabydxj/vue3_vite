@@ -1,7 +1,7 @@
 <template>
   <flex-card>
     <div class="base-warp">
-      <el-card>
+      <div class="over-card">
         <div class="water-mark">
           <span class="text">水印指令 🍇🍇🍇🍓🍓🍓</span>
           <el-alert
@@ -25,7 +25,7 @@
             <el-button type="danger" @click="clearGlobalWatermark">清除全局水印</el-button>
           </el-button-group>
         </div>
-      </el-card>
+      </div>
     </div>
   </flex-card>
 </template>

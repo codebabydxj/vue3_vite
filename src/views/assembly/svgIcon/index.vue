@@ -1,7 +1,7 @@
 <template>
   <flex-card>
     <div class="base-warp">
-      <el-card>
+      <div class="over-card">
         <div class="content-box">
           <el-alert
             title="SVG 图标目前使用 vite-plugin-svg-icons 插件完成，官方文档请查看 ：https://github.com/vbenjs/vite-plugin-svg-icons"
@@ -20,7 +20,7 @@
             <el-descriptions-item label="iconStyle"> 图标的样式，默认样式为 { width: "16px", height: "16px" } </el-descriptions-item>
           </el-descriptions>
         </div>
-      </el-card>
+      </div>
     </div>
   </flex-card>
 </template>
@@ -30,12 +30,7 @@
 </script>
 
 <style scoped lang="scss">
-.content-box {
-  .icon-list {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding-top: 40px;
-  }
+.icon-list {
+  margin-top: 15px;
 }
 </style>

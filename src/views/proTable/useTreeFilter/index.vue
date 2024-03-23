@@ -9,7 +9,7 @@
           :defaultValue="initParam.departmentId"
           @change="changeTreeFilter"
         />
-        <div class="over-card table-box">
+        <div class="over-card tree-filter-table-box">
           <ProTable
             ref="proTable"
             title="用户列表"

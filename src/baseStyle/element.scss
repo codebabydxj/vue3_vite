@@ -20,7 +20,42 @@
   background-color: var(--el-bg-color);
   border: 1px solid var(--el-border-color-light) !important;
   border-radius: 4px !important;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05) !important;
+  box-shadow: var(--el-box-shadow-light) !important;
+  height: 100%;
+}
+/* ProTable 不需要 card 样式（在组件内使用 ProTable 会使用到） */
+.no-card {
+  .over-card {
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+/* content-box (常用内容盒子) */
+.content-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  .text {
+    margin: 20px 0 30px;
+    font-size: 23px;
+    font-weight: bold;
+    color: var(--el-text-color-regular);
+  }
+  .el-descriptions {
+    width: 100%;
+    padding: 40px 0 0;
+    .el-descriptions__title {
+      font-size: 18px;
+    }
+    .el-descriptions__label {
+      width: 200px;
+    }
+  }
 }
 
 // * card 卡片样式
@@ -103,7 +138,7 @@
   display: flex;
   width: 100%;
   height: 100%;
-  .table-box {
+  .tree-filter-table-box {
     // 这里减去的是 treeFilter 组件宽度
     width: calc(100% - 230px);
   }

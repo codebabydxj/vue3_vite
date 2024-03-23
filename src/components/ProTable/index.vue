@@ -28,7 +28,6 @@
 			v-bind="$attrs"
 			:size="tableSize"
 			:class="{ 'pro_no_table': !tableData.length }"
-			:max-height="maxHeight"
 			:data="tableData"
 			:border="border"
 			:row-key="rowKey"
@@ -98,7 +97,7 @@
 </template>
 
 <script setup lang="ts" name="ProTable">
-import { ref, unref, onMounted, watchEffect, watch, provide, nextTick, computed } from "vue";
+import { ref, unref, onMounted, watch, provide, nextTick, computed } from "vue";
 import { globalStore } from "@/store";
 import { useTable } from "@/hooks/useTable";
 import { useSelection } from "@/hooks/useSelection";
@@ -171,26 +170,6 @@ const { tableData, pageable, searchParam, searchInitParam, searchLoading, getTab
 const searchRef = ref<HTMLElement>()
 // 头部 操作按钮 元素
 const headerRef = ref<HTMLElement>()
-// 表格最大高度计算
-const maxHeight: any = ref(myStore.maxHeight)
-// 获取window 高度
-watchEffect(() => {
-	if (tableData.value.length > 0 && myStore.winSize!.contentHeight) {
-		if (headerRef.value && searchRef.value) {
-			maxHeight.value = `${myStore.winSize.contentHeight - headerRef.value!.clientHeight - searchRef.value!.clientHeight }px`
-			return
-		}
-		if (headerRef.value) {
-			maxHeight.value = `${myStore.winSize.contentHeight - headerRef.value!.clientHeight}px`
-			return
-		}
-		if (searchRef.value) {
-			maxHeight.value = `${myStore.winSize.contentHeight - searchRef.value!.clientHeight}px`
-			return
-		}
-		maxHeight.value = `${myStore.winSize.contentHeight}px`
-	}
-})
 
 // 存在树形 table 时， 展开和合并调用
 const isExpand = ref(<boolean>true);

@@ -32,7 +32,7 @@ import { reactive, ref, computed } from "vue";
 import { client } from "@/utils/https/client";
 import * as API from "@/config/api";
 import { useRouter } from 'vue-router';
-import md5 from "js-md5";
+import { md5 } from 'js-md5';
 import { getTimeState } from '@/utils/tools';
 import { globalStore } from "@/store";
 import { useKeepAliveStore } from "@/store/keepAlive";

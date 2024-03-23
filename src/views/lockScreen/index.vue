@@ -47,7 +47,7 @@
 <script setup lang="ts" name="LockScreen">
 import  { ref, computed, inject } from "vue";
 import { useRouter } from "vue-router";
-import md5 from "js-md5";
+import { md5 } from 'js-md5';
 import { globalStore } from "@/store";
 import { client } from "@/utils/https/client";
 import * as API from "@/config/api";

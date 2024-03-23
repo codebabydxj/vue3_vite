@@ -1,9 +1,9 @@
 <template>
   <flex-card>
     <div class="base-warp">
-      <el-card>
+      <div class="over-card">
         <PPT />
-      </el-card>
+      </div>
     </div>
   </flex-card>
 </template>
