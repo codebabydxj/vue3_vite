@@ -10,7 +10,7 @@
 import { createPinia, defineStore } from "pinia";
 import piniaPluginPersist from "pinia-plugin-persistedstate";
 import piniaPersistConfig from "@/config/piniaPersist";
-import { getShowMenuList } from "@/utils/tools";
+import { getShowMenuList, getFlatMenuList, getAllBreadcrumbList } from "@/utils/tools";
 
 const globalStore = defineStore({
   /* id: 必须存在，在所有 Store 中唯一 */
@@ -62,6 +62,10 @@ const globalStore = defineStore({
     getMenuList: (state: any) => state.menuList,
     // 菜单权限列表 ==> 左侧菜单栏渲染，需要剔除 isHide == true
     authMenuListGet: (state: any) => getShowMenuList(state.menuList),
+    // 菜单权限列表 ==> 扁平化之后的一维数组菜单，主要用来添加动态路由
+    flatMenuListGet: (state: any) => getFlatMenuList(state.menuList),
+    // 递归处理后的所有面包屑导航列表
+    breadcrumbListGet: (state: any) => getAllBreadcrumbList(state.menuList)
   },
   actions: <any>{
     setMenuList(menuList: any) {

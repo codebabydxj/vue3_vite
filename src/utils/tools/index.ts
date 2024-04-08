@@ -7,7 +7,7 @@ import { FieldNamesProps } from "@/components/ProTable/interface";
  * @description 树形结构数扁平化处理
  * @return array
  */
-export const treeToList = (tree: any[]): any => {
+export const treeToList = (tree: any[]): Array<any> => {
   return tree.reduce((pre: any, cur: any) => {
     // 此处将对象的children属性和值都解构在空数组中，将对象的其他属性和值都解构在i里面。
     const { children = [], ...i }: any = cur;   // 注意 ...i 只能写在解构赋值的末尾，否则报错
@@ -19,7 +19,7 @@ export const treeToList = (tree: any[]): any => {
  * @description 扁平化数据结构转树状形结构
  * @return array
  */
-export const listToTree = (list: any[], childrenName: string = 'children'): any => {
+export const listToTree = (list: any[], childrenName: string = 'children'): Array<any> => {
   const result: any = []
   // 第一步：将数组转换成键值对的形式(键是id值，值是对象)
   const remap = list.reduce((pre: any, cur: any) => {
@@ -75,7 +75,7 @@ export const areaCodeToCodeList = (code: string, type: any = 'lang'): number[] =
  * @description 获取当前时间对应的提示语 | 获取当前时间制 AM-PM
  * @return string
  */
-export const getTimeState = (ap: boolean = false): any => {
+export const getTimeState = (ap: boolean = false): string => {
 	// 获取当前时间
 	let timeNow = new Date();
 	// 获取当前小时
@@ -90,6 +90,7 @@ export const getTimeState = (ap: boolean = false): any => {
 	if (hours >= 14 && hours <= 18) return `下午好 🌞`;
 	if (hours >= 18 && hours <= 24) return `晚上好 🌛`;
 	if (hours >= 0 && hours <= 6) return `凌晨好 🌛`;
+  return '';
 }
 
 /**
@@ -119,12 +120,12 @@ export const randomNum = (min: number, max: number): number => {
 }
 
 /**
- * 判断两个对象是否相同
+ * @description 判断两个对象是否相同
  * @param a 要比较的对象一
  * @param b 要比较的对象二
- * @returns 相同返回 true，反之则反
+ * @returns boolean 相同返回 true，反之 false
  */
-export const isObjectValueEqual = (a: { [key: string]: any }, b: { [key: string]: any }) => {
+export const isObjectValueEqual = (a: { [key: string]: any }, b: { [key: string]: any }): boolean => {
 	if (!a || !b) return false;
 	let aProps = Object.getOwnPropertyNames(a);
 	let bProps = Object.getOwnPropertyNames(b);
@@ -144,7 +145,7 @@ export const isObjectValueEqual = (a: { [key: string]: any }, b: { [key: string]
 }
 
 /**
- * 提交表单时，滚动自动回到还没有填写的表单处
+ * @description 提交表单时，滚动自动回到还没有填写的表单处
  */
 export const formScrollToError = (className: string = 'is-error') => {
   setTimeout(() => {
@@ -153,7 +154,9 @@ export const formScrollToError = (className: string = 'is-error') => {
   }, 0)
 }
 
-/** 导出获取窗口的宽高 */ 
+/** 
+ * @description 导出获取窗口的宽高
+ */ 
 export const useWinSize = useDebounceFn(() => {
   const myStore: any = globalStore()
   let diffH: any = 148 // header高度(43) + flexCard组件padding(40) + el-card组件padding(40) + 底部预留(25)
@@ -192,8 +195,8 @@ export const handleRowAccordingToProp = (row: { [key: string]: any }, prop: stri
  * @param {String} prop 当前 prop
  * @returns {String}
  * */
-export function handleProp(prop: string) {
-  const propArr = prop.split(".");
+export const handleProp = (prop: string): string => {
+  const propArr = prop.split('.');
   if (propArr.length == 1) return prop;
   return propArr[propArr.length - 1];
 }
@@ -206,7 +209,7 @@ export function handleProp(prop: string) {
  * @param {String} type 过滤类型（目前只有 tag）
  * @returns {String}
  * */
-export function filterEnum(callValue: any, enumData?: any, fieldNames?: FieldNamesProps, type?: "tag") {
+export const filterEnum = (callValue: any, enumData?: any, fieldNames?: FieldNamesProps, type?: 'tag'): string => {
   const value = fieldNames?.value ?? "value";
   const label = fieldNames?.label ?? "label";
   const children = fieldNames?.children ?? "children";
@@ -224,7 +227,7 @@ export function filterEnum(callValue: any, enumData?: any, fieldNames?: FieldNam
 /**
  * @description 递归查找 callValue 对应的 enum 值
  * */
-export function findItemNested(enumData: any, callValue: any, value: string, children: string) {
+export const findItemNested = (enumData: any, callValue: any, value: string, children: string) => {
   return enumData.reduce((accumulator: any, current: any) => {
     if (accumulator) return accumulator;
     if (current[value] === callValue) return current;
@@ -233,14 +236,53 @@ export function findItemNested(enumData: any, callValue: any, value: string, chi
 }
 
 /**
+ * @description 使用递归扁平化菜单，方便添加动态路由
+ * @param {Array} menuList 菜单列表
+ * @returns {Array}
+ */
+export const getFlatMenuList = (menuList: any[]): Array<any> => {
+  let newMenuList: any[] = JSON.parse(JSON.stringify(menuList));
+  return newMenuList.flatMap(item => [item, ...(item.children ? getFlatMenuList(item.children) : [])]);
+}
+
+/**
  * @description 使用递归过滤出需要渲染在左侧菜单的列表 (需剔除 isHide == true 的菜单)
  * @param {Array} menuList 菜单列表
  * @returns {Array}
  * */
-export function getShowMenuList(menuList: any[]) {
+export const getShowMenuList = (menuList: any[]): Array<any> => {
   let newMenuList: any[] = JSON.parse(JSON.stringify(menuList));
   return newMenuList.filter((item: any) => {
     item.children?.length && (item.children = getShowMenuList(item.children));
     return !item.meta?.isHide;
   });
+}
+
+/**
+ * @description 使用递归找出所有面包屑存储到 pinia/vuex 中
+ * @param {Array} menuList 菜单列表
+ * @param {Array} parent 父级菜单
+ * @param {Object} result 处理后的结果
+ * @returns {Object}
+ */
+export const getAllBreadcrumbList = (menuList: any[], parent: Array<any> = [], result: { [key: string]: any } = {}): object => {
+  for (const item of menuList) {
+    result[item.path] = [...parent, item];
+    if (item.children) getAllBreadcrumbList(item.children, result[item.path], result);
+  }
+  return result;
+}
+
+/**
+ * @description 生成唯一 uuid
+ * @returns {String}
+ */
+export const generateUUID = (): string => {
+  let uuid: any = '';
+  for (let i = 0; i < 32; i++) {
+    let random = (Math.random() * 16) | 0;
+    if (i === 8 || i === 12 || i === 16 || i === 20) uuid += '-';
+    uuid += (i === 12 ? 4 : i === 16 ? (random & 3) | 8 : random).toString(16);
+  }
+  return uuid;
 }

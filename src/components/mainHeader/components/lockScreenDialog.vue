@@ -24,7 +24,7 @@
 	</el-dialog>
 </template>
 
-<script setup lang="ts" name="LockScreenDialog">
+<script setup lang="ts" name="LockScreenConfig">
 import { ref, computed } from "vue";
 import { useRouter } from 'vue-router';
 import { md5 } from 'js-md5';

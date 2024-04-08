@@ -71,7 +71,6 @@ routers.beforeEach(async (to, from, next) => {
  * */
 export const resetRouter = () => {
     const myStore = globalStore()
-    console.log(myStore.flatMenuList);
     myStore.flatMenuList.forEach((route: any) => {
         const { name } = route;
         if (name && routers.hasRoute(name)) routers.removeRoute(name);

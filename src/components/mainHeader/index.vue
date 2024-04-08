@@ -8,26 +8,33 @@
       </div>
       <div class="user-info">
         <el-tooltip effect="dark" content="刷新" placement="bottom">
-          <el-link id="Refreshs" class="screenfull" :underline="false" @click="refresh">
+          <el-link id="Refreshs" class="icon-style" :underline="false" @click="refresh">
             <el-icon color="#efefef" :size="20">
               <Refresh />
             </el-icon>
           </el-link>
         </el-tooltip>
+        <el-tooltip effect="dark" content="菜单搜索" placement="bottom">
+          <el-link id="Search" class="icon-style" :underline="false" @click="searchMenus">
+            <el-icon color="#efefef" :size="20">
+              <Search />
+            </el-icon>
+          </el-link>
+        </el-tooltip>
         <el-tooltip effect="dark" content="主题" placement="bottom">
-          <el-link id="Theme" class="screenfull" :underline="false" @click="handleTheme">
+          <el-link id="Theme" class="icon-style" :underline="false" @click="handleTheme">
             <el-icon color="#efefef" :size="20">
               <SkinOutlined />
             </el-icon>
           </el-link>
         </el-tooltip>
         <el-tooltip effect="dark" content="消息" placement="bottom">
-          <el-link id="Message" class="screenfull" :underline="false">
+          <el-link id="Message" class="icon-style" :underline="false">
             <Message id="message" />
           </el-link>
         </el-tooltip>
         <el-tooltip effect="dark" content="全屏" placement="bottom">
-          <el-link id="Full" class="screenfull" :underline="false" @click="screenfullTog">
+          <el-link id="Full" class="icon-style" :underline="false" @click="screenfullTog">
             <el-icon color="#efefef" :size="20">
               <fullscreen-outlined v-if="!isFullscreen" />
               <fullscreen-exit-outlined v-else />
@@ -60,6 +67,8 @@
         </el-dropdown>
       </div>
       <!-- 主题配置 -->
+      <searchMenu ref="searchMenuRef" />
+      <!-- 主题配置 -->
       <themeDialog
         :drawerVisible="isShowTheme"
         @drawerCloseCb="drawerCloseCb">
@@ -79,6 +88,7 @@ import { client } from '@/utils/https/client';
 import * as API from '@/config/api';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import Message from '../headerMessage/index.vue';
+import searchMenu from './components/searchMenuDialog.vue';
 import themeDialog from './components/themeDialog.vue';
 import lockScreenDialog from "./components/lockScreenDialog.vue";
 
@@ -116,11 +126,15 @@ const myStore: any = globalStore()
 const userName: any = computed(() => myStore.userInfo.userInfo ? myStore.userInfo.userInfo.userName : '')
 const globalRouter: any = inject('globalRouter')
 const isFullscreen = ref(false)
+const searchMenuRef = ref()
 const isShowTheme = ref(false)
 const lockScreenRef = ref()
 
 const refresh = () => {
   globalRouter.refreshView()
+}
+const searchMenus = () => {
+  searchMenuRef.value?.handleOpen()
 }
 const handleTheme = () => {
   isShowTheme.value = true
@@ -194,7 +208,7 @@ header .navbar-top {
   flex-direction: row;
 }
 
-$tab-r-width: 380px;
+$tab-r-width: 415px;
 
 header .navbar-top .tabs-wrap {
   flex: 1 1 auto;
@@ -209,7 +223,7 @@ header .navbar-top .user-info {
   align-items: center;
 }
 
-header .navbar-top .user-info .screenfull {
+header .navbar-top .user-info .icon-style {
   margin: 0 0 0 15px;
   padding: 0;
   color: inherit;
