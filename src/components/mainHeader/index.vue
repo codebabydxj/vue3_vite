@@ -15,7 +15,7 @@
           </el-link>
         </el-tooltip>
         <el-tooltip effect="dark" content="菜单搜索" placement="bottom">
-          <el-link id="Search" class="icon-style" :underline="false" @click="searchMenus">
+          <el-link id="SearchMenus" class="icon-style" :underline="false" @click="searchMenus">
             <el-icon color="#efefef" :size="20">
               <Search />
             </el-icon>

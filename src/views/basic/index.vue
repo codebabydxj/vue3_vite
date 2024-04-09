@@ -98,6 +98,14 @@ const steps: DriveStep[] = [
     }
   },
   {
+    element: "#SearchMenus",
+    popover: {
+      title: "菜单搜索",
+      description: "操作此按钮可以快速检索到你想要的页面",
+      side: "left"
+    }
+  },
+  {
     element: "#Theme",
     popover: {
       title: "主题配置",
