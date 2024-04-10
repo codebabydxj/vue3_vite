@@ -9,7 +9,7 @@
           </template>
         </ComHeader>
         <router-view v-slot="{ Component, route }">
-          <transition appear :name="isTransition ? 'fade-transform' : ''" mode="out-in">
+          <transition appear :name="transitionAnimation" mode="out-in">
             <keep-alive :include="keepAliveName">
               <component :is="Component" :key="route.fullPath" v-if="isRefreshRouter" />
             </keep-alive>
@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, provide, watchEffect } from "vue";
+import { ref, computed, watch, provide, watchEffect, nextTick } from "vue";
 import { storeToRefs } from "pinia";
 import { globalStore } from "@/store";
 import { useKeepAliveStore } from "@/store/keepAlive";
@@ -36,16 +36,28 @@ import Tabs from "@/components/headerTabs/index.vue";
 const myStore: any = globalStore()
 const themeConfig = computed(() => myStore.themeConfig)
 const isCollapse: any = ref(myStore.themeConfig.isCollapse)
-const isTransition: any = ref(myStore.themeConfig.isTransition)
+const transitionAnimation: any = ref(myStore.themeConfig.transitionAnimation)
 
 // keep页面缓存
 const keepAliveStore = useKeepAliveStore()
 const { keepAliveName } = storeToRefs(keepAliveStore);
 
 /**
- * desc: 注入全局刷新路由方法
- * use: const refreshCurrentRouter: Function = inject("refresh") as Function; refreshCurrentRouter(true/false);
- */
+ *  @description: 注入全局刷新当前页面
+ *  使用: 
+ *  const route = useRoute();
+ *  const refreshCurrentRouter: Function = inject('refresh') as Function;
+ *  const refresh = () => {
+      setTimeout(() => {
+        route.meta.isKeepAlive && keepAliveStore.removeKeepAliveName(route.fullPath as string);
+        refreshCurrentRouter(false);
+        nextTick(() => {
+          route.meta.isKeepAlive && keepAliveStore.addKeepAliveName(route.fullPath as string);
+          refreshCurrentRouter(true);
+        });
+      }, 0);
+    };
+*/
 const isRefreshRouter = ref(true);
 const refreshCurrentRouter = (val: boolean) => (isRefreshRouter.value = val);
 provide("refresh", refreshCurrentRouter);
@@ -53,17 +65,33 @@ watchEffect(() => {
   console.log('isRefreshRouter-------', keepAliveName.value);
 })
 
+// 监听菜单收起展开
 watch(() => myStore.themeConfig.isCollapse, (newVal: any) => {
   isCollapse.value = newVal
 })
-
-watch(() => myStore.themeConfig.isTransition, (newVal: any) => {
-  isTransition.value = newVal
-})
-
+// 设置菜单收起展开 
 const isCurCollapseChange = (bool: any) => {
   myStore.setThemeConfig({ ...themeConfig.value, isCollapse: bool });
 }
+
+// 设置过渡动画重载页面
+const reloadPage = async (delay: any = 600) => {
+  isRefreshRouter.value = false
+  await nextTick()
+  if (delay) {
+    setTimeout(() => {
+      isRefreshRouter.value = true
+    }, delay)
+  }
+  else {
+    isRefreshRouter.value = true
+  }
+}
+// 监听设置过渡动画
+watch(() => myStore.themeConfig.transitionAnimation, async (newVal: any) => {
+  transitionAnimation.value = newVal
+  reloadPage()
+})
 </script>
 
 <style scoped lang="scss">
@@ -73,8 +101,7 @@ const isCurCollapseChange = (bool: any) => {
 
   .el_content {
     height: 100%;
-    overflow-y: auto;
-    overflow-x: hidden ;
+    overflow: hidden;
   }
 }
 </style>

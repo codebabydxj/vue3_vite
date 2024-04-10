@@ -61,9 +61,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   /** 当前执行node命令时文件夹的地址（工作目录） */
   const root: string = process.cwd();
   const env = loadEnv(mode, root);
-  const viteEnv = wrapperEnv(env)
-  console.log(viteEnv);
-
+  const viteEnv = wrapperEnv(env);
   return {
     plugins: [
       vue(),

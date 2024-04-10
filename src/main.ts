@@ -6,6 +6,7 @@ import flexCard from '@/components/flexCard/index.vue'
 
 // 样式组件
 import '@/baseStyle/base.scss'
+import '@/baseStyle/transition.scss'
 import ElementPlus from 'element-plus'
 import * as ElementIcon from '@element-plus/icons-vue'
 import zhCN from 'element-plus/es/locale/lang/zh-cn'

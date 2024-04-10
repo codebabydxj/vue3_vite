@@ -12,6 +12,8 @@ import piniaPluginPersist from "pinia-plugin-persistedstate";
 import piniaPersistConfig from "@/config/piniaPersist";
 import { getShowMenuList, getFlatMenuList, getAllBreadcrumbList } from "@/utils/tools";
 
+type TransitionAnimation = '' | 'fade-side' | 'fade-bottom' | 'fade-scale' | 'zoom-fade' | 'zoom-out' | 'fade'
+
 const globalStore = defineStore({
   /* id: 必须存在，在所有 Store 中唯一 */
 	id: 'GlobalState',
@@ -45,7 +47,7 @@ const globalStore = defineStore({
         // 折叠菜单
         isCollapse: true,
         // 转场动画
-        isTransition: true,
+        transitionAnimation: 'fade-side' as TransitionAnimation,
         // 锁定屏幕
         isLockScreen: false,
         // 引导页

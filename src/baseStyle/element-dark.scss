@@ -1,8 +1,8 @@
 /* 自定义 element 暗黑模式样式 */
 html.dark {
 	// * vite-admin
-	--vite-main-bg-color: #141414;
-	--vite-bg-dark-color: #ffffff;
+	--vite-tool-color: #ffffff;
+	--vite-tool-bg-color: #409EFF;
 
   // * wangEditor
 	--w-e-toolbar-color: #595959;
@@ -56,8 +56,8 @@ html.dark {
 	}
 
 	.el_toolbar {
-		background-color: var(--vite-bg-dark-color);
-		color: var(--vite-main-bg-color);
+		background-color: var(--vite-tool-bg-color);
+		color: var(--vite-tool-color);
 	}
 
 	// scroll-bar
