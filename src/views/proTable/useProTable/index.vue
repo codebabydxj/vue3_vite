@@ -42,6 +42,7 @@ import { ref, inject } from 'vue'
 import { CirclePlus, Delete, EditPen, Download, Upload, View } from "@element-plus/icons-vue"
 import { ElMessage, ElMessageBox } from "element-plus"
 import { client } from "@/utils/https/client"
+import { uploadFiles } from "@/config/api"
 import { useHandleData } from "@/hooks/useHandleData"
 import { useDownload } from "@/hooks/useDownload";
 import ProTable from '@/components/ProTable/index.vue'
@@ -129,7 +130,7 @@ const batchAdd = () => {
   const params = {
     title: "用户",
     tempApi: { url: '', params: {} },
-		importApi: { url: '/api/geeker/user/import', params: { type: 'sx', id: '123'} },
+		importApi: { url: `${uploadFiles}/user/import`, params: { type: 'sx', id: '123'} },
     getTableList: proTable.value?.getTableList
   };
   importRef.value?.acceptParams(params);

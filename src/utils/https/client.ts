@@ -8,20 +8,19 @@ import type { Method } from "axios";
 import axiosRetry from "axios-retry";
 import jsonpAdapter from "axios-jsonp";
 import { showLoading, hideLoading } from "@/config/fullLoading";
-import { ElMessage, ElNotification } from "element-plus";
+import { ElMessage } from "element-plus";
 import qs from "qs";
 import dayjs from "dayjs";
 import { checkStatus } from "./checkStatus"
 import routers from "@/routers"
 import { globalStore } from "@/store";
+import { jsonConfig, apiConfig, uploadConfig } from "@/config/api/config";
 
 const instance: AxiosInstance = axios.create({
-  baseURL: '',
-  timeout: 30000,
-  headers: {
-    'Content-Type': 'application/json; charset=UTF-8',
-  },
-  withCredentials: true, // 跨域允许携带cookie
+  baseURL: apiConfig.baseURL, // 默认请求地址
+  timeout: apiConfig.timeout, // 请求超时时间
+  headers: jsonConfig.headers, // 请求头默认是json
+  withCredentials: apiConfig.withCredentials, // 跨域允许携带cookie
 });
 
 // 取消重复请求处理
@@ -133,31 +132,13 @@ instance.interceptors.response.use((response: AxiosResponse) => {
   // 根据服务器响应的错误状态码，做不同的处理
   if (response) checkStatus(response.status, routers, myStore);
 
-  // // 根据不同状态码，做不同处理
-  // if (response.status === 401) {
-  //   // toke过期，重新登录
-  //   myStore.logout()
-  //   routers.replace('/login');
-  //   return Promise.reject(response);
-  // }
-
-  // if (response.status === 403) {
-  //   ElMessage({ // 没有权限、未授权/ 服务器错误
-  //     showClose: true,
-  //     message: '没有权限，请授权之后再处理！',
-  //     type: 'error',
-  //   });
-  //   routers.replace('/403');
-  //   return Promise.reject(response);
-  // }
-
   // 服务器结果都没有返回(可能服务器错误可能客户端断网)，断网处理:可以跳转到断网页面
   if (!window.navigator.onLine) routers.replace('/500');
 
   return Promise.reject(error);
 });
 class Api {
-  private request(url: string, options: AxiosRequestConfig, headerConfig?: AxiosRequestConfig) {
+  private request(url: string, options: AxiosRequestConfig, headerConfig: any = {}) {
     return new Promise<ResponseType>((resolve, reject) => {
       instance.request({
         url: url,
@@ -183,6 +164,18 @@ class Api {
       method: 'post',
       data: data ?? {},
     }, headerConfig)
+  }
+  /** upload(url: string, data?:any) */
+  public upload(url: string, data: Record<string, any> = {}, file: File) {
+    const formData = new FormData();
+    for (const key in data) {
+      formData.append(key, data[key]);
+    }
+    formData.append('file', file);
+    return this.request(url, {
+      method: 'post',
+      data: formData,
+    }, uploadConfig)
   }
   /** download(url: string, data?:any, method: Method = 'post | get') */
   public async download(url: string, data?: any, method: Method = 'post') {

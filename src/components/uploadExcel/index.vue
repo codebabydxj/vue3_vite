@@ -48,6 +48,7 @@ import { ref } from "vue";
 import { useDownload } from "@/hooks/useDownload";
 import { Download } from "@element-plus/icons-vue";
 import { ElMessage, ElNotification, UploadInstance, UploadFile, UploadFiles } from "element-plus";
+import { client } from "@/utils/https/client";
 
 export interface ExcelParameterProps {
 	title: string; // 标题
@@ -166,6 +167,24 @@ const handleExceed = (): void => {
 // 文件发生变化
 const handleChange = (uploadFile: UploadFile, uploadFiles: UploadFiles) => {
 	files = uploadFiles
+	console.log(uploadFile, uploadFiles);
+	imports(uploadFile)
+	// uploadFiles
+}
+
+const imports = (file: any) => {
+  client.upload(parameter.value.importApi.url, {id: 123}, file.raw)
+  .then((res: any) => {
+    if (res.code === 1) {
+			
+    } else {
+     
+    }
+  }).finally(() => {
+    
+  }).catch(() => {
+    
+  })
 }
 
 // 上传错误提示

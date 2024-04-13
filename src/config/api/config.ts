@@ -1,3 +1,9 @@
+export const apiConfig = {
+  baseURL: '',
+  timeout: 1000 * 60 * 3,
+  withCredentials: true
+};
+
 export const jsonConfig = {
   headers: {
     'Content-Type': 'application/json; charset=UTF-8',
@@ -16,11 +22,6 @@ export const uploadConfig = {
   headers: {
     'Content-Type': 'multipart/form-data',
   },
-};
-
-// 请求超时
-export const timeOutConfig = {
-  timeout: 300000,
 };
 
 // 请求取消全局 loading

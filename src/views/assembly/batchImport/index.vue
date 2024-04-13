@@ -23,13 +23,14 @@
 <script setup lang="ts" name="BatchImport">
 import { ref } from "vue";
 import uploadExcel from "@/components/uploadExcel/index.vue";
+import { uploadFiles } from "@/config/api"
 
 const importRef = ref();
 const batchAdd = () => {
 	let params: any = {
 		title: "数据",
 		tempApi: { url: '', params: {} },
-		importApi: { url: '/api/geeker/user/import', params: { type: 'sx', id: '123'} }
+		importApi: { url: `${uploadFiles}/user/import`, params: { type: 'sx', id: '123'} }
 	};
 	importRef.value.acceptParams(params);
 };

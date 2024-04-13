@@ -46,6 +46,7 @@
 <script setup lang="ts" name="UseTreeFilter">
 import { ref, reactive, onMounted } from 'vue'
 import { client } from "@/utils/https/client"
+import { uploadFiles } from "@/config/api"
 import { ElMessage, ElMessageBox } from "element-plus"
 import { CirclePlus, Delete, EditPen, Download, Upload, View } from "@element-plus/icons-vue"
 import TreeFilter from "@/components/TreeFilter/index.vue"
@@ -118,7 +119,7 @@ const batchAdd = () => {
   const params = {
     title: "用户",
     tempApi: { url: '', params: {} },
-		importApi: { url: '/api/geeker/user/import', params: { type: 'sx', id: '123'} },
+		importApi: { url: `${uploadFiles}/user/import`, params: { type: 'sx', id: '123'} },
     getTableList: proTable.value.getTableList
   };
   importRef.value?.acceptParams(params);
