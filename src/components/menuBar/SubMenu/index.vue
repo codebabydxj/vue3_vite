@@ -20,6 +20,11 @@
   </template>
 </template>
 
+<script lang="ts">
+export default {
+  name: 'SubMenu'
+}
+</script>
 <script setup lang="ts">
 import { computed, inject } from "vue"
 import { useRouter } from "vue-router"
@@ -70,6 +75,10 @@ const routeGo = (subItem: any) => {
   }
 }
 
+.navbar-side .el-sub-menu__title:hover {
+  background-color: var(--menu-item-active-bg-color);
+}
+
 .navbar-side .el-menu>.el-sub-menu.is-active {
 
   .el-sub-menu__title,
@@ -99,7 +108,7 @@ const routeGo = (subItem: any) => {
 
 .navbar-side .el-menu>.el-menu-item:hover {
   color: var(--color-white) !important;
-  background-color: var(--menu-bg-color) !important;
+  background-color: var(--menu-item-active-bg-color) !important;
 }
 
 .navbar-side .el-menu>.el-menu-item.is-active:hover {

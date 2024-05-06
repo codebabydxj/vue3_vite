@@ -26,13 +26,10 @@ html.dark {
 	}
 
 	.navbar-side {
-		.el-menu > .el-sub-menu.is-opened > .el-menu > .el-menu-item.is-active {
+		.el-menu>.el-menu-item.is-active {
 			background-color: var(--el-bg-color-page) !important;
 		}
-		.el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active::before {
-			background-color: var(--el-bg-color-page) !important;
-		}
-		.el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item.is-active:hover {
+		.el-menu>.el-menu-item.is-active:hover {
 			background-color: var(--el-bg-color-page) !important;
 		}
 		.eo {
