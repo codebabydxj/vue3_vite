@@ -14,13 +14,13 @@ export const staticRouter: RouteRecordRaw[] = [
   },
   {
     path: '/',
-    redirect: '/basic/home'
+    redirect: '/home'
   },
   {
     path: '/',
     name: 'Main',
     component: () => import('@/views/index.vue'),
-    redirect: '/basic/home',
+    redirect: '/home',
     children: [],
   },
   {

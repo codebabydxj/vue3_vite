@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 import { globalStore } from '@/store'
 import { staticRouter, errorRouter } from './modules/staticRouter'
 import { initDynamicRouter } from "./modules/dynamicRouter"
@@ -13,13 +13,24 @@ import NProgress from "@/config/nprogress"
  * @param meta ==> 菜单信息
  * @param meta.icon ==> 菜单图标
  * @param meta.title ==> 菜单标题
+ * @param meta.isLink ==> 路由外链时填写的访问地址
  * @param meta.isHide ==> 是否隐藏
+ * @param meta.isFull ==> 菜单是否全屏 (示例：数据大屏页面)
+ * @param meta.isAffix ==> 菜单是否固定在标签页中 (首页通常是固定项)
  * @param meta.isKeepAlive ==> 是否缓存
  * */
 
+const mode = 'history'; // 路由模式  hash  history
+
+// 创建路由模式
+const routerMode = {
+    hash: () => createWebHashHistory(),
+    history: () => createWebHistory()
+}
+
 /** 创建路由 */
 const routers = createRouter({
-    history: createWebHistory(), // createWebHashHistory (hash)
+    history: routerMode[mode](),
     routes: [...staticRouter, ...errorRouter],
     strict: false,
     scrollBehavior: () => ({ left: 0, top: 0 })

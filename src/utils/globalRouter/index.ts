@@ -114,7 +114,7 @@ const globalRouter = {
     myStore.delRoute({ index, count: 1 })
     // 全部删除时回到首页
     if (myStore.routes.length === 0) {
-      globalRouter.openView('/basic/home');
+      globalRouter.openView('/home');
     }
     // 更新缓存
     const updateName = myStore.routes.map((i: any) => i.name);

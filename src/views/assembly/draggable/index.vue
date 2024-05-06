@@ -4,7 +4,7 @@
       <div class="over-card">
         <draggable
           v-model="gridList"
-          class="card grid-container"
+          class="grid-container"
           item-key="id"
           animation="300"
           chosen-class="chosen"

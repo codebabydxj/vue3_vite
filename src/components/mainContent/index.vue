@@ -17,12 +17,12 @@ const props = defineProps({
 <style scoped>
 .content-interface {
   flex: 1 1 auto;
-  width: calc(100% - 64px);
+  width: calc(100% - 65px);
   display: flex;
   flex-direction: column;
 }
 
 .content-interface.is-collapse {
-  width: calc(100% - 200px);
+  width: calc(100% - 220px);
 }
 </style>

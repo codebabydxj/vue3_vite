@@ -114,8 +114,8 @@ const columns: ColumnProps[] = [
 
 // 表格拖拽排序回调
 const sortTable = (data: any) => {
-  console.log(data);
-  console.log(proTable.value?.tableData);
+  // console.log(data);
+  // console.log(proTable.value?.tableData);
   ElMessage.success("修改列表排序成功");
 };
 

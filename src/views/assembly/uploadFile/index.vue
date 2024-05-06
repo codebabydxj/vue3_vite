@@ -214,7 +214,6 @@ const paramsForm1 = ref({
 const submit = () => {
   ruleFormRef.value!.validate((valid: any) => {
     if (!valid) return;
-    console.log(valid)
   })
 }
 </script>

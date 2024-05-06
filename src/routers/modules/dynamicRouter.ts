@@ -1,6 +1,7 @@
 import router from "@/routers/index";
 import { client } from '@/utils/https/client';
 import * as API from '@/config/api';
+import { RouteRecordRaw } from "vue-router";
 import { ElNotification } from "element-plus";
 import { globalStore } from '@/store';
 import { treeToList } from "@/utils/tools";
@@ -41,7 +42,11 @@ export const initDynamicRouter = async () => {
       if (item.component && typeof item.component == "string") {
         item.component = modules["/src/views" + item.component + ".vue"];
       }
-      router.addRoute("Main", item);
+      if (item.meta.isFull) {
+        router.addRoute(item as unknown as RouteRecordRaw);
+      } else {
+        router.addRoute("Main", item as unknown as RouteRecordRaw);
+      }
     });
   } catch (error) {
     // 当按钮 || 菜单请求出错时，重定向到登陆页
