@@ -41,7 +41,9 @@
             </el-icon>
           </el-link>
         </el-tooltip>
-        <div id="he-plugin-simple"></div>
+        <div class="weather">
+          <iframe width="275" scrolling="no" height="24" frameborder="0" allowtransparency="true" src="https://i.tianqi.com?c=code&id=34&color=%23FFFFFF&icon=1&py=taiyuan&site=12"></iframe>
+        </div>
         <el-dropdown class="head" trigger="click" @command="handleCommand">
           <div class="drop-box">
             <span class="username">{{ userName }}</span>
@@ -80,7 +82,7 @@
 </template>
 
 <script setup lang="ts" name="MainHeader">
-import { inject, onMounted, ref, computed } from 'vue';
+import { inject, ref, computed } from 'vue';
 import screenfull from 'screenfull';
 import { useRouter } from 'vue-router';
 import { globalStore } from '@/store';
@@ -91,35 +93,6 @@ import Message from '../headerMessage/index.vue';
 import searchMenu from './components/searchMenuDialog.vue';
 import themeDialog from './components/themeDialog.vue';
 import lockScreenDialog from "./components/lockScreenDialog.vue";
-
-// 加载和风天气
-onMounted(() => {
-  (window as any).WIDGET = {
-    'CONFIG': {
-      'modules': '2014',
-      'background': '5',
-      'tmpColor': '409eff',
-      'tmpSize': '15',
-      'cityColor': '409eff',
-      'citySize': '15',
-      'aqiColor': '409eff',
-      'aqiSize': '15',
-      'weatherIconSize': '24',
-      'alertIconSize': '16',
-      'padding': '10px 10px 5px 10px',
-      'shadow': '0',
-      'language': 'auto',
-      'fixed': 'false',
-      'vertical': 'top',
-      'horizontal': 'left',
-      'key': '12e37ffc392d47e48ce3d066029270bb'
-    }
-  }
-  let script = document.createElement('script')
-  script.type = 'text/javascript'
-  script.src = 'https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0'
-  document.getElementsByTagName('head')[0].appendChild(script)
-})
 
 const router = useRouter()
 const myStore: any = globalStore()
@@ -208,7 +181,7 @@ header .navbar-top {
   flex-direction: row;
 }
 
-$tab-r-width: 415px;
+$tab-r-width: 545px;
 
 header .navbar-top .tabs-wrap {
   flex: 1 1 auto;
@@ -245,5 +218,11 @@ header .navbar-top .user-info .head {
       background-color: transparent;
     }
   }
+}
+.weather {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-left: 10px;
 }
 </style>

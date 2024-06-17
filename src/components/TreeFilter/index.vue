@@ -1,5 +1,5 @@
 <template>
-	<div class="over-card filter">
+	<div class="over-card filter" :style="{ width: treeWidth }">
 		<h4 class="title" v-if="title">{{ title }}</h4>
 		<el-input v-model="filterText" placeholder="输入关键字进行过滤" clearable />
 		<el-scrollbar :style="{ height: title ? `calc(100% - 95px)` : `calc(100% - 56px)` }">
@@ -21,7 +21,16 @@
 				@check="handleCheckChange"
 			>
 				<template #default="scope">
-					<span class="el-tree-node__label">
+					<div class="custom-tree-node" v-if="isTreeLine">
+						<el-tree-line :node="scope.node" :showLabelLine="true">
+							<template v-slot:node-label>
+								<span>
+									{{ scope.node.label }}
+								</span>
+							</template>
+						</el-tree-line>
+					</div>
+					<span class="el-tree-node__label" v-else>
 						<slot :row="scope">
 							{{ scope.node.label }}
 						</slot>
@@ -36,6 +45,7 @@
 import { ref, watch, onBeforeMount, nextTick } from "vue";
 import { client } from "@/utils/https/client";
 import { ElTree } from "element-plus";
+import ElTreeLine from "@/components/ReTreeLine";
 
 // 接收父组件参数并设置默认值
 interface TreeFilterProps {
@@ -48,12 +58,16 @@ interface TreeFilterProps {
 	multiple?: boolean; // 是否为多选 ==> 非必传，默认为 false
 	defaultValue?: any; // 默认选中的值 ==> 非必传
   checkStrictly?: boolean // 在显示复选框的情况下，是否严格的遵循父子不互相关联的做法 ==> 非比传,默认 false
+	treeWidth?: string; // 自定义树的宽度，不定义有默认宽度
+	isTreeLine?: boolean; // 是否显示树形连接线
 }
 const props = withDefaults(defineProps<TreeFilterProps>(), {
 	id: "id",
 	label: "label",
 	multiple: false,
-	checkStrictly: false
+	checkStrictly: false,
+	treeWidth: "220px",
+	isTreeLine: false
 });
 
 const defaultProps = {
@@ -184,6 +198,14 @@ defineExpose({ treeData, treeAllData, treeRef });
 					color: transparent;
 				}
 			}
+		}
+		.custom-tree-node {
+			flex: 1;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			font-size: 14px;
+			padding-right: 8px;
 		}
 	}
 }

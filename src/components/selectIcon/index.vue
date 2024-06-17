@@ -13,7 +13,7 @@
 				<el-button :icon="customIcons[iconValue]" />
 			</template>
 		</el-input>
-		<el-dialog v-model="dialogVisible" :title="placeholder" top="50px" width="70%">
+		<el-dialog v-model="dialogVisible" :title="placeholder" top="60px" width="70%">
 			<el-input v-model="inputValue" placeholder="搜索图标" size="large" :prefix-icon="Icons.Search" />
 			<el-scrollbar v-if="Object.keys(iconsList).length">
 				<div class="icon-list">
@@ -105,7 +105,7 @@ const iconsList = computed((): { [key: string]: any } => {
 			display: grid;
 			grid-template-columns: repeat(auto-fill, 115px);
 			justify-content: space-evenly;
-			max-height: 70vh;
+			max-height: 68vh;
 			.icon-item {
 				display: flex;
 				flex-direction: column;
