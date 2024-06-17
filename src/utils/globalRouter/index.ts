@@ -23,7 +23,7 @@
 
 import { nextTick } from 'vue';
 import routers from '@/routers';
-import { globalStore } from '@/store';
+import { useGlobalStore } from '@/store';
 import { useKeepAliveStore } from '@/store/keepAlive';
 
 let myStore: any = null
@@ -35,7 +35,7 @@ let curName: any = null;
 let query: any = null;
 
 routers.beforeEach((to: any) => {
-  myStore = globalStore() /** 一切为成形之前，使用store，store必须放在路由守卫，否则报错，没有注册pinia??? */
+  myStore = useGlobalStore() /** 一切为成形之前，使用store，store必须放在路由守卫，否则报错，没有注册pinia??? */
   keepAliveStore = useKeepAliveStore();
   flatMenuList = myStore.flatMenuList
   query = to.query;

@@ -23,12 +23,12 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { globalStore } from '@/store';
+import { useGlobalStore } from '@/store';
 import verifyCode from '@/components/verifyCode/index.vue';
 import SwitchDark from "@/components/ThemeDark/index.vue";
 import LoginForm from "./loginForm.vue";
 
-const myStore: any = globalStore()
+const myStore: any = useGlobalStore()
 const themeConfig = computed(() => myStore.themeConfig)
 const isShowCode = ref(false) // 是否显示滑块验证码，看自己逻辑需求处理
 

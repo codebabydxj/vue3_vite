@@ -3,7 +3,7 @@ import { client } from '@/utils/https/client';
 import * as API from '@/config/api';
 import { RouteRecordRaw } from "vue-router";
 import { ElNotification } from "element-plus";
-import { globalStore } from '@/store';
+import { useGlobalStore } from '@/store';
 import { treeToList } from "@/utils/tools";
 
 // 引入 views 文件夹下所有 vue 文件
@@ -13,7 +13,7 @@ const modules = import.meta.glob("@/views/**/*.vue");
  * @description 初始化动态路由
  */
 export const initDynamicRouter = async () => {
-  const myStore: any = globalStore();
+  const myStore: any = useGlobalStore();
 
   try {
     // 1.获取菜单列表 && 按钮权限列表

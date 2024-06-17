@@ -1,12 +1,12 @@
 import { computed } from "vue";
-import { globalStore } from "@/store";
+import { useGlobalStore } from "@/store";
 import { driver, DriveStep, Config } from 'driver.js';
 import 'driver.js/dist/driver.css';
 
 export default driver;
 // 根据业务进行的封装
 export const useDriver = (steps: DriveStep[] = [], options: Config = {}, onceKey?: string) => {
-  const myStore: any = globalStore()
+  const myStore: any = useGlobalStore()
   const themeConfig = computed(() => myStore.themeConfig)
   
   let driverObj: any = null

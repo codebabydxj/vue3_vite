@@ -1,14 +1,14 @@
 import { computed } from "vue";
 import { Theme } from "./interface";
 import { getLightColor, getDarkColor } from "@/utils/tools/color";
-import { globalStore } from "@/store";
+import { useGlobalStore } from "@/store";
 import { ElMessage } from "element-plus";
 
 /**
  * @description 切换主题
  * */
 export const useTheme = () => {
-  const myStore: any = globalStore();
+  const myStore: any = useGlobalStore();
   const themeConfig = computed(() => myStore.themeConfig);
   const DEFAULT_PRIMARY = '#409EFF'
 

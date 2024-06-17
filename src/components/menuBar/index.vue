@@ -53,7 +53,7 @@
 
 <script setup lang="ts" name="MenuBar">
 import { ref, watch, computed, inject, reactive, onBeforeUnmount } from "vue"
-import { globalStore } from "@/store"
+import { useGlobalStore } from "@/store"
 import { useDebounceFn } from "@vueuse/core"
 import _ from "lodash"
 import SubMenu from "@/components/menuBar/SubMenu/index.vue"
@@ -71,7 +71,7 @@ const delayShow = computed(() => props.isCollapse);
 // 通过inject获取挂载在全局的globalRouter方法，初始化view
 const globalRouter: any = inject('globalRouter')
 // 获取store
-const myStore: any = globalStore()
+const myStore: any = useGlobalStore()
 const themeConfig = computed(() => myStore.themeConfig)
 
 const routeParams: any = reactive(<any>{

@@ -34,7 +34,7 @@ import * as API from "@/config/api";
 import { useRouter } from 'vue-router';
 import { md5 } from 'js-md5';
 import { getTimeState } from '@/utils/tools';
-import { globalStore } from "@/store";
+import { useGlobalStore } from "@/store";
 import { useKeepAliveStore } from "@/store/keepAlive";
 import { initDynamicRouter } from "@/routers/modules/dynamicRouter";
 import { ElForm, ElNotification } from "element-plus";
@@ -47,7 +47,7 @@ type Props = {
 const props = withDefaults(defineProps<Props>(), {
   darkTheme: false
 })
-const myStore: any = globalStore()
+const myStore: any = useGlobalStore()
 const themeConfig = computed(() => myStore.themeConfig)
 const keepAliveStore = useKeepAliveStore()
 const router = useRouter()

@@ -1,7 +1,7 @@
 /**
  * 使用
- * import { globalStore } from "@/store";
- * const myStore: any = globalStore();
+ * import { useGlobalStore } from "@/store";
+ * const myStore: any = useGlobalStore();
  * 
  * pinia可以直接使用storeToRefs响应式修改state的值
  * import { storeToRefs } from "pinia";
@@ -14,7 +14,7 @@ import { getShowMenuList, getFlatMenuList, getAllBreadcrumbList } from "@/utils/
 
 type TransitionAnimation = '' | 'fade-side' | 'fade-bottom' | 'fade-scale' | 'zoom-fade' | 'zoom-out' | 'fade'
 
-const globalStore = defineStore({
+const useGlobalStore = defineStore({
   /* id: 必须存在，在所有 Store 中唯一 */
 	id: 'GlobalState',
   state: () => {
@@ -150,4 +150,4 @@ const globalStore = defineStore({
 const pinia = createPinia();
 pinia.use(piniaPluginPersist);
 
-export { pinia, globalStore };
+export { pinia, useGlobalStore };

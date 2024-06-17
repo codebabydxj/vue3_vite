@@ -26,7 +26,7 @@
             <div class="letter"> 
               <p> 3. pinia状态管理器（封装了持久化存储功能）</p>
               <p class="colors">
-                <span>import { globalStore } from '@/store' | const myStore: any = globalStore();</span>
+                <span>import { useGlobalStore } from '@/store' | const myStore: any = useGlobalStore();</span>
               </p>
             </div>
             <div class="letter"> 
@@ -73,11 +73,11 @@
 
 <script setup lang="ts" name="Home">
 import { computed, onMounted, nextTick } from "vue";
-import { globalStore } from "@/store";
+import { useGlobalStore } from "@/store";
 import { useDriver } from "@/hooks/useDriver";
 import { DriveStep } from "driver.js";
 
-const myStore: any = globalStore()
+const myStore: any = useGlobalStore()
 const date: Date = new Date();
 const greetings = computed(() => {
   if (date.getHours() >= 0 && date.getHours() < 12) {

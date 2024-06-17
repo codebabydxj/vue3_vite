@@ -24,7 +24,7 @@
               <img src="./images/dataScreen-title.png" alt="" />
             </div>
             <div class="dataScreen-main-chart">
-              <!-- <RealTimeAccessChart /> -->
+              <RealTimeAccessChart />
             </div>
           </div>
           <div class="dataScreen-center">
@@ -33,7 +33,7 @@
               <img src="./images/dataScreen-title.png" alt="" />
             </div>
             <div class="dataScreen-main-chart">
-              <!-- <MaleFemaleRatioChart /> -->
+              <MaleFemaleRatioChart />
             </div>
           </div>
           <div class="dataScreen-bottom">
@@ -42,7 +42,7 @@
               <img src="./images/dataScreen-title.png" alt="" />
             </div>
             <div class="dataScreen-main-chart">
-              <!-- <AgeRatioChart /> -->
+              <AgeRatioChart />
             </div>
           </div>
         </div>
@@ -71,7 +71,7 @@
               <img src="./images/dataScreen-title.png" alt="" />
             </div>
             <div class="dataScreen-main-chart">
-              <!-- <OverNext30Chart /> -->
+              <OverNext30Chart />
             </div>
           </div>
         </div>
@@ -82,7 +82,7 @@
               <img src="./images/dataScreen-title.png" alt="" />
             </div>
             <div class="dataScreen-main-chart">
-              <!-- <HotPlateChart /> -->
+              <HotPlateChart />
             </div>
           </div>
           <div class="dataScreen-center">
@@ -91,7 +91,7 @@
               <img src="./images/dataScreen-title.png" alt="" />
             </div>
             <div class="dataScreen-main-chart">
-              <!-- <AnnualUseChart /> -->
+              <AnnualUseChart />
             </div>
           </div>
           <div class="dataScreen-bottom">
@@ -100,7 +100,7 @@
               <img src="./images/dataScreen-title.png" alt="" />
             </div>
             <div class="dataScreen-main-chart">
-              <!-- <PlatformSourceChart /> -->
+              <PlatformSourceChart />
             </div>
           </div>
         </div>

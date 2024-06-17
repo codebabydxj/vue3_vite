@@ -65,7 +65,7 @@
 import { ref, computed } from "vue"
 import { Check, Close, Lock, Unlock } from "@element-plus/icons-vue"
 import { useTheme } from "@/hooks/useTheme"
-import { globalStore } from '@/store'
+import { useGlobalStore } from '@/store'
 import SwitchDark from "@/components/ThemeDark/index.vue"
 import lockScreenDialog from "@/components/mainHeader/components/lockScreenDialog.vue";
 
@@ -102,7 +102,7 @@ const transitionAnimationList: any = ref([
     value: 'fade'
   }
 ])
-const myStore: any = globalStore()
+const myStore: any = useGlobalStore()
 const themeConfig = computed(() => myStore.themeConfig)
 const lockScreenRef = ref();
 

@@ -28,7 +28,7 @@ export default {
 <script setup lang="ts">
 import { computed, inject } from "vue"
 import { useRouter } from "vue-router"
-import { globalStore } from "@/store"
+import { useGlobalStore } from "@/store"
 import SubMenu from "@/components/menuBar/SubMenu/index.vue"
 
 const props = defineProps({
@@ -38,7 +38,7 @@ const props = defineProps({
   }
 })
 const globalRouter: any = inject('globalRouter')
-const myStore: any = globalStore()
+const myStore: any = useGlobalStore()
 const currentRoute = computed(() => myStore.currentRoute)
 const router = useRouter()
 

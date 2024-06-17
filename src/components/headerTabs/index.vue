@@ -17,14 +17,14 @@
 <script setup lang="ts" name="HeaderTabs">
 import { ref, watch, inject, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
-import { globalStore } from '@/store'
+import { useGlobalStore } from '@/store'
 import { useKeepAliveStore } from '@/store/keepAlive'
 import { ElMessage } from 'element-plus'
 
 const route = useRoute()
 
 // 获取全局store
-const myStore: any = globalStore()
+const myStore: any = useGlobalStore()
 const keepAliveStore = useKeepAliveStore();
 // 通过inject获取挂载在全局的globalRouter方法，初始化view
 const globalRouter: any = inject('globalRouter')

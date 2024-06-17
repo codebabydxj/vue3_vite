@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import { useDebounceFn } from "@vueuse/core";
-import { globalStore } from '@/store';
+import { useGlobalStore } from '@/store';
 import { FieldNamesProps } from "@/components/ProTable/interface";
 
 /**
@@ -158,7 +158,7 @@ export const formScrollToError = (className: string = 'is-error') => {
  * @description 导出获取窗口的宽高
  */ 
 export const useWinSize = useDebounceFn(() => {
-  const myStore: any = globalStore()
+  const myStore: any = useGlobalStore()
   let diffH: any = 148 // header高度(43) + flexCard组件padding(40) + el-card组件padding(40) + 底部预留(25)
   if (myStore.pagination) diffH = 210 // + 表格分页(62)
   const size = ref({ width: window.innerWidth, height: window.innerHeight, contentHeight: window.innerHeight - diffH });

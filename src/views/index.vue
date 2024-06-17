@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, provide, watchEffect, nextTick } from "vue";
 import { storeToRefs } from "pinia";
-import { globalStore } from "@/store";
+import { useGlobalStore } from "@/store";
 import { useKeepAliveStore } from "@/store/keepAlive";
 import MenuBar from "@/components/menuBar/index.vue";
 import Content from "@/components/mainContent/index.vue";
@@ -33,7 +33,7 @@ import Toolbar from "@/components/mainToolBar/index.vue";
 import Tabs from "@/components/headerTabs/index.vue";
 
 // 主题配置
-const myStore: any = globalStore()
+const myStore: any = useGlobalStore()
 const themeConfig = computed(() => myStore.themeConfig)
 const isCollapse: any = ref(myStore.themeConfig.isCollapse)
 const transitionAnimation: any = ref(myStore.themeConfig.transitionAnimation)

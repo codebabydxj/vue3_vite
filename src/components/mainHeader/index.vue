@@ -42,7 +42,13 @@
           </el-link>
         </el-tooltip>
         <div class="weather">
-          <iframe width="275" scrolling="no" height="24" frameborder="0" allowtransparency="true" src="https://i.tianqi.com?c=code&id=34&color=%23FFFFFF&icon=1&py=taiyuan&site=12"></iframe>
+          <iframe
+            scrolling="no"
+            frameborder="0"
+            allowtransparency="true"
+            src="https://i.tianqi.com?c=code&id=34&color=%23FFFFFF&icon=1&py=taiyuan&site=12"
+            style="width: 240px; max-width: 275px; height: 24px;">
+          </iframe>
         </div>
         <el-dropdown class="head" trigger="click" @command="handleCommand">
           <div class="drop-box">
@@ -85,7 +91,7 @@
 import { inject, ref, computed } from 'vue';
 import screenfull from 'screenfull';
 import { useRouter } from 'vue-router';
-import { globalStore } from '@/store';
+import { useGlobalStore } from '@/store';
 import { client } from '@/utils/https/client';
 import * as API from '@/config/api';
 import { ElMessage, ElMessageBox } from 'element-plus';
@@ -95,7 +101,7 @@ import themeDialog from './components/themeDialog.vue';
 import lockScreenDialog from "./components/lockScreenDialog.vue";
 
 const router = useRouter()
-const myStore: any = globalStore()
+const myStore: any = useGlobalStore()
 const userName: any = computed(() => myStore.userInfo.userInfo ? myStore.userInfo.userInfo.userName : '')
 const globalRouter: any = inject('globalRouter')
 const isFullscreen = ref(false)

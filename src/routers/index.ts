@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
-import { globalStore } from '@/store'
+import { useGlobalStore } from '@/store'
 import { staticRouter, errorRouter } from './modules/staticRouter'
 import { initDynamicRouter } from "./modules/dynamicRouter"
 import NProgress from "@/config/nprogress"
@@ -41,7 +41,7 @@ let lockFlag: any = true;
 /* 路由权限方案：挂载所有路由 + 全局路由守卫判断权限 */
 routers.beforeEach(async (to, from, next) => {
     /** 1.获取store */
-    const myStore = globalStore()
+    const myStore = useGlobalStore()
 
     /** 2.开启进度条 */
     NProgress.start();
@@ -81,7 +81,7 @@ routers.beforeEach(async (to, from, next) => {
  * @description 重置路由
  * */
 export const resetRouter = () => {
-    const myStore = globalStore()
+    const myStore = useGlobalStore()
     myStore.flatMenuList.forEach((route: any) => {
         const { name } = route;
         if (name && routers.hasRoute(name)) routers.removeRoute(name);

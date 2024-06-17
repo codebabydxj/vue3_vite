@@ -98,7 +98,7 @@
 
 <script setup lang="ts" name="ProTable">
 import { ref, unref, onMounted, watch, provide, nextTick, computed } from "vue";
-import { globalStore } from "@/store";
+import { useGlobalStore } from "@/store";
 import { useTable } from "@/hooks/useTable";
 import { useSelection } from "@/hooks/useSelection";
 import { handleProp } from "@/utils/tools";
@@ -125,7 +125,7 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 });
 
 // 获取store 存储库
-const myStore: any = globalStore()
+const myStore: any = useGlobalStore()
 
 // 存储是否显示分页，为了控制表格最大高度显示
 myStore.setPagination(props.pagination)

@@ -4,11 +4,11 @@
 
 <script setup lang="ts" name="ThemeDark">
 import { computed } from "vue";
-import { globalStore } from "@/store";
+import { useGlobalStore } from "@/store";
 import { Sunny, Moon } from "@element-plus/icons-vue";
 import { useTheme } from "@/hooks/useTheme";
 
-const myStore: any = globalStore();
+const myStore: any = useGlobalStore();
 const themeConfig = computed(() => myStore.themeConfig);
 
 const { switchDark } = useTheme();

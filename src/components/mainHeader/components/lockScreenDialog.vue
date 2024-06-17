@@ -28,11 +28,11 @@
 import { ref, computed } from "vue";
 import { useRouter } from 'vue-router';
 import { md5 } from 'js-md5';
-import { globalStore } from "@/store";
+import { useGlobalStore } from "@/store";
 import { FormInstance } from "element-plus";
 
 const router = useRouter()
-const myStore: any = globalStore()
+const myStore: any = useGlobalStore()
 const themeConfig = computed(() => myStore.themeConfig)
 const userName: any = computed(() => myStore.userInfo.userInfo ? myStore.userInfo.userInfo.userName : '')
 // dialog状态

@@ -48,7 +48,7 @@
 import  { ref, computed, inject } from "vue";
 import { useRouter } from "vue-router";
 import { md5 } from 'js-md5';
-import { globalStore } from "@/store";
+import { useGlobalStore } from "@/store";
 import { client } from "@/utils/https/client";
 import * as API from "@/config/api";
 import { useTime } from "@/hooks/useTime";
@@ -57,7 +57,7 @@ import { ElMessage } from "element-plus";
 
 const router = useRouter()
 const globalRouter: any = inject('globalRouter')
-const myStore: any = globalStore()
+const myStore: any = useGlobalStore()
 const themeConfig = computed(() => myStore.themeConfig)
 const userName: any = computed(() => myStore.userInfo.userInfo ? myStore.userInfo.userInfo.userName : '')
 

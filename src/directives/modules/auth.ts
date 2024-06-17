@@ -2,13 +2,13 @@
  * v-auth
  * 按钮权限指令
  */
-import { globalStore } from "@/store";
+import { useGlobalStore } from "@/store";
 import type { Directive, DirectiveBinding } from "vue";
 
 const auth: Directive = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
     const { value } = binding;
-    const myStore: any = globalStore();
+    const myStore: any = useGlobalStore();
     const currentPageRoles = myStore.authButtonListGet[myStore.routeName] ?? [];
     if (value instanceof Array && value.length) {
       const hasPermission = value.every(item => currentPageRoles.includes(item));

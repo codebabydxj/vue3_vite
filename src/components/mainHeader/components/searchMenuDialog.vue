@@ -31,10 +31,10 @@
 <script setup lang="ts" name="SearchMenuConfig">
 import { ref, computed, nextTick, inject } from "vue";
 import { Search } from "@element-plus/icons-vue";
-import { globalStore } from '@/store'
+import { useGlobalStore } from '@/store'
 
 const globalRouter: any = inject('globalRouter')
-const myStore: any = globalStore()
+const myStore: any = useGlobalStore()
 const menuList = computed(() => myStore.flatMenuListGet.filter((item: any) => !item.meta.isHide))
 const isShowSearch = ref(false)
 const menuInputRef = ref()

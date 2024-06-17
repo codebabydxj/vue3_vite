@@ -13,7 +13,7 @@ import qs from "qs";
 import dayjs from "dayjs";
 import { checkStatus } from "./checkStatus"
 import routers from "@/routers"
-import { globalStore } from "@/store";
+import { useGlobalStore } from "@/store";
 import { jsonConfig, apiConfig, uploadConfig } from "@/config/api/config";
 
 const instance: AxiosInstance = axios.create({
@@ -60,7 +60,7 @@ interface requestConfig extends InternalAxiosRequestConfig {
  */
 instance.interceptors.request.use((config: requestConfig) => {
   removePending(config);
-  const myStore: any = globalStore();
+  const myStore: any = useGlobalStore();
   const controller = new AbortController();
   // 当前请求不需要显示 loading，在 api 服务中通过指定的第三个参数: API.loadingConfig -> { noLoading: true } 来控制
   config.noLoading || showLoading();
@@ -121,7 +121,7 @@ instance.interceptors.response.use((response: AxiosResponse) => {
   });
   return Promise.reject(response);
 }, (error: AxiosError) => {
-  const myStore: any = globalStore();
+  const myStore: any = useGlobalStore();
   const { response } = error;
   hideLoading();
 
