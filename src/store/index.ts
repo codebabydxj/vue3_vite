@@ -52,6 +52,8 @@ const useGlobalStore = defineStore({
         isLockScreen: false,
         // 引导页
         isOpenGuide: true,
+        // 登录界面主题更换
+        isReplaceNewLoginPage: true,
       },
       // 当前页面的 router name，用来做按钮权限筛选
       routeName: '',

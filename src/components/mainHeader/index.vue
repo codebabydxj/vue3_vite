@@ -47,12 +47,14 @@
             frameborder="0"
             allowtransparency="true"
             src="https://i.tianqi.com?c=code&id=34&color=%23FFFFFF&icon=1&py=taiyuan&site=12"
-            style="width: 240px; max-width: 275px; height: 24px;">
+            style="width: 130px; height: 24px;">
           </iframe>
         </div>
         <el-dropdown class="head" trigger="click" @command="handleCommand">
           <div class="drop-box">
-            <span class="username">{{ userName }}</span>
+            <el-tooltip effect="customized" :content="`当前登录用户：${userName}`" placement="bottom">
+              <el-text :truncated="true" type="success" class="username">{{ userName }}</el-text>
+            </el-tooltip>
             <el-avatar class="avatar" icon="el-icon-user-solid" :size="30"
               src="/src/assets/imgs/avatar.gif" fit="fill"></el-avatar>
           </div>
@@ -187,16 +189,19 @@ header .navbar-top {
   flex-direction: row;
 }
 
-$tab-r-width: 545px;
+$tab-r-min-width: 405px;
+$tab-r-max-width: 465px;
 
 header .navbar-top .tabs-wrap {
   flex: 1 1 auto;
-  width: calc(100% - $tab-r-width);
+  min-width: calc(100% - $tab-r-max-width);
+  max-width: calc(100% - $tab-r-min-width);
 }
 
 header .navbar-top .user-info {
   flex: 0 0 auto;
-  width: $tab-r-width;
+  min-width: $tab-r-min-width;
+  max-width: $tab-r-max-width;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -210,15 +215,16 @@ header .navbar-top .user-info .icon-style {
 }
 
 header .navbar-top .user-info .head {
-  margin-right: 8px;
+  margin: 0 8px 0 5px;
   .drop-box {
     display: flex;
     align-items: center;
     cursor: pointer;
     .username {
+      max-width: 90px;
       font-size: 15px;
+      font-weight: 700;
       margin-right: 15px;
-      color: var(--color-white);
     }
     .avatar {
       background-color: transparent;
@@ -230,5 +236,16 @@ header .navbar-top .user-info .head {
   align-items: center;
   height: 100%;
   margin-left: 10px;
+}
+</style>
+<style>
+.el-popper.is-customized {
+  padding: 6px 12px;
+  color: var(--el-color-white);
+  background: var(--el-color-primary);
+}
+.el-popper.is-customized .el-popper__arrow::before {
+  background: var(--el-color-primary);
+  right: 0;
 }
 </style>

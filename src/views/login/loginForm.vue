@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'login-dark': darkTheme }">
+  <div class="login-content" :class="{ 'login-dark': darkTheme }">
     <div class="login-logo">
       <img src="../../assets/imgs/logo.png" alt="" />
       <h2 class="logo-text" data-v-a2265173="">Vite-Admin</h2>
@@ -20,9 +20,8 @@
       </el-form-item>
     </el-form>
     <div class="login-btn">
-      <el-button class="btn" round :icon="CircleClose" @click="resetForm">重 置</el-button>
-      <el-button class="btn" round type="primary" :icon="User" :loading="loading" @click="submitForm(ruleFormRef)">登
-        录</el-button>
+      <el-button class="btn reset" round :icon="CircleClose" @click="resetForm">重 置</el-button>
+      <el-button class="btn log" round type="primary" :icon="User" :loading="loading" @click="submitForm(ruleFormRef)">登 录</el-button>
     </div>
   </div>
 </template>

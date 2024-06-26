@@ -49,21 +49,7 @@
         <div class="dataScreen-ct">
           <div class="dataScreen-map">
             <div class="dataScreen-map-title">景区实时客流量</div>
-            <!-- <vue3-seamless-scroll
-							:list="alarmData"
-							class="dataScreen-alarm"
-							:step="0.5"
-							:hover="true"
-							:limitScrollNum="3"
-						>
-							<div class="dataScreen-alarm">
-								<div class="map-item" v-for="item in alarmData" :key="item.id">
-									<img src="./images/dataScreen-alarm.png" alt="" />
-									<span class="map-alarm sle">{{ item.label }} 预警：{{ item.warnMsg }}</span>
-								</div>
-							</div>
-						</vue3-seamless-scroll> -->
-            <!-- <ChinaMapChart /> -->
+            <ChinaMapChart />
           </div>
           <div class="dataScreen-cb">
             <div class="dataScreen-main-title">
