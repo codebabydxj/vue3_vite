@@ -4,7 +4,10 @@
     <div class="login-box-new" :class="{ 'right-panel-active': active == 'signUp' }" v-if="themeConfig.isReplaceNewLoginPage">
       <div class="form-container sign-in-container">
         <div class="login-form-new">
-          
+          <div class="typewriter">  
+            <p class="text">天生我材必有用，千金散尽还复来。</p>
+          </div>
+          <svg-icon name="smile" :iconStyle="{ width: '150px', height: '150px'}" />
         </div>
       </div>
       <div class="form-container sign-up-container">
@@ -347,6 +350,33 @@ const handleVerifyCb = () => {
   }
   .right-panel-active .overlay {
     transform: translateX(50%);
+  }
+  .typewriter {
+    width: 100%;
+    height: 80px;
+    position: relative;
+  }  
+  .text {  
+    font-weight: 600;
+    font-size: 16px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    color: var(--html-bg-color);
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    border-right: .15em solid orange;
+    white-space: nowrap;
+    letter-spacing: .15em;
+    animation: typing 4s steps(40, end), blink-caret .5s step-end infinite; /* 模拟打字效果的动画 */
+  }
+  @keyframes typing {  
+    from { width: 0 }  
+    to { width: 18em } /* 根据文本长度和列高调整这个值 */  
+  }
+  @keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: orange; }
   }
 }
 
