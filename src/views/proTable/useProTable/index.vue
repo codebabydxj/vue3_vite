@@ -88,7 +88,7 @@ const columns: ColumnProps[] = [
 	{ type: 'index', label: '序号', width: 80 },
   { type: "sort", label: "拖拽排序", width: 100 },
 	{ prop: 'username', label: '用户姓名', search: { el: 'input', tooltip: '搜索提示信息' } },
-	{ prop: 'gender', label: '性别', enum: [{ label: '男', value: 1 },{ label: '女', value: 2 }], search: { el: 'select' } },
+	{ prop: 'gender', label: '性别', enum: [{ label: '男', value: 1 },{ label: '女', value: 2 }], search: { el: 'select', props: { filterable: true } } },
 	{ prop: 'age', label: '年龄', search: { el: 'input' } },
 	{ prop: 'idCard', label: '身份证号', search: { el: 'input' } },
 	{ prop: 'email', label: '邮箱' },

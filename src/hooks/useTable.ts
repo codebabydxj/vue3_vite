@@ -36,8 +36,6 @@ export const useTable = (
 		searchInitParam: {},
 		// 总参数(包含分页和查询参数)
 		totalParam: {},
-		// 查询按钮 Loading
-		searchLoading: false,
 	});
 
 	/**
@@ -69,16 +67,13 @@ export const useTable = (
 				newParams = resetParams({...newParams})
 			}
       let { data } = apiParams.method === 'get' ? await client.get(apiParams.url, newParams) : await client.post(apiParams.url, newParams)
-			state.searchLoading = false;
 			dataCallback && (data = dataCallback(data));
 			state.tableData = isPageable ? data.list : data;
 			// 解构后台返回的分页数据 (如果有分页更新分页信息)
       if (isPageable) {
-        const { pageNum, pageSize, total } = data;
-        updatePageable({ pageNum, pageSize, total });
-      }
+				state.pageable.total = data.total;
+			}
 		} catch (error) {
-			state.searchLoading = false;
 			requestError && requestError(error);
 		}
 	};
@@ -90,7 +85,7 @@ export const useTable = (
 	const updatedTotalParam = () => {
 		state.totalParam = {};
 		// 处理查询参数，可以给查询参数加自定义前缀操作
-		let nowSearchParam: { [key: string]: any } = {};
+		let nowSearchParam: Table.TableStateProps["searchParam"] = {};
 		// 防止手动清空输入框携带参数（这里可以自定义查询参数前缀）
 		for (let key in state.searchParam) {
 			// * 某些情况下参数为 false/0 也应该携带参数
@@ -101,14 +96,6 @@ export const useTable = (
 		Object.assign(state.totalParam, nowSearchParam, isPageable ? pageParam.value : {});
 	};
 
-	/**
-	 * @description 更新分页信息
-	 * @param {Object} resPageable 后台返回的分页数据
-	 * @return void
-	 * */
-	const updatePageable = (resPageable: Table.Pageable) => {
-		Object.assign(state.pageable, resPageable);
-	};
 
 	/**
 	 * @description 表格数据查询
@@ -116,7 +103,6 @@ export const useTable = (
 	 * */
 	const search = () => {
 		state.pageable.pageNum = 1;
-		state.searchLoading = true;
 		updatedTotalParam();
 		getTableList();
 	};
@@ -141,7 +127,6 @@ export const useTable = (
 	const handleSizeChange = (val: number) => {
 		state.pageable.pageNum = 1;
 		state.pageable.pageSize = val;
-		state.searchLoading = true;
 		getTableList();
 	};
 
@@ -152,7 +137,6 @@ export const useTable = (
 	 * */
 	const handleCurrentChange = (val: number) => {
 		state.pageable.pageNum = val;
-		state.searchLoading = true;
 		getTableList();
 	};
 

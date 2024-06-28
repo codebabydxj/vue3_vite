@@ -91,9 +91,8 @@ const gridCols = computed(() => {
 });
 provide("cols", gridCols);
 
-const slots = useSlots().default!();
-
 // 寻找需要开始折叠的字段 index
+const slots = useSlots().default!();
 const findIndex = () => {
   let fields: VNodeArrayChildren = [];
   let suffix: VNode | null = null;

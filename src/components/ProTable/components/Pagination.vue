@@ -5,6 +5,7 @@
 		:page-size="pageable.pageSize"
 		:page-sizes="[10, 20, 50, 100]"
 		:background="true"
+		:size="size"
 		layout="total, sizes, prev, pager, next, jumper"
 		:total="pageable.total"
 		@size-change="handleSizeChange"
@@ -20,10 +21,13 @@ interface Pageable {
 }
 
 interface PaginationProps {
+	size?: string;
 	pageable: Pageable;
 	handleSizeChange: (size: number) => void;
 	handleCurrentChange: (currentPage: number) => void;
 }
 
-defineProps<PaginationProps>();
+const props = withDefaults(defineProps<PaginationProps>(), {
+	size: 'small'
+})
 </script>

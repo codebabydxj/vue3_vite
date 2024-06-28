@@ -30,6 +30,7 @@ export const useHandleData = <P = any, R = any>(
 				message: `${message}成功!`
 			});
 			resolve(true);
-		});
+		}).catch(() => {
+		})
 	});
 };

@@ -28,8 +28,8 @@
             <h1 class="h1">欢迎回来！
               <img class="logo" src="../../assets/svg/v.svg" alt="" />
             </h1>
-            <p style="margin: 15px 0;">要与我们保持联系，请使用您的个人信息登录</p>
-            <el-button round style="background-color: transparent; color: #ffffff; border-color: #fff;" @click="active = 'signUp'">去登录</el-button>
+            <p style="margin: 15px 0;">选择了方向与路途，就不要抱怨，一个人只有承担起旅途风雨，才能最终守得住彩虹满天。</p>
+            <el-button round style="background-color: transparent; color: #ffffff; border-color: #fff; width: 100px;" @click="active = 'signUp'">去登录</el-button>
           </div>
         </div>
       </div>

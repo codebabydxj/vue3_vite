@@ -17,7 +17,8 @@
             :initParam="initParam"
             :requestApiParams="requestApiParams"
             :requestAuto="false"
-            :dataCallback="dataCallback">
+            :dataCallback="dataCallback"
+            @dragSort="sortTable">
             <!-- 表格 header 按钮 -->
             <template #tableHeader="scope">
               <el-button type="primary" :icon="CirclePlus">新增用户</el-button>
@@ -53,14 +54,14 @@ import TreeFilter from "@/components/TreeFilter/index.vue"
 import ProTable from '@/components/ProTable/index.vue'
 import { useHandleData } from "@/hooks/useHandleData"
 import { useDownload } from "@/hooks/useDownload"
-import { ColumnProps } from "@/components/ProTable/interface"
+import { ProTableInstance, ColumnProps } from "@/components/ProTable/interface"
 import uploadExcel from '@/components/uploadExcel/index.vue'
 
 // 请求table数据
 const requestApiParams = ref({ url: '/api/proTable' })
 
 // 获取 ProTable 元素，调用其获取刷新数据方法（还能获取到当前查询参数，方便导出携带参数）
-const proTable = ref();
+const proTable = ref<ProTableInstance>();
 
 // dataCallback 是对于返回的表格数据做处理，如果你后台返回的数据不是 list && total && pageNum && pageSize 这些字段，那么你可以在这里进行处理成这些字段
 const dataCallback = (data: any) => {
@@ -94,7 +95,7 @@ onMounted(() => {
 
 const changeTreeFilter = (val: string) => {
 	ElMessage.success("请注意查看请求参数变化 🤔");
-  proTable.value.pageable.pageNum = 1;
+  proTable.value!.pageable.pageNum = 1;
   initParam.departmentId = val;
 };
 
@@ -102,6 +103,7 @@ const changeTreeFilter = (val: string) => {
 const columns: ColumnProps[] = [
 	{ type: 'selection', fixed: 'left', width: 80 },
 	{ type: 'index', label: '序号', width: 80 },
+  { type: "sort", label: "拖拽排序", width: 100 },
 	{ prop: 'username', label: '用户姓名', search: { el: 'input' } },
 	{ prop: 'gender', label: '性别', enum: [{ label: '男', value: 1 },{ label: '女', value: 2 }], search: { el: 'select' } },
 	{ prop: 'age', label: '年龄' },
@@ -113,6 +115,13 @@ const columns: ColumnProps[] = [
 	{ prop: 'operation', label: '操作', fixed: 'right', width: 330 }
 ];
 
+// 表格拖拽排序回调
+const sortTable = (data: any) => {
+  // console.log(data);
+  // console.log(proTable.value?.tableData);
+  ElMessage.success("修改列表排序成功");
+};
+
 // 批量添加用户
 const importRef = ref<InstanceType<typeof uploadExcel> | null>(null);
 const batchAdd = () => {
@@ -120,7 +129,7 @@ const batchAdd = () => {
     title: "用户",
     tempApi: { url: '', params: {} },
 		importApi: { url: `${uploadFiles}/user/import`, params: { type: 'sx', id: '123'} },
-    getTableList: proTable.value.getTableList
+    getTableList: proTable.value?.getTableList
   };
   importRef.value?.acceptParams(params);
 };
@@ -128,15 +137,15 @@ const batchAdd = () => {
 // 导出数据
 const exportData = async () => {
   ElMessageBox.confirm("确认导出用户数据?", "温馨提示", { type: "warning" }).then(() =>
-    useDownload({ url: '/api/user/export', params: proTable.value.searchParam }, '用户列表')
+    useDownload({ url: '/api/user/export', params: proTable.value?.searchParam }, '用户列表')
   );
 }
 
 // 批量删除用户信息
 const batchDelete = async (ids: string[]) => {
 	await useHandleData('/batch/delete', { ids }, '删除所选用户信息');
-	proTable.value.clearSelection();
-	proTable.value.getTableList();
+	proTable.value?.clearSelection();
+	proTable.value?.getTableList();
 };
 
 // 删除单个用户
@@ -147,7 +156,7 @@ const handleDel = async (row: any) => {
       type: "success",
       message: '删除成功!'
     });
-    proTable.value.getTableList();
+    proTable.value?.getTableList();
   })
 }
 </script>

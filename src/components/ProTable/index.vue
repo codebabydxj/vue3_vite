@@ -6,7 +6,6 @@
 				:columns="searchColumns"
 				:search-param="searchParam"
 				:search-col="searchCol"
-				:searchLoading="searchLoading"
 				:search="_search"
 				:reset="_reset"
 			/>
@@ -26,6 +25,7 @@
 			v-if="refreshTable"
 			ref="tableRef"
 			v-bind="$attrs"
+			:id="uuid"
 			:size="tableSize"
 			:class="{ 'pro_no_table': !tableData.length }"
 			:data="tableData"
@@ -54,7 +54,7 @@
 							<slot v-else :name="item.type" v-bind="scope" />
 						</template>
 						<!-- radio 单选 -->
-            <el-radio v-if="item.type == 'radio'" v-model="radio" :value="scope.row[rowKey]">
+            <el-radio v-if="item.type == 'radio'" v-model="radio" :label="scope.row[rowKey]">
               <i></i>
             </el-radio>
 						<!-- sort 拖动排序 -->
@@ -64,15 +64,15 @@
 					</template>
 				</el-table-column>
 				<!-- other 循环递归 -->
-				<TableColumn v-if="!item.type && item.prop && item.isShow" :column="item">
+				<TableColumn v-else :column="item">
 					<template v-for="slot in Object.keys($slots)" #[slot]="scope">
-						<slot :name="slot" v-bind="scope"></slot>
+						<slot :name="slot" v-bind="scope" />
 					</template>
 				</TableColumn>
 			</template>
 			<!-- 插入表格最后一行之后的插槽 -->
 			<template #append>
-				<slot name="append"></slot>
+				<slot name="append" />
 			</template>
 			<!-- 表格无数据情况 -->
 			<template #empty>
@@ -101,7 +101,7 @@ import { ref, unref, onMounted, watch, provide, nextTick, computed } from "vue";
 import { useGlobalStore } from "@/store";
 import { useTable } from "@/hooks/useTable";
 import { useSelection } from "@/hooks/useSelection";
-import { handleProp } from "@/utils/tools";
+import { generateUUID, handleProp } from "@/utils/tools";
 import { ElTable } from "element-plus";
 import { ProTableProps, ColumnProps, TypeProps } from "@/components/ProTable/interface";
 import tableConfig from "@/components/tableConfig/index.vue";
@@ -131,10 +131,10 @@ const myStore: any = useGlobalStore()
 myStore.setPagination(props.pagination)
 
 // table显示大小（default/small/large）
-const tableSize = ref(<any>'')
+const tableSize: any = ref('')
 
 // table 勾选框和序号配，，默认都显示
-const tableColumn: any = ref(<any>['selection', 'index'])
+const tableColumn: any = ref(['selection', 'index'])
 
 // table工具按钮配置 回调处理
 const handleConfig = (data: any) => {
@@ -150,11 +150,14 @@ const handleConfig = (data: any) => {
 	}
 }
 
-// 表格 DOM 元素
+// table 实例
 const tableRef = ref<InstanceType<typeof ElTable>>();
 
+// 生成组件唯一id
+const uuid = ref("id-" + generateUUID());
+
 // column 列类型
-const columnTypes: TypeProps[] = ["radio", "expand", "sort"];
+const columnTypes: TypeProps[] = ["selection", "radio", "index", "expand", "sort"];
 
 // 单选值
 const radio = ref('');
@@ -163,7 +166,7 @@ const radio = ref('');
 const { selectionChange, selectedList, selectedListIds, isSelected } = useSelection(props.rowKey);
 
 // 表格操作 Hooks
-const { tableData, pageable, searchParam, searchInitParam, searchLoading, getTableList, search, reset, handleSizeChange, handleCurrentChange } =
+const { tableData, pageable, searchParam, searchInitParam, getTableList, search, reset, handleSizeChange, handleCurrentChange } =
 	useTable(props.resetParams, props.requestApiParams, props.initParam, props.pagination, props.dataCallback, props.requestError);
 
 // table 表格查询区 元素
@@ -187,8 +190,8 @@ const clearSelection = () => tableRef.value!.clearSelection();
 
 // 初始化表格 默认发起请求 具体看 requestAuto 属性 &&  拖拽排序
 onMounted(() => {
-	_dragSort()
-	props.requestAuto && search()
+	dragSort()
+	props.requestAuto && getTableList()
 });
 
 // 监听页面 initParam 改化，重新获取表格数据
@@ -228,8 +231,9 @@ const flatColumnsFunc = (columns: ColumnProps[], flatArr: ColumnProps[] = []) =>
 		if (col._children?.length) flatArr.push(...flatColumnsFunc(col._children));
 		flatArr.push(col);
 
-		// 给每一项 column 添加 isShow && isFilterEnum 默认属性
+		// 给每一项 column 添加 isShow && isSetting && isFilterEnum 默认属性
 		col.isShow = col.isShow ?? true;
+		col.isSetting = col.isSetting ?? true;
 		col.isFilterEnum = col.isFilterEnum ?? true;
 
 		// 设置 enumMap
@@ -258,8 +262,8 @@ searchColumns.value?.forEach((column, index) => {
 
 // 列设置 ==> 过滤掉不需要设置显隐的列
 const colSetting = tableColumns.value!.filter(item => {
-	const { type, prop, isShow } = item;
-	return !columnTypes.includes(type!) && prop && prop !== "operation" && isShow;
+	const { type, prop, isSetting } = item;
+	return !columnTypes.includes(type!) && prop !== "operation" && isSetting;
 });
 
 // 定义 emit 事件
@@ -280,16 +284,15 @@ const _reset = () => {
 };
 
 // 拖拽排序
-const _dragSort = () => {
-  const tbody = document.querySelector(".el-table__body-wrapper tbody") as HTMLElement;
+const dragSort = () => {
+  const tbody = document.querySelector(`#${uuid.value} tbody`) as HTMLElement;
   Sortable.create(tbody, {
     handle: ".move",
     animation: 300,
-    onEnd(e: any) {
-			const item = tableData.value[e.oldIndex];
-      const [removedItem] = tableData.value.splice(e.oldIndex!, 1);
-      tableData.value.splice(e.newIndex!, 0, removedItem);
-			emit("dragSort", item);
+    onEnd({ newIndex, oldIndex }) {
+			const [removedItem] = tableData.value.splice(oldIndex!, 1);
+      tableData.value.splice(newIndex!, 0, removedItem);
+      emit("dragSort", { newIndex, oldIndex });
     }
   });
 };
@@ -307,7 +310,10 @@ defineExpose({
 	selectedList,
 	selectedListIds,
 	getTableList,
+	search,
 	reset,
+	handleSizeChange,
+	handleCurrentChange,
 	clearSelection,
 	setExpand
 });

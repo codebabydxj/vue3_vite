@@ -3,7 +3,7 @@
     <el-form ref="ruleFormRef" :model="searchParam" inline>
       <Grid ref="gridRef" :collapsed="collapsed" :gap="[20, 0]" :cols="searchCol">
         <GridItem v-for="(item, index) in columns" :key="item.prop" v-bind="getResponsive(item)" :index="index">
-          <el-form-item :prop="item.prop">
+          <el-form-item>
             <template #label>
               <el-space :size="4">
                 <span>{{ `${item.search?.label ?? item.label}` }}</span>
@@ -17,8 +17,8 @@
         </GridItem>
         <GridItem suffix>
           <div class="search-operation">
-            <el-button type="primary" :icon="Search" :loading="searchLoading" @click="search">查询</el-button>
-            <el-button :icon="Delete" @click="reset">重置</el-button>
+            <el-button type="primary" :icon="Search" @click="search">查 询</el-button>
+            <el-button :icon="Delete" @click="reset">重 置</el-button>
             <el-button v-if="showCollapse" type="primary" link class="search-isOpen" @click="handleCollapse">
               {{ collapsed ? "展开" : "合并" }}
               <el-icon class="el-icon--right">
@@ -45,7 +45,6 @@ import SearchFormItem from "./components/SearchFormItem.vue";
 
 interface ProTableProps {
   columns?: ColumnProps[]; // 搜索配置列
-  searchLoading?: boolean; // 查询按钮loading
   searchParam?: { [key: string]: any }; // 搜索参数
   searchCol: number | Record<BreakPoint, number>;
   search: (params: any) => void; // 搜索方法
@@ -53,7 +52,6 @@ interface ProTableProps {
 }
 
 const props = withDefaults(defineProps<ProTableProps>(), {
-  searchLoading: false,
   columns: () => [],
   searchParam: () => ({})
 });
