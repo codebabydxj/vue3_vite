@@ -1,6 +1,6 @@
 import router from "@/routers/index";
 import { client } from '@/utils/https/client';
-import * as API from '@/config/api';
+import { buttonList, loadingConfig, menuList } from '@/config/api';
 import { RouteRecordRaw } from "vue-router";
 import { ElNotification } from "element-plus";
 import { useGlobalStore } from '@/store';
@@ -58,13 +58,13 @@ export const initDynamicRouter = async () => {
 
 // 获取权限按钮列表
 const getAuthButtonList = async (store: any) => {
-  let res: any = await client.get(API.buttonList, {}, API.loadingConfig)
+  let res: any = await client.get(buttonList, {}, loadingConfig)
   store.setAuthButtonList((res.data && Object.keys(res.data).length > 0) ? res.data : {})
 }
 
 // 获取菜单列表
 const getAuthMenuList = async (store: any) => {
-  let res: any = await client.get(API.menuList, {}, API.loadingConfig)
+  let res: any = await client.get(menuList, {}, loadingConfig)
   store.setMenuList(res.data.length ? res.data : [])
 }
 

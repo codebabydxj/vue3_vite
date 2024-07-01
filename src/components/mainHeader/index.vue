@@ -95,7 +95,7 @@ import screenfull from 'screenfull';
 import { useRouter } from 'vue-router';
 import { useGlobalStore } from '@/store';
 import { client } from '@/utils/https/client';
-import * as API from '@/config/api';
+import { loginOut } from '@/config/api';
 import { ElMessage, ElMessageBox } from 'element-plus';
 import Message from '../headerMessage/index.vue';
 import searchMenu from './components/searchMenuDialog.vue';
@@ -147,7 +147,7 @@ const handleCommand = (command: any) => {
         type: 'warning',
       }
     ).then(() => {
-      client.post(API.loginOut)
+      client.post(loginOut)
       .then(async () => {
         // 1.清除store、token存储
         myStore.logout()

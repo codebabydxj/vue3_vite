@@ -10,8 +10,7 @@
           :initParam="initParam"
           :requestApiParams="requestApiParams"
           :dataCallback="dataCallback"
-          @dragSort="sortTable"
-          @search="searchCb">
+          @dragSort="sortTable">
           <!-- 表格 header 按钮 -->
           <template #tableHeader="scope">
             <el-button type="primary" v-auth="'add'" :icon="CirclePlus">新增用户</el-button>
@@ -118,11 +117,6 @@ const sortTable = (data: any) => {
   // console.log(proTable.value?.tableData);
   ElMessage.success("修改列表排序成功");
 };
-
-// 查询表格回调
-const searchCb = (data: any) => {
-  console.log(data);
-}
 
 // 批量添加用户
 const importRef = ref<InstanceType<typeof uploadExcel> | null>(null);

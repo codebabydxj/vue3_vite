@@ -50,7 +50,7 @@ import { useRouter } from "vue-router";
 import { md5 } from 'js-md5';
 import { useGlobalStore } from "@/store";
 import { client } from "@/utils/https/client";
-import * as API from "@/config/api";
+import { loginOut } from "@/config/api";
 import { useTime } from "@/hooks/useTime";
 import { getTimeState } from "@/utils/tools";
 import { ElMessage } from "element-plus";
@@ -71,7 +71,7 @@ const goBack = () => {
   unLockPass.value = ''
 }
 const logout = () => {
-  client.post(API.loginOut)
+  client.post(loginOut)
   .then(async () => {
     // 1.清除store、token存储
     myStore.logout()

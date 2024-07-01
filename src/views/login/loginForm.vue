@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { reactive, ref, computed } from "vue";
 import { client } from "@/utils/https/client";
-import * as API from "@/config/api";
+import { login, loadingConfig } from "@/config/api";
 import { useRouter } from 'vue-router';
 import { md5 } from 'js-md5';
 import { getTimeState } from '@/utils/tools';
@@ -69,7 +69,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     if (valid) {
       loading.value = true
       const params = { ...ruleForm, password: md5(ruleForm.password) }
-      client.post(API.login, params, API.loadingConfig)
+      client.post(login, params, loadingConfig)
       .then(async (res: any) => {
         // 1.登录完成保存用户信息
         myStore.setUserInfo(res.data) 

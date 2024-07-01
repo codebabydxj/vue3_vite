@@ -10,7 +10,7 @@
 import '@wangeditor/editor/dist/css/style.css' // 引入 css
 import { onBeforeUnmount, ref, shallowRef } from 'vue'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import * as API from '@/config/api'
+import { uploadFiles } from '@/config/api'
 
 export default {
   components: { Editor, Toolbar },
@@ -50,7 +50,7 @@ export default {
     // 上传图片
     editorConfig.MENU_CONF['uploadImage'] = {
       // 上传图片的接口地址
-      server: API.uploadFiles,
+      server: uploadFiles,
       // form-data fieldName ，默认值 'wangeditor-uploaded-image'
       fieldName: 'file',
       // form-data:,

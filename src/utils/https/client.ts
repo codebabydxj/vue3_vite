@@ -1,20 +1,20 @@
 /**
  * 引用 + API
  * import { client } from "@/utils/https/client";
- * import * as API from "@/config/api";
+ * import { api-name } from "@/config/api"; || import * as API from "@/config/api";
  */
 import axios, { AxiosInstance, AxiosError, AxiosRequestConfig, InternalAxiosRequestConfig, AxiosResponse } from "axios";
 import type { Method } from "axios";
-import axiosRetry from "axios-retry";
 import jsonpAdapter from "axios-jsonp";
 import { showLoading, hideLoading } from "@/config/fullLoading";
 import { ElMessage } from "element-plus";
 import qs from "qs";
-import dayjs from "dayjs";
 import { checkStatus } from "./checkStatus"
+import { AxiosCanceler } from "./axiosCancel";
 import routers from "@/routers"
 import { useGlobalStore } from "@/store";
 import { jsonConfig, apiConfig, uploadConfig } from "@/config/api/config";
+import { downloadFile, viewPdf } from "../downViewFile";
 
 const instance: AxiosInstance = axios.create({
   baseURL: apiConfig.baseURL, // 默认请求地址
@@ -23,35 +23,15 @@ const instance: AxiosInstance = axios.create({
   withCredentials: apiConfig.withCredentials, // 跨域允许携带cookie
 });
 
-// 取消重复请求处理
-const pending: any = [];
-const removePending = (config: requestConfig) => {
-	let pendingIndex: any = pending.findIndex((v: any) => {
-		if (
-			config.url === v.url &&
-			config.method === v.method &&
-			JSON.stringify(config.params) === JSON.stringify(v.params) &&
-			JSON.stringify(config.data) === JSON.stringify(v.data)
-		) {
-      setTimeout(() => {
-        v.controller.abort();
-      }, 1000)
-			return true;
-		}
-		return false;
-	});
-	if (pendingIndex >= 0) {
-		pending.splice(pendingIndex, 1);
-	}
-};
+// 请求成功响应数据返回的code， 根据实际开发项目扩展，默认是200
+const ResponseDataCode: number[] = [200]
 
-// 请求失败之后，自动重新请求，只有两次失败才是真正结束
-axiosRetry(instance, { retries: 1 })
-
-interface requestConfig extends InternalAxiosRequestConfig {
-  controller?: any;
-  noLoading?: boolean;
+export interface requestConfig extends InternalAxiosRequestConfig {
+  loading?: boolean;
+  cancel?: boolean;
 }
+
+const axiosCanceler = new AxiosCanceler();
 
 /**
  * @description 请求拦截器
@@ -59,14 +39,13 @@ interface requestConfig extends InternalAxiosRequestConfig {
  * token校验(JWT) : 接受服务器返回的 token,存储到 vuex/pinia/本地储存当中
  */
 instance.interceptors.request.use((config: requestConfig) => {
-  removePending(config);
   const myStore: any = useGlobalStore();
-  const controller = new AbortController();
-  // 当前请求不需要显示 loading，在 api 服务中通过指定的第三个参数: API.loadingConfig -> { noLoading: true } 来控制
-  config.noLoading || showLoading();
-  config.signal = controller.signal;
-  config.controller = controller;
-  pending.push({ ...config });
+  // 重复请求不需要取消，在 api 服务中通过指定的第三个参数: { cancel: false } 来控制
+  config.cancel ??= true;
+  config.cancel && axiosCanceler.addPending(config);
+  // 当前请求不需要显示 loading，在 api 服务中通过指定的第三个参数: { loading: false } 来控制
+  config.loading ??= true;
+  config.loading && showLoading();
   const token: string | null | undefined = myStore.userInfo.token;
   if (config.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
     config.data = qs.stringify(config.data);
@@ -77,39 +56,19 @@ instance.interceptors.request.use((config: requestConfig) => {
   return Promise.reject(error);
 });
 
-const downloadFile = (data: Blob, type: string = 'application/vnd.ms-excel', headers: any) => {
-  const fileName = headers.split('=').pop()
-  const name = fileName.split('.')
-  const blob = new Blob([data], { type })
-  const url = window.URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  const time = dayjs().format('YYYYMMDDhhmmss')
-  link.href = url
-  link.download = decodeURIComponent(name[0]) + '-' + time + '.' + name[1]
-  link.click()
-  window.URL.revokeObjectURL(url)
-}
-
-interface ResponseType {
-  code: number,
-  data: any,
-  msg?: any,
-  [x: string]: any
-}
-
 /**
  * @description 响应拦截器
  *  服务器换返回信息 -> [拦截统一处理] -> 客户端JS获取到信息
  */
-instance.interceptors.response.use((response: AxiosResponse) => {
+instance.interceptors.response.use((response: AxiosResponse & { config: requestConfig }) => {
   const { data, config } = response;
-  removePending(config);
-  hideLoading();
+  axiosCanceler.removePending(config);
+  config.loading && hideLoading();
   if (response.status === 200) {
-    if (response.request.responseType === 'blob') {
+    if (response.request?.responseType === 'blob') {
       return response
     }
-    if ([1, 200].includes(data.code)) {
+    if (ResponseDataCode.includes(data.code)) {
       return data;
     }
   }
@@ -137,6 +96,14 @@ instance.interceptors.response.use((response: AxiosResponse) => {
 
   return Promise.reject(error);
 });
+
+interface ResponseType {
+  code: number,
+  data: any,
+  msg?: any,
+  [x: string]: any
+}
+
 class Api {
   private request(url: string, options: AxiosRequestConfig, headerConfig: any = {}) {
     return new Promise<ResponseType>((resolve, reject) => {
@@ -151,21 +118,33 @@ class Api {
       })
     })
   }
-  /** get(url: string, params?:any) */
-  public get(url: string, params?: any, headerConfig?: any) {
+  /**
+   * @param {string} url
+   * @param {any} params
+   * @param {any} headerConfig
+   */
+  public get(url: string, params: any = {}, headerConfig?: any) {
     return this.request(url, {
       method: 'get',
-      params: params,
+      params,
     }, headerConfig)
   }
-  /** post(url: string, data?:any) */
-  public post(url: string, data?: any, headerConfig?: any) {
+  /**
+   * @param {string} url
+   * @param {any} data
+   * @param {any} headerConfig
+   */
+  public post(url: string, data: any = {}, headerConfig?: any) {
     return this.request(url, {
       method: 'post',
-      data: data ?? {},
+      data,
     }, headerConfig)
   }
-  /** upload(url: string, data?:any) */
+  /**
+   * @param {string} url
+   * @param {Record<string, any>} data
+   * @param {File} file
+   */
   public upload(url: string, data: Record<string, any> = {}, file: File) {
     const formData = new FormData();
     for (const key in data) {
@@ -177,34 +156,80 @@ class Api {
       data: formData,
     }, uploadConfig)
   }
-  /** download(url: string, data?:any, method: Method = 'post | get') */
-  public async download(url: string, data?: any, method: Method = 'post') {
-    const reqDate: AxiosRequestConfig = {
+  /**
+   * @param {string} url
+   * @param {any} data
+   * @param {Method} method
+   * @param {boolean} isBlank  是否重新打开一个窗口
+   */
+  public async download(url: string, data: any = {}, method: Method = 'post', isBlank: boolean = false) {
+    const req: AxiosRequestConfig = {
       method: method,
       responseType: 'blob',
     }
-    if (method === 'post') reqDate.data = data
-    if (method === 'get') reqDate.params = data
-    const res = await this.request(url, reqDate)
-    downloadFile(res.data, res.data.type, res.headers['content-disposition'])
+    if (method === 'post') req.data = data
+    if (method === 'get') req.params = data
+    const res = await this.request(url, req)
+    if (res.headers["content-type"].includes("json")) {
+      let data: any = res.data;
+      const fileReader = new FileReader();
+      fileReader.readAsText(data);
+      fileReader.onload = (res: any) => {
+        let jsonData: any = JSON.parse(res.target.result);
+        ElMessage({
+          message: jsonData?.msg || "请求失败，请联系管理员",
+          type: "warning",
+        });
+      };
+      return;
+    }
+    downloadFile(res.data, res.data.type, res.headers['content-disposition'], isBlank)
   }
-  /** blobToBuffer(url: string, data?:any, method: Method = 'post | get') */
-  public async blobToBuffer(url: string, data?: any, method: Method = 'post') {
-    const reqDate: AxiosRequestConfig = {
+  
+  /**
+   * @param {string} url
+   * @param {any} data
+   * @param {Method} method
+   */
+  public async viewPDF(
+    url: string,
+    data: any = {},
+    method: Method = 'post',
+  ) {
+    const req: AxiosRequestConfig = {
+      method: method,
+      responseType: "blob",
+    };
+    if (method === "post") req.data = data;
+    if (method === "get") req.params = data;
+    const res = await this.request(url, req)
+    return viewPdf(res.data);
+  }
+  /**
+   * @param {string} url
+   * @param {any} data
+   * @param {Method} method
+   */
+  public async blobToBuffer(url: string, data: any = {}, method: Method = 'post') {
+    const req: AxiosRequestConfig = {
         method: method,
         responseType: 'blob',
     }
-    if (method === 'post') reqDate.data = data
-    if (method === 'get') reqDate.params = data
-    const res = await this.request(url, reqDate)
+    if (method === 'post') req.data = data
+    if (method === 'get') req.params = data
+    const res = await this.request(url, req)
     const blob = new Blob([res.data], { type: res.data.type })
     return await blob.arrayBuffer()
   }
-  /** jsonp(url: string, params?:any) 这样可以让 Axios 支持 jsonp 的功能 */
-  public jsonp(url: string, params?: any, headerConfig: any = { adapter: jsonpAdapter }) {
+  /**
+   * @param {string} url
+   * @param {any} params
+   * @param {any} headerConfig   让 Axios 支持 jsonp 的功能
+  */
+  public jsonp(url: string, params: any = {}, headerConfig: any = { adapter: jsonpAdapter }) {
     return this.request(url, {
       method: 'get',
-      params: params,
+      params,
     }, headerConfig)
   }
 }

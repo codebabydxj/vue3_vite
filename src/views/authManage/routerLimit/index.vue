@@ -48,14 +48,14 @@ import { ref } from "vue";
 import { CirclePlus, Delete, EditPen, View, Lock } from "@element-plus/icons-vue";
 import { ElMessage } from "element-plus";
 import { client } from "@/utils/https/client";
-import * as API from "@/config/api";
+import { menuList } from "@/config/api";
 import ProTable from "@/components/ProTable/index.vue";
 import UserDrawer from "../components/drawerAddRouter.vue";
 import authButtonDialog from "../components/dialogAuthButton.vue";
 import { ColumnProps } from "@/components/ProTable/interface";
 
 // 请求table数据
-const requestApiParams = ref({ url: API.menuList, method: 'get' })
+const requestApiParams = ref({ url: menuList, method: 'get' })
 
 // 获取 ProTable 元素，调用其获取刷新数据方法（还能获取到当前查询参数，方便导出携带参数）
 const menuProTable = ref();

@@ -33,7 +33,7 @@
               <p> 4. axios使用</p>
               <p class="colors">
                 <div>首先是API的使用：同样不同的模块就在<span style="color: red; font-weight: bold;">src/api</span>下创建不同的ts文件，最后在<span style="color: red; font-weight: bold;">api/index.ts</span>统一导出即可。 （除了目录清晰，多人开发防止冲突很有必要）</div>
-                <div style="margin: 8px 0"><span style="color: red; font-weight: bold;">import * as API from "@/config/api"</span></div>
+                <div style="margin: 8px 0"><span style="color: red; font-weight: bold;">import { api-name } from "@/config/api"</span></div>
                 <div style="margin: 8px 0"><span style="color: red; font-weight: bold;">import { client } from '@/utils/https/client';</span></div>
                 <div style="margin: 8px 0">调用
                   <span style="color: red; font-weight: bold;">client.get</span>、
