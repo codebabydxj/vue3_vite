@@ -5,7 +5,10 @@
       <div class="form-container sign-in-container">
         <div class="login-form-new">
           <div class="typewriter">  
-            <p class="text">天生我材必有用，千金散尽还复来。</p>
+            <p class="text text1">人生得意须尽欢，莫使金樽空对月。</p>
+          </div>
+          <div class="typewriter" style="margin-bottom: 15px;">  
+            <p class="text text2">天生我材必有用，千金散尽还复来。</p>
           </div>
           <svg-icon name="smile" :iconStyle="{ width: '150px', height: '150px'}" />
         </div>
@@ -28,7 +31,7 @@
             <h1 class="h1">欢迎回来！
               <img class="logo" src="../../assets/svg/v.svg" alt="" />
             </h1>
-            <p style="margin: 15px 0;">选择了方向与路途，就不要抱怨，一个人只有承担起旅途风雨，才能最终守得住彩虹满天。</p>
+            <p style="margin: 15px 0 25px 0;">选择了方向与路途，就不要抱怨，一个人只有承担起旅途风雨，才能最终守得住彩虹满天。</p>
             <el-button round style="background-color: transparent; color: #ffffff; border-color: #fff; width: 100px;" @click="active = 'signUp'">去登录</el-button>
           </div>
         </div>
@@ -311,7 +314,7 @@ const handleVerifyCb = () => {
     .h1 {
       font-size: 34px;
       font-weight: bold;
-      margin: 15px 0;
+      margin: 10px 0;
       line-height: 60px;
     }
     .logo {
@@ -353,30 +356,39 @@ const handleVerifyCb = () => {
   }
   .typewriter {
     width: 100%;
-    height: 80px;
+    height: 36px;
+    line-height: 36px;
+    // height: 80px;
     position: relative;
   }  
   .text {  
     font-weight: 600;
-    font-size: 16px;
+    font-family: cursive;
+    font-size: 17px;
     position: absolute;
     left: 50%;
     top: 50%;
     color: var(--html-bg-color);
     transform: translate(-50%, -50%);
     overflow: hidden;
-    border-right: .15em solid orange;
+    // border-right: .15em solid orange; /* 模拟打字效果的动画 */
     white-space: nowrap;
     letter-spacing: .15em;
-    animation: typing 4s steps(40, end), blink-caret .5s step-end infinite; /* 模拟打字效果的动画 */
+  }
+  .text1 {
+    animation: typing 3s steps(40, end);
+  }
+  .text2 {
+    animation: typing 5s steps(30, end);
   }
   @keyframes typing {  
-    from { width: 0 }  
-    to { width: 18em } /* 根据文本长度和列高调整这个值 */  
+    from { width: 0; opacity: 0; }
+    to { width: 18em; opacity: 0.8; }/* 根据文本长度和列高调整这个值 */  
   }
-  @keyframes blink-caret {
+  @keyframes blink-caret { /* 模拟打字效果的动画 */
     from, to { border-color: transparent; }
-    50% { border-color: orange; }
+    50% { border-color: orange; width: 18em; }
+    
   }
 }
 
