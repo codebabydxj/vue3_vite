@@ -2,15 +2,17 @@
   <div class="login-container flx-center" :class="{ 'login-bg-new': themeConfig.isReplaceNewLoginPage, 'login-bg': !themeConfig.isReplaceNewLoginPage }">
     <SwitchDark class="dark" :fromToLogin="true" @emitSwitch="emitSwitch"/>
     <div class="login-box-new" :class="{ 'right-panel-active': active == 'signUp' }" v-if="themeConfig.isReplaceNewLoginPage">
-      <div class="form-container sign-in-container">
+      <div class="form-container sign-in-container" :style="{zIndex: signIndex, opacity: opacity}">
         <div class="login-form-new">
-          <div class="typewriter">  
-            <p class="text text1">人生得意须尽欢，莫使金樽空对月。</p>
+          <div style="margin-bottom: 295px;">
+            <div class="typewriter">  
+              <p class="text text1">人生得意须尽欢，莫使金樽空对月</p>
+            </div>
+            <div class="typewriter" style="margin-bottom: 15px;">  
+              <p class="text text2">天生我材必有用，千金散尽还复来</p>
+            </div>
           </div>
-          <div class="typewriter" style="margin-bottom: 15px;">  
-            <p class="text text2">天生我材必有用，千金散尽还复来。</p>
-          </div>
-          <svg-icon name="smile" :iconStyle="{ width: '150px', height: '150px'}" />
+          <img src="@/assets/imgs/loginbg.png" alt="" width="470px" style="position: absolute; bottom: 20px; left: -30px; transition: all 0.6s;" :style="{opacity: opacity}">
         </div>
       </div>
       <div class="form-container sign-up-container">
@@ -22,14 +24,14 @@
         <div class="overlay">
           <div class="overlay-panel overlay-left">
             <h1 class="h1">你好，朋友！
-              <img class="logo" src="../../assets/svg/v.svg" alt="" />
+              <svg-icon name="smile" :iconStyle="{ width: '48px', height: '48px'}" />
             </h1>
             <p style="margin: 15px 0;">在今天和明天之间，有一段很长的时间，趁你还有精神的时候，学习迅速办事。</p>
             <el-button round style="background-color: transparent; color: #ffffff; border-color: #fff; font-size: 20px;" :icon="Right" @click="active = 'signIn'"></el-button>
           </div>
           <div class="overlay-panel overlay-right">
             <h1 class="h1">欢迎回来！
-              <img class="logo" src="../../assets/svg/v.svg" alt="" />
+              <svg-icon name="smile" :iconStyle="{ width: '48px', height: '48px'}" />
             </h1>
             <p style="margin: 15px 0 25px 0;">选择了方向与路途，就不要抱怨，一个人只有承担起旅途风雨，才能最终守得住彩虹满天。</p>
             <el-button round style="background-color: transparent; color: #ffffff; border-color: #fff; width: 100px;" @click="active = 'signUp'">去登录</el-button>
@@ -69,6 +71,18 @@ const myStore: any = useGlobalStore()
 const themeConfig = computed(() => myStore.themeConfig)
 const isShowCode = ref(false) // 是否显示滑块验证码，看自己逻辑需求处理
 const active: any = ref('signIn')
+const signIndex: any = computed(() => {
+  if (active.value === 'signUp') {
+    return 2
+  }
+  return 102
+})
+const opacity: any = computed(() => {
+  if (active.value === 'signUp') {
+    return 0
+  }
+  return 1
+})
 
 const emitSwitch = () => {
   active.value = 'signIn'
@@ -263,7 +277,7 @@ const handleVerifyCb = () => {
     .sign-in-container {
       left: 0;
       width: 50%;
-      z-index: 2;
+      transition: all 0.6s;
     }
     .sign-up-container {
       left: 0;

@@ -2,7 +2,7 @@
   <flex-card>
     <div class="base-warp">
       <div class="over-card">
-        <div class="water-mark">
+        <div class="water-mark" v-waterMarker="{ text: 'Vite-Admin', textColor: 'rgba(180, 180, 180, 0.6)' }">
           <span class="text">水印指令 🍇🍇🍇🍓🍓🍓</span>
           <el-alert
             title="通过调用 <hook>，开启或关闭水印，支持局部、全局、自定义样式（颜色、透明度、字体大小、字体、倾斜角度等），并自带防御（防删、防隐藏）和自适应功能"

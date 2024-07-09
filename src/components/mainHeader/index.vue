@@ -53,7 +53,7 @@
         <el-dropdown class="head" trigger="click" @command="handleCommand">
           <div class="drop-box">
             <el-tooltip effect="customized" :content="`当前登录用户：${userName}`" placement="bottom">
-              <el-text :truncated="true" type="success" class="username">{{ userName }}</el-text>
+              <el-text :truncated="true" type="warning" class="username">{{ userName }}</el-text>
             </el-tooltip>
             <el-avatar class="avatar" icon="el-icon-user-solid" :size="30"
               src="/src/assets/imgs/avatar.gif" fit="fill"></el-avatar>

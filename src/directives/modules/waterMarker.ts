@@ -17,13 +17,13 @@ const addWaterMarker: Directive = (str: string, parentNode: any, font: any, text
 	can.width = 205;
 	can.height = 140;
 	can.style.display = "none";
-	let cans = can.getContext("2d") as CanvasRenderingContext2D;
-	cans.rotate((-20 * Math.PI) / 180);
-	cans.font = font || "16px Microsoft JhengHei";
-	cans.fillStyle = textColor || "rgba(180, 180, 180, 0.3)";
-	cans.textAlign = "left";
-	cans.textBaseline = "Middle" as CanvasTextBaseline;
-	cans.fillText(str, can.width / 10, can.height / 2);
+	let canvas = can.getContext("2d") as CanvasRenderingContext2D;
+	canvas.rotate((-20 * Math.PI) / 180);
+	canvas.font = font || "16px Microsoft JhengHei";
+	canvas.fillStyle = textColor || "rgba(180, 180, 180, 0.3)";
+	canvas.textAlign = "left";
+	canvas.textBaseline = "Middle" as CanvasTextBaseline;
+	canvas.fillText(str, can.width / 10, can.height / 2);
 	parentNode.style.backgroundImage = "url(" + can.toDataURL("image/png") + ")";
 };
 
