@@ -23,6 +23,6 @@ const props = defineProps({
 }
 
 .content-interface.is-collapse {
-  width: calc(100% - 220px);
+  width: calc(100% - 250px);
 }
 </style>

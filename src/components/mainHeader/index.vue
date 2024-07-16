@@ -139,7 +139,7 @@ const handleCommand = (command: any) => {
   // 退出登录
   if (command === 'logout') {
     ElMessageBox.confirm(
-      '您是否确认退出登录?',
+      '您确定要退出登录吗?',
       '温馨提示',
       {
         confirmButtonText: '确定',
