@@ -286,3 +286,33 @@ export const generateUUID = (): string => {
   }
   return uuid;
 }
+
+/**
+ * @description 驼峰命名转换成下划线字段格式
+ * @returns {Object}
+ */
+export const camelToSnakeCase = (obj: any): { [key: string]: any } => {  
+  const result: any = {};
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      // 使用正则表达式将驼峰命名转换为下划线命名
+      const snakeCaseKey = key.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase();
+      result[snakeCaseKey] = obj[key];
+    }
+  }
+  return result;  
+}
+
+
+/**
+ * @description 校验是否为json
+ * @returns {Boolean}
+ */
+export const isJSON = (str: any) => {
+  try {
+    JSON.parse(str);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
