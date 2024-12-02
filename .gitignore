@@ -28,3 +28,6 @@ lerna-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# 打包分析可视化
+stats.html

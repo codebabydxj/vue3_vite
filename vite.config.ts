@@ -9,6 +9,7 @@ import { resolve } from 'path'
 import px2rem from 'postcss-px2rem'
 import path from 'path'
 import vueJsx from "@vitejs/plugin-vue-jsx";
+import { visualizer } from "rollup-plugin-visualizer";
 
 // 配置基本大小 实现rem px转换
 const postcss = px2rem({
@@ -70,6 +71,12 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       //   dirs: ['src/components', 'src/views'], // 自定义路径按需导入
       //   resolvers: [ ElementPlusResolver() ] // 可配置多个 此时main.ts处组件库相关的就可以全部删除掉了
       // }),
+      visualizer({ // 打包分析可视化
+        open: true, // build后，是否自动打开分析页面，默认false
+        gzipSize: true, // 是否分析gzip大小
+        brotliSize: true, // 是否分析brotli大小
+        //filename: 'stats.html' // 分析文件命名,默认命名为stats.html
+      }),
       vueJsx(),
       vueSetupExtend({}), // name 可以写在 script 标签上
       viteCompression({
