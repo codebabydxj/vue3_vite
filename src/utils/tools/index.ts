@@ -303,6 +303,23 @@ export const camelToSnakeCase = (obj: any): { [key: string]: any } => {
   return result;  
 }
 
+/**
+ * @description 下划线字段转换成驼峰命名格式
+ * @returns {Object}
+ */
+export const snakeToCamel = (obj: any) => {
+  let newObj: any = {};
+  for (let key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      // 将下划线命名法的键转换为驼峰命名法
+      let camelCaseKey: any = key.replace(/_(\w)/g, (match: any, group1: any) => {
+        return group1.toUpperCase();
+      })
+      newObj[camelCaseKey] = obj[key];
+    }
+  }
+  return newObj;
+}
 
 /**
  * @description 校验是否为json
