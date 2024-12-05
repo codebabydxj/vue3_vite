@@ -283,7 +283,7 @@ const _reset = () => {
   emit("reset");
 };
 
-// 拖拽排序
+// 拖拽排序 (表格必须绑定 row-key 唯一标识！！！)
 const dragSort = () => {
   const tbody = document.querySelector(`#${uuid.value} tbody`) as HTMLElement;
   Sortable.create(tbody, {
