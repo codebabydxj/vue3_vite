@@ -1,7 +1,18 @@
 <template>
 	<div class="over-card filter" :style="{ width: treeWidth }">
 		<h4 class="title" v-if="title">{{ title }}</h4>
-		<el-input v-model="filterText" placeholder="输入关键字进行过滤" clearable />
+		<div class="search">
+      <el-input v-model="filterText" placeholder="输入关键字进行过滤" clearable />
+      <el-dropdown trigger="click">
+        <el-icon size="20"><MoreFilled /></el-icon>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item @click="toggleTreeNodes(true)">展开全部</el-dropdown-item>
+            <el-dropdown-item @click="toggleTreeNodes(false)">折叠全部</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </div>
 		<el-scrollbar :style="{ height: title ? `calc(100% - 95px)` : `calc(100% - 56px)` }">
 			<el-tree
 				ref="treeRef"
@@ -66,7 +77,7 @@ const props = withDefaults(defineProps<TreeFilterProps>(), {
 	label: "label",
 	multiple: false,
 	checkStrictly: false,
-	treeWidth: "220px",
+	treeWidth: "300px",
 	isTreeLine: false
 });
 
@@ -139,10 +150,21 @@ const filterNode = (value: string, data: { [key: string]: any }, node: any) => {
 	return labels.some(label => label.indexOf(value) !== -1);
 };
 
-interface FilterEmits {
-	(e: "change", value: any): void;
-}
-const emit = defineEmits<FilterEmits>();
+// 切换树节点的展开或折叠状态
+const toggleTreeNodes = (isExpand: boolean) => {
+  let nodes = treeRef.value?.store.nodesMap;
+  if (!nodes) return;
+  for (const node in nodes) {
+    if (nodes.hasOwnProperty(node)) {
+      nodes[node].expanded = isExpand;
+    }
+  }
+};
+
+// emit
+const emit = defineEmits<{
+  change: [value: any];
+}>();
 
 // 单选
 const handleNodeClick = (data: { [key: string]: any }) => {
@@ -162,7 +184,7 @@ defineExpose({ treeData, treeAllData, treeRef });
 <style scoped lang="scss">
 .filter {
 	box-sizing: border-box;
-	width: 220px;
+	width: 300px;
 	height: 100%;
 	padding: 18px;
 	margin-right: 10px;
@@ -176,9 +198,15 @@ defineExpose({ treeData, treeAllData, treeRef });
 		color: var(--el-text-color-regular);
 		letter-spacing: 0.5px;
 	}
-	.el-input {
-		margin: 0 0 15px;
-	}
+	.search {
+    display: flex;
+    align-items: center;
+    margin: 0 0 15px;
+    .el-icon {
+      cursor: pointer;
+      transform: rotate(90deg) translateY(-8px);
+    }
+  }
 	.el-scrollbar {
 		:deep(.el-tree) {
 			height: 80%;

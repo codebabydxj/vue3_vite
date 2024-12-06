@@ -3,7 +3,8 @@
 	<el-pagination
 		:current-page="pageable.pageNum"
 		:page-size="pageable.pageSize"
-		:page-sizes="[10, 20, 50, 100]"
+		:page-sizes="[10, 20, 50, 100, 500]"
+		:pager-count="pageable.pagerCount"
 		:background="true"
 		:size="size"
 		layout="total, sizes, prev, pager, next, jumper"
@@ -18,6 +19,7 @@ interface Pageable {
 	pageNum: number;
 	pageSize: number;
 	total: number;
+	pagerCount: number;
 }
 
 interface PaginationProps {
@@ -28,6 +30,7 @@ interface PaginationProps {
 }
 
 const props = withDefaults(defineProps<PaginationProps>(), {
+	pagerCount: 7,
 	size: 'small'
 })
 </script>
