@@ -3,6 +3,7 @@ export namespace Table {
 		pageNum: number;
 		pageSize: number;
 		total: number;
+		pagerCount: number;
 	}
 	export interface TableStateProps {
 		tableData: any[];
