@@ -33,7 +33,18 @@
     box-shadow: none;
   }
 }
-
+.mb10 {
+  margin-bottom: 10px;
+}
+.mt10 {
+  margin-top: 10px;
+}
+.ml10 {
+  margin-left: 10px;
+}
+.mr10 {
+  margin-right: 10px;
+}
 /* content-box (常用内容盒子) */
 .content-box {
   display: flex;

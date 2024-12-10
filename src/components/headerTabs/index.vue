@@ -127,6 +127,9 @@ const closeMenu = () => {
 .tabs {
   padding-top: 3px;
   user-select: none;
+  & .el-tabs {
+    --el-tabs-header-height: 45px;
+  }
 }
 
 .contextmenu {
@@ -180,6 +183,7 @@ const closeMenu = () => {
 .navbar-top .tabs-wrap .el-tabs__item.is-active {
   background-color: var(--el-bg-color) !important;
   color: var(--color-text) !important;
+  font-weight: 700;
 }
 
 .navbar-top .tabs-wrap .el-tabs--card>.el-tabs__header .el-tabs__item {

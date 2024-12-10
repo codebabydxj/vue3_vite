@@ -5,7 +5,7 @@
         <TreeFilter
           label="name"
           title="部门列表(单选)"
-          :request="{ url: '/api/user/department', method: 'get' }"
+          :request="{ url: '/api/user/department1', method: 'get' }"
           :defaultValue="treeFilterValue.departmentId"
           @change="changeTreeFilter"
         />

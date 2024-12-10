@@ -75,7 +75,7 @@ const collapsed = ref(true);
 // 处理折叠
 const handleCollapse = () => {
   collapsed.value = !collapsed.value
-  useWinSize()
+  // useWinSize()
 }
 
 // 获取响应式断点
