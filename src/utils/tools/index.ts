@@ -307,7 +307,7 @@ export const camelToSnakeCase = (obj: any): { [key: string]: any } => {
  * @description 下划线字段转换成驼峰命名格式
  * @returns {Object}
  */
-export const snakeToCamel = (obj: any) => {
+export const snakeToCamel = (obj: any): object => {
   let newObj: any = {};
   for (let key in obj) {
     if (obj.hasOwnProperty(key)) {
@@ -325,7 +325,7 @@ export const snakeToCamel = (obj: any) => {
  * @description 校验是否为json
  * @returns {Boolean}
  */
-export const isJSON = (str: any) => {
+export const isJSON = (str: any): boolean => {
   try {
     JSON.parse(str);
     return true;

@@ -181,6 +181,7 @@ header {
   flex: 0 0 auto;
   background-color: var(--main-bg-color);
   z-index: 2000;
+  height: 48px;
 }
 
 header .navbar-top {

@@ -6,16 +6,17 @@ import viteCompression from 'vite-plugin-compression'
 import vueSetupExtend from "unplugin-vue-setup-extend-plus/vite"
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 import { resolve } from 'path'
-import px2rem from 'postcss-px2rem'
 import path from 'path'
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import { visualizer } from "rollup-plugin-visualizer";
+import pkg from "./package.json";
+import dayjs from "dayjs";
 
-// 配置基本大小 实现rem px转换
-const postcss = px2rem({
-  // 基准大小 baseSize，需要和rem.js中相同
-  remUnit: 16
-})
+const { dependencies, devDependencies, name, version } = pkg;
+const __APP_INFO__ = {
+  pkg: { dependencies, devDependencies, name, version },
+  lastBuildTime: dayjs().format("YYYY-MM-DD HH:mm:ss")
+};
 
 const getIPAddress = (ipStart: string = '192') => {
   var interfaces = require('os').networkInterfaces();
@@ -92,6 +93,9 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         symbolId: 'icon-[dir]-[name]', // 指定symbolId格式
       })
     ],
+    define: {
+      __APP_INFO__: JSON.stringify(__APP_INFO__)
+    },
     css: {
       // postcss: {
       //   plugins: [

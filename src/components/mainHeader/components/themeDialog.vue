@@ -1,7 +1,7 @@
 <template>
   <el-drawer
     title="主题配置"
-    size="20%"
+    size="500"
     :modelValue="drawerVisible"
     :append-to-body="true"
     :before-close="cancel">
