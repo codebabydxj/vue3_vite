@@ -12,12 +12,14 @@ import { visualizer } from "rollup-plugin-visualizer";
 import pkg from "./package.json";
 import dayjs from "dayjs";
 
+// 查看build时间、代码分支、打包人、最后一次提交记录等等
 const { dependencies, devDependencies, name, version } = pkg;
 const __APP_INFO__ = {
   pkg: { dependencies, devDependencies, name, version },
   lastBuildTime: dayjs().format("YYYY-MM-DD HH:mm:ss")
 };
 
+// 获取当前的IP地址
 const getIPAddress = (ipStart: string = '192') => {
   var interfaces = require('os').networkInterfaces();
   for (var devName in interfaces) {
@@ -76,7 +78,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         open: true, // build后，是否自动打开分析页面，默认false
         gzipSize: true, // 是否分析gzip大小
         brotliSize: true, // 是否分析brotli大小
-        //filename: 'stats.html' // 分析文件命名,默认命名为stats.html
+        // filename: 'stats.html' // 分析文件命名,默认命名为stats.html
       }),
       vueJsx(),
       vueSetupExtend({}), // name 可以写在 script 标签上
@@ -152,7 +154,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
     },
     resolve: {
       alias: {
-          "@": resolve(root, "./src"),
+        "@": resolve(root, "./src"),
       },
       // 忽略后缀名的配置项
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.node', '.scss'],
