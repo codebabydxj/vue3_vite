@@ -19,19 +19,6 @@ const __APP_INFO__ = {
   lastBuildTime: dayjs().format("YYYY-MM-DD HH:mm:ss")
 };
 
-// 获取当前的IP地址
-const getIPAddress = (ipStart: string = '192') => {
-  var interfaces = require('os').networkInterfaces();
-  for (var devName in interfaces) {
-    var iface = interfaces[devName];
-    for (var i = 0; i < iface.length; i++) {
-      var alias = iface[i];
-      if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal && alias.address.startsWith(ipStart)) {
-        return alias.address;
-      }
-    }
-  }
-}
 
 interface Env {
   VITE_USER_NODE_ENV: "development" | "production" | "test";
@@ -67,6 +54,48 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   const env = loadEnv(mode, root);
   const viteEnv = wrapperEnv(env);
   return {
+    base: viteEnv.VITE_HOST,
+    root,
+    resolve: {
+      alias: {
+        "@": resolve(root, "./src"),
+      },
+      // 忽略后缀名的配置项
+      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.node', '.scss'],
+    },
+    define: {
+      __APP_INFO__: JSON.stringify(__APP_INFO__)
+    },
+    // 设置scss的api类型为modern-compiler
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler',  // 修改api调用方式
+          additionalData: `@use "@/baseStyle/var.scss";` // 导出全局变量和 mixin
+        }
+      }
+    },
+    server: {
+      cors: true,
+      port: viteEnv.VITE_PORT,
+      open: viteEnv.VITE_OPEN,
+      host: '0.0.0.0',
+      proxy: { // 代理
+        "/api": {
+          target: viteEnv.VITE_PROXY,
+          changeOrigin: true,
+          // rewrite: path => path.replace(/^\/api/, '')
+        },
+        "/upload": {
+          target: viteEnv.VITE_UPLOAD,
+          changeOrigin: true,
+        },
+      },
+      // 预热文件以提前转换和缓存结果，降低启动期间的初始页面加载时长并防止转换瀑布
+      warmup: {
+        clientFiles: ["./index.html", "./src/{views,components}/*"]
+      }
+    },
     plugins: [
       vue(),
       // Components({ // 针对 Vue 的按需组件自动导入
@@ -95,38 +124,6 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
         symbolId: 'icon-[dir]-[name]', // 指定symbolId格式
       })
     ],
-    define: {
-      __APP_INFO__: JSON.stringify(__APP_INFO__)
-    },
-    css: {
-      // postcss: {
-      //   plugins: [
-      //     postcss,
-      //   ]
-      // }
-    },
-    base: viteEnv.VITE_HOST,
-    server: {
-      cors: true,
-      port: viteEnv.VITE_PORT,
-      open: viteEnv.VITE_OPEN,
-      host: true,
-      proxy: { // 代理
-        "/api": {
-          target: viteEnv.VITE_PROXY,
-          changeOrigin: true,
-          // rewrite: path => path.replace(/^\/api/, '')
-        },
-        "/upload": {
-          target: viteEnv.VITE_UPLOAD,
-          changeOrigin: true,
-        },
-      },
-      hmr: { // 本地使用了whistle代理，此时会无效得进行刷新请求。解决方案
-        protocol: 'ws', // WebSocket协议
-        host: getIPAddress()
-      }
-    },
     esbuild: {
       pure: viteEnv.VITE_DROP_CONSOLE ? ["console", "debugger"] : []
     },
@@ -142,7 +139,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       //     drop_debugger: true
       //   },
       // },
-      chunkSizeWarningLimit: 2000, // 消除 chunk 大小警告的限制（以 kbs 为单位）默认：500
+      chunkSizeWarningLimit: 4000, // 消除 chunk 大小警告的限制（以 kbs 为单位）默认：500
 			rollupOptions: {
         // 静态资源分类打包，自动分割包名输出 chunkSizeWarningLimit 配置大小
 				output: {
@@ -151,13 +148,6 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 					assetFileNames: "assets/[ext]/[name]-[hash].[ext]"  // 静态文件名位置
 				}
 			}
-    },
-    resolve: {
-      alias: {
-        "@": resolve(root, "./src"),
-      },
-      // 忽略后缀名的配置项
-      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.node', '.scss'],
-    },
+    }
   };
 })

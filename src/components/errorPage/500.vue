@@ -37,5 +37,5 @@ const goBack = () => {
 </script>
 
 <style scoped lang="scss">
-@import "./index.scss";
+@use "./index.scss";
 </style>
