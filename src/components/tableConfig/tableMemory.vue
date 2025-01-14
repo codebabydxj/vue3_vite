@@ -1,35 +1,45 @@
 <template>
-  <div class="config-btn">
-    <el-tooltip effect="dark" content="表格列配置" placement="top">
-      <el-button circle @click="show">
-        <el-icon size="16">
-          <Operation />
-        </el-icon>
-      </el-button>
-    </el-tooltip>
-    <dialog-table-memory :dialogShow="dialogTableMemoryShow" :colSetting="colSetting"
-      @closeDialog="closeDialogTableMemory"></dialog-table-memory>
-  </div>
+  <!-- 列设置 -->
+  <el-drawer v-model="drawerVisible" title="表格列设置" size="450px">
+    <div class="table-main">
+      <el-table :data="colSetting" :border="true" row-key="prop" default-expand-all :tree-props="{ children: '_children' }">
+        <el-table-column prop="label" align="center" label="列名" />
+        <el-table-column v-slot="scope" prop="isShow" align="center" label="显示">
+          <el-switch v-model="scope.row.isShow"></el-switch>
+        </el-table-column>
+        <el-table-column v-slot="scope" prop="sortable" align="center" label="排序">
+          <el-switch v-model="scope.row.sortable"></el-switch>
+        </el-table-column>
+        <template #empty>
+          <div class="table-empty">
+            <img src="@/assets/imgs/notData.png" alt="notData" />
+            <div>暂无可配置列</div>
+          </div>
+        </template>
+      </el-table>
+    </div>
+  </el-drawer>
 </template>
 
-<script setup lang="ts" name="TableMemory">
-import { ref } from 'vue'
-import dialogTableMemory from './components/dialog-table-memory.vue'
+<script setup lang="ts" name="ColSetting">
+import { ref } from "vue";
+import { ColumnProps } from "@/components/ProTable/interface";
 
-const props = defineProps({
-  colSetting: {
-    type: Array,
-    required: true,
-  },
-})
+defineProps<{ colSetting: ColumnProps[] }>();
 
-const dialogTableMemoryShow: any = ref(false)
+const drawerVisible = ref<boolean>(false);
 
-const show = () => {
-  dialogTableMemoryShow.value = true
-}
+const openColSetting = () => {
+  drawerVisible.value = true;
+};
 
-const closeDialogTableMemory = () => {
-  dialogTableMemoryShow.value = false
-}
+defineExpose({
+  openColSetting
+});
 </script>
+
+<style scoped lang="scss">
+.cursor-move {
+  cursor: move;
+}
+</style>
