@@ -1,15 +1,23 @@
 <template>
   <div class="tb-config" v-if="configType.length > 0">
-    <table-memory v-if="configType.includes('memory') && colSetting.length > 0" :colSetting="colSetting"></table-memory>
+    <el-tooltip effect="dark" content="刷新" placement="top">
+      <el-button class="config-btn" circle @click="handleEvent(1)"><el-icon size="16"><Refresh /></el-icon></el-button>
+    </el-tooltip>
+    <template v-if="configType.includes('memory') && colSetting.length > 0">
+      <el-tooltip effect="dark" content="列配置" placement="top">
+        <el-button class="config-btn" circle @click="handleEvent(2)"><el-icon size="16"><Operation /></el-icon></el-button>
+      </el-tooltip>
+    </template>
     <table-size v-if="configType.includes('size')" @command="handleConfig"></table-size>
-    <table-column v-if="configType.includes('column')" :isShowSelIdx="isShowSelIdx"  @command="handleConfig"></table-column>
+    <!-- <table-column v-if="configType.includes('column')" :isShowSelIdx="isShowSelIdx"  @command="handleConfig"></table-column> -->
+    <el-button class="config-btn" circle @click="handleEvent(3)"><el-icon size="16"><Search /></el-icon></el-button>
   </div>
 </template>
 
 <script setup lang="ts" name="TableConfig">
+import { ref } from "vue"
 import tableSize from './tableSize.vue'
 import tableColumn from './tableColumn.vue'
-import tableMemory from './tableMemory.vue'
 import { ColumnProps } from '@/components/ProTable/interface'
 
 interface ProTableProps {
@@ -24,8 +32,20 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 })
 const emit = defineEmits(['tableConfigCall'])
 
+const isShowSearch = ref(true)
+
 const handleConfig = (data: any) => {
   emit('tableConfigCall', data)
+}
+const handleEvent = (type: any) => {
+  if (type === 1) {
+    emit('tableConfigCall', { type: 'refresh' })
+  } else if (type === 2) {
+    emit('tableConfigCall', { type: 'colSetting', command: true })
+  } else if (type === 3) {
+    isShowSearch.value = !isShowSearch.value
+    emit('tableConfigCall', { type: 'search', command: isShowSearch.value })
+  }
 }
 </script>
 

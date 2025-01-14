@@ -1,7 +1,7 @@
 <template>
 	<div class="table-main">
 		<!-- 搜索 查询表单 -->
-		<div class="table-search" ref="searchRef" v-if="isShowSearch">
+		<div class="table-search" ref="searchRef" v-show="isShowSearch">
 			<SearchForm
 				:columns="searchColumns"
 				:search-param="searchParam"
@@ -16,7 +16,7 @@
 				<slot name="tableHeader" :selectedListIds="selectedListIds" :selectedList="selectedList" :isSelected="isSelected" />
 			</div>
 			<div class="header-button-ri" v-if="toolButton">
-				<table-config ref="colRef" :colSetting="colSetting" :isShowSelIdx="isShowSelIdx" @tableConfigCall="handleConfig">
+				<table-config :colSetting="colSetting" :isShowSelIdx="isShowSelIdx" @tableConfigCall="handleConfig">
 				</table-config>
 			</div>
 		</div>
@@ -38,15 +38,10 @@
 			<template v-for="item in tableColumns" :key="item">
 				<!-- selection || radio || index || expand || sort -->
 				<el-table-column
-					v-if="(item.type == 'selection' && tableColumn.includes('selection')) || (item.type == 'index' && tableColumn.includes('index'))"
+					v-if="item.type && columnTypes.includes(item.type)"
 					v-bind="item"
 					:align="item.align ?? 'center'"
 					:reserve-selection="item.type == 'selection'">
-				</el-table-column>
-				<el-table-column
-					v-else-if="item.type && columnTypes.includes(item.type)"
-					v-bind="item"
-					:align="item.align ?? 'center'">
 					<template #default="scope">
 						<!-- expand 支持 tsx 语法 && 作用域插槽 (tsx > slot) -->
 						<template v-if="item.type == 'expand'">
@@ -94,6 +89,8 @@
 			/>
 		</slot>
 	</div>
+	<!-- 列设置 -->
+	<tableMemory v-if="toolButton" ref="colRef" v-model:col-setting="colSetting" />
 </template>
 
 <script setup lang="ts" name="ProTable">
@@ -108,6 +105,7 @@ import tableConfig from "@/components/tableConfig/index.vue";
 import SearchForm from "@/components/SearchForm/index.vue";
 import TableColumn from "./components/TableColumn.vue";
 import Pagination from "./components/Pagination.vue";
+import tableMemory from '@/components/tableConfig/tableMemory.vue'
 import Sortable from "sortablejs";
 
 // 接受父组件参数，配置默认值
@@ -145,6 +143,15 @@ const handleConfig = (data: any) => {
 		case 'column':
 			tableColumn.value = data.command
 			break;
+		case 'colSetting':
+			openColSetting()
+			break;
+		case 'search':
+			isShowSearch.value = data.command
+			break;
+		case 'refresh':
+			getTableList()
+			break;
 		default:
 			break;
 	}
@@ -158,6 +165,9 @@ const uuid = ref("id-" + generateUUID());
 
 // column 列类型
 const columnTypes: TypeProps[] = ["selection", "radio", "index", "expand", "sort"];
+
+// 是否显示搜索模块
+const isShowSearch = ref(props.isShowSearch);
 
 // 单选值
 const radio = ref('');
@@ -260,11 +270,14 @@ searchColumns.value?.forEach((column, index) => {
   }
 });
 
-// 列设置 ==> 过滤掉不需要设置显隐的列
+
+// 列设置 ==> 需要过滤掉不需要设置的列
+const colRef = ref();
 const colSetting = tableColumns.value!.filter(item => {
 	const { type, prop, isSetting } = item;
 	return !columnTypes.includes(type!) && prop !== "operation" && isSetting;
 });
+const openColSetting = () => colRef.value.openColSetting();
 
 // 定义 emit 事件
 const emit = defineEmits<{

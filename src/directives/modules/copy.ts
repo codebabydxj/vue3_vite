@@ -23,15 +23,33 @@ const copy: Directive = {
 };
 
 async function handleClick(this: any) {
+	if (window.isSecureContext && navigator.clipboard) {
+		try {
+			await navigator.clipboard.writeText(this.copyData);
+			ElMessage({
+				type: "success",
+				message: "复制成功"
+			});
+		} catch (err) {
+			console.error("复制操作不被支持或失败: ", err);
+		}
+	} else {
+		unsecuredCopyToClipboard(this.copyData)
+	}
+}
+const unsecuredCopyToClipboard = (text: string) => {
+	const textArea = document.createElement("textarea");
+	textArea.value = text;
+	document.body.appendChild(textArea);
+	textArea.focus();
+	textArea.select();
 	try {
-    await navigator.clipboard.writeText(this.copyData);
-		ElMessage({
-			type: "success",
-			message: "复制成功"
-		});
-  } catch (err) {
-    console.error("复制操作不被支持或失败: ", err);
-  }
+		document.execCommand('copy')
+		ElMessage.success(`"${text}"已复制到剪切板`)
+	} catch (err) {
+		console.error("复制操作不被支持或失败: ", err);
+	}
+	document.body.removeChild(textArea)
 }
 
 export default copy;
