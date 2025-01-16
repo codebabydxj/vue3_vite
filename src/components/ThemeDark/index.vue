@@ -1,10 +1,11 @@
 <template>
 	<el-space>
 		<el-tooltip
+			v-if="fromToLogin"
 			effect="dark"
 			content="切换登录风格"
 			placement="bottom">
-			<el-switch v-if="fromToLogin" v-model="themeConfig.isReplaceNewLoginPage" @change="switchReplaceLoginPage" inline-prompt :active-icon="CaretLeft" :inactive-icon="CaretRight" />
+			<el-switch v-model="themeConfig.isReplaceNewLoginPage" @change="switchReplaceLoginPage" inline-prompt :active-icon="CaretLeft" :inactive-icon="CaretRight" />
 		</el-tooltip>
 		<el-tooltip
 			effect="dark"
