@@ -38,7 +38,7 @@
 </template>
 
 <script setup lang="ts" name="MenuBar">
-import { ref, watch, computed, inject, reactive, onBeforeUnmount } from "vue"
+import { ref, watch, computed, inject, onBeforeUnmount } from "vue"
 import { useGlobalStore } from "@/store"
 import { useDebounceFn } from "@vueuse/core"
 import _ from "lodash"
@@ -53,12 +53,12 @@ const visible = ref(false)
 const delayShow = computed(() => props.isCollapse);
 
 // 通过inject获取挂载在全局的globalRouter方法，初始化view
-const globalRouter: any = inject('globalRouter')
+const Router: any = inject('Router')
 // 获取store
 const myStore: any = useGlobalStore()
 const themeConfig = computed(() => myStore.themeConfig)
 
-const routeParams: any = reactive(<any>{
+const routeParams: any = ref({
   currentRoute: computed(() => myStore.currentRoute),
   // 过滤没有权限的路由
   menuList: computed(() => myStore.authMenuListGet),
@@ -69,7 +69,7 @@ watch(() => isCurCollapse.value, () => {
 })
 
 const goHome = () => {
-  globalRouter.openView('/home');
+  Router.openView('/home');
 }
 
 const handleSwitch = () => {

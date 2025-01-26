@@ -157,9 +157,9 @@ const handleDel = async (row: any) => {
 }
 
 // 跳转二级页面
-const globalRouter: any = inject('globalRouter')
+const Router: any = inject('Router')
 const goToDetail = () => {
-  globalRouter.openView('/proTable/useProTable/details')
+  Router.openView('/proTable/useProTable/details')
 }
 </script>
 

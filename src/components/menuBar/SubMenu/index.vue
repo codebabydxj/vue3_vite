@@ -37,7 +37,7 @@ const props = defineProps({
     default: () => []
   }
 })
-const globalRouter: any = inject('globalRouter')
+const Router: any = inject('Router')
 const myStore: any = useGlobalStore()
 const currentRoute = computed(() => myStore.currentRoute)
 const router = useRouter()
@@ -49,7 +49,7 @@ const routeGo = (subItem: any) => {
     return
   }
   if (subItem.path === currentRoute) return;
-  globalRouter.openView(subItem.path);
+  Router.openView(subItem.path);
 }
 </script>
 

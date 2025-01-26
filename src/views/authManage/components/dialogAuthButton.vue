@@ -32,10 +32,10 @@
 </template>
 
 <script setup lang="ts" name="UploadExcel">
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 import { ElMessage, FormInstance } from "element-plus";
 
-const rules = reactive({
+const rules: any = ref({
   btnName: [{ required: true, message: "请填写按钮名称", trigger: 'blur' }],
 });
 

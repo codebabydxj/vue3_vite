@@ -12,10 +12,10 @@ export const useTheme = () => {
   const themeConfig = computed(() => myStore.themeConfig);
   const DEFAULT_PRIMARY = '#409EFF'
 
-  // 切换暗黑模式
+  // 切换 暗黑模式 || 明亮模式 || 跟随系统
   const switchDark = () => {
     const body = document.documentElement as HTMLElement;
-    if (themeConfig.value.isDark) body.setAttribute("class", "dark");
+    if (themeConfig.value.isDark || (themeConfig.value.isWindowMode && window.matchMedia('(prefers-color-scheme: dark)')?.matches)) body.setAttribute("class", "dark");
     else body.setAttribute("class", "");
     changePrimary(themeConfig.value.primary);
   };

@@ -15,6 +15,9 @@
 </template>
 
 <script setup lang="ts" name="Pagination">
+import { PropType } from "vue";
+import type { EpPropMergeType } from "element-plus/es/utils";
+
 interface Pageable {
 	pageNum: number;
 	pageSize: number;
@@ -23,7 +26,7 @@ interface Pageable {
 }
 
 interface PaginationProps {
-	size?: string;
+	size?: string | any;
 	pageable: Pageable;
 	handleSizeChange: (size: number) => void;
 	handleCurrentChange: (currentPage: number) => void;

@@ -22,8 +22,8 @@
 </template>
 
 <script setup lang="ts" name="Page404">
-import { ref, onMounted } from "vue"
-import { useRouter } from "vue-router"
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 const show = ref(false)

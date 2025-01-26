@@ -10,8 +10,15 @@
 		<el-tooltip
 			effect="dark"
 			content="切换主题色"
-			placement="bottom">
-			<el-switch v-model="themeConfig.isDark" @change="switchDark" inline-prompt :active-icon="Sunny" :inactive-icon="Moon" />
+			placement="top">
+			<el-switch v-model="themeConfig.isDark" @change="handleDark">
+				<template #active-action>
+					<el-icon><Sunny/></el-icon>
+				</template>
+				<template #inactive-action>
+					<el-icon><Moon/></el-icon>
+				</template>
+			</el-switch>
 		</el-tooltip>
 	</el-space>
 </template>
@@ -34,6 +41,10 @@ const themeConfig = computed(() => myStore.themeConfig);
 
 const { switchDark } = useTheme();
 
+const handleDark = (val: any) => {
+	myStore.setThemeConfig({ ...themeConfig.value, isDark: val, isWindowMode: false })
+	switchDark()
+}
 const switchReplaceLoginPage = (val: any) => {
 	myStore.setThemeConfig({ ...themeConfig.value, isReplaceNewLoginPage: val })
 	emit('emitSwitch')

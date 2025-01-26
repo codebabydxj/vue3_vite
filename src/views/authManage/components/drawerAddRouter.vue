@@ -83,12 +83,12 @@
 </template>
 
 <script setup lang="ts" name="RouterDrawer">
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 import { client } from "@/utils/https/client";
 import { ElMessage, FormInstance } from "element-plus";
 import SelectIcon from "@/components/selectIcon/index.vue";
 
-const rules = reactive({
+const rules: any = ref({
   title: [{ required: true, message: "请填写菜单名称", trigger: 'blur' }],
   icon: [{ required: true, message: "请选择菜单图标", trigger: 'change' }],
   path: [{ required: true, message: "请填写菜单路径", trigger: 'blur' }],

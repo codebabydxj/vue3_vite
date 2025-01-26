@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, computed } from "vue";
+import { ref, computed } from "vue";
 import { client } from "@/utils/https/client";
 import { login, loadingConfig } from "@/config/api";
 import { useRouter } from 'vue-router';
@@ -51,7 +51,7 @@ const themeConfig = computed(() => myStore.themeConfig)
 const keepAliveStore = useKeepAliveStore()
 const router = useRouter()
 const ruleFormRef = ref<FormInstance>()
-const ruleForm = reactive({
+const ruleForm: any = ref({
   userName: '',
   password: '',
 });
@@ -59,8 +59,8 @@ const ruleForm = reactive({
 const loading = ref(false)
 
 const resetForm = () => {
-  ruleForm.userName = ''
-  ruleForm.password = ''
+  ruleForm.value.userName = ''
+  ruleForm.value.password = ''
 };
 
 const submitForm = async (formEl: FormInstance | undefined) => {
@@ -68,7 +68,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   formEl.validate(async (valid: any) => {
     if (valid) {
       loading.value = true
-      const params = { ...ruleForm, password: md5(ruleForm.password) }
+      const params: any = { ...ruleForm.value, password: md5(ruleForm.value.password) }
       client.post(login, params, loadingConfig)
       .then(async (res: any) => {
         // 1.登录完成保存用户信息

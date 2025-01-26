@@ -1,20 +1,20 @@
 /**
  * 调用下面方法前必须先拿到全局注册
- * 1. const globalRouter: any = inject('globalRouter')  通过inject获取挂载在全局的globalRouter方法
+ * 1. const Router: any = inject('Router')  通过inject获取挂载在全局的globalRouter方法
  * 
  * 打开页面
- * 1. 一级页面（使用绝对路径） globalRouter.openView('/a');
- * 2. 二级页面（使用相对路径） globalRouter.openView('/a/b');
- * 3. 如果进入到由别的路由控制下的页面，要返回前一个页面 globalRouter.openView('/a/b', true);  否则返回它自己的父级页面就不用带true
+ * 1. 一级页面（使用绝对路径） Router.openView('/a');
+ * 2. 二级页面（使用相对路径） Router.openView('/a/b');
+ * 3. 如果进入到由别的路由控制下的页面，要返回前一个页面 Router.openView('/a/b', true);  否则返回它自己的父级页面就不用带true
  *
  * 返回
- * 二级路由返回一级路由  globalRouter.goView();
+ * 二级路由返回一级路由  Router.goView();
  *
  * 关闭路由
- * globalRouter.closeView();
+ * Router.closeView();
  *
  * 刷新重置
- * globalRouter.refreshView();
+ * Router.refreshView();
  * 
  * 需要刷新的url
  * fullPath
@@ -49,20 +49,25 @@ const globalRouter = {
   // 初始化
   initView: () => {
     console.log(`%c【全局路由】- 初始化完成···`, 'color: #009acc')
-    const rootPath: any = fullPath.match(/^\/[a-zA-Z0-9\_\-\/]*/)[0];
+    let rootPath: any = fullPath.match(/^\/[a-zA-Z0-9\_\-\/]*/)[0];
+    // 出现二级路由截取处理成一级路由
+    if (rootPath && rootPath.split('/').length > 3) {
+      rootPath = rootPath.slice(0, rootPath.lastIndexOf('/'))
+    }
     if (rootPath === myStore.currentRoute) return;
     const route: any = {
-      title: getByPath(fullPath).title,
-      name: getByPath(fullPath).name,
+      title: getByPath(rootPath).title,
+      name: getByPath(rootPath).name,
       route: rootPath,
       realPath: fullPath,
+      close: rootPath === '/home' ? false : true
     };
     myStore.setRoute(rootPath, fullPath);
     myStore.addRoute(route);
   },
   
   // 打开页面
-  openView: async (path: any, needBackPath: any = false) => {
+  openView: async (path: any, needBackPath: any = false, onlyUpdateRouter: any = false) => {
     console.log(`%c【全局路由】- 打开新页面···`, 'color: #67C23A')
     // 需要指定返回路径的情况，将返回的路径拼接到参数中
     if (needBackPath) {
@@ -84,6 +89,7 @@ const globalRouter = {
         name: getByPath(path).name,
         route: rootPath,
         realPath: path,
+        close: rootPath === '/home' ? false : true
       };
       myStore.addRoute(route);
     } else {
@@ -96,6 +102,7 @@ const globalRouter = {
       }
     }
     myStore.setRoute(rootPath, willOpenPath);
+    if (onlyUpdateRouter) return;
     routers.replace(willOpenPath).catch((err: any) => {});
   },
 
