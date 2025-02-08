@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, computed } from "vue";
+import { ref, computed } from "vue";
 import { client } from "@/utils/https/client";
 import { login, loadingConfig } from "@/config/api";
 import { useRouter } from 'vue-router';
@@ -51,7 +51,7 @@ const themeConfig = computed(() => myStore.themeConfig)
 const keepAliveStore = useKeepAliveStore()
 const router = useRouter()
 const ruleFormRef = ref<FormInstance>()
-const ruleForm = reactive({
+const ruleForm: any = ref({
   userName: '',
   password: '',
 });
@@ -59,32 +59,32 @@ const ruleForm = reactive({
 const loading = ref(false)
 
 const resetForm = () => {
-  ruleForm.userName = ''
-  ruleForm.password = ''
+  ruleForm.value.userName = ''
+  ruleForm.value.password = ''
 };
 
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   formEl.validate(async (valid: any) => {
     if (valid) {
-      loading.value = true
-      const params = { ...ruleForm, password: md5(ruleForm.password) }
+      loading.value = true;
+      const params: any = { ...ruleForm.value, password: md5(ruleForm.value.password) };
       client.post(login, params, loadingConfig)
       .then(async (res: any) => {
         // 1.登录完成保存用户信息
-        myStore.setUserInfo(res.data) 
+        myStore.setUserInfo(res.data);
 
         // 2.添加动态路由
         await initDynamicRouter();
         
         // 3.清空 keepAlive 数据
-        keepAliveStore.updateKeepAliveName()
+        keepAliveStore.updateKeepAliveName();
 
         // 4.如果是锁屏状态，重置状态
-        myStore.setThemeConfig({ ...themeConfig.value, isLockScreen: false })
+        myStore.setThemeConfig({ ...themeConfig.value, isLockScreen: false });
 
         // 5.跳转到首页
-        router.replace('/')
+        router.replace('/');
 
         ElNotification({
           title: getTimeState(),
@@ -94,7 +94,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         });
       }).catch(() => {
       }).finally(() => {
-        loading.value = false
+        loading.value = false;
       });
     }
   })

@@ -1,28 +1,31 @@
 <template>
-  <div class="vite-main">
-    <MenuBar :isCollapse="isCollapse" @isCurCollapseChange="isCurCollapseChange"></MenuBar>
-    <Content class="el_content" :isCollapse="isCollapse">
-      <template v-slot:content>
-        <ComHeader>
-          <template v-slot:tabs>
-            <Tabs></Tabs>
-          </template>
-        </ComHeader>
-        <router-view v-slot="{ Component, route }">
-          <transition appear :name="transitionAnimation" mode="out-in">
-            <keep-alive :include="keepAliveName">
-              <component :is="Component" :key="route.fullPath" v-if="isRefreshRouter" />
-            </keep-alive>
-          </transition>
-        </router-view>
-      </template>
-    </Content>
-    <Toolbar />
-  </div>
+  <el-watermark id="watermark" :font="font" :content="watermark ? ['Vite Admin', 'Hello World ~'] : ''">
+    <div class="vite-main">
+      <MenuBar :isCollapse="isCollapse" @isCurCollapseChange="isCurCollapseChange"></MenuBar>
+      <Content class="el_content" :isCollapse="isCollapse">
+        <template v-slot:content>
+          <ComHeader>
+            <template v-slot:tabs>
+              <Tabs></Tabs>
+            </template>
+          </ComHeader>
+          <Breadcrumb v-show="myStore.themeConfig.isBreadcrumb" id="breadcrumb" />
+          <router-view v-slot="{ Component, route }">
+            <transition appear :name="transitionAnimation" mode="out-in">
+              <keep-alive :include="keepAliveName">
+                <component :is="Component" :key="route.fullPath" v-if="isRefreshRouter" />
+              </keep-alive>
+            </transition>
+          </router-view>
+        </template>
+      </Content>
+      <Toolbar />
+    </div>
+  </el-watermark>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, provide, watchEffect, nextTick } from "vue";
+import { ref, computed, watch, provide, nextTick } from "vue";
 import { storeToRefs } from "pinia";
 import { useGlobalStore } from "@/store";
 import { useKeepAliveStore } from "@/store/keepAlive";
@@ -31,16 +34,24 @@ import Content from "@/components/mainContent/index.vue";
 import ComHeader from "@/components/mainHeader/index.vue";
 import Toolbar from "@/components/mainToolBar/index.vue";
 import Tabs from "@/components/headerTabs/index.vue";
+import Breadcrumb from "@/components/Breadcrumb/index.vue"
 
 // 主题配置
 const myStore: any = useGlobalStore()
 const themeConfig = computed(() => myStore.themeConfig)
 const isCollapse: any = ref(myStore.themeConfig.isCollapse)
 const transitionAnimation: any = ref(myStore.themeConfig.transitionAnimation)
+const isDark = computed(() => myStore.themeConfig.isDark)
+const watermark = computed(() => myStore.themeConfig.isWatermark)
 
 // keep页面缓存
 const keepAliveStore = useKeepAliveStore()
 const { keepAliveName } = storeToRefs(keepAliveStore);
+
+const font: any = ref({ color: "rgba(0, 0, 0, .15)" });
+watch(isDark, () => (font.value.color = isDark.value ? "rgba(255, 255, 255, .15)" : "rgba(0, 0, 0, .15)"), {
+  immediate: true
+});
 
 /**
  *  @description: 注入全局刷新当前页面
@@ -61,9 +72,6 @@ const { keepAliveName } = storeToRefs(keepAliveStore);
 const isRefreshRouter = ref(true);
 const refreshCurrentRouter = (val: boolean) => (isRefreshRouter.value = val);
 provide("refresh", refreshCurrentRouter);
-watchEffect(() => {
-  console.log('isRefreshRouter-------', keepAliveName.value);
-})
 
 // 监听菜单收起展开
 watch(() => myStore.themeConfig.isCollapse, (newVal: any) => {

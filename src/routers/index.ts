@@ -3,6 +3,7 @@ import { useGlobalStore } from '@/store'
 import { staticRouter, errorRouter } from './modules/staticRouter'
 import { initDynamicRouter } from "./modules/dynamicRouter"
 import NProgress from "@/config/nprogress"
+import { LOGIN_URL } from "@/config";
 
 /**
  * @description 📚 路由参数配置简介
@@ -46,34 +47,38 @@ routers.beforeEach(async (to, from, next) => {
     /** 2.开启进度条 */
     NProgress.start();
 
-    /** 3.判断是否是访问登陆页，有 Token 就在当前页面，没有 Token 重置路由到登陆页 */
-    if (to.path.toLocaleLowerCase() === '/login') {
+    /** 3.动态设置标题 */
+    const title = import.meta.env.VITE_GLOB_APP_TITLE;
+    document.title = to.meta.title ? `${to.meta.title} - ${title}` : title;
+
+    /** 4.判断是否是访问登陆页，有 Token 就在当前页面，没有 Token 重置路由到登陆页 */
+    if (to.path.toLocaleLowerCase() === LOGIN_URL) {
         if (myStore.userInfo.token) return routers.back();
         resetRouter();
         return next();
     }
     
-    /** 4.判断是否有 Token，没有重定向到 login 页面 */
+    /** 5.判断是否有 Token，没有重定向到 login 页面 */
     if (!myStore.userInfo.token) {
-        return next({ path: '/login', replace: true });
+        return next({ path: LOGIN_URL, replace: true });
     }
 
-    /** 5.判断是否是锁屏状态 */
+    /** 6.判断是否是锁屏状态 */
     if (myStore.themeConfig.isLockScreen && lockFlag) {
         lockFlag = false;
         return next({ path: '/lockScreen', replace: true });
     }
     
-    /** 6.如果没有菜单列表，就重新请求菜单列表并添加动态路由 */
+    /** 7.如果没有菜单列表，就重新请求菜单列表并添加动态路由 */
     if (!myStore.getMenuList.length) {
         await initDynamicRouter();
         return next({ ...to, replace: true });
     }
     
-    /** 7.存储 routerName 做按钮权限筛选 */
+    /** 8.存储 routerName 做按钮权限筛选 */
     myStore.setRouteName(to.name as string);
 
-    /** 8.正常访问页面 */
+    /** 9.正常访问页面 */
     next()
 })
 

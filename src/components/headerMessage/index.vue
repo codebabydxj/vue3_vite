@@ -2,7 +2,7 @@
   <div class="message">
     <el-popover placement="bottom" :width="310" trigger="click">
       <template #reference>
-        <el-icon color="#efefef" :size="20">
+        <el-icon color="#efefef" :size="22">
           <el-badge :value="5" :max="99" class="badge">
             <Bell />
           </el-badge>

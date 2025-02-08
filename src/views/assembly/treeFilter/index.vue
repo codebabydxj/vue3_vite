@@ -38,20 +38,20 @@
 </template>
 
 <script setup lang="ts" name="TreeFilter">
-import { reactive } from "vue";
+import { ref } from "vue";
 import { ElMessage } from "element-plus";
 import TreeFilter from "@/components/TreeFilter/index.vue";
 
-const treeFilterValue = reactive({ departmentId: "1" });
+const treeFilterValue: any = ref({ departmentId: "1" });
 const changeTreeFilter = (val: string) => {
 	ElMessage.success(`你选择了 id 为 ${val} 的数据🤔`);
-	treeFilterValue.departmentId = val;
+	treeFilterValue.value.departmentId = val;
 };
 
-const treeFilterValue1 = reactive({ departmentId: ["11"] });
+const treeFilterValue1 = ref({ departmentId: ["11"] });
 const changeTreeFilter1 = (val: string[]) => {
 	ElMessage.success(`你选择了 id 为 ${JSON.stringify(val)} 的数据🤔`);
-	treeFilterValue1.departmentId = val;
+	treeFilterValue1.value.departmentId = val;
 };
 </script>
 

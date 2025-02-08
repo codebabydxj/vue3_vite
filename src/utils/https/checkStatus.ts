@@ -1,4 +1,5 @@
 import { ElMessage } from "element-plus";
+import { LOGIN_URL } from "@/config";
 
 /**
  * @description: 校验网络请求状态码
@@ -13,7 +14,7 @@ export const checkStatus = (status: number, routers: any, myStore: any) => {
     case 401:
       // toke过期，重新登录
       myStore.logout()
-      routers.replace('/login');
+      routers.replace(LOGIN_URL);
       break;
     case 403:
       ElMessage({
@@ -25,6 +26,7 @@ export const checkStatus = (status: number, routers: any, myStore: any) => {
       break;
     case 404:
       ElMessage.error("你所访问的资源不存在！");
+      routers.replace('/404');
       break;
     case 405:
       ElMessage.error("请求方式错误！请您稍后重试");
@@ -33,7 +35,8 @@ export const checkStatus = (status: number, routers: any, myStore: any) => {
       ElMessage.error("请求超时！请您稍后重试");
       break;
     case 500:
-      ElMessage.error("服务异常！");
+      ElMessage.error("服务异常，请联系管理员！");
+      routers.replace('/500');
       break;
     case 502:
       ElMessage.error("网关错误！");

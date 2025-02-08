@@ -1,7 +1,7 @@
 <template>
   <div class="user-sel fullLock">
     <div class="unlock">
-      <el-icon size="22" color="#ffffff"><Lock/></el-icon>
+      <el-icon class="_icon" size="22"><Lock/></el-icon>
       <span @click="showLock = true">点击解锁</span>
     </div>
     <div class="lock-box"><span class="ap">{{ ap }}</span><span class="enter-time">{{ hour }}</span></div>
@@ -20,14 +20,14 @@
         <div class="entry-content">
           <div class="tp enter-form">
             <el-avatar class="avatar" icon="el-icon-user-solid" :size="70"
-              src="/src/assets/imgs/avatar.gif" fit="fill"></el-avatar>
+              src="/src/assets/imgs/avatar.png" fit="fill"></el-avatar>
             <p>{{ userName }}</p>
           </div>
           <span class="mid enter-form">
             <el-input
               type="password"
               autocomplete="off"
-              placeholder="请填写锁屏密码"
+              placeholder="请输入密码，回车解锁"
               show-password
               v-model="unLockPass"
               @submit.native.prevent
@@ -51,12 +51,13 @@ import { md5 } from 'js-md5';
 import { useGlobalStore } from "@/store";
 import { client } from "@/utils/https/client";
 import { loginOut } from "@/config/api";
+import { LOGIN_URL } from "@/config";
 import { useTime } from "@/hooks/useTime";
 import { getTimeState } from "@/utils/tools";
 import { ElMessage } from "element-plus";
 
 const router = useRouter()
-const globalRouter: any = inject('globalRouter')
+const Router: any = inject('Router')
 const myStore: any = useGlobalStore()
 const themeConfig = computed(() => myStore.themeConfig)
 const userName: any = computed(() => myStore.userInfo.userInfo ? myStore.userInfo.userInfo.userName : '')
@@ -76,7 +77,7 @@ const logout = () => {
     // 1.清除store、token存储
     myStore.logout()
     // 2.重定向登录页
-    await router.replace('/login');
+    await router.replace(LOGIN_URL);
   }).catch(() => {
   }).finally(() => {
   });
@@ -91,7 +92,7 @@ const goSys = () => {
     ElMessage.warning('锁屏密码错误')
     return
   }
-  globalRouter.openView(myStore.lockScreen.unLockBackRoute)
+  Router.openView(myStore.lockScreen.unLockBackRoute)
   myStore.setThemeConfig({ ...themeConfig.value, isLockScreen: false })
   myStore.setLockPassword({ lockScreenCode: '', unLockBackRoute: '' })
 }
@@ -122,6 +123,22 @@ const goSys = () => {
     align-items: center;
     font-size: 18px;
     cursor: pointer;
+    color: rgba(242, 242, 242, 0.8);
+    span {
+      font-weight: 700;
+    }
+    ._icon {
+      transition: transform 0.5s ease;
+      transform: scale(1);
+    }
+  }
+  .unlock:hover {
+    transition: all 0.5s;
+    color: #ffffff;
+    ._icon {
+      transition: transform 0.5s ease;
+      transform: scale(1.3);
+    }
   }
   .lock-box {
     display: flex;
@@ -298,5 +315,11 @@ const goSys = () => {
   to {
     transform: scale(1);
   }
+}
+.avatar {
+  transition: All 0.4s ease-in-out;
+}
+.avatar:hover {
+  transform: rotate(360deg);
 }
 </style>

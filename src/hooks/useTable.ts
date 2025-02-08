@@ -1,5 +1,5 @@
 import { reactive, computed, toRefs } from "vue";
-import { client } from '@/utils/https/client';
+import { client } from "@/utils/https/client";
 import { Table } from "./interface";
 
 /**
@@ -28,7 +28,9 @@ export const useTable = (
 			// 每页显示条数
 			pageSize: 10,
 			// 总条数
-			total: 0
+			total: 0,
+			// 设置最大页码按钮数
+			pagerCount: 7
 		},
 		// 查询参数(只包括查询)
 		searchParam: {},
@@ -45,7 +47,8 @@ export const useTable = (
 		get: () => {
 			return {
 				pageNum: state.pageable.pageNum,
-				pageSize: state.pageable.pageSize
+				pageSize: state.pageable.pageSize,
+				pagerCount: state.pageable.pagerCount,
 			};
 		},
 		set: (newVal: any) => {

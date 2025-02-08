@@ -11,6 +11,7 @@ import { createPinia, defineStore } from "pinia";
 import piniaPluginPersist from "pinia-plugin-persistedstate";
 import piniaPersistConfig from "./helper/piniaPersist";
 import { getShowMenuList, getFlatMenuList, getAllBreadcrumbList } from "@/utils/tools";
+import { HOME_URL } from "@/config";
 
 type TransitionAnimation = '' | 'fade-side' | 'fade-bottom' | 'fade-scale' | 'zoom-fade' | 'zoom-out' | 'fade'
 
@@ -24,7 +25,7 @@ const useGlobalStore = defineStore({
       menuList: <any>[],
       flatMenuList: <any>[],
       authButtonList: <any>{},
-      routes: <any>[{ title: '工作台',  name: 'Home', route: '/home', realPath: '/home' }],
+      routes: <any>[{ title: '工作台',  name: 'Home', route: HOME_URL, realPath: HOME_URL, close: false }],
       // 常量
       consts: <any>[],
       userInfo: <any>{},
@@ -40,12 +41,16 @@ const useGlobalStore = defineStore({
         primary: '#409EFF',
         // 深色模式
         isDark: false,
-        // 灰色模式
+        // 跟随系统
+        isWindowMode: false,
+        // 哀悼模式
         isGrey: false,
         // 色弱模式
         isWeak: false,
         // 折叠菜单
         isCollapse: true,
+        // 面包屑
+        isBreadcrumb: true,
         // 转场动画
         transitionAnimation: 'fade-side' as TransitionAnimation,
         // 锁定屏幕
@@ -54,6 +59,8 @@ const useGlobalStore = defineStore({
         isOpenGuide: true,
         // 登录界面主题更换
         isReplaceNewLoginPage: true,
+        // 页面水印
+        isWatermark: false,
       },
       // 当前页面的 router name，用来做按钮权限筛选
       routeName: '',
@@ -87,7 +94,7 @@ const useGlobalStore = defineStore({
     },
     addRoute(route: any) {
       // 首页不能关闭，过滤掉
-      if (route.route !== '/home') {
+      if (route.route !== HOME_URL) {
         this.routes.push(route);
       }
     },
@@ -135,7 +142,7 @@ const useGlobalStore = defineStore({
       // 2.清空导航栏
       this.currentRoute = '/';
       this.realRoute = '';
-      this.routes = [{ title: '工作台',  name: 'Home', route: '/home', realPath: '/home' }];
+      this.routes = [{ title: '工作台',  name: 'Home', route: HOME_URL, realPath: HOME_URL, close: false }];
       // 3.清空常量
       this.consts = [];
       // 4.重置锁屏

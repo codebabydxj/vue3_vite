@@ -37,16 +37,16 @@
 </template>
 
 <script setup lang="ts" name="UseProTable">
-import { ref, inject } from 'vue'
-import { CirclePlus, Delete, EditPen, Download, Upload, View } from "@element-plus/icons-vue"
-import { ElMessage, ElMessageBox } from "element-plus"
-import { client } from "@/utils/https/client"
-import { uploadFiles } from "@/config/api"
-import { useHandleData } from "@/hooks/useHandleData"
+import { ref, inject } from "vue";
+import { CirclePlus, Delete, EditPen, Download, Upload, View } from "@element-plus/icons-vue";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { client } from "@/utils/https/client";
+import { uploadFiles } from "@/config/api";
+import { useHandleData } from "@/hooks/useHandleData";
 import { useDownload } from "@/hooks/useDownload";
-import ProTable from '@/components/ProTable/index.vue'
-import { ProTableInstance, ColumnProps } from "@/components/ProTable/interface"
-import uploadExcel from "@/components/uploadExcel/index.vue"
+import ProTable from "@/components/ProTable/index.vue";
+import { ProTableInstance, ColumnProps } from "@/components/ProTable/interface";
+import uploadExcel from "@/components/uploadExcel/index.vue";
 
 // 请求table数据
 const requestApiParams = ref({ url: '/api/proTable' })
@@ -157,9 +157,9 @@ const handleDel = async (row: any) => {
 }
 
 // 跳转二级页面
-const globalRouter: any = inject('globalRouter')
+const Router: any = inject('Router')
 const goToDetail = () => {
-  globalRouter.openView('/proTable/useProTable/details')
+  Router.openView('/proTable/useProTable/details?id=8')
 }
 </script>
 

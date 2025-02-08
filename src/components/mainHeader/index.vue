@@ -2,28 +2,28 @@
   <header>
     <nav class="navbar-top">
       <div class="tabs-wrap">
-        <el-tooltip effect="dark" content="支持右键操作" placement="bottom" >
+        <el-tooltip effect="dark" content="支持右键操作和拖拽排序" placement="bottom" >
           <slot name="tabs"></slot>
         </el-tooltip>
       </div>
       <div class="user-info">
         <el-tooltip effect="dark" content="刷新" placement="bottom">
           <el-link id="Refreshs" class="icon-style" :underline="false" @click="refresh">
-            <el-icon color="#efefef" :size="20">
+            <el-icon color="#efefef" :size="22">
               <Refresh />
             </el-icon>
           </el-link>
         </el-tooltip>
         <el-tooltip effect="dark" content="菜单搜索" placement="bottom">
           <el-link id="SearchMenus" class="icon-style" :underline="false" @click="searchMenus">
-            <el-icon color="#efefef" :size="20">
+            <el-icon color="#efefef" :size="22">
               <Search />
             </el-icon>
           </el-link>
         </el-tooltip>
         <el-tooltip effect="dark" content="主题" placement="bottom">
           <el-link id="Theme" class="icon-style" :underline="false" @click="handleTheme">
-            <el-icon color="#efefef" :size="20">
+            <el-icon color="#efefef" :size="22">
               <SkinOutlined />
             </el-icon>
           </el-link>
@@ -35,28 +35,32 @@
         </el-tooltip>
         <el-tooltip effect="dark" content="全屏" placement="bottom">
           <el-link id="Full" class="icon-style" :underline="false" @click="screenfullTog">
-            <el-icon color="#efefef" :size="20">
+            <el-icon color="#efefef" :size="22">
               <fullscreen-outlined v-if="!isFullscreen" />
               <fullscreen-exit-outlined v-else />
             </el-icon>
           </el-link>
         </el-tooltip>
-        <div class="weather">
-          <iframe
-            scrolling="no"
-            frameborder="0"
-            allowtransparency="true"
-            src="https://i.tianqi.com?c=code&id=34&color=%23FFFFFF&icon=1&py=taiyuan&site=12"
-            style="width: 130px; height: 24px;">
-          </iframe>
-        </div>
+        <el-row>
+          <el-scrollbar >
+            <div class="weather">
+              <iframe
+                scrolling="no"
+                frameborder="0"
+                allowtransparency="true"
+                :src="weatherSrc"
+                style="height: 28px;">
+              </iframe>
+            </div>
+          </el-scrollbar>
+        </el-row>
         <el-dropdown class="head" trigger="click" @command="handleCommand">
           <div class="drop-box">
             <el-tooltip effect="customized" :content="`当前登录用户：${userName}`" placement="bottom">
               <el-text :truncated="true" type="warning" class="username">{{ userName }}</el-text>
             </el-tooltip>
-            <el-avatar class="avatar" icon="el-icon-user-solid" :size="30"
-              src="/src/assets/imgs/avatar.gif" fit="fill"></el-avatar>
+            <el-avatar class="avatar" icon="el-icon-user-solid" :size="35"
+              src="/src/assets/imgs/avatar.png" fit="fill"></el-avatar>
           </div>
           <template #dropdown>
             <el-dropdown-menu>
@@ -94,8 +98,9 @@ import { inject, ref, computed } from 'vue';
 import screenfull from 'screenfull';
 import { useRouter } from 'vue-router';
 import { useGlobalStore } from '@/store';
-import { client } from '@/utils/https/client';
+import { client } from "@/utils/https/client";
 import { loginOut } from '@/config/api';
+import { LOGIN_URL } from "@/config";
 import { ElMessage, ElMessageBox } from 'element-plus';
 import Message from '../headerMessage/index.vue';
 import searchMenu from './components/searchMenuDialog.vue';
@@ -105,14 +110,21 @@ import lockScreenDialog from "./components/lockScreenDialog.vue";
 const router = useRouter()
 const myStore: any = useGlobalStore()
 const userName: any = computed(() => myStore.userInfo.userInfo ? myStore.userInfo.userInfo.userName : '')
-const globalRouter: any = inject('globalRouter')
+const Router: any = inject('Router')
 const isFullscreen = ref(false)
 const searchMenuRef = ref()
 const isShowTheme = ref(false)
 const lockScreenRef = ref()
+const weatherSrc: any = computed(() => {
+  let src: any = "https://i.tianqi.com?c=code&id=34&color=%23FFFFFF&icon=1&py=taiyuan&site=14";
+  if (myStore.themeConfig.isDark) {
+    src = "https://i.tianqi.com?c=code&id=34&color=%23FFFFFF&icon=1&py=taiyuan&site=14&bgc=%23191a20";
+  }
+  return src;
+})
 
 const refresh = () => {
-  globalRouter.refreshView()
+  Router.refreshView()
 }
 const searchMenus = () => {
   searchMenuRef.value?.handleOpen()
@@ -152,7 +164,7 @@ const handleCommand = (command: any) => {
         // 1.清除store、token存储
         myStore.logout()
         // 2.重定向登录页
-        await router.replace('/login');
+        await router.replace(LOGIN_URL);
         // 3. 提示
         ElMessage.success("退出登录成功！");
       }).catch(() => {
@@ -216,7 +228,7 @@ header .navbar-top .user-info .icon-style {
 }
 
 header .navbar-top .user-info .head {
-  margin: 0 8px 0 5px;
+  margin: 0 8px 0 15px;
   .drop-box {
     display: flex;
     align-items: center;
@@ -229,6 +241,10 @@ header .navbar-top .user-info .head {
     }
     .avatar {
       background-color: transparent;
+      transition: All 0.4s ease-in-out;
+    }
+    .avatar:hover {
+      transform: rotate(360deg);
     }
   }
 }
@@ -236,7 +252,8 @@ header .navbar-top .user-info .head {
   display: flex;
   align-items: center;
   height: 100%;
-  margin-left: 10px;
+  margin-left: 15px;
+  max-width: 150px;
 }
 </style>
 <style>

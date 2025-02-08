@@ -34,7 +34,6 @@
 
 <script setup lang="ts" name="SearchForm">
 import { ref, computed } from "vue";
-import { useWinSize } from "@/utils/tools";
 import { ColumnProps } from "@/components/ProTable/interface";
 import { BreakPoint } from "@/components/Grid/interface";
 import { Delete, Search, ArrowDown, ArrowUp } from "@element-plus/icons-vue";
@@ -75,7 +74,6 @@ const collapsed = ref(true);
 // 处理折叠
 const handleCollapse = () => {
   collapsed.value = !collapsed.value
-  // useWinSize()
 }
 
 // 获取响应式断点

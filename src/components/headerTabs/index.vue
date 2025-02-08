@@ -1,8 +1,8 @@
 <template>
   <div class="tabs">
-    <el-tabs v-model="currentRoute" type="card" closable @tab-click="tabClick" @tab-remove="removeTab"
+    <el-tabs v-model="currentRoute" type="card" @tab-click="tabClick" @tab-remove="removeTab"
       @contextmenu.prevent.native="openMenu($event)">
-      <el-tab-pane v-for="item in routes" :key="item.route" :label="item.title" :name="item.route">
+      <el-tab-pane v-for="item in routes" :key="item.route" :label="item.title" :name="item.route" :closable="item.close">
       </el-tab-pane>
     </el-tabs>
     <ul class="contextmenu" v-show="visable" :style="{ left: left + 'px', top: top + 'px' }">
@@ -15,20 +15,21 @@
 </template>
 
 <script setup lang="ts" name="HeaderTabs">
-import { ref, watch, inject, watchEffect } from 'vue'
+import { ref, watch, inject, watchEffect, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGlobalStore } from '@/store'
 import { useKeepAliveStore } from '@/store/keepAlive'
 import { ElMessage } from 'element-plus'
+import Sortable from "sortablejs";
 
 const route = useRoute()
 
 // 获取全局store
-const myStore: any = useGlobalStore()
+const myStore: any = useGlobalStore();
 const keepAliveStore = useKeepAliveStore();
 // 通过inject获取挂载在全局的globalRouter方法，初始化view
-const globalRouter: any = inject('globalRouter')
-globalRouter.initView();
+const Router: any = inject('Router')
+Router.initView();
 
 // 初始化路由
 const routes: any = ref([])
@@ -57,13 +58,28 @@ watch(() => route.fullPath, (newVal: any, oldVal: any) => {
   }
 }, { immediate: true });
 
-const tabClick = (obj: any) => {
-  if (obj.props.name === currentRoute.value) return;
-  globalRouter.openView(obj.props.name);
+onMounted(() => {
+  tabsDrop();
+})
+
+// tabs 拖拽排序
+const tabsDrop = () => {
+  Sortable.create(document.querySelector(".el-tabs__nav") as HTMLElement, {
+    draggable: ".is-closable",
+    animation: 300,
+    onEnd({ newIndex, oldIndex }) {
+      const currRow = routes.value.splice(oldIndex as number, 1)[0];
+      routes.value.splice(newIndex as number, 0, currRow);
+    }
+  });
+};
+
+const tabClick = (tabItem: any) => {
+  Router.openView(tabItem.props.name);
 }
 
 const removeTab = (route: any) => {
-  globalRouter.closeView(route);
+  Router.closeView(route);
 }
 
 const openMenu = (e: any) => {
@@ -72,11 +88,11 @@ const openMenu = (e: any) => {
   top.value = e.clientY;
 }
 
-const messageTip = () => {
+const messageTip = (tip: any = '首页不能关闭') => {
   ElMessage({
     showClose: true,
     grouping: true,
-    message: '首页不能关闭',
+    message: tip,
     type: 'warning',
   });
 }
@@ -114,7 +130,7 @@ const closeRight = () => {
 const closeAll = () => {
   myStore.delRoute({ index: 1, count: routes.value.length });
   keepAliveStore.updateKeepAliveName();
-  globalRouter.openView(routes.value[0].route)
+  Router.openView(routes.value[0].route)
   messageTip();
 }
 
@@ -166,10 +182,6 @@ const closeMenu = () => {
 .tabs .el-tabs--card>.el-tabs__header .el-tabs__nav {
   border: none;
   border-radius: 0;
-}
-
-.tabs .el-tabs__nav .el-tabs__item:nth-child(1) i{
-  display: none;
 }
 
 .navbar-top .tabs-wrap .el-tabs__item {

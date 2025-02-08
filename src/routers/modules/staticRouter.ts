@@ -1,11 +1,12 @@
 import { RouteRecordRaw } from "vue-router";
+import { HOME_URL, LOGIN_URL } from "@/config";
 
 /**
  * staticRouter (静态路由)
  */
 export const staticRouter: RouteRecordRaw[] = [
   {
-    path: '/login',
+    path: LOGIN_URL,
     name: 'Login',
     meta: {
       title: "登录"
@@ -14,13 +15,13 @@ export const staticRouter: RouteRecordRaw[] = [
   },
   {
     path: '/',
-    redirect: '/home'
+    redirect: HOME_URL
   },
   {
     path: '/',
     name: 'Main',
     component: () => import('@/views/index.vue'),
-    redirect: '/home',
+    redirect: HOME_URL,
     children: [],
   },
   {

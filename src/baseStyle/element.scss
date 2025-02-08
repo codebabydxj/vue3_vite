@@ -12,6 +12,11 @@
   z-index: 2003 !important;
 }
 
+.mask-image {
+  padding-right: 50px;
+  mask-image: linear-gradient(90deg, #000000 0%, #000000 calc(100% - 50px), transparent);
+}
+
 // 自定义card样式
 .over-card {
   box-sizing: border-box !important;
@@ -255,6 +260,7 @@
 		padding: 16px 20px;
 		margin-bottom: 0;
 		border-bottom: 1px solid var(--el-border-color-lighter);
+    font-weight: 700;
 		span {
 			font-size: 17px;
       line-height: 17px;

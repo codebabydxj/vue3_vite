@@ -41,7 +41,7 @@ import { Search } from "@element-plus/icons-vue";
 import { useGlobalStore } from '@/store'
 import { useDebounceFn } from "@vueuse/core";
 
-const globalRouter: any = inject('globalRouter')
+const Router: any = inject('Router')
 const myStore: any = useGlobalStore()
 const menuList = computed(() => myStore.flatMenuListGet.filter((item: any) => !item.meta.isHide))
 const activePath = ref("");
@@ -119,7 +119,7 @@ const handleClickMenu = () => {
   const menu = searchList.value.find((item: any) => item.path === activePath.value);
   if (!menu) return;
   if (menu.meta?.isLink) window.open(menu.meta.isLink, "_blank");
-  else globalRouter.openView(menu.redirect ? menu.redirect : menu.path)
+  else Router.openView(menu.redirect ? menu.redirect : menu.path)
   searchMenu.value = "";
   isShowSearch.value = false;
 };
