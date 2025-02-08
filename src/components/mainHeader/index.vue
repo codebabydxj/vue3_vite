@@ -41,15 +41,19 @@
             </el-icon>
           </el-link>
         </el-tooltip>
-        <div class="weather">
-          <iframe
-            scrolling="no"
-            frameborder="0"
-            allowtransparency="true"
-            :src="weatherSrc"
-            style="width: 130px; height: 28px;">
-          </iframe>
-        </div>
+        <el-row>
+          <el-scrollbar >
+            <div class="weather">
+              <iframe
+                scrolling="no"
+                frameborder="0"
+                allowtransparency="true"
+                :src="weatherSrc"
+                style="height: 28px;">
+              </iframe>
+            </div>
+          </el-scrollbar>
+        </el-row>
         <el-dropdown class="head" trigger="click" @command="handleCommand">
           <div class="drop-box">
             <el-tooltip effect="customized" :content="`当前登录用户：${userName}`" placement="bottom">
@@ -94,8 +98,9 @@ import { inject, ref, computed } from 'vue';
 import screenfull from 'screenfull';
 import { useRouter } from 'vue-router';
 import { useGlobalStore } from '@/store';
-import { client } from '@/utils/https/client';
+import { client } from "@/utils/https/client";
 import { loginOut } from '@/config/api';
+import { LOGIN_URL } from "@/config";
 import { ElMessage, ElMessageBox } from 'element-plus';
 import Message from '../headerMessage/index.vue';
 import searchMenu from './components/searchMenuDialog.vue';
@@ -159,7 +164,7 @@ const handleCommand = (command: any) => {
         // 1.清除store、token存储
         myStore.logout()
         // 2.重定向登录页
-        await router.replace('/login');
+        await router.replace(LOGIN_URL);
         // 3. 提示
         ElMessage.success("退出登录成功！");
       }).catch(() => {
@@ -248,6 +253,7 @@ header .navbar-top .user-info .head {
   align-items: center;
   height: 100%;
   margin-left: 15px;
+  max-width: 150px;
 }
 </style>
 <style>

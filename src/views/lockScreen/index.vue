@@ -51,6 +51,7 @@ import { md5 } from 'js-md5';
 import { useGlobalStore } from "@/store";
 import { client } from "@/utils/https/client";
 import { loginOut } from "@/config/api";
+import { LOGIN_URL } from "@/config";
 import { useTime } from "@/hooks/useTime";
 import { getTimeState } from "@/utils/tools";
 import { ElMessage } from "element-plus";
@@ -76,7 +77,7 @@ const logout = () => {
     // 1.清除store、token存储
     myStore.logout()
     // 2.重定向登录页
-    await router.replace('/login');
+    await router.replace(LOGIN_URL);
   }).catch(() => {
   }).finally(() => {
   });

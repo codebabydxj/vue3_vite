@@ -25,7 +25,7 @@ import Sortable from "sortablejs";
 const route = useRoute()
 
 // 获取全局store
-const myStore: any = useGlobalStore()
+const myStore: any = useGlobalStore();
 const keepAliveStore = useKeepAliveStore();
 // 通过inject获取挂载在全局的globalRouter方法，初始化view
 const Router: any = inject('Router')
@@ -65,7 +65,7 @@ onMounted(() => {
 // tabs 拖拽排序
 const tabsDrop = () => {
   Sortable.create(document.querySelector(".el-tabs__nav") as HTMLElement, {
-    draggable: ".el-tabs__item",
+    draggable: ".is-closable",
     animation: 300,
     onEnd({ newIndex, oldIndex }) {
       const currRow = routes.value.splice(oldIndex as number, 1)[0];
@@ -88,11 +88,11 @@ const openMenu = (e: any) => {
   top.value = e.clientY;
 }
 
-const messageTip = () => {
+const messageTip = (tip: any = '首页不能关闭') => {
   ElMessage({
     showClose: true,
     grouping: true,
-    message: '首页不能关闭',
+    message: tip,
     type: 'warning',
   });
 }

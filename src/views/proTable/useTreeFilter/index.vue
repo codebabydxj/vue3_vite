@@ -45,17 +45,17 @@
 </template>
 
 <script setup lang="ts" name="UseTreeFilter">
-import { ref, onMounted } from 'vue'
-import { client } from "@/utils/https/client"
-import { uploadFiles } from "@/config/api"
-import { ElMessage, ElMessageBox } from "element-plus"
-import { CirclePlus, Delete, EditPen, Download, Upload, View } from "@element-plus/icons-vue"
-import TreeFilter from "@/components/TreeFilter/index.vue"
-import ProTable from '@/components/ProTable/index.vue'
-import { useHandleData } from "@/hooks/useHandleData"
-import { useDownload } from "@/hooks/useDownload"
-import { ProTableInstance, ColumnProps } from "@/components/ProTable/interface"
-import uploadExcel from '@/components/uploadExcel/index.vue'
+import { ref, onMounted } from "vue";
+import { client } from "@/utils/https/client";
+import { uploadFiles } from "@/config/api";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { CirclePlus, Delete, EditPen, Download, Upload, View } from "@element-plus/icons-vue";
+import TreeFilter from "@/components/TreeFilter/index.vue";
+import ProTable from "@/components/ProTable/index.vue";
+import { useHandleData } from "@/hooks/useHandleData";
+import { useDownload } from "@/hooks/useDownload";
+import { ProTableInstance, ColumnProps } from "@/components/ProTable/interface";
+import uploadExcel from "@/components/uploadExcel/index.vue";
 
 // 请求table数据
 const requestApiParams = ref({ url: '/api/proTable' })

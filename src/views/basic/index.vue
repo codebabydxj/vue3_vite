@@ -38,7 +38,7 @@
               <p class="colors">
                 <div>首先是API的使用：同样不同的模块就在<span style="color: #E6A23C; font-weight: bold;">src/api</span>下创建不同的ts文件，最后在<span style="color: #E6A23C; font-weight: bold;">api/index.ts</span>统一导出即可。 （除了目录清晰，多人开发防止冲突很有必要）</div>
                 <div style="margin: 8px 0"><span style="color: #E6A23C; font-weight: bold;">import { api-name } from "@/config/api"</span></div>
-                <div style="margin: 8px 0"><span style="color: #E6A23C; font-weight: bold;">import { client } from '@/utils/https/client';</span></div>
+                <div style="margin: 8px 0"><span style="color: #E6A23C; font-weight: bold;">import { client } from "@/utils/https/client";</span></div>
                 <div style="margin: 8px 0">调用
                   <span style="color: #E6A23C; font-weight: bold;">client.get</span>、
                   <span style="color: #E6A23C; font-weight: bold;">client.post</span>、
@@ -64,7 +64,7 @@
                 <div style="margin: 8px 0">(1). 打开一级页面 <span style="color: #E6A23C; font-weight: bold;">Router.openView('/a')</span></div>
                 <div style="margin: 8px 0">(2). 打开二级页面 <span style="color: #E6A23C; font-weight: bold;">Router.openView('/a/b')</span></div>
                 <div style="margin: 8px 0">(3). 返回上级页面 <span style="color: #E6A23C; font-weight: bold;">Router.goView()</span></div>
-                <div style="margin: 8px 0">(4). 关闭当前页面 <span style="color: #E6A23C; font-weight: bold;">Router.closeView()</span></div>
+                <div style="margin: 8px 0">(4). 关闭当前页面 <span style="color: #E6A23C; font-weight: bold;">Router.closeView('path')</span></div>
                 <div style="margin: 8px 0">(5). 列表按钮重置 <span style="color: #E6A23C; font-weight: bold;">Router.refreshView()</span></div>
               </p>
             </div>
@@ -80,7 +80,7 @@ import { computed, onMounted, nextTick } from "vue";
 import { useGlobalStore } from "@/store";
 import { useDriver } from "@/hooks/useDriver";
 import { DriveStep } from "driver.js";
-
+import { client } from "@/utils/https/client";
 const myStore: any = useGlobalStore()
 const date: Date = new Date();
 const greetings = computed(() => {
@@ -134,7 +134,13 @@ const steps: DriveStep[] = [
     }
   }
 ]
-
+const funs = async () => {
+  client.get('/api/user/delete', { id: 1 })
+  .then((res: any) => {
+    
+  })
+}
+funs()
 // 引导页
 onMounted(() => {
   // 加载引导页

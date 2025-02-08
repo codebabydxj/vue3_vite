@@ -1,5 +1,5 @@
 import { reactive, computed, toRefs } from "vue";
-import { client } from '@/utils/https/client';
+import { client } from "@/utils/https/client";
 import { Table } from "./interface";
 
 /**

@@ -1,6 +1,7 @@
 import router from "@/routers/index";
-import { client } from '@/utils/https/client';
+import { client } from "@/utils/https/client";
 import { buttonList, loadingConfig, menuList } from '@/config/api';
+import { LOGIN_URL } from "@/config";
 import { RouteRecordRaw } from "vue-router";
 import { ElNotification } from "element-plus";
 import { useGlobalStore } from '@/store';
@@ -29,7 +30,7 @@ export const initDynamicRouter = async () => {
         duration: 3000
       });
       myStore.logout();
-      router.replace('/login');
+      router.replace(LOGIN_URL);
       return Promise.reject("No permission");
     }
 
@@ -51,7 +52,7 @@ export const initDynamicRouter = async () => {
   } catch (error) {
     // 当按钮 || 菜单请求出错时，重定向到登陆页
     myStore.logout();
-    router.replace('/login');
+    router.replace(LOGIN_URL);
     return Promise.reject(error);
   }
 };

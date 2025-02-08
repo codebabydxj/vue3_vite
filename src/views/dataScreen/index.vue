@@ -95,7 +95,7 @@
   </div>
 </template>
 
-<script setup lang="ts" name="dataScreen">
+<script setup lang="ts" name="DataScreen">
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import AgeRatioChart from "./components/AgeRatioChart.vue";

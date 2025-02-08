@@ -1,6 +1,6 @@
 /**
  * 调用下面方法前必须先拿到全局注册
- * 1. const Router: any = inject('Router')  通过inject获取挂载在全局的globalRouter方法
+ * 1. const Router: any = inject('Router');  通过inject获取挂载在全局的globalRouter方法
  * 
  * 打开页面
  * 1. 一级页面（使用绝对路径） Router.openView('/a');
@@ -11,7 +11,7 @@
  * 二级路由返回一级路由  Router.goView();
  *
  * 关闭路由
- * Router.closeView();
+ * Router.closeView('route');
  *
  * 刷新重置
  * Router.refreshView();
@@ -21,18 +21,20 @@
  * 
  */
 
-import { nextTick } from 'vue';
-import routers from '@/routers';
-import { useGlobalStore } from '@/store';
-import { useKeepAliveStore } from '@/store/keepAlive';
+import { nextTick } from "vue";
+import routers from "@/routers";
+import { useGlobalStore } from "@/store";
+import { useKeepAliveStore } from "@/store/keepAlive";
+import { HOME_URL } from "@/config";
 
-let myStore: any = null
-let keepAliveStore: any = null
-let flatMenuList: any = []
-const backPathKey: any = 'backPath';
+let myStore: any = null;
+let keepAliveStore: any = null;
+let flatMenuList: any = [];
+const backPathKey: any = "backPath";
 let fullPath: any = null;
 let curName: any = null;
 let query: any = null;
+let isKeepAlive: any = false;
 
 routers.beforeEach((to: any) => {
   myStore = useGlobalStore() /** 一切为成形之前，使用store，store必须放在路由守卫，否则报错，没有注册pinia??? */
@@ -42,6 +44,7 @@ routers.beforeEach((to: any) => {
   if (to.fullPath !== '/empty') {
     curName = to.name;
     fullPath = to.fullPath;
+    isKeepAlive = to.meta?.isKeepAlive ?? false;
   }
 })
 
@@ -50,9 +53,10 @@ const globalRouter = {
   initView: () => {
     console.log(`%c【全局路由】- 初始化完成···`, 'color: #009acc')
     let rootPath: any = fullPath.match(/^\/[a-zA-Z0-9\_\-\/]*/)[0];
-    // 出现二级路由截取处理成一级路由
+    // 出现多级路由截取处理成一级路由
+    const splitPath: any = rootPath.split('/');
     if (rootPath && rootPath.split('/').length > 3) {
-      rootPath = rootPath.slice(0, rootPath.lastIndexOf('/'))
+      rootPath = rootPath.slice(0, rootPath.indexOf(splitPath[3]) - 1);
     }
     if (rootPath === myStore.currentRoute) return;
     const route: any = {
@@ -60,14 +64,14 @@ const globalRouter = {
       name: getByPath(rootPath).name,
       route: rootPath,
       realPath: fullPath,
-      close: rootPath === '/home' ? false : true
+      close: rootPath === HOME_URL ? false : true
     };
     myStore.setRoute(rootPath, fullPath);
     myStore.addRoute(route);
   },
   
   // 打开页面
-  openView: async (path: any, needBackPath: any = false, onlyUpdateRouter: any = false) => {
+  openView: async (path: any, needBackPath: any = false, options: any = null) => {
     console.log(`%c【全局路由】- 打开新页面···`, 'color: #67C23A')
     // 需要指定返回路径的情况，将返回的路径拼接到参数中
     if (needBackPath) {
@@ -77,9 +81,10 @@ const globalRouter = {
     // 一级路由
     const matchPath: any = path.match(/^\/[a-zA-Z0-9\_\.\-\/]*/)[0];
     let rootPath: any = matchPath;
-    // 出现二级路由截取处理成一级路由
-    if (matchPath && matchPath.split('/').length > 3) {
-      rootPath = matchPath.slice(0, matchPath.lastIndexOf('/'))
+    // 出现多级路由截取处理成一级路由
+    const splitPath: any = matchPath.split('/');
+    if (matchPath && splitPath.length > 3) {
+      rootPath = matchPath.slice(0, matchPath.indexOf(splitPath[3]) - 1);
     }
     const curRoute: any = await myStore.routes.find((item: any) => item.route === rootPath);
     if (!curRoute) {
@@ -89,12 +94,15 @@ const globalRouter = {
         name: getByPath(path).name,
         route: rootPath,
         realPath: path,
-        close: rootPath === '/home' ? false : true
+        close: rootPath === HOME_URL ? false : true
       };
       myStore.addRoute(route);
     } else {
       // tab栏已存在，如果是单纯切换，则跳转至realPath，否则更新realPath
       if (curRoute.route === path) {
+        curRoute.realPath = options?.onlyUpdateRouter ? path : curRoute.realPath;
+        if (options?.name) curRoute.name = options.name;
+        if (options?.close) curRoute.close = options.close;
         willOpenPath = curRoute.realPath;
       } else {
         const index: any = myStore.routes.findIndex((item: any) => item.route === curRoute.route);
@@ -102,7 +110,7 @@ const globalRouter = {
       }
     }
     myStore.setRoute(rootPath, willOpenPath);
-    if (onlyUpdateRouter) return;
+    if (options?.onlyUpdateRouter) return;
     routers.replace(willOpenPath).catch((err: any) => {});
   },
 
@@ -121,18 +129,18 @@ const globalRouter = {
     myStore.delRoute({ index, count: 1 })
     // 全部删除时回到首页
     if (myStore.routes.length === 0) {
-      globalRouter.openView('/home');
+      globalRouter.openView(HOME_URL);
     }
     // 更新缓存
     const updateName = myStore.routes.map((i: any) => i.name);
-    keepAliveStore.updateKeepAliveName(updateName as string[]);
+    isKeepAlive && keepAliveStore.updateKeepAliveName(updateName as string[]);
   },
 
   // 返回上级页面
   goView: () => {
     console.log(`%c【全局路由】- 返回上级页面···`, 'color: #b88230')
     // 移除缓存
-    keepAliveStore.removeKeepAliveName(curName as string)
+    isKeepAlive && keepAliveStore.removeKeepAliveName(curName as string);
     // 如果存在backPath这个查询参数，就返回到backPath
     if (query && query[backPathKey]) {
       globalRouter.openView(query[backPathKey]);
@@ -140,21 +148,26 @@ const globalRouter = {
     }
     // 重置 realPath、name
     const route: any = myStore.routes.find((item: any) => item.route === myStore.currentRoute);
-    route.realPath = myStore.currentRoute;
+    if (route.realPath === route.route) { // 当前是一级路由
+      route.realPath = myStore.currentRoute;
+    } else { // 二级以上路由则一层层处理
+      route.realPath = handleRealPath(route.realPath)
+    }
     route.name = getByPath(route.realPath).name;
-    routers.replace(myStore.currentRoute);
+    route.close = route.realPath === HOME_URL ? false : true;
+    routers.replace(route.realPath);
   },
 
   // 重置页面
   refreshView: async () => {
     console.log(`%c【全局路由】- 重置页面···`, 'color: #ff65fb')
     // 移除缓存
-    keepAliveStore.removeKeepAliveName(curName as string)
+    isKeepAlive && keepAliveStore.removeKeepAliveName(curName as string);
     // 需要刷新的url
     const _fullPath: any = fullPath;
     await routers.replace('/empty');
     nextTick(() => {
-      keepAliveStore.addKeepAliveName(curName as string)
+      isKeepAlive && keepAliveStore.addKeepAliveName(curName as string);
       routers.replace(_fullPath);
     });
   }
@@ -177,6 +190,19 @@ const getByPath = (fullpath: any) => {
 const addParamInPath = (path: any, key: any, value: any) => {
   const symbol: any = path.indexOf('?') === -1 ? '?' : '&';
   return `${path}${symbol}${key}=${value}`;
+};
+
+const handleRealPath = (path: any) => {
+  let newPath: any = '';
+  let searchStr: any = ''; // 暂存查询字符串
+  let _path: any = path.slice(0, path.lastIndexOf('/'));
+  if (path.indexOf('?') > -1) {
+    searchStr = path.slice(path.indexOf('?'));
+    const str: any = path.slice(0, path.indexOf('?'));
+    _path = str.slice(0, str.lastIndexOf('/'));
+  }
+  newPath = _path;
+  return newPath
 };
 
 export { globalRouter };

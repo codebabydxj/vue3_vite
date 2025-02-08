@@ -11,6 +11,7 @@ import { createPinia, defineStore } from "pinia";
 import piniaPluginPersist from "pinia-plugin-persistedstate";
 import piniaPersistConfig from "./helper/piniaPersist";
 import { getShowMenuList, getFlatMenuList, getAllBreadcrumbList } from "@/utils/tools";
+import { HOME_URL } from "@/config";
 
 type TransitionAnimation = '' | 'fade-side' | 'fade-bottom' | 'fade-scale' | 'zoom-fade' | 'zoom-out' | 'fade'
 
@@ -24,7 +25,7 @@ const useGlobalStore = defineStore({
       menuList: <any>[],
       flatMenuList: <any>[],
       authButtonList: <any>{},
-      routes: <any>[{ title: '工作台',  name: 'Home', route: '/home', realPath: '/home', close: false }],
+      routes: <any>[{ title: '工作台',  name: 'Home', route: HOME_URL, realPath: HOME_URL, close: false }],
       // 常量
       consts: <any>[],
       userInfo: <any>{},
@@ -93,7 +94,7 @@ const useGlobalStore = defineStore({
     },
     addRoute(route: any) {
       // 首页不能关闭，过滤掉
-      if (route.route !== '/home') {
+      if (route.route !== HOME_URL) {
         this.routes.push(route);
       }
     },
@@ -141,7 +142,7 @@ const useGlobalStore = defineStore({
       // 2.清空导航栏
       this.currentRoute = '/';
       this.realRoute = '';
-      this.routes = [{ title: '工作台',  name: 'Home', route: '/home', realPath: '/home', close: false }];
+      this.routes = [{ title: '工作台',  name: 'Home', route: HOME_URL, realPath: HOME_URL, close: false }];
       // 3.清空常量
       this.consts = [];
       // 4.重置锁屏

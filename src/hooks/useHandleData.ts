@@ -1,4 +1,4 @@
-import { client } from '@/utils/https/client';
+import { client } from "@/utils/https/client";
 import { ElMessageBox, ElMessage } from "element-plus";
 import { HandleData } from "./interface";
 

@@ -42,6 +42,7 @@ import { ref, watch, computed, inject, onBeforeUnmount } from "vue"
 import { useGlobalStore } from "@/store"
 import { useDebounceFn } from "@vueuse/core"
 import _ from "lodash"
+import { HOME_URL } from "@/config";
 import SubMenu from "@/components/menuBar/SubMenu/index.vue"
 
 const props = defineProps(['isCollapse'])
@@ -69,7 +70,7 @@ watch(() => isCurCollapse.value, () => {
 })
 
 const goHome = () => {
-  Router.openView('/home');
+  Router.openView(HOME_URL);
 }
 
 const handleSwitch = () => {

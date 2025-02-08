@@ -5,8 +5,7 @@
         <el-scrollbar>
           <div class="content-box">
             <el-button type="primary" @click="goBack">返回上级页面</el-button>
-            当前是二级页面
-            <el-button type="primary" @click="goToDetail">三级详情页面</el-button>
+            当前是三级页面
           </div>
         </el-scrollbar>
       </div>
@@ -14,21 +13,10 @@
   </flex-card>
 </template>
 
-<script setup lang="ts" name="Pro_Details">
+<script setup lang="ts" name="Pro_Details_3">
 import { inject } from 'vue'
-import { client } from "@/utils/https/client";
-const funs = async () => {
-  client.get('/api/user/delete', { id: 1 })
-  .then((res: any) => {
-    
-  })
-}
-funs()
 
 const Router: any = inject('Router')
-const goToDetail = () => {
-  Router.openView('/proTable/useProTable/details/3?id=10')
-}
 const goBack = () => {
   Router.goView()
 }

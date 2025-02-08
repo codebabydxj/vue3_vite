@@ -13,16 +13,16 @@ export const useKeepAliveStore = defineStore({
   actions: <any>{
     // 新增 KeepAliveName
     addKeepAliveName(name: string) {
-      !this.keepAliveName.includes(name) && !['Home', 'Empty'].includes(name) && this.keepAliveName.push(name);
+      !this.keepAliveName.includes(name) && !['Empty'].includes(name) && this.keepAliveName.push(name);
       console.log(this.keepAliveName);
     },
     // 移除 KeepAliveName
     removeKeepAliveName(name: string) {
-      this.keepAliveName = this.keepAliveName.filter((item: any) => item !== name);
+      if (name) this.keepAliveName = this.keepAliveName.filter((item: any) => item !== name);
     },
     // 更新 KeepAliveName
     updateKeepAliveName(keepAliveName: string[] = []) {
-      this.keepAliveName = keepAliveName.filter((item: any) => item !== 'Home');
+      this.keepAliveName = keepAliveName;
       console.log(this.keepAliveName);
     }
   }

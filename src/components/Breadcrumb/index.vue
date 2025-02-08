@@ -23,18 +23,21 @@
 import { computed, inject } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ArrowRight } from "@element-plus/icons-vue";
-import { useGlobalStore } from '@/store'
+import { useGlobalStore } from "@/store";
+import { useKeepAliveStore } from "@/store/keepAlive";
+import { HOME_URL } from "@/config";
 
 const route = useRoute();
 const router = useRouter();
 const Router: any = inject('Router')
 const myStore: any = useGlobalStore();
+const keepAliveStore: any = useKeepAliveStore();
 
 const breadcrumbList = computed(() => {
   let breadcrumbData = myStore.breadcrumbListGet[route.matched[route.matched.length - 1].path] ?? [];
   // 🙅‍♀️不需要首页面包屑可删除以下判断
-  if (breadcrumbData[0].path !== '/home') {
-    breadcrumbData = [{ path: '/home', meta: { icon: "HomeFilled", title: "工作台" } }, ...breadcrumbData];
+  if (breadcrumbData[0].path !== HOME_URL) {
+    breadcrumbData = [{ path: HOME_URL, meta: { icon: "HomeFilled", title: "工作台" } }, ...breadcrumbData];
   }
   return breadcrumbData;
 });
@@ -45,8 +48,14 @@ const onBreadcrumbClick = (item: any, index: number) => {
     let path: any = '';
     if (item.redirect) path = item.redirect;
     else path = item.path;
-    Router.openView(path, false, true);
+    const options: any = {
+      onlyUpdateRouter: true
+    }
+    if (item.name) options.name = item.name;
+    if (item.close) options.close = item.close;
+    Router.openView(path, false, options);
     router.replace(path);
+    keepAliveStore.updateKeepAliveName([]);
   }
 };
 </script>
