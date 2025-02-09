@@ -1,5 +1,5 @@
 // 样式初始化
-@import 'normalize.css';
+@use 'normalize.css' as *;
 
 /*:root -> 获取根元素html*/
 // 使用 color: var(--color-tint)
