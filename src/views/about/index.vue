@@ -28,9 +28,9 @@
         <div class="over-card mb10">
           <h4 class="title">生产环境依赖</h4>
           <el-descriptions :column="3" border>
-            <el-descriptions-item v-for="item in dependencies" :key="item.key" width="400px" :label="item.key">
+            <el-descriptions-item v-for="(value, key) in dependencies" :key="key" width="400px" :label="key">
               <el-tag type="info">
-                {{ item.value }}
+                {{ value }}
               </el-tag>
             </el-descriptions-item>
           </el-descriptions>
@@ -38,9 +38,9 @@
         <div class="over-card">
           <h4 class="title">开发环境依赖</h4>
           <el-descriptions :column="3" border>
-            <el-descriptions-item v-for="item in devDependencies" :key="item.key" width="400px" :label="item.key">
+            <el-descriptions-item v-for="(value, key) in devDependencies" :key="key" width="400px" :label="key">
               <el-tag type="info">
-                {{ item.value }}
+                {{ value }}
               </el-tag>
             </el-descriptions-item>
           </el-descriptions>
@@ -55,7 +55,12 @@ import { inject } from "vue";
 import { HOME_URL } from "@/config";
 
 const { pkg, lastBuildTime } = __APP_INFO__;
-const { dependencies, devDependencies, version } = pkg;
+interface PackageJson {
+  dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
+  version?: string;
+}
+const { dependencies, devDependencies, version } = pkg as PackageJson;
 
 // 通过inject获取挂载在全局的globalRouter方法，初始化view
 const Router: any = inject('Router')

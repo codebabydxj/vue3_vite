@@ -6,8 +6,8 @@
           <el-scrollbar>
             <h3 class="v-h3">{{ greetings }}</h3>
             <div class="letter">
-              <p class="title"> 1. 页面布局</p>
-              <p class="colors">
+              <div style="margin: 4px 0;" class="title"> 1. 页面布局</div>
+              <div style="margin: 4px 0;" class="colors">
                 <div>{{ '<template>' }}</div>
                 <div style="text-indent: 2em">{{ '<flex-card>' }}</div>
                 <div style="text-indent: 4em">{{ '<div class="base-warp">' }}</div>
@@ -21,21 +21,21 @@
                 <div style="text-indent: 4em">{{ '</div>' }}</div>
                 <div style="text-indent: 2em">{{ '</flex-card>' }}</div>
                 <div>{{ '</template>' }}</div>
-              </p>
+              </div>
             </div>
             <div class="letter"> 
-              <p class="title"> 2. 动态路由 + 权限按钮配置</p>
-              <p class="colors">通过菜单管理配置动态路由，使用 keep-alive组件 缓存页面</p>
+              <div style="margin: 4px 0;" class="title"> 2. 动态路由 + 权限按钮配置</div>
+              <div style="margin: 4px 0;" class="colors">通过菜单管理配置动态路由，使用 keep-alive组件 缓存页面</div>
             </div>
             <div class="letter"> 
-              <p class="title"> 3. pinia状态管理器（封装了持久化存储功能）</p>
-              <p class="colors">
+              <div style="margin: 4px 0;" class="title"> 3. pinia状态管理器（封装了持久化存储功能）</div>
+              <div style="margin: 4px 0;" class="colors">
                 <span>import { useGlobalStore } from '@/store' | const myStore: any = useGlobalStore();</span>
-              </p>
+              </div>
             </div>
             <div class="letter"> 
-              <p class="title"> 4. axios使用</p>
-              <p class="colors">
+              <div style="margin: 4px 0;" class="title"> 4. axios使用</div>
+              <div style="margin: 4px 0;" class="colors">
                 <div>首先是API的使用：同样不同的模块就在<span style="color: #E6A23C; font-weight: bold;">src/api</span>下创建不同的ts文件，最后在<span style="color: #E6A23C; font-weight: bold;">api/index.ts</span>统一导出即可。 （除了目录清晰，多人开发防止冲突很有必要）</div>
                 <div style="margin: 8px 0"><span style="color: #E6A23C; font-weight: bold;">import { api-name } from "@/config/api"</span></div>
                 <div style="margin: 8px 0"><span style="color: #E6A23C; font-weight: bold;">import { client } from "@/utils/https/client";</span></div>
@@ -45,11 +45,11 @@
                   <span style="color: #E6A23C; font-weight: bold;">client.download</span>、
                   <span style="color: #E6A23C; font-weight: bold;">client.jsonp</span>
                 </div>
-              </p>
+              </div>
             </div>
             <div class="letter">
-              <p class="title"> 5. 工具 / hook组件</p>
-              <p class="colors">
+              <div style="margin: 4px 0;" class="title"> 5. 工具 / hook组件</div>
+              <div style="margin: 4px 0;" class="colors">
                 这里封装了很多工具/hook组件可以使用(详细看代码)，&lt;<span style="color: #E6A23C; font-weight: bold;">src/utils、src/hooks</span>&gt;、
                   &lt;<span style="color: #E6A23C; font-weight: bold;">src/components</span>&gt;例如《
                   <span style="color: #E6A23C; font-weight: bold;">list和tree相互转换</span>、<span style="color: #E6A23C; font-weight: bold;">导出excel和pdf</span>、
@@ -58,15 +58,15 @@
                   <span style="color: #E6A23C; font-weight: bold;">全局使用svg标签</span>、
                   <span style="color: #E6A23C; font-weight: bold;">滑块验证码</span>
                 》等
-              </p>
-              <p class="colors">
+              </div>
+              <div style="margin: 4px 0;" class="colors">
                 <div style="margin: 8px 0">重点强调常用封装的router使用方法：&lt;<span style="color: #E6A23C; font-weight: bold;">const Router: any = inject('Router')</span>&gt;，通过inject获取挂载在全局的globalRouter方法</div>
                 <div style="margin: 8px 0">(1). 打开一级页面 <span style="color: #E6A23C; font-weight: bold;">Router.openView('/a')</span></div>
                 <div style="margin: 8px 0">(2). 打开二级页面 <span style="color: #E6A23C; font-weight: bold;">Router.openView('/a/b')</span></div>
                 <div style="margin: 8px 0">(3). 返回上级页面 <span style="color: #E6A23C; font-weight: bold;">Router.goView()</span></div>
                 <div style="margin: 8px 0">(4). 关闭当前页面 <span style="color: #E6A23C; font-weight: bold;">Router.closeView('path')</span></div>
                 <div style="margin: 8px 0">(5). 列表按钮重置 <span style="color: #E6A23C; font-weight: bold;">Router.refreshView()</span></div>
-              </p>
+              </div>
             </div>
           </el-scrollbar>
         </div>
