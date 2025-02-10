@@ -16,14 +16,6 @@
 
 <script setup lang="ts" name="Pro_Details">
 import { inject } from 'vue'
-import { client } from "@/utils/https/client";
-const funs = async () => {
-  client.get('/api/user/delete', { id: 1 })
-  .then((res: any) => {
-    
-  })
-}
-funs()
 
 const Router: any = inject('Router')
 const goToDetail = () => {
