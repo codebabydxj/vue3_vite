@@ -80,7 +80,7 @@ import { computed, onMounted, nextTick } from "vue";
 import { useGlobalStore } from "@/store";
 import { useDriver } from "@/hooks/useDriver";
 import { DriveStep } from "driver.js";
-import { client } from "@/utils/https/client";
+
 const myStore: any = useGlobalStore()
 const date: Date = new Date();
 const greetings = computed(() => {
@@ -134,13 +134,7 @@ const steps: DriveStep[] = [
     }
   }
 ]
-const funs = async () => {
-  client.get('/api/user/delete', { id: 1 })
-  .then((res: any) => {
-    
-  })
-}
-funs()
+
 // 引导页
 onMounted(() => {
   // 加载引导页
