@@ -79,9 +79,9 @@ npm run build:pro | yarn build:pro
 ### gitlab 同步 github 🧩
 
 ```text
-- git remote add xxx（例如：github-uniappx） github代码地址
-- git pull xxx branch   同步拉取github分支代码
-- git push xxx branch   推送代码至github
-- git remote -v  查看当前远程仓库
-- git remote rm branch 删除远程仓库
+- git remote add origin github-url   添加远程仓库
+- git pull xxx branch                同步拉取github分支代码
+- git push xxx branch                推送代码至github
+- git remote -v                      查看当前远程仓库
+- git remote rm branch               删除远程仓库
 ```
