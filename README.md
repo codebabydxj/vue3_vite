@@ -2,7 +2,7 @@
 
 ### 介绍 📖
 
-Vite-Admin 一款基于 Vue3.2、TypeScript、Vite3、Pinia、Element-Plus 开源的后台管理框架，使用目前最新技术栈开发。另外本项目还封装了一些常用组件、Hooks、指令等功能。
+Vite-Admin 一款基于 Vue3.4、TypeScript、Vite4、Pinia、Element-Plus 开源的后台管理框架，使用目前最新技术栈开发。另外本项目还封装了一些常用组件、Hooks、指令等功能。
 
 
 ### 代码仓库 ⭐
