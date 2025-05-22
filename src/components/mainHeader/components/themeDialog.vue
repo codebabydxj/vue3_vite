@@ -144,18 +144,17 @@ const myStore: any = useGlobalStore();
 const themeConfig = computed(() => myStore.themeConfig);
 const lockScreenRef = ref();
 // 预定义主题颜色
-const colorList = [
+const colorList: any = ref([
 	"#409EFF",
 	"#DAA96E",
 	"#0C819F",
-	"#409EFF",
 	"#27ae60",
 	"#ff5c93",
 	"#e74c3c",
 	"#fd726d",
 	"#f39c12",
 	"#9b59b6"
-];
+]);
 const colorsData: any = ref(['#409EFF', '#67C23A', '#E6A23C', '#F56C6C', '#909399', '#303133', '#009688']);
 
 const { changePrimary, changeGreyOrWeak, switchDark } = useTheme();

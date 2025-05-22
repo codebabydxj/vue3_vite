@@ -39,7 +39,7 @@
 
 <script setup lang="ts" name="EditorPage">
 import { ref } from 'vue'
-import Editor from '@/components/editor/index.vue'
+import Editor from '@/components/Editor/index.vue'
 
 const content = ref('hello editor~')
 </script>

@@ -331,10 +331,20 @@ export const snakeToCamel = (data: any, dataType: any = ''): object | string => 
  * @returns {Boolean}
  */
 export const isJSON = (str: any): boolean => {
+  if (typeof str !== 'string' || isNumeric(str)) return false;
   try {
     JSON.parse(str);
     return true;
   } catch (e) {
     return false;
   }
+}
+const isNumeric = (value: any) => {
+  if (typeof value === 'number') {
+    return !isNaN(value) && isFinite(value); // 检查是否是数字且不是 NaN 或 Infinity
+  } else if (typeof value === 'string') {
+    let num = Number(value);
+    return !isNaN(num) && isFinite(num); // 尝试转换为数字并检查
+  }
+  return false; // 其他类型都不是数字
 }

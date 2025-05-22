@@ -9,6 +9,7 @@
 <script lang="ts" name="Editor">
 import "@wangeditor/editor/dist/css/style.css"; // 引入 css
 import { onBeforeUnmount, ref, shallowRef } from "vue";
+import { ElMessage } from "element-plus";
 import { Editor, Toolbar } from "@wangeditor/editor-for-vue";
 import { uploadFiles } from "@/config/api";
 
@@ -26,6 +27,14 @@ export default {
     hideToolBar: {
       type: Boolean,
       default: false
+    },
+    imgMaxFileSize: {
+      type: Number,
+      default: 10 * 1024 * 1024,
+    },
+    videoMaxFileSize: {
+      type: Number,
+      default: 100 * 1024 * 1024,
     }
   },
   setup(props) {
@@ -54,8 +63,8 @@ export default {
       // form-data fieldName ，默认值 'wangeditor-uploaded-image'
       fieldName: 'file',
       // form-data:,
-      // 单个文件的最大体积限制，默认为 2M
-      maxFileSize: 5 * 1024 * 1024, // 5M
+      // 单个文件的最大体积限制，默认为 10M
+      maxFileSize: props.imgMaxFileSize, // 10M
 
       // 最多可上传几个文件，默认为 100
       maxNumberOfFiles: 20,
@@ -86,17 +95,18 @@ export default {
         // file 选中的文件，格式如 { key: file }
         let fileObj = (Object.values(file)[0] as any).data
         const isJPG = (fileObj.type == 'image/jpg' || fileObj.type == 'image/jpeg' || fileObj.type == 'image/png')
-        // if (!isJPG) {
-        //     proxy.$message.warning('图片只能是 JPG、GIF、PNG 格式!')
-        // }
+        if (!isJPG) {
+          ElMessage.warning('图片只能是 JPG、GIF、PNG 格式!')
+        }
         // 判断图片宽高
         // 定义 filereader对象
 
         // 判断图片大小
-        let isLt = fileObj.size / 1024 / 1024 < 5 // 判断是否小于5M
-        // if (!isLt) {
-        //     proxy.$message.warning('图片大小不能超过5M! 请重新上传')
-        // }
+        let isLt = fileObj.size < props.imgMaxFileSize // 判断是否小于10M
+        if (!isLt) {
+          ElMessage.warning(`图片大小不能超过${props.imgMaxFileSize / 1024 / 1024}M! 请重新上传`)
+        }
+        
         if (!isJPG) {
           return false
         } else if (!isLt) {
@@ -125,18 +135,19 @@ export default {
       },
       // 上传错误，或者触发 timeout 超时
       onError(file: any, err: any, res: any) {
-        console.warn(`${file.name} 上传出错`, err, res)
+        ElMessage.error(`错误原因：${err}`);
+        // console.warn(`${file.name} 上传出错`, err, res)
       }
     }
     // 上传视频
     editorConfig.MENU_CONF['uploadVideo'] = {
       // 上传视频接口地址
-      // server: usUploadStore().uploadVideo,
+      server: uploadFiles,
       // form-data fieldName ，默认值 'wangeditor-uploaded-video'
       fieldName: 'file',
 
-      // 单个文件的最大体积限制，默认为 10M
-      maxFileSize: 5 * 1024 * 1024, // 5M
+      // 单个文件的最大体积限制，默认为 100M
+      maxFileSize: props.videoMaxFileSize, // 100M
 
       // 最多可上传几个文件，默认为 5
       maxNumberOfFiles: 3,
@@ -173,7 +184,24 @@ export default {
       // 上传之前触发
       onBeforeUpload(file: any) {
         // file 选中的文件，格式如 { key: file }
-        return file
+        let fileObj = (Object.values(file)[0] as any).data
+        const isMp4 = (fileObj.type == 'video/mp4')
+        if (!isMp4) {
+          ElMessage.warning('视频只支持MP4 格式!')
+        }
+        // 判断视频大小
+        let isLt = fileObj.size < props.videoMaxFileSize // 判断是否小于最大值
+        if (!isLt) {
+          ElMessage.warning(`视频大小不能超过${props.videoMaxFileSize / 1024 / 1024}M! 请重新上传`)
+        }
+
+        if (!isMp4) {
+          return false
+        } else if (!isLt) {
+          return false
+        } else {
+          return file
+        }
 
         // 可以 return
         // 1. return file 或者 new 一个 file ，接下来将上传
@@ -194,7 +222,8 @@ export default {
       },
       // 上传错误，或者触发 timeout 超时
       onError(file: any, err: any, res: any) {
-        console.log(`${file.name} 上传出错`, err, res)
+        ElMessage.error(`错误原因：${err}`);
+        // console.log(`${file.name} 上传出错`, err, res)
       }
     }
 
