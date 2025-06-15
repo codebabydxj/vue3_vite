@@ -143,7 +143,7 @@ const exportData = async () => {
 
 // 批量删除用户信息
 const batchDelete = async (ids: string[]) => {
-	await useHandleData('/batch/delete', { ids }, '删除所选用户信息');
+	await useHandleData({ url: '/api/user/batch/delete', method: 'post' }, { ids }, '删除所选用户信息');
 	proTable.value?.clearSelection();
 	proTable.value?.getTableList();
 };
