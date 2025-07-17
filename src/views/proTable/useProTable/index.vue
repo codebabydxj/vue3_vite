@@ -47,7 +47,6 @@ import { useDownload } from "@/hooks/useDownload";
 import ProTable from "@/components/ProTable/index.vue";
 import { ProTableInstance, ColumnProps } from "@/components/ProTable/interface";
 import uploadExcel from "@/components/uploadExcel/index.vue";
-import { method } from "lodash";
 
 // 请求table数据
 const requestApiParams = ref({ url: '/api/proTable' })
