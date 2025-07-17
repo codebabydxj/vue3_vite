@@ -17,7 +17,7 @@
           </div>
           <Editor v-model="content" />
           <el-descriptions title="配置项 📚" :column="1" border style="margin-top: 10px;">
-            <el-descriptions-item label="value"> 双向绑定的 value 值，使用示例： v-model:value="content"> </el-descriptions-item>
+            <el-descriptions-item label="value"> 双向绑定的 value 值，使用示例： v-model:value="content" </el-descriptions-item>
             <el-descriptions-item label="toolbarConfig">
               富文本 ToolBar区域 配置：
               <a href="https://www.wangeditor.com/v5/toolbar-config.html"> https://www.wangeditor.com/v5/toolbar-config.html </a>

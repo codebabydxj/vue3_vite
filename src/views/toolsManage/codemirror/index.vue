@@ -17,7 +17,7 @@
           </div>
           <Codemirror />
           <el-descriptions title="配置项 📚" :column="1" border style="margin-top: 10px;">
-            <el-descriptions-item label="value"> 编辑器内容，使用示例： v-model:value="code"> </el-descriptions-item>
+            <el-descriptions-item label="value"> 编辑器内容，使用示例： v-model:value="code" </el-descriptions-item>
             <el-descriptions-item label="width"> 编辑器宽度 默认占满 </el-descriptions-item>
             <el-descriptions-item label="height"> 编辑器高度 默认400px </el-descriptions-item>
             <el-descriptions-item label="border"> 编辑器边框 默认显示 </el-descriptions-item>
