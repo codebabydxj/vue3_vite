@@ -10,15 +10,22 @@
 			@click="openDialog"
 		>
 			<template #append>
-				<el-button :icon="customIcons[iconValue]" />
+				<svg-icon v-if="activeTab == '2' && customIcons[iconValue]?.name" :name="customIcons[iconValue].name" :iconStyle="{ width: '20px', height: '20px'}" />
+				<el-button v-else :icon="customIcons[iconValue]" />
 			</template>
 		</el-input>
 		<el-dialog v-model="dialogVisible" :title="placeholder" top="60px" width="70%">
+			<el-tabs v-model="activeTab" v-if="showIcon == 'ALL'">
+				<el-tab-pane label="UI组件图标库" name="1">
+				</el-tab-pane>
+				<el-tab-pane label="本地SVG图标库" name="2"></el-tab-pane>
+			</el-tabs>
 			<el-input v-model="inputValue" placeholder="搜索图标" size="large" :prefix-icon="Icons.Search" />
 			<el-scrollbar v-if="Object.keys(iconsList).length">
 				<div class="icon-list">
 					<div v-for="item in iconsList" :key="item" class="icon-item" @click="selectIcon(item)">
-						<component :is="item"></component>
+						<svg-icon v-if="activeTab == '2'" :name="item.name" :iconStyle="{ width: '30px', height: '30px'}" />
+            <component v-else :is="item"></component>
 						<span class="text-ellipsis">{{ item.name }}</span>
 					</div>
 				</div>
@@ -38,22 +45,32 @@ interface SelectIconProps {
 	title?: string;
 	clearable?: boolean;
 	placeholder?: string;
+	showIcon?: string;
 }
-const Icons = { ...ElementIcon, ...AntdIcons }
-
 const props = withDefaults(defineProps<SelectIconProps>(), {
 	iconValue: "",
 	title: "请选择图标",
 	clearable: true,
-	placeholder: "请选择图标"
+	placeholder: "请选择图标",
+	showIcon: "ALL"
 });
+
+const Icons = { ...ElementIcon, ...AntdIcons }
+const SvgIcons = import.meta.glob("@/icons/svg/*.svg");
+const activeTab: any = ref('1')
+const dialogVisible = ref(false);
 
 // 重新接收一下，防止打包后 clearable 报错
 const valueIcon = ref(props.iconValue);
 
-// open Dialog
-const dialogVisible = ref(false);
-const openDialog = () => (dialogVisible.value = true);
+const openDialog = () => {
+	if (props.showIcon == 'SVG') {
+		activeTab.value = "2"
+	} else if (!valueIcon.value) {
+		activeTab.value = "1"
+	}
+	dialogVisible.value = true
+};
 
 const inputRef = ref();
 const emit = defineEmits<{"update:iconValue": [value: string]}>();
@@ -75,12 +92,24 @@ const clearIcon = () => {
 
 // 监听搜索框值
 const inputValue = ref();
-const customIcons: { [key: string]: any } = Icons;
+const customIcons: any = computed(() => {
+	let icons: any = {};
+	if (activeTab.value == 2) {
+		if (!Object.keys(SvgIcons).length) icons = {};
+		Object.keys(SvgIcons).forEach((path: any) => {
+			const _name: any = path.replace("/src/icons/svg/", "").split(".svg")[0]
+			icons[_name] = { name: _name }
+		})
+	} else {
+		icons = Icons
+	}
+	return icons;
+});
 const iconsList = computed((): { [key: string]: any } => {
-	if (!inputValue.value) return Icons;
+	if (!inputValue.value) return customIcons.value;
 	let result: { [key: string]: any } = {};
-	for (const key in customIcons) {
-		if (key.toLowerCase().indexOf(inputValue.value.toLowerCase()) > -1) result[key] = customIcons[key];
+	for (const key in customIcons.value) {
+		if (key.toLowerCase().indexOf(inputValue.value.toLowerCase()) > -1) result[key] = customIcons.value[key];
 	}
 	return result;
 });
@@ -105,7 +134,7 @@ const iconsList = computed((): { [key: string]: any } => {
 			display: grid;
 			grid-template-columns: repeat(auto-fill, 115px);
 			justify-content: space-evenly;
-			max-height: 68vh;
+			max-height: 65vh;
 			.icon-item {
 				display: flex;
 				flex-direction: column;

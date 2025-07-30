@@ -2,15 +2,17 @@
   <template v-for="subItem in menuList" :key="subItem.path">
     <el-sub-menu v-if="subItem.children?.length" :index="subItem.path">
       <template #title>
-        <el-icon :size="16">
-          <component :is="subItem.meta.icon" color="#fefefea6"></component>
+        <svg-icon v-if="subItem.meta.svgIcon" :name="subItem.meta.svgIcon" :iconStyle="{ width: '24px', height: '24px', marginRight: '9px'}" />
+        <el-icon v-else-if="subItem.meta.icon" :size="18" style="margin-right: 9px;">
+          <component :is="subItem.meta.icon"></component>
         </el-icon>
         <span slot="title">{{ subItem.meta.title }}</span>
       </template>
       <SubMenu :menuList="subItem.children" />
     </el-sub-menu>
     <el-menu-item v-else :index="subItem.path" @click="routeGo(subItem)">
-      <el-icon v-if="subItem.meta.icon">
+      <svg-icon v-if="subItem.meta.svgIcon" :name="subItem.meta.svgIcon" :iconStyle="{ width: '24px', height: '24px', marginRight: '9px'}" />
+      <el-icon v-else-if="subItem.meta.icon" :size="18" style="margin-right: 9px;">
         <component :is="subItem.meta.icon"></component>
       </el-icon>
       <template #title>
@@ -102,8 +104,13 @@ const routeGo = (subItem: any) => {
 }
 
 .navbar-side .el-menu>.el-sub-menu>.el-menu>.el-menu-item {
-  padding: 0 50px !important;
+  padding: 0 20px 0 50px !important;
   font-size: 13px;
+  span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }
 
 .navbar-side .el-menu>.el-menu-item:hover {
@@ -122,7 +129,7 @@ const routeGo = (subItem: any) => {
   position: absolute;
   width: 0px;
   height: 50px;
-  right: 34px;
+  right: 25px;
   top: 0;
 }
 .navbar-side .el-menu>.el-menu-item.is-active::before {

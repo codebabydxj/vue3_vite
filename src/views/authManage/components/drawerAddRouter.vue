@@ -43,10 +43,13 @@
       </template>
       <template v-if="menuType == 1">
         <el-form-item label="组件name" prop="name">
-          <el-input v-model="drawerProps.row.name" placeholder="请用英文命名（确保唯一），用于keep-alive缓存"></el-input>
+          <el-input v-model="drawerProps.row.name" placeholder="请用英文命名并确保唯一，用于keep-alive页面缓存"></el-input>
         </el-form-item>
         <el-form-item label="菜单图标" prop="icon">
-          <SelectIcon v-model:iconValue="drawerProps.row.icon" />
+          <SelectIcon v-model:iconValue="drawerProps.row.icon" showIcon="UI" />
+        </el-form-item>
+        <el-form-item label="自定义图标" prop="svgIcon">
+          <SelectIcon v-model:iconValue="drawerProps.row.svgIcon" showIcon="SVG" />
         </el-form-item>
         <el-form-item label="菜单路径" prop="path">
           <el-input v-model="drawerProps.row.path" placeholder="请填写菜单路径"></el-input>
@@ -89,10 +92,11 @@ import { ElMessage, FormInstance } from "element-plus";
 import SelectIcon from "@/components/selectIcon/index.vue";
 
 const rules: any = ref({
-  title: [{ required: true, message: "请填写菜单名称", trigger: 'blur' }],
-  icon: [{ required: true, message: "请选择菜单图标", trigger: 'change' }],
-  path: [{ required: true, message: "请填写菜单路径", trigger: 'blur' }],
-  btnName: [{ required: true, message: "请填写按钮名称", trigger: 'blur' }],
+  title: [{ required: true, message: "请填写菜单名称", trigger: ['change', 'blur'] }],
+  name: [{ required: true, message: "请填写组件name", trigger: ['change', 'blur'] }],
+  icon: [{ required: true, message: "请选择菜单图标", trigger: ['change', 'blur'] }],
+  path: [{ required: true, message: "请填写菜单路径", trigger: ['change', 'blur'] }],
+  btnName: [{ required: true, message: "请填写按钮名称", trigger: ['change', 'blur'] }],
 });
 
 interface Tree {

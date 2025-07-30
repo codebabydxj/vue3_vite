@@ -41,7 +41,6 @@
 import { ref, watch, computed, inject, onBeforeUnmount } from "vue"
 import { useGlobalStore } from "@/store"
 import { useDebounceFn } from "@vueuse/core"
-import _ from "lodash"
 import { HOME_URL } from "@/config";
 import SubMenu from "@/components/menuBar/SubMenu/index.vue"
 
