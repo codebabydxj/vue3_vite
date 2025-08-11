@@ -11,18 +11,18 @@ Vite-Admin 一款基于 Vue3.5、TypeScript、Vite5、Pinia、Element-Plus 开�
 
 ### 项目功能 🔨
 
-- 使用 Vue3.2 + TypeScript 开发，单文件组件＜ script setup ＞
-- 采用 Vite4 作为项目开发、打包工具（配置 Gzip 打包、TSX 语法、跨域代理…）
+- 使用 Vue3.5 + TypeScript 开发，单文件组件＜ script setup ＞
+- 采用 Vite5 作为项目开发、打包工具（配置 Gzip 打包、TSX 语法、跨域代理…）
 - 使用 Pinia 替代 Vuex，轻量、简单、易用，集成 Pinia 持久化插件
 - 使用 TypeScript 对 Axios 整个二次封装（请求拦截、取消、常用请求封装…）
-- 基于 Element 二次封装 ProTable 组件，表格页面全部为配置项 columns
-- 支持 Element 组件大小切换、暗黑模式
+- 基于 Element-Plus 二次封装 ProTable 组件，表格页面全部为配置项 columns
+- 支持 Element-Plus 组件大小切换、暗黑模式
 - 使用 VueRouter 进行路由权限拦截、页面按钮权限配置、路由懒加载
 - 使用 KeepAlive 对页面进行缓存，支持多级嵌套页面缓存
 
 ### 兼容性注意
 
-- Vite 需要 Node.js 版本 >= 12.0.0
+- Vite 需要 Node.js 版本 >= 20
 
 ### 组件库Naive UI（推荐）
 
@@ -79,9 +79,9 @@ npm run build:pro | yarn build:pro
 ### gitlab 同步 github 🧩
 
 ```text
-- git remote add origin github-url   添加远程仓库
+- git remote add origin github-url      添加远程仓库
 - git pull origin branch                同步拉取github分支代码
 - git push origin branch                推送代码至github
-- git remote -v                      查看当前远程仓库
-- git remote rm branch               删除远程仓库
+- git remote -v                         查看当前远程仓库
+- git remote rm branch                  删除远程仓库
 ```
