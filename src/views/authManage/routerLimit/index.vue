@@ -27,13 +27,13 @@
           </template>
           <!-- 表格操作 -->
           <template #operation="scope">
-            <el-link type="primary" :icon="EditPen" style="margin-left: 30px;" @click="openDrawer('编辑', scope.row)">编辑</el-link>
+            <el-link type="primary" :underline="'never'" :icon="EditPen" style="margin-left: 30px;" @click="openDrawer('编辑', scope.row)">编辑</el-link>
             <el-popconfirm title="确定删除吗?" @confirm="handleDel(scope.row)">
               <template #reference>
-                <el-link type="danger" :icon="Delete">删除</el-link>
+                <el-link type="danger" :underline="'never'" :icon="Delete">删除</el-link>
               </template>
             </el-popconfirm>
-            <el-link type="warning" :icon="Lock" @click="authConfig(scope.row)" v-if="scope.row.component">按钮权限</el-link>
+            <el-link type="warning" :underline="'never'" :icon="Lock" @click="authConfig(scope.row)" v-if="scope.row.component">按钮权限</el-link>
           </template>
         </ProTable>
         <UserDrawer ref="drawerRef" />

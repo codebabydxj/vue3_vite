@@ -15,57 +15,54 @@ import { HOME_URL } from "@/config";
 
 type TransitionAnimation = '' | 'fade-side' | 'fade-bottom' | 'fade-scale' | 'zoom-fade' | 'zoom-out' | 'fade'
 
-const useGlobalStore = defineStore({
-  /* id: 必须存在，在所有 Store 中唯一 */
-	id: 'GlobalState',
-  state: () => {
-    return {
-      currentRoute: '/',
-      realRoute: <any>'',
-      menuList: <any>[],
-      flatMenuList: <any>[],
-      authButtonList: <any>{},
-      routes: <any>[{ title: '工作台',  name: 'Home', route: HOME_URL, realPath: HOME_URL, close: false }],
-      // 常量
-      consts: <any>[],
-      userInfo: <any>{},
-      winSize: <any>{},
-      pagination: <boolean>false,
-      maxHeight: <any>'200px',
-      lockScreen: <any>{
-        lockScreenCode: <any>'',
-        unLockBackRoute: <any>'',
-      },
-      themeConfig: <any>{
-        // 默认 主题颜色
-        primary: '#409EFF',
-        // 深色模式
-        isDark: false,
-        // 跟随系统
-        isWindowMode: false,
-        // 哀悼模式
-        isGrey: false,
-        // 色弱模式
-        isWeak: false,
-        // 折叠菜单
-        isCollapse: true,
-        // 面包屑
-        isBreadcrumb: true,
-        // 转场动画
-        transitionAnimation: 'fade-side' as TransitionAnimation,
-        // 锁定屏幕
-        isLockScreen: false,
-        // 引导页
-        isOpenGuide: true,
-        // 登录界面主题更换
-        isReplaceNewLoginPage: true,
-        // 页面水印
-        isWatermark: false,
-      },
-      // 当前页面的 router name，用来做按钮权限筛选
-      routeName: '',
-    }
-  },
+/* id: GlobalState, 必须存在，在所有 Store 中唯一 */
+const useGlobalStore = defineStore('GlobalState', {
+  state: () => ({
+    currentRoute: '/',
+    realRoute: <any>'',
+    menuList: <any>[],
+    flatMenuList: <any>[],
+    authButtonList: <any>{},
+    routes: <any>[{ title: '工作台',  name: 'Home', route: HOME_URL, realPath: HOME_URL, close: false }],
+    // 常量
+    consts: <any>[],
+    userInfo: <any>{},
+    winSize: <any>{},
+    pagination: <boolean>false,
+    maxHeight: <any>'200px',
+    lockScreen: <any>{
+      lockScreenCode: <any>'',
+      unLockBackRoute: <any>'',
+    },
+    themeConfig: <any>{
+      // 默认 主题颜色
+      primary: '#409EFF',
+      // 深色模式
+      isDark: false,
+      // 跟随系统
+      isWindowMode: false,
+      // 哀悼模式
+      isGrey: false,
+      // 色弱模式
+      isWeak: false,
+      // 折叠菜单
+      isCollapse: true,
+      // 面包屑
+      isBreadcrumb: true,
+      // 转场动画
+      transitionAnimation: 'fade-side' as TransitionAnimation,
+      // 锁定屏幕
+      isLockScreen: false,
+      // 引导页
+      isOpenGuide: true,
+      // 登录界面主题更换
+      isReplaceNewLoginPage: true,
+      // 页面水印
+      isWatermark: false,
+    },
+    // 当前页面的 router name，用来做按钮权限筛选
+    routeName: '',
+  }),
   getters: <any>{
     // 按钮权限列表
     authButtonListGet: (state: any) => state.authButtonList,

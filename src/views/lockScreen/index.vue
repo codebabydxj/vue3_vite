@@ -34,9 +34,9 @@
               @keyup.enter.native="goSys" />
           </span>
           <div class="bot enter-form">
-            <el-link type="primary" :underline="false" @click="goBack">返回</el-link>
-            <el-link type="primary" :underline="false" @click="logout">返回登录</el-link>
-            <el-link type="primary" :underline="false" @click="goSys">进入系统</el-link>
+            <el-link type="primary" :underline="'never'" @click="goBack">返回</el-link>
+            <el-link type="primary" :underline="'never'" @click="logout">返回登录</el-link>
+            <el-link type="primary" :underline="'never'" @click="goSys">进入系统</el-link>
           </div>
         </div>
       </div>

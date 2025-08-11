@@ -28,11 +28,11 @@
             </template>
             <!-- 表格操作 -->
             <template #operation="scope">
-              <el-link type="primary" :icon="View">查看</el-link>
-              <el-link type="primary" :icon="EditPen">编辑</el-link>
+              <el-link type="primary" :underline="'never'" :icon="View">查看</el-link>
+              <el-link type="primary" :underline="'never'" :icon="EditPen">编辑</el-link>
               <el-popconfirm title="确定删除吗?" @confirm="handleDel(scope.row)">
                 <template #reference>
-                  <el-link type="danger" :icon="Delete">删除</el-link>
+                  <el-link type="danger" :underline="'never'" :icon="Delete">删除</el-link>
                 </template>
               </el-popconfirm>
             </template>

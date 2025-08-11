@@ -18,6 +18,7 @@ import "@/baseStyle/element.scss"
 
 /** 路由 */
 import routers from "./routers"
+import { initDynamicRouter } from "@/routers/modules/dynamicRouter";
 
 /** 状态管理库 */
 import { pinia } from "./store"
@@ -31,18 +32,24 @@ import SvgIcon from "@/icons"
 /** 自定义指令 */
 import directives from "@/directives"
 
-const app = createApp(App);
+async function render() {
+  const app = createApp(App);
+  
+  /** 将 globalRouter 方法挂载在全局 */
+  app.provide("Router", globalRouter);
+  
+  /** 注册全局封装组件 */
+  app.component("flex-card", flexCard);
+  
+  /** 注册全局element、antd Icons组件 */
+  const Icons = { ...ElementIcon, ...AntdIcons }
+  Object.keys(Icons).forEach(key => {
+    app.component(key, Icons[key as keyof typeof Icons])
+  })
 
-/** 将 globalRouter 方法挂载在全局 */
-app.provide("Router", globalRouter);
-
-/** 注册全局封装组件 */
-app.component("flex-card", flexCard);
-
-/** 注册全局element、antd Icons组件 */
-const Icons = { ...ElementIcon, ...AntdIcons }
-Object.keys(Icons).forEach(key => {
-  app.component(key, Icons[key as keyof typeof Icons])
-})
-
-app.use(routers).use(pinia).use(SvgIcon).use(directives).use(ElementPlus, { locale: zhCN }).mount("#app");
+  app.use(pinia);
+  await initDynamicRouter(); // 强行让挂载等待路由初始化完成，解决刷新页面，出现404或者白屏的情况
+  app.use(routers).use(SvgIcon).use(directives).use(ElementPlus, { locale: zhCN })
+  app.mount("#app");
+}
+render();

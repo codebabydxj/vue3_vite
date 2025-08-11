@@ -8,33 +8,33 @@
       </div>
       <div class="user-info">
         <el-tooltip effect="dark" content="刷新" placement="bottom">
-          <el-link id="Refreshs" class="icon-style" :underline="false" @click="refresh">
+          <el-link id="Refreshs" class="icon-style" :underline="'never'" @click="refresh">
             <el-icon color="#efefef" :size="22">
               <Refresh />
             </el-icon>
           </el-link>
         </el-tooltip>
         <el-tooltip effect="dark" content="菜单搜索" placement="bottom">
-          <el-link id="SearchMenus" class="icon-style" :underline="false" @click="searchMenus">
+          <el-link id="SearchMenus" class="icon-style" :underline="'never'" @click="searchMenus">
             <el-icon color="#efefef" :size="22">
               <Search />
             </el-icon>
           </el-link>
         </el-tooltip>
         <el-tooltip effect="dark" content="主题" placement="bottom">
-          <el-link id="Theme" class="icon-style" :underline="false" @click="handleTheme">
+          <el-link id="Theme" class="icon-style" :underline="'never'" @click="handleTheme">
             <el-icon color="#efefef" :size="22">
               <SkinOutlined />
             </el-icon>
           </el-link>
         </el-tooltip>
         <el-tooltip effect="dark" content="消息" placement="bottom">
-          <el-link id="Message" class="icon-style" :underline="false">
+          <el-link id="Message" class="icon-style" :underline="'never'">
             <Message id="message" />
           </el-link>
         </el-tooltip>
         <el-tooltip effect="dark" content="全屏" placement="bottom">
-          <el-link id="Full" class="icon-style" :underline="false" @click="screenfullTog">
+          <el-link id="Full" class="icon-style" :underline="'never'" @click="screenfullTog">
             <el-icon color="#efefef" :size="22">
               <fullscreen-outlined v-if="!isFullscreen" />
               <fullscreen-exit-outlined v-else />

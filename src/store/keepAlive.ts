@@ -4,9 +4,9 @@ import { KeepAliveState } from "@/store/interface";
 /**
  * 要保证组件定义的 name 全等于 router中定义的 name ！！！！！！！！
  */
-export const useKeepAliveStore = defineStore({
-  /* id: 必须存在，在所有 Store 中唯一 */
-  id: 'keepAlive',
+
+/* id: keepAlive, 必须存在，在所有 Store 中唯一 */
+export const useKeepAliveStore = defineStore('keepAlive', {
   state: (): KeepAliveState => ({
     keepAliveName: []
   }),
