@@ -37,6 +37,8 @@ const useGlobalStore = defineStore('GlobalState', {
     themeConfig: <any>{
       // 默认 主题颜色
       primary: '#409EFF',
+      // 浅色模式
+      isLight: true,
       // 深色模式
       isDark: false,
       // 跟随系统

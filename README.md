@@ -76,6 +76,49 @@ npm run build:pro | yarn build:pro
 - EasyMock：https://mock.mengxuegu.com
 
 
+### github 同步 gitlab 🧩
+
+```text
+# 克隆GitHub仓库
+- git clone https://github.com/your-project.git
+- cd your-project
+
+# 添加私有GitLab远程（命名为gitlab）
+- git remote add gitlab https://gitlab.com/your-project.git
+
+# 添加原始GitHub仓库为上游（命名为upstream）
+- git remote add upstream https://github.com/your-project.git
+
+# 若提示upstream已存在  git remote rm origin  后重新添加
+
+# 验证远程配置
+- git remote -v
+- 输出包含： upstream -> GitHub地址  ||  gitlab -> 私有GitLab地址
+
+# 首次推送代码到GitLab
+# 推送main分支（如使用master分支请自行替换）
+- git push -u gitlab main
+
+# 推送所有分支和标签（可选）
+- git push --all gitlab  
+- git push --tags gitlab
+
+# 当GitHub仓库有更新时，手动同步更新流程
+# 1. 拉取上游更新
+- git fetch upstream
+
+# 2. 合并到本地分支
+- git checkout main
+- git merge upstream/main
+
+# 3. 推送到私有GitLab
+- git push gitlab main
+
+# 可选：强制覆盖（慎用）
+- git push -f gitlab main
+
+```
+
 ### gitlab 同步 github 🧩
 
 ```text

@@ -58,6 +58,12 @@ const routeGo = (subItem: any) => {
 <style lang="scss">
 .navbar-side .el-sub-menu__title {
   color: #fefefea6 !important;
+
+  span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }
 
 .navbar-side .el-menu--collapse>.el-sub-menu.is-active>.el-sub-menu__title {

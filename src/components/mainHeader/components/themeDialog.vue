@@ -1,11 +1,11 @@
 <template>
   <el-drawer
     title="主题配置"
-    size="500"
+    size="520"
     :modelValue="drawerVisible"
     :append-to-body="true"
     :before-close="cancel">
-    <el-scrollbar>
+    <el-scrollbar style="padding-right: 15px;">
       <!-- 全局主题 -->
       <el-divider class="divider" content-position="center">
         <el-icon><ColdDrink /></el-icon>
@@ -21,12 +21,30 @@
         </div>
       </div>
       <div class="theme-item">
+        <span>浅色模式</span>
+        <el-switch v-model="themeConfig.isLight" @change="changeSystemMode(themeConfig.isLight, 'light')">
+          <template #active-action>
+            <svg-icon name="light" :iconStyle="{ width: '12px', height: '12px'}" />
+          </template>
+          <template #inactive-action>
+            <svg-icon name="light" :iconStyle="{ width: '12px', height: '12px'}" />
+          </template>
+        </el-switch>
+      </div>
+      <div class="theme-item">
         <span>暗黑模式</span>
-        <SwitchDark />
+        <el-switch v-model="themeConfig.isDark" @change="changeSystemMode(themeConfig.isDark, 'dark')">
+          <template #active-action>
+            <svg-icon name="dark" :iconStyle="{ width: '12px', height: '12px'}" />
+          </template>
+          <template #inactive-action>
+            <svg-icon name="dark" :iconStyle="{ width: '12px', height: '12px'}" />
+          </template>
+        </el-switch>
       </div>
       <div class="theme-item">
         <span>跟随系统</span>
-        <el-switch v-model="themeConfig.isWindowMode" @change="changeWindowMode">
+        <el-switch v-model="themeConfig.isWindowMode" @change="changeSystemMode(themeConfig.isWindowMode, 'auto')">
           <template #active-action>
             <svg-icon name="win" :iconStyle="{ width: '12px', height: '12px'}" />
           </template>
@@ -53,7 +71,7 @@
             <el-icon><View /></el-icon>
           </template>
           <template #inactive-action>
-            <el-icon><Hide /></el-icon>
+            <el-icon><View /></el-icon>
           </template>
         </el-switch>
       </div>
@@ -104,7 +122,6 @@ import { ref, computed } from "vue"
 import { Check, Close, Lock, Unlock } from "@element-plus/icons-vue"
 import { useTheme } from "@/hooks/useTheme"
 import { useGlobalStore } from '@/store'
-import SwitchDark from "@/components/ThemeDark/index.vue"
 import lockScreenDialog from "@/components/mainHeader/components/lockScreenDialog.vue";
 
 const props = defineProps(['drawerVisible'])
@@ -164,8 +181,13 @@ const changeColors = (color: any) => {
   changePrimary(color)
 }
 
-const changeWindowMode = (val: any) => {
-  myStore.setThemeConfig({ ...themeConfig.value, isWindowMode: val, isDark: false })
+const changeSystemMode = (val: any, mode: any) => {
+  myStore.setThemeConfig({
+    ...themeConfig.value,
+    isLight: ((mode === 'light' && val) || (!themeConfig.value.isDark && !themeConfig.value.isWindowMode)) ? true : false,
+    isDark: mode === 'dark' && val ? true : false,
+    isWindowMode: mode === 'auto' && val ? true : false,
+  })
   switchDark()
 }
 
@@ -220,7 +242,7 @@ const cancel = () => {
 		font-size: 14px;
 	}
   .fade-select {
-    width: 50%;
+    width: 30%;
   }
 }
 .colors {
@@ -228,7 +250,7 @@ const cancel = () => {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 20px;
   margin: 20px 0;
   .color-item {
     display: flex;
