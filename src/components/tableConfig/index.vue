@@ -1,16 +1,18 @@
 <template>
   <div class="tb-config" v-if="configType.length > 0">
-    <el-tooltip effect="dark" content="刷新" placement="top">
+    <el-tooltip effect="dark" :content="$t('proTable.refresh')" placement="top">
       <el-button class="config-btn" circle @click="handleEvent(1)"><el-icon size="16"><Refresh /></el-icon></el-button>
     </el-tooltip>
     <template v-if="configType.includes('memory') && colSetting.length > 0">
-      <el-tooltip effect="dark" content="列配置" placement="top">
+      <el-tooltip effect="dark" :content="$t('proTable.columnConfig')" placement="top">
         <el-button class="config-btn" circle @click="handleEvent(2)"><el-icon size="16"><Operation /></el-icon></el-button>
       </el-tooltip>
     </template>
     <table-size v-if="configType.includes('size')" @command="handleConfig"></table-size>
     <!-- <table-column v-if="configType.includes('column')" :isShowSelIdx="isShowSelIdx"  @command="handleConfig"></table-column> -->
-    <el-button class="config-btn" circle @click="handleEvent(3)"><el-icon size="16"><Search /></el-icon></el-button>
+    <el-tooltip effect="dark" :content="$t('proTable.hideShowSearch')" placement="top">
+      <el-button class="config-btn" circle @click="handleEvent(3)"><el-icon size="16"><Search /></el-icon></el-button>
+    </el-tooltip>
   </div>
 </template>
 

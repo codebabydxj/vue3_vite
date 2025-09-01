@@ -2,41 +2,46 @@
   <header>
     <nav class="navbar-top">
       <div class="tabs-wrap">
-        <el-tooltip effect="dark" content="支持右键操作和拖拽排序" placement="bottom" >
+        <el-tooltip effect="dark" :content="$t('header.rightClick')" placement="bottom" >
           <slot name="tabs"></slot>
         </el-tooltip>
       </div>
       <div class="user-info">
-        <el-tooltip effect="dark" content="刷新" placement="bottom">
+        <el-tooltip effect="dark" :content="$t('header.language')" placement="bottom">
+          <el-link id="Lang" class="icon-style" :underline="'never'" @click="changeLang">
+            <Languages id="languages" />
+          </el-link>
+        </el-tooltip>
+        <el-tooltip effect="dark" :content="$t('header.refresh')" placement="bottom">
           <el-link id="Refreshs" class="icon-style" :underline="'never'" @click="refresh">
             <el-icon color="#efefef" :size="22">
               <Refresh />
             </el-icon>
           </el-link>
         </el-tooltip>
-        <el-tooltip effect="dark" content="菜单搜索" placement="bottom">
+        <el-tooltip effect="dark" :content="$t('header.menuSearch')" placement="bottom">
           <el-link id="SearchMenus" class="icon-style" :underline="'never'" @click="searchMenus">
             <el-icon color="#efefef" :size="22">
               <Search />
             </el-icon>
           </el-link>
         </el-tooltip>
-        <el-tooltip effect="dark" content="主题" placement="bottom">
+        <el-tooltip effect="dark" :content="$t('header.theme')" placement="bottom">
           <el-link id="Theme" class="icon-style" :underline="'never'" @click="handleTheme">
             <el-icon color="#efefef" :size="22">
               <SkinOutlined />
             </el-icon>
           </el-link>
         </el-tooltip>
-        <el-tooltip effect="dark" content="消息" placement="bottom">
+        <el-tooltip effect="dark" :content="$t('header.message')" placement="bottom">
           <el-link id="Message" class="icon-style" :underline="'never'">
             <Message id="message" />
           </el-link>
         </el-tooltip>
-        <el-tooltip effect="dark" content="全屏" placement="bottom">
+        <el-tooltip effect="dark" :content="$t('header.fullScreen')" placement="bottom">
           <el-link id="Full" class="icon-style" :underline="'never'" @click="screenfullTog">
             <el-icon color="#efefef" :size="22">
-              <fullscreen-outlined v-if="!isFullscreen" />
+              <ExpandOutlined v-if="!isFullscreen" />
               <fullscreen-exit-outlined v-else />
             </el-icon>
           </el-link>
@@ -57,7 +62,7 @@
         <el-dropdown class="head" trigger="click" @command="handleCommand">
           <div class="drop-box">
             <el-tooltip effect="customized" :content="`当前登录用户：${userName}`" placement="bottom">
-              <el-text :truncated="true" type="warning" class="username">{{ userName }}</el-text>
+              <el-text :truncated="true" style="color: #ffffff;" class="username">{{ userName }}</el-text>
             </el-tooltip>
             <el-avatar class="avatar" icon="el-icon-user-solid" :size="35"
               src="/src/assets/imgs/avatar.png" fit="fill"></el-avatar>
@@ -65,16 +70,16 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item command="lockScreen">
-                <el-icon><Lock /></el-icon>锁定屏幕
+                <el-icon><Lock /></el-icon>{{ $t("person.lockScreen") }}
               </el-dropdown-item>
-              <el-dropdown-item command="center" divided>
-                <el-icon><User /></el-icon>个人中心
+              <el-dropdown-item command="cache" divided>
+                <el-icon><Refresh /></el-icon>{{ $t("person.clearCache") }}
               </el-dropdown-item>
               <el-dropdown-item command="setCore">
-                <el-icon><Setting /></el-icon>设置中心
+                <el-icon><Setting /></el-icon>{{ $t("person.setting") }}
               </el-dropdown-item>
               <el-dropdown-item command="logout" divided>
-                <el-icon><SwitchButton /></el-icon>退出登录
+                <el-icon><SwitchButton /></el-icon>{{ $t("person.logout") }}
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -94,7 +99,7 @@
 </template>
 
 <script setup lang="ts" name="MainHeader">
-import { inject, ref, computed } from 'vue';
+import { inject, ref, computed, onMounted } from 'vue';
 import screenfull from 'screenfull';
 import { useRouter } from 'vue-router';
 import { useGlobalStore } from '@/store';
@@ -103,6 +108,7 @@ import { loginOut } from '@/config/api';
 import { LOGIN_URL } from "@/config";
 import { ElMessage, ElMessageBox } from 'element-plus';
 import Message from '../headerMessage/index.vue';
+import Languages from '../Languages/index.vue';
 import searchMenu from './components/searchMenuDialog.vue';
 import themeDialog from './components/themeDialog.vue';
 import lockScreenDialog from "./components/lockScreenDialog.vue";
@@ -123,6 +129,18 @@ const weatherSrc: any = computed(() => {
   return src;
 })
 
+onMounted(() => {
+  // 监听 screenfull 属性的变化来改变图标
+  screenfull.on('change', () => {
+    isFullscreen.value = screenfull.isFullscreen;
+  })
+  // 针对F11全屏无法监听问题
+  window.addEventListener('keydown', screenKeyDown, true);
+})
+
+const changeLang = () => {
+
+}
 const refresh = () => {
   Router.refreshView()
 }
@@ -145,6 +163,14 @@ const screenfullTog = async () => {
       type: 'warning',
       message: '浏览器不能全屏',
     })
+  }
+}
+const screenKeyDown = (e: any) => {
+  // F11按键触发全屏事件
+  if (e.keyCode === 122) {
+    // 阻止F11默认事件，通过调用 screenfull 的方法来实现全屏和非全屏操作
+    e.preventDefault();
+    screenfull.toggle();
   }
 }
 const handleCommand = (command: any) => {
@@ -177,9 +203,10 @@ const handleCommand = (command: any) => {
   if (command === 'lockScreen') {
     lockScreenRef.value.acceptParams();
   }
-  // 个人中心
-  if (command === 'center') {
-
+  // 清除缓存 Ctrl+F5 和 Shift+F5 的效果
+  if (command === 'cache') {
+    window.location.reload();
+    window.location.replace(window.location.href);
   }
   // 设置中心
   if (command === 'setCore') {
@@ -203,7 +230,7 @@ header .navbar-top {
 }
 
 $tab-r-min-width: 405px;
-$tab-r-max-width: 465px;
+$tab-r-max-width: 552px;
 
 header .navbar-top .tabs-wrap {
   flex: 1 1 auto;
@@ -260,10 +287,10 @@ header .navbar-top .user-info .head {
 .el-popper.is-customized {
   padding: 6px 12px;
   color: var(--el-color-white);
-  background: var(--el-color-primary);
+  background: var(--el-color-info);
 }
 .el-popper.is-customized .el-popper__arrow::before {
-  background: var(--el-color-primary);
+  background: var(--el-color-info);
   right: 0;
 }
 </style>

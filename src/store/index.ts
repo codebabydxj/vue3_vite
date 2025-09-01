@@ -12,8 +12,7 @@ import piniaPluginPersist from "pinia-plugin-persistedstate";
 import piniaPersistConfig from "./helper/piniaPersist";
 import { getShowMenuList, getFlatMenuList, getAllBreadcrumbList } from "@/utils/tools";
 import { HOME_URL } from "@/config";
-
-type TransitionAnimation = '' | 'fade-side' | 'fade-bottom' | 'fade-scale' | 'zoom-fade' | 'zoom-out' | 'fade'
+import { TransitionAnimation } from "./interface"
 
 /* id: GlobalState, 必须存在，在所有 Store 中唯一 */
 const useGlobalStore = defineStore('GlobalState', {
@@ -37,6 +36,10 @@ const useGlobalStore = defineStore('GlobalState', {
     themeConfig: <any>{
       // 默认 主题颜色
       primary: '#409EFF',
+      // Element-Plus 组件大小
+      assemblySize: 'default',
+      // 当前系统语言
+      language: null,
       // 浅色模式
       isLight: true,
       // 深色模式

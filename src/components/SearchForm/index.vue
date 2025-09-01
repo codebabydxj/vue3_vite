@@ -17,10 +17,10 @@
         </GridItem>
         <GridItem suffix>
           <div class="search-operation">
-            <el-button type="primary" :icon="Search" @click="search">查 询</el-button>
-            <el-button :icon="Delete" @click="reset">重 置</el-button>
+            <el-button type="primary" :icon="Search" @click="search">{{ $t("proTable.search") }}</el-button>
+            <el-button :icon="Delete" @click="reset">{{ $t("proTable.reset") }}</el-button>
             <el-button v-if="showCollapse" type="primary" link class="search-isOpen" @click="handleCollapse">
-              {{ collapsed ? "展开" : "合并" }}
+              {{ collapsed ? $t("proTable.searchOpen") : $t("proTable.searchClose") }}
               <el-icon class="el-icon--right">
                 <component :is="collapsed ? ArrowDown : ArrowUp"></component>
               </el-icon>

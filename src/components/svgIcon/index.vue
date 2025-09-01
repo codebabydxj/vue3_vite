@@ -32,5 +32,6 @@ const symbolId = computed(() => `#${props.prefix}-${props.name}`)
 <style lang="scss" scoped>
 .svg-icon {
   overflow: inherit;
+  outline: none;
 }
 </style>

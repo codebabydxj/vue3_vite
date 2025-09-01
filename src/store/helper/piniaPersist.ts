@@ -1,4 +1,4 @@
-import { PersistedStateOptions } from "pinia-plugin-persistedstate";
+import { PersistenceOptions } from "pinia-plugin-persistedstate";
 
 /**
  * @description pinia持久化参数配置
@@ -7,10 +7,10 @@ import { PersistedStateOptions } from "pinia-plugin-persistedstate";
  * @return persist
  * */
 const piniaPersistConfig = (key: string, paths?: string[]) => {
-	const persist: PersistedStateOptions = {
+	const persist: PersistenceOptions = {
 		key,
 		storage: localStorage, // 选择缓存方式 sessionStorage / localStorage
-		paths, // 默认全部缓存，部分缓存需要传paths[key]
+		pick: paths, // 默认全部缓存，部分缓存需要传paths[key]
 	};
 	return persist;
 };

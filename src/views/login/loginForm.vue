@@ -20,8 +20,8 @@
       </el-form-item>
     </el-form>
     <div class="login-btn">
-      <el-button class="btn reset" round :icon="CircleClose" @click="resetForm">重 置</el-button>
-      <el-button class="btn log" round type="primary" :icon="User" :loading="loading" @click="submitForm(ruleFormRef)">登 录</el-button>
+      <el-button class="btn reset" round :icon="CircleClose" @click="resetForm">重置</el-button>
+      <el-button class="btn log" round type="primary" :icon="User" :loading="loading" @click="submitForm(ruleFormRef)">登录</el-button>
     </div>
   </div>
 </template>

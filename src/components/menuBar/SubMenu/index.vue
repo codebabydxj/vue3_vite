@@ -2,8 +2,8 @@
   <template v-for="subItem in menuList" :key="subItem.path">
     <el-sub-menu v-if="subItem.children?.length" :index="subItem.path">
       <template #title>
-        <svg-icon v-if="subItem.meta.svgIcon" :name="subItem.meta.svgIcon" :iconStyle="{ width: '24px', height: '24px', marginRight: '9px'}" />
-        <el-icon v-else-if="subItem.meta.icon" :size="18" style="margin-right: 9px;">
+        <svg-icon v-if="subItem.meta.svgIcon" :name="subItem.meta.svgIcon" :iconStyle="{ width: '22px', height: '22px', marginRight: '8px'}" />
+        <el-icon v-else-if="subItem.meta.icon" :size="20" style="margin: 0 8px 0 -2px;">
           <component :is="subItem.meta.icon"></component>
         </el-icon>
         <span slot="title">{{ subItem.meta.title }}</span>
@@ -11,8 +11,8 @@
       <SubMenu :menuList="subItem.children" />
     </el-sub-menu>
     <el-menu-item v-else :index="subItem.path" @click="routeGo(subItem)">
-      <svg-icon v-if="subItem.meta.svgIcon" :name="subItem.meta.svgIcon" :iconStyle="{ width: '24px', height: '24px', marginRight: '9px'}" />
-      <el-icon v-else-if="subItem.meta.icon" :size="18" style="margin-right: 9px;">
+      <svg-icon v-if="subItem.meta.svgIcon" :name="subItem.meta.svgIcon" :iconStyle="{ width: '22px', height: '22px', marginRight: '8px'}" />
+      <el-icon v-else-if="subItem.meta.icon" :size="20" style="margin: 0 8px 0 -2px;">
         <component :is="subItem.meta.icon"></component>
       </el-icon>
       <template #title>
