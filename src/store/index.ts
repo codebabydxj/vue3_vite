@@ -64,6 +64,8 @@ const useGlobalStore = defineStore('GlobalState', {
       isReplaceNewLoginPage: true,
       // 页面水印
       isWatermark: false,
+      // 防止调试
+      preventDebug: false,
     },
     // 当前页面的 router name，用来做按钮权限筛选
     routeName: '',

@@ -52,6 +52,7 @@ export default {
     lockScreen: "LockScreen",
     openGuidePage: "OpenGuidePage",
     openWatermark: "OpenWatermark",
+    preventDebug: "PreventDebug",
   },
   menu: {
     fold: "Click Fold",
