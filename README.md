@@ -86,7 +86,7 @@ npm run build:pro | yarn build:pro
 # 添加私有GitLab远程（命名为gitlab）
 - git remote add gitlab https://gitlab.com/your-project.git
 
-# 添加原始GitHub仓库为上游（命名为upstream）
+# 添加原始GitHub仓库为上游（命名为upstream， 相当于origin）
 - git remote add upstream https://github.com/your-project.git
 
 # 若提示upstream已存在  git remote rm origin  后重新添加
