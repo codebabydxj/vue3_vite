@@ -267,6 +267,11 @@
 			color: var(--el-text-color-primary) !important;
 		}
 	}
+  .el-drawer__body {
+    .el-scrollbar {
+      padding-right: 15px;
+    }
+  }
 	.el-drawer__footer {
 		border-top: 1px solid var(--el-border-color-lighter);
 	}

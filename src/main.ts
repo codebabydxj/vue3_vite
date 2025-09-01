@@ -20,6 +20,9 @@ import "@/baseStyle/element.scss"
 import routers from "./routers"
 import { initDynamicRouter } from "@/routers/modules/dynamicRouter";
 
+/** 国际化 */
+import I18n from "@/languages/index";
+
 /** 状态管理库 */
 import { pinia } from "./store"
 
@@ -47,6 +50,7 @@ async function render() {
     app.component(key, Icons[key as keyof typeof Icons])
   })
 
+  app.use(I18n);
   app.use(pinia);
   await initDynamicRouter(); // 强行让挂载等待路由初始化完成，解决刷新页面，出现404或者白屏的情况
   app.use(routers).use(SvgIcon).use(directives).use(ElementPlus, { locale: zhCN })

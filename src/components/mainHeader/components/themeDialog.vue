@@ -1,6 +1,6 @@
 <template>
   <el-drawer
-    title="主题配置"
+    :title="$t('theme.title')"
     size="520"
     :modelValue="drawerVisible"
     :append-to-body="true"
@@ -9,10 +9,10 @@
       <!-- 全局主题 -->
       <el-divider class="divider" content-position="center">
         <el-icon><ColdDrink /></el-icon>
-        <el-text truncated>全局主题</el-text>
+        <el-text truncated>{{ $t("theme.globalTheme") }}</el-text>
       </el-divider>
       <div class="theme-item">
-        <span>主题颜色</span>
+        <span>{{ $t("theme.themeColor") }}</span>
         <el-color-picker v-model="themeConfig.primary" :predefine="colorList" @change="changePrimary" />
       </div>
       <div class="colors">
@@ -21,7 +21,7 @@
         </div>
       </div>
       <div class="theme-item">
-        <span>浅色模式</span>
+        <span>{{ $t("theme.lightMode") }}</span>
         <el-switch v-model="themeConfig.isLight" @change="changeSystemMode(themeConfig.isLight, 'light')">
           <template #active-action>
             <svg-icon name="light" :iconStyle="{ width: '12px', height: '12px'}" />
@@ -32,7 +32,7 @@
         </el-switch>
       </div>
       <div class="theme-item">
-        <span>暗黑模式</span>
+        <span>{{ $t("theme.darkMode") }}</span>
         <el-switch v-model="themeConfig.isDark" @change="changeSystemMode(themeConfig.isDark, 'dark')">
           <template #active-action>
             <svg-icon name="dark" :iconStyle="{ width: '12px', height: '12px'}" />
@@ -43,7 +43,7 @@
         </el-switch>
       </div>
       <div class="theme-item">
-        <span>跟随系统</span>
+        <span>{{ $t("theme.autoMode") }}</span>
         <el-switch v-model="themeConfig.isWindowMode" @change="changeSystemMode(themeConfig.isWindowMode, 'auto')">
           <template #active-action>
             <svg-icon name="win" :iconStyle="{ width: '12px', height: '12px'}" />
@@ -54,7 +54,7 @@
         </el-switch>
       </div>
       <div class="theme-item">
-        <span>哀悼模式</span>
+        <span>{{ $t("theme.greyMode") }}</span>
         <el-switch v-model="themeConfig.isGrey" @change="changeGreyOrWeak('grey', !!$event)">
           <template #active-action>
             <svg-icon name="candle" :iconStyle="{ width: '14px', height: '14px'}" />
@@ -65,7 +65,7 @@
         </el-switch>
       </div>
       <div class="theme-item">
-        <span>色弱模式</span>
+        <span>{{ $t("theme.weakMode") }}</span>
         <el-switch v-model="themeConfig.isWeak" @change="changeGreyOrWeak('weak', !!$event)">
           <template #active-action>
             <el-icon><View /></el-icon>
@@ -78,37 +78,45 @@
       <!-- 界面设置 -->
       <el-divider class="divider" content-position="center">
         <el-icon><DesktopOutlined /></el-icon>
-        <el-text truncated>界面设置</el-text>
+        <el-text truncated>{{ $t("theme.pageSetting") }}</el-text>
       </el-divider>
       <div class="theme-item">
-        <span>折叠菜单</span>
+        <span>{{ $t("theme.collapseMenu") }}</span>
         <el-switch v-model="themeConfig.isCollapse" inline-prompt :active-icon="Check" :inactive-icon="Close" @change="changeCollapse" />
       </div>
       <div class="theme-item">
-        <span>面包屑导航</span>
+        <span>{{ $t("theme.breadcrumb") }}</span>
         <el-switch v-model="themeConfig.isBreadcrumb" inline-prompt :active-icon="Check" :inactive-icon="Close" @change="changeBreadcrumb" />
       </div>
       <div class="theme-item">
-        <span>页面转场动画</span>
+        <span>{{ $t("theme.pageTransition") }}</span>
         <el-select v-model="themeConfig.transitionAnimation" placeholder="请选择" class="fade-select" @change="changeTransition">
           <el-option v-for="item in transitionAnimationList" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </div>
+      <div class="theme-item">
+        <span>{{ $t("theme.configProvider") }}</span>
+        <div>
+          <el-checkbox v-model="themeConfig.assemblySize" label="默认" value="default" true-value="default" :disabled="themeConfig.assemblySize === 'default'" />
+          <el-checkbox v-model="themeConfig.assemblySize" label="小型" value="small" true-value="small" :disabled="themeConfig.assemblySize === 'small'" />
+          <el-checkbox v-model="themeConfig.assemblySize" label="大型" value="large" true-value="large" :disabled="themeConfig.assemblySize === 'large'" />
+        </div>
+      </div>
       <!-- 系统设置 -->
       <el-divider class="divider" content-position="center">
         <el-icon><Setting /></el-icon>
-        <el-text truncated>系统设置</el-text>
+        <el-text truncated>{{ $t("theme.systemSetting") }}</el-text>
       </el-divider>
       <div class="theme-item">
-        <span>锁定屏幕</span>
+        <span>{{ $t("theme.lockScreen") }}</span>
         <el-switch v-model="themeConfig.isLockScreen" inline-prompt :active-icon="Lock" :inactive-icon="Unlock" @change="changeLockScreen" />
       </div>
       <div class="theme-item">
-        <span>是否开启引导页</span>
+        <span>{{ $t("theme.openGuidePage") }}</span>
         <el-switch v-model="themeConfig.isOpenGuide" inline-prompt :active-icon="Lock" :inactive-icon="Unlock" @change="changeGuide" />
       </div>
       <div class="theme-item">
-        <span>启用水印</span>
+        <span>{{ $t("theme.openWatermark") }}</span>
         <el-switch v-model="themeConfig.isWatermark" inline-prompt :active-icon="Lock" :inactive-icon="Unlock" @change="setWatermark" />
       </div>
     </el-scrollbar>
@@ -155,6 +163,14 @@ const transitionAnimationList: any = ref([
   {
     label: '柔和',
     value: 'fade'
+  },
+  {
+    label: '卡片',
+    value: 'cardInOut'
+  },
+  {
+    label: '渐退',
+    value: 'fadeOut'
   }
 ])
 const myStore: any = useGlobalStore();

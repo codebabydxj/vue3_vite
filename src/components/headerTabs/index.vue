@@ -6,10 +6,26 @@
       </el-tab-pane>
     </el-tabs>
     <ul class="contextmenu" v-show="visable" :style="{ left: left + 'px', top: top + 'px' }">
-      <li @click="closeOthers">关闭其他</li>
-      <li @click="closeLeft">关闭左侧</li>
-      <li @click="closeRight">关闭右侧</li>
-      <li @click="closeAll">全部关闭</li>
+      <li @click="closeCurrent">
+        <el-icon><Close /></el-icon>
+        {{ $t("header.closeCurrent") }}
+      </li>
+      <li @click="closeLeft">
+        <el-icon><ArrowLeft /></el-icon>
+        {{ $t("header.closeLeft") }}
+      </li>
+      <li @click="closeRight">
+        <el-icon><ArrowRight /></el-icon>
+        {{ $t("header.closeRight") }}
+      </li>
+      <li @click="closeOthers">
+        <el-icon><Switch /></el-icon>
+        {{ $t("header.closeOther") }}
+      </li>
+      <li @click="closeAll">
+        <el-icon><FolderRemove /></el-icon>
+        {{ $t("header.closeAll") }}
+      </li>
     </ul>
   </div>
 </template>
@@ -109,6 +125,10 @@ const closeOthers = () => {
   myStore.delRoute({ index: 1, count: routes.value.length - 1, item: i });
 }
 
+const closeCurrent = () => {
+  Router.closeView(currentRoute.value);
+}
+
 const closeLeft = () => {
   const idx = routes.value.findIndex((item: any) => item.route === currentRoute.value);
   if (idx === 1) {
@@ -159,13 +179,23 @@ const closeMenu = () => {
   font-size: 12px;
   font-weight: 400;
   color: var(--el-text-color-primary);
-  box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.12);
 }
 
 .contextmenu li {
+  display: flex;
+  align-items: center;
+  min-width: 80px;
+  text-align: center;
   margin: 0;
-  padding: 3px 16px;
+  padding: 3px 10px;
   cursor: pointer;
+  letter-spacing: 2px;
+  white-space: nowrap;
+
+  .el-icon {
+    width: 22px;
+  }
 }
 
 .contextmenu li:hover {

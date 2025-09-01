@@ -1,0 +1,58 @@
+export default {
+  home: {
+    welcome: "欢迎使用"
+  },
+  header: {
+    refresh: "全局刷新",
+    menuSearch: "菜单搜索",
+    theme: "主题",
+    message: "消息",
+    fullScreen: "全屏",
+    closeCurrent: "关闭当前",
+    closeLeft: "关闭左侧",
+    closeRight: "关闭右侧",
+    closeOther: "关闭其他",
+    closeAll: "全部关闭",
+    language: "语言",
+    rightClick: "支持右键操作和拖拽排序",
+  },
+  person: {
+    lockScreen: "锁定屏幕",
+    clearCache: "刷新缓存",
+    setting: "设置中心",
+    logout: "退出登录",
+  },
+  proTable: {
+    refresh: "刷新",
+    columnConfig: "列配置",
+    tableSize: "表格尺寸",
+    hideShowSearch: "隐藏/显示搜索区",
+    search: "查询",
+    reset: "重置",
+    searchOpen: "展开",
+    searchClose: "合并",
+  },
+  theme: {
+    title: "主题配置",
+    globalTheme: "全局主题",
+    pageSetting: "界面设置",
+    systemSetting: "系统设置",
+    themeColor: "主题颜色",
+    lightMode: "浅色模式",
+    darkMode: "暗黑模式",
+    autoMode: "跟随系统",
+    greyMode: "哀悼模式",
+    weakMode: "色弱模式",
+    collapseMenu: "折叠菜单",
+    breadcrumb: "面包屑导航",
+    pageTransition: "页面转场动画",
+    configProvider: "全局组件大小",
+    lockScreen: "锁定屏幕",
+    openGuidePage: "开启引导页",
+    openWatermark: "开启水印",
+  },
+  menu: {
+    fold: "点击折叠",
+    expand: "点击展开",
+  }
+};

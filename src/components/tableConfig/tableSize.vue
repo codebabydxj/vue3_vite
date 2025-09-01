@@ -1,6 +1,6 @@
 <template>
   <div class="config-btn">
-    <el-tooltip effect="dark" content="表格尺寸" placement="top">
+    <el-tooltip effect="dark" :content="$t('proTable.tableSize')" placement="top">
       <el-dropdown trigger="click" @command="handleCommand">
         <el-button circle>
           <el-icon size="16">

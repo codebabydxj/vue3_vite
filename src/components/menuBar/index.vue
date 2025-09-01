@@ -28,7 +28,7 @@
       </el-menu>
     </el-scrollbar>
     <div class="user-sel eo" :class="{ 'active': !isCurCollapse }">
-      <el-tooltip placement="right" :visible="visible" effect="light" :content="isCurCollapse ? '点击折叠' : '点击展开'">
+      <el-tooltip placement="right" :visible="visible" effect="light" :content="isCurCollapse ? $t('menu.fold') : $t('menu.expand')">
         <img src="../../assets/svg/enter.svg" alt="" @mouseenter="visible = true" @mouseleave="visible = false"
           @click="handleSwitch">
       </el-tooltip>
@@ -134,17 +134,18 @@ onBeforeUnmount(() => {
   }
 
   .eo {
+    display: flex;
+    align-items: center;
     height: 40px;
     width: 100%;
-    line-height: 40px;
     position: absolute;
     bottom: 0;
     background-color: var(--main-bg-color);
     box-shadow: 0 0 6px -3px var(--color-text);
 
     img {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       cursor: pointer;
       vertical-align: middle;
       margin-left: 22px;

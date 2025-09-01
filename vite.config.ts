@@ -59,6 +59,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
     resolve: {
       alias: {
         "@": resolve(root, "./src"),
+        "vue-i18n": "vue-i18n/dist/vue-i18n.cjs.js"
       },
       // 忽略后缀名的配置项
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue', '.node', '.scss'],
