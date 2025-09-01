@@ -50,6 +50,7 @@ export default {
     lockScreen: "锁定屏幕",
     openGuidePage: "开启引导页",
     openWatermark: "开启水印",
+    preventDebug: "防止调试",
   },
   menu: {
     fold: "点击折叠",

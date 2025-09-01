@@ -19,6 +19,7 @@ Vite-Admin 一款基于 Vue3.5、TypeScript、Vite5、Pinia、Element-Plus 开�
 - 支持 Element-Plus 组件大小切换、暗黑模式、i18n 国际化
 - 使用 VueRouter 进行路由权限拦截、页面按钮权限配置、路由懒加载
 - 使用 KeepAlive 对页面进行缓存，支持多级嵌套页面缓存
+- 防止调试功能
 
 ### 兼容性注意
 

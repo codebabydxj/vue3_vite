@@ -119,6 +119,10 @@
         <span>{{ $t("theme.openWatermark") }}</span>
         <el-switch v-model="themeConfig.isWatermark" inline-prompt :active-icon="Lock" :inactive-icon="Unlock" @change="setWatermark" />
       </div>
+      <div class="theme-item">
+        <span>{{ $t("theme.preventDebug") }}</span>
+        <el-switch v-model="themeConfig.preventDebug" inline-prompt :active-icon="Lock" :inactive-icon="Unlock" @change="setPreventDebug" />
+      </div>
     </el-scrollbar>
     <!-- 锁定屏幕 -->
     <lockScreenDialog ref="lockScreenRef" />
@@ -126,10 +130,11 @@
 </template>
 
 <script setup lang="ts" name="ThemeConfigPage">
-import { ref, computed } from "vue"
+import { ref, computed, watch } from "vue"
 import { Check, Close, Lock, Unlock } from "@element-plus/icons-vue"
 import { useTheme } from "@/hooks/useTheme"
 import { useGlobalStore } from '@/store'
+import { DebugControl } from "@/hooks/usePreventDebug"
 import lockScreenDialog from "@/components/mainHeader/components/lockScreenDialog.vue";
 
 const props = defineProps(['drawerVisible'])
@@ -230,6 +235,20 @@ const changeGuide = (val: any) => {
 const setWatermark = (val: any) => {
   myStore.setThemeConfig({ ...themeConfig.value, isWatermark: val })
 }
+
+const setPreventDebug = (val: any) => {
+  myStore.setThemeConfig({ ...themeConfig.value, preventDebug: val })
+}
+
+// 监听debug开关;
+const debugControl = new DebugControl();
+watch(() => themeConfig.value.preventDebug, (newVal: any) => {
+  if (newVal) {
+    debugControl.start();
+  } else {
+    debugControl.stop();
+  }
+}, { immediate: true });
 
 const cancel = () => {
   emit('drawerCloseCb')
