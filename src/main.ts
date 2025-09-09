@@ -18,7 +18,7 @@ import "@/baseStyle/element.scss"
 
 /** 路由 */
 import routers from "./routers"
-import { initDynamicRouter } from "@/routers/modules/dynamicRouter";
+// import { initDynamicRouter } from "@/routers/modules/dynamicRouter";
 
 /** 国际化 */
 import I18n from "@/languages/index";
@@ -52,7 +52,7 @@ async function render() {
 
   app.use(I18n);
   app.use(pinia);
-  await initDynamicRouter(); // 强行让挂载等待路由初始化完成，解决刷新页面，出现404或者白屏的情况
+  // await initDynamicRouter(); // 强行挂载等待路由初始化完成，解决刷新页面，出现404或者白屏的情况
   app.use(routers).use(SvgIcon).use(directives).use(ElementPlus, { locale: zhCN })
   app.mount("#app");
 }

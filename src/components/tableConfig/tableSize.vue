@@ -40,7 +40,7 @@ const handleCommand = (command: any) => {
 <style lang="scss">
 .table-size {
   .active {
-    color: var(--color-white) !important;
+    color: var(--color-dark) !important;
     background: var(--color-text) !important;
   }
 }

@@ -55,7 +55,7 @@
 <script setup lang="ts" name="TreeFilterChild">
 import { ref, watch, onBeforeMount, nextTick } from "vue";
 import { client } from "@/utils/https/client";
-import { ElTree } from "element-plus";
+import { ElTree, ElMessage } from "element-plus";
 import ElTreeLine from "@/components/ReTreeLine";
 
 // 接收父组件参数并设置默认值
@@ -109,9 +109,16 @@ onBeforeMount(async () => {
 
 // res返回结构因人而异，可以活套改动
 const getInitData = async () => {
-	const { data } = props.request.method == 'post' ? await client.post(props.request.url, props.params) : await client.get(props.request.url, props.params)
-	treeData.value = data;
-	treeAllData.value = [{ id: "", [props.label]: "全部" }, ...data];
+	try {
+		const res: any = props.request.method == 'post' ? await client.post(props.request.url, props.params) : await client.get(props.request.url, props.params);
+		if (res.code === 200) {
+			treeData.value = res.data;
+			treeAllData.value = [{ id: "", [props.label]: "全部" }, ...res.data];
+		} else {
+      ElMessage.error(res.msg)
+    }
+	} catch (error) {
+	}
 }
 
 // 使用 nextTick 防止打包后赋值不生效，开发环境是正常的

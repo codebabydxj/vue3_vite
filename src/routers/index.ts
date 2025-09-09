@@ -1,8 +1,8 @@
-import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
-import { useGlobalStore } from '@/store'
-import { staticRouter, errorRouter } from './modules/staticRouter'
-import { initDynamicRouter } from "./modules/dynamicRouter"
-import NProgress from "@/config/nprogress"
+import { createRouter, createWebHistory, createWebHashHistory } from "vue-router";
+import { useGlobalStore } from "@/store";
+import { staticRouter, errorRouter } from "./modules/staticRouter";
+import { initDynamicRouter } from "./modules/dynamicRouter";
+import NProgress from "@/config/nprogress";
 import { LOGIN_URL } from "@/config";
 
 /**
@@ -25,72 +25,72 @@ const mode = 'history'; // 路由模式  hash  history
 
 // 创建路由模式
 const routerMode = {
-    hash: () => createWebHashHistory(),
-    history: () => createWebHistory()
+  hash: () => createWebHashHistory(),
+  history: () => createWebHistory()
 }
 
 /** 创建路由 */
 const routers = createRouter({
-    history: routerMode[mode](),
-    routes: [...staticRouter, ...errorRouter],
-    strict: false,
-    scrollBehavior: () => ({ left: 0, top: 0 })
+  history: routerMode[mode](),
+  routes: [...staticRouter, ...errorRouter],
+  strict: false,
+  scrollBehavior: () => ({ left: 0, top: 0 })
 })
 
 let lockFlag: any = true;
 
 /* 路由权限方案：挂载所有路由 + 全局路由守卫判断权限 */
 routers.beforeEach(async (to, from, next) => {
-    /** 1.获取store */
-    const myStore = useGlobalStore()
+  /** 1.获取store */
+  const myStore = useGlobalStore()
 
-    /** 2.开启进度条 */
-    NProgress.start();
+  /** 2.开启进度条 */
+  NProgress.start();
 
-    /** 3.动态设置标题 */
-    const title = import.meta.env.VITE_GLOB_APP_TITLE;
-    document.title = to.meta.title ? `${to.meta.title} - ${title}` : title;
+  /** 3.动态设置标题 */
+  const title = import.meta.env.VITE_GLOB_APP_TITLE;
+  document.title = to.meta.title ? `${to.meta.title} - ${title}` : title;
 
-    /** 4.判断是否是访问登陆页，有 Token 就在当前页面，没有 Token 重置路由到登陆页 */
-    if (to.path.toLocaleLowerCase() === LOGIN_URL) {
-        if (myStore.userInfo.token) return routers.back();
-        resetRouter();
-        return next();
-    }
-    
-    /** 5.判断是否有 Token，没有重定向到 login 页面 */
-    if (!myStore.userInfo.token) {
-        return next({ path: LOGIN_URL, replace: true });
-    }
+  /** 4.判断是否是访问登陆页，有 Token 就在当前页面，没有 Token 重置路由到登陆页 */
+  if (to.path.toLocaleLowerCase() === LOGIN_URL) {
+    if (myStore.userInfo.token) return routers.back();
+    resetRouter();
+    return next();
+  }
+  
+  /** 5.判断是否有 Token，没有重定向到 login 页面 */
+  if (!myStore.userInfo.token) {
+    return next({ path: LOGIN_URL, replace: true });
+  }
 
-    /** 6.判断是否是锁屏状态 */
-    if (myStore.themeConfig.isLockScreen && lockFlag) {
-        lockFlag = false;
-        return next({ path: '/lockScreen', replace: true });
-    }
-    
-    /** 7.如果没有菜单列表，就重新请求菜单列表并添加动态路由 */
-    if (!myStore.getMenuList.length) {
-        await initDynamicRouter();
-        return next({ ...to, replace: true });
-    }
-    
-    /** 8.存储 routerName 做按钮权限筛选 */
-    myStore.setRouteName(to.name as string);
+  /** 6.判断是否是锁屏状态 */
+  if (myStore.themeConfig.isLockScreen && lockFlag) {
+    lockFlag = false;
+    return next({ path: '/lockScreen', replace: true });
+  }
+  
+  /** 7.如果没有菜单列表，就重新请求菜单列表并添加动态路由 */
+  if (!myStore.getMenuList.length) {
+    await initDynamicRouter();
+    return next({ ...to, replace: true });
+  }
+  
+  /** 8.存储 routerName 做按钮权限筛选 */
+  myStore.setRouteName(to.name as string);
 
-    /** 9.正常访问页面 */
-    next()
+  /** 9.正常访问页面 */
+  next()
 })
 
 /**
  * @description 重置路由
  * */
 export const resetRouter = () => {
-    const myStore = useGlobalStore()
-    myStore.flatMenuList.forEach((route: any) => {
-        const { name } = route;
-        if (name && routers.hasRoute(name)) routers.removeRoute(name);
-    });
+  const myStore = useGlobalStore()
+  myStore.flatMenuList.forEach((route: any) => {
+    const { name } = route;
+    if (name && routers.hasRoute(name)) routers.removeRoute(name);
+  });
 };
 
 /** 路由跳转结束 */

@@ -81,6 +81,17 @@
         <el-text truncated>{{ $t("theme.pageSetting") }}</el-text>
       </el-divider>
       <div class="theme-item">
+        <span>{{ $t("theme.sidebarLight") }}</span>
+        <el-switch v-model="themeConfig.sidebarLight" @change="changeSidebarLight">
+          <template #active-action>
+            <el-icon><Sunny /></el-icon>
+          </template>
+          <template #inactive-action>
+            <el-icon><Moon /></el-icon>
+          </template>
+        </el-switch>
+      </div>
+      <div class="theme-item">
         <span>{{ $t("theme.collapseMenu") }}</span>
         <el-switch v-model="themeConfig.isCollapse" inline-prompt :active-icon="Check" :inactive-icon="Close" @change="changeCollapse" />
       </div>
@@ -131,7 +142,7 @@
 
 <script setup lang="ts" name="ThemeConfigPage">
 import { ref, computed, watch } from "vue"
-import { Check, Close, Lock, Unlock } from "@element-plus/icons-vue"
+import { Check, Close, Lock, Unlock, Sunny, Moon } from "@element-plus/icons-vue"
 import { useTheme } from "@/hooks/useTheme"
 import { useGlobalStore } from '@/store'
 import { DebugControl } from "@/hooks/usePreventDebug"
@@ -202,14 +213,29 @@ const changeColors = (color: any) => {
   changePrimary(color)
 }
 
-const changeSystemMode = (val: any, mode: any) => {
-  myStore.setThemeConfig({
+const changeSystemMode = (val: any, mode: any, menuLight: any = false) => {
+  const obj: any = {
     ...themeConfig.value,
     isLight: ((mode === 'light' && val) || (!themeConfig.value.isDark && !themeConfig.value.isWindowMode)) ? true : false,
     isDark: mode === 'dark' && val ? true : false,
     isWindowMode: mode === 'auto' && val ? true : false,
-  })
+  }
+  if ((mode === 'dark' && val) || (mode === 'auto') && val && window.matchMedia('(prefers-color-scheme: dark)')?.matches) { // 黑色系列则将侧边栏浅色模式关闭
+    obj.sidebarLight = false
+  }
+  if (menuLight) {
+    obj.sidebarLight = true
+  }
+  myStore.setThemeConfig(obj)
   switchDark()
+}
+
+const changeSidebarLight = (val: any) => {
+  if (val) { // 开启侧边栏浅色模式则将暗黑系列关闭
+    changeSystemMode(val, 'light', true)
+  } else {
+    myStore.setThemeConfig({ ...themeConfig.value, sidebarLight: val })
+  }
 }
 
 const changeCollapse = (val: any) => {

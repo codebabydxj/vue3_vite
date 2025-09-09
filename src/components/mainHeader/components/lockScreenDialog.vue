@@ -58,7 +58,6 @@ const submitForm = () => {
       dialogVisible.value = false;
       router.replace('/lockScreen');
     } catch(e) {
-      console.log(e);
     }
   })
 }

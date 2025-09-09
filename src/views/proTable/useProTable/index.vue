@@ -146,14 +146,19 @@ const batchDelete = async (ids: string[]) => {
 
 // 删除单个用户
 const handleDel = async (row: any) => {
-  client.get('/api/user/delete', { id: row.id })
-  .then((res: any) => {
-    ElMessage({
-      type: "success",
-      message: '删除成功!'
-    });
-    proTable.value?.getTableList();
-  })
+  try {
+    const res: any = await client.get('/api/user/delete', { id: row.id })
+    if (res.code === 200) {
+      ElMessage({
+        type: 'success',
+        message: '删除成功!'
+      });
+      proTable.value?.getTableList();
+    } else {
+      ElMessage.error(res.msg)
+    }
+  } catch (error) {
+  }
 }
 
 // 跳转二级页面

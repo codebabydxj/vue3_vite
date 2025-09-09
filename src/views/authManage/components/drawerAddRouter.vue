@@ -28,6 +28,7 @@
             check-strictly
             placeholder="请选择上级菜单"
             :render-after-expand="false"
+            :default-expand-all="true"
             :props="defaultProps"/>
         </el-form-item>
         <template v-if="menuType == 2">
@@ -158,24 +159,28 @@ const defaultProps = {
 
 // 提交数据（新增/编辑）
 const ruleFormRef = ref<FormInstance>();
-const handleSubmit = () => {
-  ruleFormRef.value!.validate((valid: any) => {
+const handleSubmit = async () => {
+  ruleFormRef.value!.validate(async (valid: any) => {
     if (!valid) return;
-    const params: any = {}
-    Object.keys(drawerProps.value.row).forEach((k: any) => {
-      if (drawerProps.value.row[k] && drawerProps.value.row[k] !== '') {
-        params[k] = drawerProps.value.row[k]
-      }
-    })
-    client.post(drawerProps.value.api, params)
-      .then((res: any) => {
+    try {
+      const params: any = {}
+      Object.keys(drawerProps.value.row).forEach((k: any) => {
+        if (drawerProps.value.row[k] && drawerProps.value.row[k] !== '') {
+          params[k] = drawerProps.value.row[k]
+        }
+      })
+      const res: any = await client.post(drawerProps.value.api, params)
+      if (res.code === 200) {
         ElMessage.success({ message: '操作成功！' });
         drawerProps.value.getTableList!();
-      }).finally(() => {
-        drawerVisible.value = false;
-      }).catch((error: any) => {
-        console.log(error);
-      })
+      } else {
+        ElMessage.error(res.msg)
+      }
+    } catch (error) {
+      drawerVisible.value = false;
+    } finally {
+      drawerVisible.value = false;
+    }
   });
 };
 

@@ -12,6 +12,7 @@
           check-strictly
           placeholder="请选择上级菜单"
           :render-after-expand="false"
+          :default-expand-all="true"
           :props="defaultProps"/>
       </el-form-item>
       <el-form-item label="授权标识" prop="authFlag">
