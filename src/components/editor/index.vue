@@ -121,11 +121,11 @@ export default {
       // 上传进度的回调函数
       onProgress(progress: any) {
         // progress 是 0-100 的数字
-        console.log('progress', progress)
+        // console.log('progress', progress)
       },
       // 单个文件上传成功之后
       onSuccess(file: any, res: any) {
-        console.log(`${file.name} 上传成功`, res)
+        // console.log(`${file.name} 上传成功`, res)
       },
       // 自定义插入图片
       customInsert(res: any, insertFn: any) {
@@ -210,15 +210,15 @@ export default {
       // 上传进度的回调函数
       onProgress(progress: any) {
         // progress 是 0-100 的数字
-        console.log('progress', progress)
+        // console.log('progress', progress)
       },
       // 单个文件上传成功之后
       onSuccess(file: any, res: any) {
-        console.log(`${file.name} 上传成功`, res)
+        // console.log(`${file.name} 上传成功`, res)
       },
       // 单个文件上传失败
       onFailed(file: any, res: any) {
-        console.log(`${file.name} 上传失败`, res)
+        // console.log(`${file.name} 上传失败`, res)
       },
       // 上传错误，或者触发 timeout 超时
       onError(file: any, err: any, res: any) {

@@ -45,6 +45,7 @@ export default {
     autoMode: "AutoMode",
     greyMode: "GreyMode",
     weakMode: "WeakMode",
+    sidebarLight: "SidebarLight",
     collapseMenu: "CollapseMenu",
     breadcrumb: "Breadcrumb",
     pageTransition: "PageTransition",

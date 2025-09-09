@@ -2,7 +2,7 @@
   <div class="message">
     <el-popover placement="bottom" :width="310" trigger="click">
       <template #reference>
-        <el-icon color="#efefef" :size="22">
+        <el-icon :color="themeConfig.sidebarLight ? 'var(--color-icon-light)' : 'var(--color-icon-dark)'" :size="22">
           <el-badge :value="5" :max="99" class="badge">
             <Bell />
           </el-badge>
@@ -66,8 +66,11 @@
 </template>
 
 <script setup lang="ts" name="HeaderMessage">
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useGlobalStore } from '@/store'
 
+const myStore: any = useGlobalStore();
+const themeConfig = computed(() => myStore.themeConfig);
 const activeName = ref('first');
 </script>
 

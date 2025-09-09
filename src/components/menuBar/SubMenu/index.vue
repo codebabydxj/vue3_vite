@@ -41,8 +41,12 @@ const props = defineProps({
 })
 const Router: any = inject('Router')
 const myStore: any = useGlobalStore()
+const themeConfig = computed(() => myStore.themeConfig)
 const currentRoute = computed(() => myStore.currentRoute)
 const router = useRouter()
+const popupColor: any = computed(() => themeConfig.value.sidebarLight ? 'var(--color-light)' : 'var(--color-dark)')
+const popupActiveColor: any = computed(() => themeConfig.value.sidebarLight ? 'var(--color-text)' : 'var(--color-dark)')
+const popupBgColor: any = computed(() => themeConfig.value.sidebarLight ? 'var(--menu-item-active-bg-color-light)' : 'var(--menu-item-active-bg-color)')
 
 const routeGo = (subItem: any) => {
   if (subItem.meta.isLink) return window.open(subItem.meta.isLink, "_blank");
@@ -56,22 +60,35 @@ const routeGo = (subItem: any) => {
 </script>
 
 <style lang="scss">
-.navbar-side .el-sub-menu__title {
-  color: #fefefea6 !important;
+.navbar-side, .navbar-side-light {
+  .el-sub-menu__title {
+    color: var(--menu-text-color-dark) !important;
 
-  span {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    span {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+}
+.navbar-side-light {
+  .el-sub-menu__title {
+    color: var(--menu-text-color-light) !important;
   }
 }
 
 .navbar-side .el-menu--collapse>.el-sub-menu.is-active>.el-sub-menu__title {
   background-color: var(--menu-item-active-bg-color) !important;
 }
+.navbar-side-light .el-menu--collapse>.el-sub-menu.is-active>.el-sub-menu__title {
+  background-color: var(--menu-item-active-bg-color-light) !important;
+}
 
 .navbar-side .el-sub-menu__title>.el-icon>svg {
-  color: #fefefea6 !important;
+  color: var(--menu-text-color-dark) !important;
+}
+.navbar-side-light .el-sub-menu__title>.el-icon>svg {
+  color: var(--menu-text-color-light) !important;
 }
 
 .navbar-side .el-menu>.el-sub-menu:hover {
@@ -79,19 +96,37 @@ const routeGo = (subItem: any) => {
 
   .el-sub-menu__title,
   .el-sub-menu__title>.el-icon>svg {
-    color: var(--color-white) !important;
+    color: var(--color-dark) !important;
+  }
+}
+.navbar-side-light .el-menu>.el-sub-menu:hover {
+  transition: color 0.3s;
+
+  .el-sub-menu__title,
+  .el-sub-menu__title>.el-icon>svg {
+    color: var(--color-light) !important;
   }
 }
 
 .navbar-side .el-sub-menu__title:hover {
   background-color: var(--menu-item-active-bg-color);
 }
+.navbar-side-light .el-sub-menu__title:hover {
+  background-color: var(--menu-item-active-bg-color-light);
+}
 
 .navbar-side .el-menu>.el-sub-menu.is-active {
 
   .el-sub-menu__title,
   .el-sub-menu__title>.el-icon>svg {
-    color: var(--color-white) !important;
+    color: var(--color-dark) !important;
+  }
+}
+.navbar-side-light .el-menu>.el-sub-menu.is-active {
+
+  .el-sub-menu__title,
+  .el-sub-menu__title>.el-icon>svg {
+    color: var(--color-light) !important;
   }
 }
 
@@ -99,13 +134,14 @@ const routeGo = (subItem: any) => {
   background-color: var(--menu-bg-color) !important;
 }
 
-// .navbar-side .el-menu>.el-sub-menu.is-opened>.el-menu>.el-menu-item {
-//   background-color: var(--menu-bg-color) !important;
-// }
-
 .navbar-side {
   .el-menu-item.is-active {
     background-color: var(--menu-item-active-bg-color) !important;
+  }
+}
+.navbar-side-light {
+  .el-menu-item.is-active {
+    background-color: var(--menu-item-active-bg-color-light) !important;
   }
 }
 
@@ -120,36 +156,50 @@ const routeGo = (subItem: any) => {
 }
 
 .navbar-side .el-menu>.el-menu-item:hover {
-  color: var(--color-white) !important;
+  color: var(--color-dark) !important;
   background-color: var(--menu-item-active-bg-color) !important;
+}
+.navbar-side-light .el-menu>.el-menu-item:hover {
+  color: var(--color-light) !important;
+  background-color: var(--menu-item-active-bg-color-light) !important;
 }
 
 .navbar-side .el-menu>.el-menu-item.is-active:hover {
-  color: var(--color-white) !important;
+  color: var(--color-dark) !important;
   background-color: var(--menu-item-active-bg-color) !important;
 }
-
-.navbar-side .el-menu>.el-menu-item.is-active::after {
-  content: '✨';
-  display: block;
-  position: absolute;
-  width: 0px;
-  height: 50px;
-  right: 25px;
-  top: 0;
+.navbar-side-light .el-menu>.el-menu-item.is-active:hover {
+  color: var(--color-text) !important;
+  background-color: var(--menu-item-active-bg-color-light) !important;
 }
-.navbar-side .el-menu>.el-menu-item.is-active::before {
-  content: '';
-  display: block;
-  position: absolute;
-  width: 4px;
-  height: 42px;
-  background-color: var(--menu-item-check-color) !important;
-  left: 0;
-  top: 4px;
+
+.navbar-side, .navbar-side-light {
+  .el-menu>.el-menu-item.is-active::after {
+    content: '✨';
+    display: block;
+    position: absolute;
+    width: 0px;
+    height: 50px;
+    right: 25px;
+    top: 0;
+  }
+  .el-menu>.el-menu-item.is-active::before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 4px;
+    height: 42px;
+    background-color: var(--menu-item-check-color) !important;
+    left: 0;
+    top: 4px;
+  }
 }
 
 .el-menu--popup-container>.el-menu--popup>.el-menu-item:hover {
-  color: var(--color-white) !important;
+  color: v-bind(popupColor) !important;
+  background-color: v-bind(popupBgColor) !important;
+}
+.el-menu--popup-container>.el-menu--popup>.el-menu-item.is-active:hover {
+  color: v-bind(popupActiveColor) !important;
 }
 </style>

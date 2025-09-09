@@ -75,14 +75,19 @@ const columns: ColumnProps[] = [
 
 // 删除单个用户
 const handleDel = async (row: any) => {
-  client.get('/api/user/delete', { id: row.id })
-  .then((res: any) => {
-    ElMessage({
-      type: 'success',
-      message: '删除成功!'
-    });
-    menuProTable.value.getTableList();
-  })
+  try {
+    const res: any = await client.get('/api/user/delete', { id: row.id })
+    if (res.code === 200) {
+      ElMessage({
+        type: 'success',
+        message: '删除成功!'
+      });
+      menuProTable.value.getTableList();
+    } else {
+      ElMessage.error(res.msg)
+    }
+  } catch (error) {
+  }
 }
 
 // 按钮权限配置

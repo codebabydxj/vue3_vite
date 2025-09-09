@@ -90,7 +90,7 @@ const onBreadcrumbClick = (item: any, index: number) => {
         }
         &:last-child .el-breadcrumb__inner,
         &:last-child .el-breadcrumb__inner:hover {
-          color: var(--el-header-text-color-regular);
+          color: var(--color-text-1);
         }
       }
     }

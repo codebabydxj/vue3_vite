@@ -19,7 +19,7 @@ export default {
   person: {
     lockScreen: "锁定屏幕",
     clearCache: "刷新缓存",
-    setting: "设置中心",
+    setting: "信息中心",
     logout: "退出登录",
   },
   proTable: {
@@ -43,6 +43,7 @@ export default {
     autoMode: "跟随系统",
     greyMode: "哀悼模式",
     weakMode: "色弱模式",
+    sidebarLight: "侧边栏浅色",
     collapseMenu: "折叠菜单",
     breadcrumb: "面包屑导航",
     pageTransition: "页面转场动画",

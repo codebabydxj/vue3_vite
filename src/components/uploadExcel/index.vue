@@ -49,6 +49,7 @@ import { useDownload } from "@/hooks/useDownload";
 import { Download } from "@element-plus/icons-vue";
 import { ElMessage, ElNotification, UploadInstance, UploadFile, UploadFiles } from "element-plus";
 import { client } from "@/utils/https/client";
+import { uploadConfig } from "@/config/api/config";
 
 export interface ExcelParameterProps {
 	title: string; // 标题
@@ -92,23 +93,28 @@ const downloadTemp = async () => {
 
 // 覆盖默认的 Xhr 行为，自行文件上传
 const uploadExcel = async (param: any) => {
-	// if (!parameter.value.importApi.url) {
-  //   ElMessage.warning({
-  //     grouping: true,
-  //     message: '请先传url参数！'
-  //   })
-  //   return;
-  // }
-	// let excelFormData = new FormData();
-	// excelFormData.append("file", param.file);
-	// excelFormData.append("file", param.file);
-	// excelFormData.append("isCover", isCover.value as unknown as Blob);
-	// client.post(parameter.value.importApi.url, excelFormData, API.uploadConfig).then((res: any) => {
-	//   parameter.value.getTableList && parameter.value.getTableList();
-	//   cancel()
-	// }).catch((err: any) => {
-	//   cancel()
-	// })
+	if (!parameter.value.importApi.url) {
+    ElMessage.warning({
+      grouping: true,
+      message: '请先传url参数！'
+    })
+    return;
+  }
+	try {
+		let excelFormData = new FormData();
+		excelFormData.append("file", param.file);
+		excelFormData.append("file", param.file);
+		excelFormData.append("isCover", isCover.value as unknown as Blob);
+		const res: any = await client.post(parameter.value.importApi.url, excelFormData, uploadConfig)
+		if (res.code === 200) {
+			parameter.value.getTableList && parameter.value.getTableList();
+			cancel()
+		} else {
+      ElMessage.error(res.msg)
+    }
+	} catch (error) {
+		cancel()
+	}
 };
 
 
@@ -167,9 +173,7 @@ const handleExceed = (): void => {
 // 文件发生变化
 const handleChange = (uploadFile: UploadFile, uploadFiles: UploadFiles) => {
 	files = uploadFiles
-	console.log(uploadFile, uploadFiles);
 	imports(uploadFile)
-	// uploadFiles
 }
 
 const imports = (file: any) => {

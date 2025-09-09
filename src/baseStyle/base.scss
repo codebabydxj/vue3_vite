@@ -8,17 +8,27 @@
   --color-text: #409EFF;
   --color-high-text: #ff5777;
   --color-tint: #ff8198;
-  --color-white: #ffffff;
+  --color-dark: #ffffff;
+  --color-light: #4E5969;
   --font-size: 14px;
   --line-height: 1.5;
   --main-bg-color: #191a20;
+  --main-bg-light-color: #ffffff;
   --menu-bg-color: #000000; // #090a0c
   --menu-item-bg-color: #1a3642;
-  --menu-item-active-bg-color: #0a0a0a; // #2e2f33
+  --menu-item-active-bg-color: #0a0a0a;
+  --menu-item-active-bg-color-light: rgb(242, 243, 245);
   --menu-item-check-color: #009688;
   --contextmenu-bg-color: #efefef;
   --el-header-text-color: #666666;
   --el-header-text-color-regular: #999999;
+  --color-light-border: rgb(229, 230, 235);
+  --menu-text-color-dark: #fefefea6;
+  --menu-text-color-light: #4E5969;
+  --color-fill-2: rgb(242, 243, 245);
+  --color-icon-dark: #efefef; 
+  --color-icon-light: rgb(29, 33, 41);
+  --color-text-1: rgb(134, 144, 156);
 }
 
 body,

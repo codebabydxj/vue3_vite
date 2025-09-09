@@ -202,7 +202,7 @@ const closeMenu = () => {
   background: var(--contextmenu-bg-color);
 }
 </style>
-<style>
+<style lang="scss">
 .tabs .el-tabs--card>.el-tabs__header {
   border-bottom: none;
   margin-bottom: 0;
@@ -215,11 +215,17 @@ const closeMenu = () => {
 }
 
 .navbar-top .tabs-wrap .el-tabs__item {
-  color: #fefefea6 !important;
+  color: var(--menu-text-color-dark) !important;
+}
+.navbar-top .tabs-wrap-light .el-tabs__item {
+  color: var(--menu-text-color-light) !important;
 }
 
 .navbar-top .tabs-wrap .el-tabs__item:hover {
-  color: var(--color-white) !important;
+  color: var(--color-dark) !important;
+}
+.navbar-top .tabs-wrap-light .el-tabs__item:hover {
+  color: var(--color-text) !important;
 }
 
 .navbar-top .tabs-wrap .el-tabs__item.is-active {
@@ -227,8 +233,24 @@ const closeMenu = () => {
   color: var(--color-text) !important;
   font-weight: 700;
 }
+.navbar-top .tabs-wrap-light .el-tabs__item.is-active {
+  background-color: var(--menu-item-active-bg-color-light) !important;
+  color: var(--color-text) !important;
+}
 
 .navbar-top .tabs-wrap .el-tabs--card>.el-tabs__header .el-tabs__item {
   border: none;
+}
+
+.navbar-top .tabs-wrap-light {
+  .el-tabs__nav-prev, .el-tabs__nav-next {
+    color: var(--color-light) !important;
+    .el-icon:hover {
+      background-color: var(--color-fill-2);
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+    }
+  }
 }
 </style>

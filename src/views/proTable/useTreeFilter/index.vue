@@ -63,6 +63,10 @@ const requestApiParams = ref({ url: '/api/proTable' })
 // 获取 ProTable 元素，调用其获取刷新数据方法（还能获取到当前查询参数，方便导出携带参数）
 const proTable = ref<ProTableInstance>();
 
+onMounted(() => {
+  getTreeFilter()
+})
+
 // dataCallback 是对于返回的表格数据做处理，如果你后台返回的数据不是 list && total && pageNum && pageSize 这些字段，那么你可以在这里进行处理成这些字段
 const dataCallback = (data: any) => {
 	return {
@@ -84,14 +88,17 @@ const initParam: any = ref({
 // 获取 treeFilter 数据
 const treeFilterData = ref<any>([]);
 const getTreeFilter = async () => {
-  const { data } = await client.get('/api/user/department')
-  treeFilterData.value = data;
-  initParam.value.departmentId = treeFilterData.value[0].id;
+  try {
+    const res: any = await client.get('/api/user/department')
+    if (res.code === 200) {
+      treeFilterData.value = res.data;
+      initParam.value.departmentId = treeFilterData.value[0].id;
+    } else {
+      ElMessage.error(res.msg)
+    }
+  } catch (error) {
+  }
 };
-
-onMounted(() => {
-  getTreeFilter()
-})
 
 const changeTreeFilter = (val: string) => {
 	ElMessage.success("请注意查看请求参数变化 🤔");
@@ -150,14 +157,19 @@ const batchDelete = async (ids: string[]) => {
 
 // 删除单个用户
 const handleDel = async (row: any) => {
-  client.get('/api/user/delete', { id: row.id })
-  .then((res: any) => {
-    ElMessage({
-      type: "success",
-      message: '删除成功!'
-    });
-    proTable.value?.getTableList();
-  })
+  try {
+    const res: any = await client.get('/api/user/delete', { id: row.id })
+    if (res.code === 200) {
+      ElMessage({
+        type: "success",
+        message: '删除成功!'
+      });
+      proTable.value?.getTableList();
+    } else {
+      ElMessage.error(res.msg)
+    }
+  } catch (error) {
+  }
 }
 </script>
 

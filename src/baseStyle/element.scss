@@ -304,6 +304,9 @@
 .el-tabs {
   .el-tabs__nav-prev, .el-tabs__nav-next {
     color: #ffffff !important;
+    .el-icon {
+      font-size: 14px;
+    }
   }
 }
 

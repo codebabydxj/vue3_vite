@@ -1,7 +1,7 @@
 <template>
-  <header>
+  <header :class="{ 'header-light': themeConfig.sidebarLight }">
     <nav class="navbar-top">
-      <div class="tabs-wrap">
+      <div class="tabs-wrap" :class="{ 'tabs-wrap-light': themeConfig.sidebarLight }">
         <el-tooltip effect="dark" :content="$t('header.rightClick')" placement="bottom" >
           <slot name="tabs"></slot>
         </el-tooltip>
@@ -14,21 +14,21 @@
         </el-tooltip>
         <el-tooltip effect="dark" :content="$t('header.refresh')" placement="bottom">
           <el-link id="Refreshs" class="icon-style" :underline="'never'" @click="refresh">
-            <el-icon color="#efefef" :size="22">
+            <el-icon :color="themeConfig.sidebarLight ? 'var(--color-icon-light)' : 'var(--color-icon-dark)'" :size="22">
               <Refresh />
             </el-icon>
           </el-link>
         </el-tooltip>
         <el-tooltip effect="dark" :content="$t('header.menuSearch')" placement="bottom">
           <el-link id="SearchMenus" class="icon-style" :underline="'never'" @click="searchMenus">
-            <el-icon color="#efefef" :size="22">
+            <el-icon :color="themeConfig.sidebarLight ? 'var(--color-icon-light)' : 'var(--color-icon-dark)'" :size="22">
               <Search />
             </el-icon>
           </el-link>
         </el-tooltip>
         <el-tooltip effect="dark" :content="$t('header.theme')" placement="bottom">
           <el-link id="Theme" class="icon-style" :underline="'never'" @click="handleTheme">
-            <el-icon color="#efefef" :size="22">
+            <el-icon :color="themeConfig.sidebarLight ? 'var(--color-icon-light)' : 'var(--color-icon-dark)'" :size="22">
               <SkinOutlined />
             </el-icon>
           </el-link>
@@ -40,7 +40,7 @@
         </el-tooltip>
         <el-tooltip effect="dark" :content="$t('header.fullScreen')" placement="bottom">
           <el-link id="Full" class="icon-style" :underline="'never'" @click="screenfullTog">
-            <el-icon color="#efefef" :size="22">
+            <el-icon :color="themeConfig.sidebarLight ? 'var(--color-icon-light)' : 'var(--color-icon-dark)'" :size="22">
               <ExpandOutlined v-if="!isFullscreen" />
               <fullscreen-exit-outlined v-else />
             </el-icon>
@@ -62,7 +62,7 @@
         <el-dropdown class="head" trigger="click" @command="handleCommand">
           <div class="drop-box">
             <el-tooltip effect="customized" :content="`当前登录用户：${userName}`" placement="bottom">
-              <el-text :truncated="true" style="color: #ffffff;" class="username">{{ userName }}</el-text>
+              <el-text :truncated="true" class="username">{{ userName }}</el-text>
             </el-tooltip>
             <el-avatar class="avatar" icon="el-icon-user-solid" :size="35"
               src="/src/assets/imgs/avatar.png" fit="fill"></el-avatar>
@@ -115,6 +115,7 @@ import lockScreenDialog from "./components/lockScreenDialog.vue";
 
 const router = useRouter()
 const myStore: any = useGlobalStore()
+const themeConfig = computed(() => myStore.themeConfig)
 const userName: any = computed(() => myStore.userInfo.userInfo ? myStore.userInfo.userInfo.userName : '')
 const Router: any = inject('Router')
 const isFullscreen = ref(false)
@@ -122,9 +123,9 @@ const searchMenuRef = ref()
 const isShowTheme = ref(false)
 const lockScreenRef = ref()
 const weatherSrc: any = computed(() => {
-  let src: any = "https://i.tianqi.com?c=code&id=34&color=%23FFFFFF&icon=1&py=taiyuan&site=14";
-  if (myStore.themeConfig.isDark) {
-    src = "https://i.tianqi.com?c=code&id=34&color=%23FFFFFF&icon=1&py=taiyuan&site=14&bgc=%23191a20";
+  let src: any = "https://i.tianqi.com?c=code&id=34&color=%23FFFFFF&icon=1&py=taiyuan&site=14&bgc=%23191a20";
+  if (themeConfig.value.sidebarLight) {
+    src = "https://i.tianqi.com?c=code&id=34&color=%234E5969&icon=1&py=taiyuan&site=14&bgc=%23ffffff";
   }
   return src;
 })
@@ -208,9 +209,9 @@ const handleCommand = (command: any) => {
     window.location.reload();
     window.location.replace(window.location.href);
   }
-  // 设置中心
+  // 信息中心
   if (command === 'setCore') {
-
+    Router.openView('/userinfo');
   }
 }
 </script>
@@ -221,6 +222,11 @@ header {
   background-color: var(--main-bg-color);
   z-index: 2000;
   height: 48px;
+}
+.header-light {
+  background-color: var(--main-bg-light-color);
+  border-bottom: 1px solid var(--color-light-border);
+  box-sizing: border-box;
 }
 
 header .navbar-top {
@@ -265,6 +271,7 @@ header .navbar-top .user-info .head {
       font-size: 15px;
       font-weight: 700;
       margin-right: 15px;
+      color: var(--color-dark);
     }
     .avatar {
       background-color: transparent;
@@ -273,6 +280,11 @@ header .navbar-top .user-info .head {
     .avatar:hover {
       transform: rotate(360deg);
     }
+  }
+}
+.header-light .navbar-top .user-info .head .drop-box {
+  .username {
+    color: var(--color-light);
   }
 }
 .weather {
