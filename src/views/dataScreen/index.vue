@@ -3,7 +3,7 @@
     <div class="dataScreen-content" ref="dataScreenRef">
       <div class="dataScreen-header">
         <div class="header-lf">
-          <span class="header-screening" @click="router.push('/')">工作台</span>
+          <span class="header-screening" @click="router.push('/')">首页</span>
         </div>
         <div class="header-ct">
           <div class="header-ct-title">

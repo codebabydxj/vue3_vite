@@ -1,18 +1,11 @@
 <template>
   <nav :class="themeConfig.sidebarLight ? 'navbar-side-light' : 'navbar-side'" :style="{ transition: 'width 0.3s',  width: !isCurCollapse ? '65px' : '250px' }">
-    <template v-if="!isCurCollapse">
-      <div class="navbar-side-logo">
-        <img class="logo_ind" src="../../assets/svg/v.svg" alt="" @click="goHome" />
-      </div>
-    </template>
-    <template v-if="isCurCollapse">
-      <div :class="themeConfig.sidebarLight ? 'collapse-light' : 'collapse'" @click="goHome">
-        <h4 class="user-sel admin-title">
-          <img class="logo" src="../../assets/svg/v.svg" alt="" />
-          Vite-Admin
-        </h4>
-      </div>
-    </template>
+    <div :class="themeConfig.sidebarLight ? 'collapse-light' : 'collapse'" @click="goHome">
+      <h4 class="user-sel admin-title">
+        <img class="logo" src="../../assets/svg/v.svg" alt="" />
+        <span v-show="isCurCollapse">Vite-Admin</span>
+      </h4>
+    </div>
     <el-scrollbar height="calc(100vh - 105px)" :style="{ width: !isCurCollapse ? '65px' : '251px' }">
       <el-menu
         ref="menuRef"
@@ -32,7 +25,6 @@
         <img src="../../assets/svg/enter.svg" alt="" @mouseenter="visible = true" @mouseleave="visible = false"
           @click="handleSwitch">
       </el-tooltip>
-      <!-- <div class="user-sel yogi" v-if="isCurCollapse && delayShow"></div> -->
     </div>
   </nav>
 </template>
@@ -104,14 +96,6 @@ onBeforeUnmount(() => {
   }
 }
 
-.navbar-side:hover {
-  transition: opacity 1s;
-  .yogi {
-    opacity: 1;
-    transform: rotateY(360deg);
-  }
-}
-
 .navbar-side-light {
   background-color: var(--main-bg-light-color);
   border-right: 1px solid var(--color-light-border);
@@ -122,14 +106,20 @@ onBeforeUnmount(() => {
   height: 60px;
   cursor: pointer;
   position: relative;
+  display: flex;
+  align-items: center;
 
   .admin-title {
-    text-align: center;
+    display: flex;
+    align-items: center;
+    column-gap: 16px;
+    flex-wrap: nowrap;
     font-weight: bold;
     font-size: 18px;
     color: var(--color-dark);
     height: 60px;
-    line-height: 60px;
+    padding: 0 18px;
+    white-space: nowrap;
   }
 
   .logo {
@@ -145,19 +135,6 @@ onBeforeUnmount(() => {
 .collapse-light {
   .admin-title {
     color: var(--color-light);
-  }
-}
-
-.navbar-side-logo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 43px;
-  cursor: pointer;
-  .logo_ind {
-    display: block;
-    width: 24px;
-    height: 24px;
   }
 }
 
@@ -177,19 +154,6 @@ onBeforeUnmount(() => {
     cursor: pointer;
     vertical-align: middle;
     margin-left: 22px;
-    transition: all 1s;
-  }
-
-  .yogi {
-    width: 90px;
-    height: 35px;
-    overflow: hidden;
-    position: absolute;
-    left: 85px;
-    bottom: 0px;
-    opacity: 0.7;
-    background: url(../../assets/imgs/yogi.png) no-repeat center;
-    background-size: 100%;
     transition: all 1s;
   }
 }
