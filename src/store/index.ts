@@ -11,8 +11,8 @@ import { createPinia, defineStore } from "pinia";
 import piniaPluginPersist from "pinia-plugin-persistedstate";
 import piniaPersistConfig from "./helper/piniaPersist";
 import { getShowMenuList, getFlatMenuList, getAllBreadcrumbList } from "@/utils/tools";
-import { HOME_URL, HOME_ROUTE } from "@/config";
-import { TransitionAnimation } from "./interface"
+import { HOME_URL } from "@/config";
+import { TransitionAnimation } from "./interface";
 
 /* id: GlobalState, 必须存在，在所有 Store 中唯一 */
 const useGlobalStore = defineStore('GlobalState', {
@@ -22,7 +22,7 @@ const useGlobalStore = defineStore('GlobalState', {
     menuList: <any>[],
     flatMenuList: <any>[],
     authButtonList: <any>{},
-    routes: HOME_ROUTE,
+    routes: [{ title: '首页',  name: 'Home', route: HOME_URL, realPath: HOME_URL, close: false }],
     routeName: '', // 当前页面的 router name，用来做按钮权限筛选
     consts: <any>[], // 常量
     userInfo: <any>{},
@@ -116,6 +116,12 @@ const useGlobalStore = defineStore('GlobalState', {
         this.routes.splice(options.index, options.count);
       }
     },
+    clearRoutes() {
+      this.currentRoute = '/';
+      this.realRoute = '';
+      this.routes = [{ title: '首页',  name: 'Home', route: HOME_URL, realPath: HOME_URL, close: false }];
+      this.routeName = '';
+    },
     setConsts(consts: any) {
       this.consts = consts;
     },
@@ -142,13 +148,11 @@ const useGlobalStore = defineStore('GlobalState', {
     },
     logout() {
       // 1.清空用户信息
-      this.userInfo = {};
+      this.setUserInfo({});
       // 2.清空导航栏
-      this.currentRoute = '/';
-      this.realRoute = '';
-      this.routes = HOME_ROUTE;
+      this.clearRoutes();
       // 3.清空常量
-      this.consts = [];
+      this.setConsts([]);
       // 4.重置锁屏
       this.isLockScreen = false;
       this.setLockPassword({ lockScreenCode: '', unLockBackRoute: '' })

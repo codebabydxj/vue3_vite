@@ -7,7 +7,7 @@
 			placement="bottom">
 			<el-switch v-model="themeConfig.isReplaceNewLoginPage" @change="switchReplaceLoginPage" inline-prompt :active-icon="CaretLeft" :inactive-icon="CaretRight" />
 		</el-tooltip>
-		<el-tooltip
+		<!-- <el-tooltip
 			effect="dark"
 			content="切换主题色"
 			placement="top">
@@ -19,7 +19,7 @@
 					<el-icon><Moon/></el-icon>
 				</template>
 			</el-switch>
-		</el-tooltip>
+		</el-tooltip> -->
 	</el-space>
 </template>
 

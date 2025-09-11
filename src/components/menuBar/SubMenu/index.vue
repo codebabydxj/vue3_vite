@@ -22,12 +22,7 @@
   </template>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'SubMenu'
-}
-</script>
-<script setup lang="ts">
+<script setup lang="ts" name="SubMenu">
 import { computed, inject } from "vue"
 import { useRouter } from "vue-router"
 import { useGlobalStore } from "@/store"
@@ -47,6 +42,7 @@ const router = useRouter()
 const popupColor: any = computed(() => themeConfig.value.sidebarLight ? 'var(--color-light)' : 'var(--color-dark)')
 const popupActiveColor: any = computed(() => themeConfig.value.sidebarLight ? 'var(--color-text)' : 'var(--color-dark)')
 const popupBgColor: any = computed(() => themeConfig.value.sidebarLight ? 'var(--menu-item-active-bg-color-light)' : 'var(--menu-item-active-bg-color)')
+const menuAfterIcon: any = computed(() => themeConfig.value.isCollapse ? 'block' : 'none')
 
 const routeGo = (subItem: any) => {
   if (subItem.meta.isLink) return window.open(subItem.meta.isLink, "_blank");
@@ -176,7 +172,7 @@ const routeGo = (subItem: any) => {
 .navbar-side, .navbar-side-light {
   .el-menu>.el-menu-item.is-active::after {
     content: '✨';
-    display: block;
+    display: v-bind(menuAfterIcon);
     position: absolute;
     width: 0px;
     height: 50px;

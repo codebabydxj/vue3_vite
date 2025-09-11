@@ -31,7 +31,7 @@
 </template>
 
 <script setup lang="ts" name="HeaderTabs">
-import { ref, watch, inject, watchEffect, onMounted } from 'vue'
+import { ref, watch, inject, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useGlobalStore } from '@/store'
 import { useKeepAliveStore } from '@/store/keepAlive'
@@ -44,16 +44,12 @@ const route = useRoute()
 const myStore: any = useGlobalStore();
 const keepAliveStore = useKeepAliveStore();
 // 通过inject获取挂载在全局的globalRouter方法，初始化view
-const Router: any = inject('Router')
+const Router: any = inject('Router');
 Router.initView();
 
 // 初始化路由
-const routes: any = ref([])
-const currentRoute: any = ref('')
-watchEffect(() => {
-  currentRoute.value = myStore.currentRoute;
-  routes.value = myStore.routes;
-})
+const currentRoute: any = computed(() => myStore.currentRoute);
+const routes: any = computed(() => myStore.routes);
 
 const visable = ref(false)
 const left = ref(<number>0)

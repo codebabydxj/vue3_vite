@@ -57,7 +57,7 @@ const globalRouter = {
     const splitPath: any = rootPath.split('/');
     if (rootPath && rootPath.split('/').length > 3) {
       rootPath = rootPath.slice(0, rootPath.indexOf(splitPath[3]) - 1);
-    }
+    };
     if (rootPath === myStore.currentRoute) return;
     const route: any = {
       title: getByPath(rootPath).title,
