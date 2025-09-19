@@ -10,7 +10,7 @@
 import { createPinia, defineStore } from "pinia";
 import piniaPluginPersist from "pinia-plugin-persistedstate";
 import piniaPersistConfig from "./helper/piniaPersist";
-import { getShowMenuList, getFlatMenuList, getAllBreadcrumbList } from "@/utils/tools";
+import { getShowMenuList, getFlatMenuList, getAllBreadcrumbList, getHeadMenuList } from "@/utils/tools";
 import { HOME_URL } from "@/config";
 import { TransitionAnimation } from "./interface";
 
@@ -34,6 +34,8 @@ const useGlobalStore = defineStore('GlobalState', {
       unLockBackRoute: <any>'',
     },
     themeConfig: <any>{
+      // 布局风格 (经典：classic | 横向：transverse | 混合：mix)
+      layoutType: "classic",
       // 默认 主题颜色
       primary: '#409EFF',
       // Element-Plus 组件大小
@@ -54,6 +56,8 @@ const useGlobalStore = defineStore('GlobalState', {
       sidebarLight: false,
       // 折叠菜单
       isCollapse: true,
+      // 菜单手风琴
+      accordion: true,
       // 面包屑
       isBreadcrumb: true,
       // 转场动画
@@ -79,6 +83,8 @@ const useGlobalStore = defineStore('GlobalState', {
     authMenuListGet: (state: any) => getShowMenuList(state.menuList),
     // 菜单权限列表 ==> 扁平化之后的一维数组菜单，主要用来添加动态路由
     flatMenuListGet: (state: any) => getFlatMenuList(state.menuList),
+    // 菜单权限列表 ==> 第一级菜单，需要剔除 isHide == true
+    headMenuListGet: (state: any) => getHeadMenuList(state.menuList),
     // 递归处理后的所有面包屑导航列表
     breadcrumbListGet: (state: any) => getAllBreadcrumbList(state.menuList)
   },

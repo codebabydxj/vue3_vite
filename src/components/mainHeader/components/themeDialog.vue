@@ -6,6 +6,28 @@
     :append-to-body="true"
     :before-close="cancel">
     <el-scrollbar style="padding-right: 15px;">
+      <!-- 布局风格 -->
+      <el-divider class="divider" content-position="center">
+        <el-icon><Notification /></el-icon>
+        <el-text truncated>{{ $t("theme.layoutStyle") }}</el-text>
+      </el-divider>
+      <div class="layout-box">
+        <template v-for="item in layouts">
+          <el-tooltip effect="dark" :content="item.value === 'classic' ? $t('theme.classicLayout') : item.value === 'transverse' ? $t('theme.transverseLayout') : $t('theme.mixLayout')" placement="top" :show-after="200">
+            <div :class="['layout-item', `${item.class}`, { 'is-active': themeConfig.layoutType === item.value }]" @click="setLayout(item.value)">
+              <div class="layout-dark"></div>
+              <div class="layout-container" v-show="item.value !== 'transverse'">
+                <div class="layout-light"></div>
+                <div class="layout-content"></div>
+              </div>
+              <div class="layout-content" v-show="item.value === 'transverse'"></div>
+              <el-icon v-if="themeConfig.layoutType == item.value">
+                <CircleCheckFilled />
+              </el-icon>
+            </div>
+          </el-tooltip>
+        </template>
+      </div>
       <!-- 全局主题 -->
       <el-divider class="divider" content-position="center">
         <el-icon><ColdDrink /></el-icon>
@@ -96,6 +118,10 @@
         <el-switch v-model="themeConfig.isCollapse" inline-prompt :active-icon="Check" :inactive-icon="Close" @change="changeCollapse" />
       </div>
       <div class="theme-item">
+        <span>{{ $t("theme.accordion") }}</span>
+        <el-switch v-model="themeConfig.accordion" inline-prompt :active-icon="Check" :inactive-icon="Close" @change="changeAccordion" />
+      </div>
+      <div class="theme-item">
         <span>{{ $t("theme.breadcrumb") }}</span>
         <el-switch v-model="themeConfig.isBreadcrumb" inline-prompt :active-icon="Check" :inactive-icon="Close" @change="changeBreadcrumb" />
       </div>
@@ -108,9 +134,9 @@
       <div class="theme-item">
         <span>{{ $t("theme.configProvider") }}</span>
         <div>
-          <el-checkbox v-model="themeConfig.assemblySize" label="默认" value="default" true-value="default" :disabled="themeConfig.assemblySize === 'default'" />
-          <el-checkbox v-model="themeConfig.assemblySize" label="小型" value="small" true-value="small" :disabled="themeConfig.assemblySize === 'small'" />
-          <el-checkbox v-model="themeConfig.assemblySize" label="大型" value="large" true-value="large" :disabled="themeConfig.assemblySize === 'large'" />
+          <el-checkbox v-model="themeConfig.assemblySize" :label="$t('global.default')" value="default" true-value="default" :disabled="themeConfig.assemblySize === 'default'" />
+          <el-checkbox v-model="themeConfig.assemblySize" :label="$t('global.small')" value="small" true-value="small" :disabled="themeConfig.assemblySize === 'small'" />
+          <el-checkbox v-model="themeConfig.assemblySize" :label="$t('global.large')" value="large" true-value="large" :disabled="themeConfig.assemblySize === 'large'" />
         </div>
       </div>
       <!-- 系统设置 -->
@@ -189,6 +215,20 @@ const transitionAnimationList: any = ref([
     value: 'fadeOut'
   }
 ])
+const layouts: any = ref({
+  classicLayout: {
+    value: "classic",
+    class: "layout-classic"
+  },
+  transverseLayout: {
+    value: "transverse",
+    class: "layout-transverse"
+  },
+  mixLayout: {
+    value: "mix",
+    class: "layout-mix"
+  }
+});
 const myStore: any = useGlobalStore();
 const themeConfig = computed(() => myStore.themeConfig);
 const lockScreenRef = ref();
@@ -208,6 +248,9 @@ const colorsData: any = ref(['#409EFF', '#67C23A', '#E6A23C', '#F56C6C', '#90939
 
 const { changePrimary, changeGreyOrWeak, switchDark } = useTheme();
 
+const setLayout = (layout: any) => {
+  myStore.setThemeConfig({ ...themeConfig.value, layoutType: layout })
+}
 const changeColors = (color: any) => {
   myStore.setThemeConfig({ ...themeConfig.value, primary: color })
   changePrimary(color)
@@ -240,6 +283,10 @@ const changeSidebarLight = (val: any) => {
 
 const changeCollapse = (val: any) => {
   myStore.setThemeConfig({ ...themeConfig.value, isCollapse: val })
+}
+
+const changeAccordion = (val: any) => {
+  myStore.setThemeConfig({ ...themeConfig.value, accordion: val })
 }
 
 const changeBreadcrumb = (val: any) => {
@@ -348,6 +395,104 @@ const cancel = () => {
   }
   100% {
     border-color: #e7e5e4;
+  }
+}
+.layout-box {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 15px 7px 0;
+  .layout-item {
+    position: relative;
+    box-sizing: border-box;
+    width: 100px;
+    height: 70px;
+    padding: 6px;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 1px var(--el-border-color-dark);
+    transition: all 0.2s;
+    .layout-dark {
+      background-color: var(--el-color-primary);
+      border-radius: 3px;
+    }
+    .layout-light {
+      background-color: var(--el-color-primary-light-5);
+      border-radius: 3px;
+    }
+    .layout-content {
+      background-color: var(--el-color-primary-light-8);
+      border: 1px dashed var(--el-color-primary);
+      border-radius: 3px;
+    }
+    .el-icon {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+      color: var(--el-color-primary);
+      transition: all 0.2s;
+    }
+    &:hover {
+      box-shadow: 0 0 5px 1px var(--el-text-color-secondary);
+    }
+  }
+  .is-active {
+    box-shadow: 0 0 0 2px var(--el-color-primary) !important;
+  }
+  .layout-classic {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    .layout-dark {
+      width: 20%;
+    }
+    .layout-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 74%;
+      .layout-light {
+        height: 20%;
+      }
+      .layout-content {
+        height: 68%;
+      }
+    }
+  }
+  .layout-transverse {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    .layout-dark {
+      height: 20%;
+    }
+    .layout-content {
+      height: 68%;
+    }
+  }
+  .layout-mix {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    .layout-dark {
+      width: 20%;
+      background-color: var(--el-color-primary-light-5);
+    }
+    .layout-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 74%;
+      .layout-light {
+        height: 20%;
+        background-color: var(--el-color-primary);
+      }
+      .layout-content {
+        height: 68%;
+      }
+    }
   }
 }
 </style>

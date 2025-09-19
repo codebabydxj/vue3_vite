@@ -7,7 +7,7 @@ declare namespace NodeJS {
   type Timer = any;
   type Timeout = any;
 }
-declare module 'postcss-px2rem';
+
 /* __APP_INFO__ */
 declare const __APP_INFO__: {
   pkg: {

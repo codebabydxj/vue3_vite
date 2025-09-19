@@ -2,7 +2,7 @@
   <div class="login-content" :class="{ 'login-dark': darkTheme }">
     <div class="login-logo">
       <img src="../../assets/imgs/logo.png" alt="" />
-      <h2 class="logo-text" data-v-a2265173="">Vite-Admin</h2>
+      <h2 class="logo-text">{{ title }}</h2>
     </div>
     <el-form ref="ruleFormRef" :model="ruleForm" label-width="0px" class="loginForm"
       @submit.native.prevent @keyup.enter.native="submitForm(ruleFormRef)">
@@ -55,7 +55,7 @@ const ruleForm: any = ref({
   userName: '',
   password: '',
 });
-
+const title: any = ref(import.meta.env.VITE_GLOB_APP_TITLE);
 const loading = ref(false)
 
 const resetForm = () => {
@@ -88,7 +88,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 
         ElNotification({
           title: getTimeState(),
-          message: "欢迎登录 Vite-Admin",
+          message: `欢迎登录 ${title.value}`,
           type: "success",
           duration: 3000
         });

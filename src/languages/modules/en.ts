@@ -1,6 +1,11 @@
 import { title } from "process";
 
 export default {
+  global: {
+    default: "Default",
+    small: "Small",
+    large: "Large",
+  },
   home: {
     welcome: "Welcome"
   },
@@ -36,6 +41,10 @@ export default {
   },
   theme: {
     title: "ThemeConfig",
+    layoutStyle: "LayoutStyle",
+    classicLayout: "ClassicLayout",
+    transverseLayout: "TransverseLayout",
+    mixLayout: "MixLayout",
     globalTheme: "GlobalTheme",
     pageSetting: "PageSetting",
     systemSetting: "SystemSetting",
@@ -47,6 +56,7 @@ export default {
     weakMode: "WeakMode",
     sidebarLight: "SidebarLight",
     collapseMenu: "CollapseMenu",
+    accordion: "Accordion",
     breadcrumb: "Breadcrumb",
     pageTransition: "PageTransition",
     configProvider: "ConfigProvider",

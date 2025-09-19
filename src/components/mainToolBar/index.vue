@@ -35,8 +35,8 @@ const drawerCloseCb = () => {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 45px;
-  height: 45px;
+  width: 42px;
+  height: 42px;
   border-top-left-radius: 5px;
   border-bottom-left-radius: 5px;
   font-size: 26px;

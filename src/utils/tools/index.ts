@@ -259,6 +259,23 @@ export const getShowMenuList = (menuList: any[]): Array<any> => {
 }
 
 /**
+ * @description 使用递归将子级isHide全部设为true (需剔除 isHide == true 的菜单)
+ * @param {Array} menuList 菜单列表
+ * @returns {Array}
+ * */
+export const getHeadMenuList = (menuList: any[]): Array<any> => {
+  let newMenuList: any[] = JSON.parse(JSON.stringify(menuList));
+  return newMenuList.filter((item: any) => {
+    if (item.parentId) {
+      item.meta.isHide = true;
+    }
+    item.children?.length && (item.children = getHeadMenuList(item.children));
+    return !item.meta?.isHide;
+  });
+}
+
+
+/**
  * @description 使用递归找出所有面包屑存储到 pinia/vuex 中
  * @param {Array} menuList 菜单列表
  * @param {Array} parent 父级菜单

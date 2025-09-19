@@ -1,32 +1,46 @@
 <template>
-  <nav :class="themeConfig.sidebarLight ? 'navbar-side-light' : 'navbar-side'" :style="{ transition: 'width 0.3s',  width: !isCurCollapse ? '65px' : '250px' }">
-    <div :class="themeConfig.sidebarLight ? 'collapse-light' : 'collapse'" @click="goHome">
-      <h4 class="user-sel admin-title">
-        <img class="logo" src="../../assets/svg/v.svg" alt="" />
-        <span v-show="isCurCollapse">Vite-Admin</span>
-      </h4>
-    </div>
-    <el-scrollbar height="calc(100vh - 105px)" :style="{ width: !isCurCollapse ? '65px' : '251px' }">
-      <el-menu
-        ref="menuRef"
-        class="user-sel el-menu-vertical-demo"
-        :background-color="themeConfig.sidebarLight ? 'var(--main-bg-light-color)' : 'var(--main-bg-color)'"
-        :text-color="themeConfig.sidebarLight ? 'var(--menu-text-color-light)' : 'var(--menu-text-color-dark)'"
-        :active-text-color="themeConfig.sidebarLight ? 'var(--color-text)' : 'var(--color-dark)'"
-        :unique-opened="true"
-        :collapse="!isCurCollapse"
-        :collapse-transition="false"
-        :default-active="routeParams.currentRoute.split('?')[0]">
-        <SubMenu :menuList="routeParams.menuList" />
-      </el-menu>
-    </el-scrollbar>
-    <div class="user-sel" :class="{ 'eo-active': !isCurCollapse, 'eo': !themeConfig.sidebarLight, 'eo-light': themeConfig.sidebarLight  }">
-      <el-tooltip placement="right" :visible="visible" effect="light" :content="isCurCollapse ? $t('menu.fold') : $t('menu.expand')">
-        <img src="../../assets/svg/enter.svg" alt="" @mouseenter="visible = true" @mouseleave="visible = false"
-          @click="handleSwitch">
-      </el-tooltip>
-    </div>
-  </nav>
+  <!-- 混合布局 -->
+  <template v-if="mixLayout">
+    <nav :class="{ 'navbar-side-light': themeConfig.sidebarLight, 'navbar-side': !themeConfig.sidebarLight }" class="navbar-transverse navbar-mix">
+      <MixMenu class="el-menu-transverse" />
+      <ComHeader :showTabs="false" :showBorder="false" />
+    </nav>
+  </template>
+  <template v-else>
+    <!-- 经典布局 -->
+    <template v-if="themeConfig.layoutType === 'classic'">
+      <nav :class="themeConfig.sidebarLight ? 'navbar-side-light' : 'navbar-side'" :style="{ transition: 'width 0.3s',  width: !isCurCollapse ? '65px' : '250px' }">
+        <div :class="themeConfig.sidebarLight ? 'collapse-light' : 'collapse'" @click="goHome">
+          <h4 class="user-sel admin-title">
+            <img class="logo" src="../../assets/svg/v.svg" alt="" />
+            <span v-show="isCurCollapse">{{ title }}</span>
+          </h4>
+        </div>
+        <el-scrollbar height="calc(100vh - 105px)" :style="{ width: !isCurCollapse ? '65px' : '251px' }">
+          <Menu :isCollapse="isCollapse" :routeParams="routeParams" />
+        </el-scrollbar>
+        <div class="user-sel" :class="{ 'eo-active': !isCurCollapse, 'eo': !themeConfig.sidebarLight, 'eo-light': themeConfig.sidebarLight  }">
+          <el-tooltip placement="right" :visible="visible" effect="light" :content="isCurCollapse ? $t('menu.fold') : $t('menu.expand')">
+            <img src="../../assets/svg/enter.svg" alt="" @mouseenter="visible = true" @mouseleave="visible = false"
+              @click="handleSwitch">
+          </el-tooltip>
+        </div>
+      </nav>
+    </template>
+    <!-- 横向布局 -->
+    <template v-else-if="themeConfig.layoutType === 'transverse'">
+      <nav :class="themeConfig.sidebarLight ? 'navbar-side-light' : 'navbar-side'" class="navbar-transverse">
+        <div :class="themeConfig.sidebarLight ? 'collapse-light' : 'collapse'" class="navbar-logo" @click="goHome">
+          <h4 class="user-sel admin-title">
+            <img class="logo" src="../../assets/svg/v.svg" alt="" />
+            <span>{{ title }}</span>
+          </h4>
+        </div>
+        <Menu class="el-menu-transverse" :isCollapse="isCollapse" :routeParams="routeParams" :mode="'horizontal'" />
+        <ComHeader :showTabs="false" :showBorder="false" />
+      </nav>
+    </template>
+  </template>
 </template>
 
 <script setup lang="ts" name="MenuBar">
@@ -34,21 +48,31 @@ import { ref, watch, computed, inject, onBeforeUnmount } from "vue"
 import { useGlobalStore } from "@/store"
 import { useDebounceFn } from "@vueuse/core"
 import { HOME_URL } from "@/config";
-import SubMenu from "@/components/menuBar/SubMenu/index.vue"
+import Menu from "@/components/menuBar/Menu/index.vue"
+import ComHeader from "@/components/mainHeader/index.vue";
+import MixMenu from "./MixMenu/index.vue";
 
-const props = defineProps(['isCollapse'])
+const props = defineProps({
+  isCollapse: {
+    type: Boolean,
+    default: false
+  },
+  mixLayout: {
+    type: Boolean,
+    default: false
+  }
+})
 const emit = defineEmits(['isCurCollapseChange'])
-
+const title: any = ref(import.meta.env.VITE_GLOB_APP_TITLE);
 const isCurCollapse: any = computed(() => props.isCollapse);
-const menuRef: any = ref(null);
 const visible = ref(false)
-const delayShow = computed(() => props.isCollapse);
 
 // 通过inject获取挂载在全局的globalRouter方法，初始化view
 const Router: any = inject('Router')
 // 获取store
 const myStore: any = useGlobalStore()
 const themeConfig = computed(() => myStore.themeConfig)
+const bottomBorder: any = computed(() => themeConfig.value.sidebarLight ? '1px solid var(--el-menu-border-color)' : 'none')
 
 const routeParams: any = ref({
   currentRoute: computed(() => myStore.currentRoute),
@@ -82,93 +106,26 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped lang="scss">
-.navbar-side, .navbar-side-light {
-  flex: 0 0 auto;
-  background-color: var(--main-bg-color);
-  overflow: hidden;
-  position: relative;
+@use "./index.scss";
 
-  .el-menu-vertical-demo {
-    width: 100%;
-  }
-  .el-menu {
-    border-right: none;
-  }
-}
-
-.navbar-side-light {
-  background-color: var(--main-bg-light-color);
-  border-right: 1px solid var(--color-light-border);
-  box-sizing: border-box;
-}
-
-.collapse, .collapse-light {
-  height: 60px;
-  cursor: pointer;
-  position: relative;
+.navbar-transverse {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  height: 58px;
+  border-bottom: v-bind(bottomBorder);
 
-  .admin-title {
-    display: flex;
-    align-items: center;
-    column-gap: 16px;
-    flex-wrap: nowrap;
-    font-weight: bold;
-    font-size: 18px;
-    color: var(--color-dark);
-    height: 60px;
-    padding: 0 18px;
-    white-space: nowrap;
+  .el-menu-transverse {
+    flex: 1;
+    height: 100%;
+    overflow: hidden;
+    border-bottom: none;
   }
 
-  .logo {
-    display: inline-block;
-    width: 26px;
-    height: 26px;
-    vertical-align: middle;
-    margin-right: 8px;
-    margin-top: -4px;
-  }
-}
-
-.collapse-light {
-  .admin-title {
-    color: var(--color-light);
-  }
-}
-
-.eo, .eo-light {
-  display: flex;
-  align-items: center;
-  height: 40px;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-  background-color: var(--main-bg-color);
-  box-shadow: 0 0 6px -3px var(--color-text);
-
-  img {
-    width: 22px;
-    height: 22px;
-    cursor: pointer;
-    vertical-align: middle;
-    margin-left: 22px;
-    transition: all 1s;
-  }
-}
-
-.eo-light {
-  background-color: var(--main-bg-light-color);
-  box-shadow: none;
-  height: 39px;
-  border-top: 1px solid var(--color-light-border);
-}
-
-.eo-active {
-  transition: width 0.35s;
-  img {
-    transform: rotateY(180deg);
+  @media screen and (width <= 750px) {
+    .navbar-logo {
+      display: none !important;
+    }
   }
 }
 </style>

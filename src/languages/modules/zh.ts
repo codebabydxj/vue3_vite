@@ -1,4 +1,9 @@
 export default {
+  global: {
+    default: "默认",
+    small: "小型",
+    large: "大型",
+  },
   home: {
     welcome: "欢迎使用"
   },
@@ -34,6 +39,10 @@ export default {
   },
   theme: {
     title: "主题配置",
+    layoutStyle: "布局风格",
+    classicLayout: "经典布局",
+    transverseLayout: "横向布局",
+    mixLayout: "混合布局",
     globalTheme: "全局主题",
     pageSetting: "界面设置",
     systemSetting: "系统设置",
@@ -45,6 +54,7 @@ export default {
     weakMode: "色弱模式",
     sidebarLight: "侧边栏浅色",
     collapseMenu: "折叠菜单",
+    accordion: "菜单手风琴",
     breadcrumb: "面包屑导航",
     pageTransition: "页面转场动画",
     configProvider: "全局组件大小",
