@@ -2,9 +2,11 @@
   <el-watermark id="watermark" :font="font" :content="watermark ? ['Vite Admin', 'Hello World ~'] : ''">
     <div class="vite-main">
       <MenuBar :isCollapse="isCollapse" @isCurCollapseChange="isCurCollapseChange"></MenuBar>
+      <MixMenuBar v-if="themeConfig.layoutType === 'mix'" :isCollapse="isCollapse" @isCurCollapseChange="isCurCollapseChange"></MixMenuBar>
       <Content class="el_content" :isCollapse="isCollapse">
         <template v-slot:content>
-          <ComHeader>
+          <MenuBar v-if="themeConfig.layoutType === 'mix'" :isCollapse="isCollapse" :mixLayout="true" @isCurCollapseChange="isCurCollapseChange"></MenuBar>
+          <ComHeader :showConfig="themeConfig.layoutType === 'classic' ? true : false">
             <template v-slot:tabs>
               <Tabs></Tabs>
             </template>
@@ -30,6 +32,7 @@ import { storeToRefs } from "pinia";
 import { useGlobalStore } from "@/store";
 import { useKeepAliveStore } from "@/store/keepAlive";
 import MenuBar from "@/components/menuBar/index.vue";
+import MixMenuBar from "@/components/menuBar/MixIndex.vue";
 import Content from "@/components/mainContent/index.vue";
 import ComHeader from "@/components/mainHeader/index.vue";
 import Toolbar from "@/components/mainToolBar/index.vue";
@@ -43,6 +46,7 @@ const isCollapse: any = ref(myStore.themeConfig.isCollapse)
 const transitionAnimation: any = ref(myStore.themeConfig.transitionAnimation)
 const isDark = computed(() => myStore.themeConfig.isDark)
 const watermark = computed(() => myStore.themeConfig.isWatermark)
+const flexDirection: any = computed(() => ['transverse'].includes(themeConfig.value.layoutType) ? "column" : "row")
 
 // keep页面缓存
 const keepAliveStore = useKeepAliveStore()
@@ -105,9 +109,11 @@ watch(() => myStore.themeConfig.transitionAnimation, async (newVal: any) => {
 <style scoped lang="scss">
 .vite-main {
   display: flex;
+  flex-direction: v-bind(flexDirection);
   height: 100%;
 
   .el_content {
+    width: 100%;
     height: 100%;
     overflow: hidden;
   }

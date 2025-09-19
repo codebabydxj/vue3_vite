@@ -1,32 +1,36 @@
 <template>
-  <template v-for="subItem in menuList" :key="subItem.path">
-    <el-sub-menu v-if="subItem.children?.length" :index="subItem.path">
-      <template #title>
+  <template v-for="subItem in menuList">
+    <template v-if="subItem.children?.length">
+      <el-sub-menu :index="subItem.path" :key="subItem.id">
+        <template #title>
+          <svg-icon v-if="subItem.meta.svgIcon" :name="subItem.meta.svgIcon" :iconStyle="{ width: '22px', height: '22px', marginRight: '8px'}" />
+          <el-icon v-else-if="subItem.meta.icon" :size="20" style="margin: 0 8px 0 -2px;">
+            <component :is="subItem.meta.icon"></component>
+          </el-icon>
+          <span slot="title">{{ subItem.meta.title }}</span>
+        </template>
+        <SubMenu :menuList="subItem.children" />
+      </el-sub-menu>
+    </template>
+    <template v-else>
+      <el-menu-item :index="subItem.path" :key="subItem.id" @click="routeGo(subItem)">
         <svg-icon v-if="subItem.meta.svgIcon" :name="subItem.meta.svgIcon" :iconStyle="{ width: '22px', height: '22px', marginRight: '8px'}" />
         <el-icon v-else-if="subItem.meta.icon" :size="20" style="margin: 0 8px 0 -2px;">
           <component :is="subItem.meta.icon"></component>
         </el-icon>
-        <span slot="title">{{ subItem.meta.title }}</span>
-      </template>
-      <SubMenu :menuList="subItem.children" />
-    </el-sub-menu>
-    <el-menu-item v-else :index="subItem.path" @click="routeGo(subItem)">
-      <svg-icon v-if="subItem.meta.svgIcon" :name="subItem.meta.svgIcon" :iconStyle="{ width: '22px', height: '22px', marginRight: '8px'}" />
-      <el-icon v-else-if="subItem.meta.icon" :size="20" style="margin: 0 8px 0 -2px;">
-        <component :is="subItem.meta.icon"></component>
-      </el-icon>
-      <template #title>
-        <span>{{ subItem.meta.title }}</span>
-      </template>
-    </el-menu-item>
+        <template #title>
+          <span>{{ subItem.meta.title }}</span>
+        </template>
+      </el-menu-item>
+    </template>
   </template>
 </template>
 
 <script setup lang="ts" name="SubMenu">
-import { computed, inject } from "vue"
-import { useRouter } from "vue-router"
-import { useGlobalStore } from "@/store"
-import SubMenu from "@/components/menuBar/SubMenu/index.vue"
+import { computed, inject } from "vue";
+import { useRouter } from "vue-router";
+import { useGlobalStore } from "@/store";
+import SubMenu from "@/components/menuBar/SubMenu/index.vue";
 
 const props = defineProps({
   menuList: {
@@ -34,15 +38,15 @@ const props = defineProps({
     default: () => []
   }
 })
-const Router: any = inject('Router')
-const myStore: any = useGlobalStore()
-const themeConfig = computed(() => myStore.themeConfig)
-const currentRoute = computed(() => myStore.currentRoute)
-const router = useRouter()
-const popupColor: any = computed(() => themeConfig.value.sidebarLight ? 'var(--color-light)' : 'var(--color-dark)')
-const popupActiveColor: any = computed(() => themeConfig.value.sidebarLight ? 'var(--color-text)' : 'var(--color-dark)')
-const popupBgColor: any = computed(() => themeConfig.value.sidebarLight ? 'var(--menu-item-active-bg-color-light)' : 'var(--menu-item-active-bg-color)')
-const menuAfterIcon: any = computed(() => themeConfig.value.isCollapse ? 'block' : 'none')
+const router = useRouter();
+const Router: any = inject('Router');
+const myStore: any = useGlobalStore();
+const themeConfig = computed(() => myStore.themeConfig);
+const currentRoute = computed(() => myStore.currentRoute);
+const popupColor: any = computed(() => themeConfig.value.sidebarLight ? 'var(--color-light)' : 'var(--color-dark)');
+const popupActiveColor: any = computed(() => themeConfig.value.sidebarLight ? 'var(--color-text)' : 'var(--color-dark)');
+const popupBgColor: any = computed(() => themeConfig.value.sidebarLight ? 'var(--menu-item-active-bg-color-light)' : 'var(--menu-item-active-bg-color)');
+const menuAfterIcon: any = computed(() => themeConfig.value.isCollapse ? 'block' : 'none');
 
 const routeGo = (subItem: any) => {
   if (subItem.meta.isLink) return window.open(subItem.meta.isLink, "_blank");
@@ -56,6 +60,10 @@ const routeGo = (subItem: any) => {
 </script>
 
 <style lang="scss">
+$size-1: 13px;
+$size-2: 15px;
+$margin-1: 0px 8px 0px -6px;
+
 .navbar-side, .navbar-side-light {
   .el-sub-menu__title {
     color: var(--menu-text-color-dark) !important;
@@ -140,14 +148,36 @@ const routeGo = (subItem: any) => {
     background-color: var(--menu-item-active-bg-color-light) !important;
   }
 }
+.navbar-side, .navbar-side-light {
+  .el-menu>.el-sub-menu>.el-menu>.el-menu-item {
+    padding: 0 20px 0 50px !important;
+    font-size: $size-1;
+    span {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
 
-.navbar-side .el-menu>.el-sub-menu>.el-menu>.el-menu-item {
-  padding: 0 20px 0 50px !important;
-  font-size: 13px;
-  span {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  .el-menu>.el-sub-menu>.el-menu>.el-menu-item>.el-icon {
+    font-size: $size-2 !important;
+    margin: $margin-1 !important;
+  }
+}
+.navbar-side-mix {
+  .el-menu>.el-menu-item {
+    padding: 0 30px !important;
+    font-size: $size-1;
+    span {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .el-menu>.el-menu-item>.el-icon {
+    font-size: $size-2 !important;
+    margin: $margin-1 !important;
   }
 }
 
@@ -171,7 +201,7 @@ const routeGo = (subItem: any) => {
 
 .navbar-side, .navbar-side-light {
   .el-menu>.el-menu-item.is-active::after {
-    content: '✨';
+    content: '🙂';
     display: v-bind(menuAfterIcon);
     position: absolute;
     width: 0px;
@@ -187,10 +217,19 @@ const routeGo = (subItem: any) => {
     height: 42px;
     background-color: var(--menu-item-check-color) !important;
     left: 0;
-    top: 4px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
   }
 }
 
+.el-menu--popup-container>.el-menu--popup>.el-menu-item {
+  font-size: $size-1;
+}
+.el-menu--popup-container>.el-menu--popup>.el-menu-item>.el-icon {
+  font-size: $size-2 !important;
+  margin: $margin-1 !important;
+}
 .el-menu--popup-container>.el-menu--popup>.el-menu-item:hover {
   color: v-bind(popupColor) !important;
   background-color: v-bind(popupBgColor) !important;

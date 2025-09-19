@@ -69,4 +69,17 @@ html.dark {
 	::-webkit-scrollbar-thumb {
 		background-color: var(--el-border-color-darker) !important;
 	}
+
+	.split-active {
+		color: var(--color-dark) !important;
+    background-color: var(--menu-item-active-bg-color) !important;
+	}
+	.el-menu-mix-item:hover {
+    color: var(--color-dark) !important;
+    background-color: var(--menu-item-active-bg-color) !important;
+  }
+  .split-active:hover {
+    color: var(--color-dark) !important;
+		background-color: var(--menu-item-active-bg-color) !important;
+  }
 }

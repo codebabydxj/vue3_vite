@@ -5,7 +5,7 @@
         <div class="over-card mb10">
           <h4 class="title">简介</h4>
           <span class="text">
-            <el-link type="primary" @click="Router.openView(HOME_URL);">Vite-Admin</el-link>
+            <el-link type="primary" @click="Router.openView(HOME_URL);">{{ title }}</el-link>
             一款基于 Vue3.5、TypeScript、Vite5、Pinia、Element-Plus 的后台管理框架，使用目前最新技术栈开发。项目提供强大的
             <el-link type="primary">ProTable 组件</el-link>
             在一定程度上提高您的开发效率。另外本项目还封装了一些常用组件、Hooks、指令、动态路由、按钮级别权限控制等功能。
@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts" name="About">
-import { inject } from "vue";
+import { ref, inject } from "vue";
 import { HOME_URL } from "@/config";
 
 const { pkg, lastBuildTime } = __APP_INFO__;
@@ -64,6 +64,7 @@ const { dependencies, devDependencies, version } = pkg as PackageJson;
 
 // 通过inject获取挂载在全局的globalRouter方法，初始化view
 const Router: any = inject('Router')
+const title: any = ref(import.meta.env.VITE_GLOB_APP_TITLE);
 </script>
 
 <style scoped lang="scss">

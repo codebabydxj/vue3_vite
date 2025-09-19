@@ -1,12 +1,12 @@
 <template>
   <header :class="{ 'header-light': themeConfig.sidebarLight }">
     <nav class="navbar-top">
-      <div class="tabs-wrap" :class="{ 'tabs-wrap-light': themeConfig.sidebarLight }">
-        <el-tooltip effect="dark" :content="$t('header.rightClick')" placement="bottom" >
+      <div class="tabs-wrap" :class="{ 'tabs-wrap-light': themeConfig.sidebarLight }" v-if="showTabs">
+        <el-tooltip effect="dark" :content="$t('header.rightClick')" placement="bottom">
           <slot name="tabs"></slot>
         </el-tooltip>
       </div>
-      <div class="user-info">
+      <div class="user-info" v-if="showConfig">
         <el-tooltip effect="dark" :content="$t('header.language')" placement="bottom">
           <el-link id="Lang" class="icon-style" :underline="'never'" @click="changeLang">
             <Languages id="languages" />
@@ -113,6 +113,20 @@ import searchMenu from './components/searchMenuDialog.vue';
 import themeDialog from './components/themeDialog.vue';
 import lockScreenDialog from "./components/lockScreenDialog.vue";
 
+const props = defineProps({
+  showTabs: {
+    type: Boolean,
+    default: true
+  },
+  showConfig: {
+    type: Boolean,
+    default: true
+  },
+  showBorder: {
+    type: Boolean,
+    default: true
+  }
+})
 const router = useRouter()
 const myStore: any = useGlobalStore()
 const themeConfig = computed(() => myStore.themeConfig)
@@ -129,6 +143,11 @@ const weatherSrc: any = computed(() => {
   }
   return src;
 })
+const bottomBorder: any = computed(() => props.showBorder ? '1px solid var(--color-light-border)' : 'none');
+const minWidth: any = computed(() => "405px");
+const maxWidth: any = computed(() => "552px");
+const tabsWarpMinWidth: any = computed(() => props.showConfig ? `calc(100% - ${minWidth.value})` : '100%')
+const tabsWarpMaxWidth: any = computed(() => props.showConfig ? `calc(100% - ${maxWidth.value})` : '100%')
 
 onMounted(() => {
   // 监听 screenfull 属性的变化来改变图标
@@ -225,7 +244,7 @@ header {
 }
 .header-light {
   background-color: var(--main-bg-light-color);
-  border-bottom: 1px solid var(--color-light-border);
+  border-bottom: v-bind(bottomBorder);
   box-sizing: border-box;
 }
 
@@ -233,21 +252,19 @@ header .navbar-top {
   height: 100%;
   display: flex;
   flex-direction: row;
+  align-items: center;
 }
-
-$tab-r-min-width: 405px;
-$tab-r-max-width: 552px;
 
 header .navbar-top .tabs-wrap {
   flex: 1 1 auto;
-  min-width: calc(100% - $tab-r-max-width);
-  max-width: calc(100% - $tab-r-min-width);
+  min-width: v-bind(tabsWarpMaxWidth);
+  max-width: v-bind(tabsWarpMinWidth);
 }
 
 header .navbar-top .user-info {
   flex: 0 0 auto;
-  min-width: $tab-r-min-width;
-  max-width: $tab-r-max-width;
+  min-width: v-bind(minWidth);
+  max-width: v-bind(maxWidth);
   display: flex;
   justify-content: flex-end;
   align-items: center;
