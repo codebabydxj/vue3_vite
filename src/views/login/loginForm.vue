@@ -2,7 +2,7 @@
   <div class="login-content" :class="{ 'login-dark': darkTheme }">
     <div class="login-logo">
       <img src="../../assets/imgs/logo.png" alt="" />
-      <h2 class="logo-text">{{ title }}</h2>
+      <h2 class="logo-text" :class="styleClass.glass_title">{{ title }}</h2>
     </div>
     <el-form ref="ruleFormRef" :model="ruleForm" label-width="0px" class="loginForm"
       @submit.native.prevent @keyup.enter.native="submitForm(ruleFormRef)">
@@ -42,9 +42,11 @@ import { User, Lock, CircleClose } from "@element-plus/icons-vue";
 type FormInstance = InstanceType<typeof ElForm>
 type Props = {
   darkTheme?: boolean;
+  styleClass?: any;
 }
 const props = withDefaults(defineProps<Props>(), {
-  darkTheme: false
+  darkTheme: false,
+  styleClass: {},
 })
 const myStore: any = useGlobalStore()
 const themeConfig = computed(() => myStore.themeConfig)
@@ -118,6 +120,10 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     font-weight: 700;
     color: #34495e;
     white-space: nowrap;
+  }
+  .glass_title {
+    color: #FFFFFF;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   }
 }
 .login-btn {
