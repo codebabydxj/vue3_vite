@@ -128,7 +128,7 @@
       <div class="theme-item">
         <span>{{ $t("theme.pageTransition") }}</span>
         <el-select v-model="themeConfig.transitionAnimation" placeholder="请选择" class="fade-select" @change="changeTransition">
-          <el-option v-for="item in transitionAnimationList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          <el-option v-for="item in transitionAnimationList" :key="item.value" :label="themeConfig.language === 'en' ? item.enLabel : item.label" :value="item.value"></el-option>
         </el-select>
       </div>
       <div class="theme-item">
@@ -180,38 +180,47 @@ const emit = defineEmits(['drawerCloseCb'])
 const transitionAnimationList: any = ref([
   {
     label: '无过渡',
+    enLabel: 'No Transition',
     value: ''
   },
   {
     label: '侧边淡出',
+    enLabel: 'Fade Side',
     value: 'fade-side'
   },
   {
     label: '底边淡出',
+    enLabel: 'Fade Bottom',
     value: 'fade-bottom'
   },
   {
     label: '收缩淡出',
+    enLabel: 'Fade Scale',
     value: 'fade-scale'
   },
   {
     label: '扩大淡出',
+    enLabel: 'Zoom Fade',
     value: 'zoom-fade'
   },
   {
     label: '收缩',
+    enLabel: 'Zoom Out',
     value: 'zoom-out'
   },
   {
     label: '柔和',
+    enLabel: 'Fade',
     value: 'fade'
   },
   {
     label: '卡片',
+    enLabel: 'CardInOut',
     value: 'cardInOut'
   },
   {
     label: '渐退',
+    enLabel: 'FadeOut',
     value: 'fadeOut'
   }
 ])

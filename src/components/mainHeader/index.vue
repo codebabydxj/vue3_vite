@@ -65,7 +65,7 @@
               <el-text :truncated="true" class="username">{{ userName }}</el-text>
             </el-tooltip>
             <el-avatar class="avatar" icon="el-icon-user-solid" :size="35"
-              src="/src/assets/imgs/avatar.png" fit="fill"></el-avatar>
+              :src="myStore.userInfo.userInfo.avatar" fit="fill"></el-avatar>
           </div>
           <template #dropdown>
             <el-dropdown-menu>
@@ -228,7 +228,7 @@ const handleCommand = (command: any) => {
     window.location.reload();
     window.location.replace(window.location.href);
   }
-  // 信息中心
+  // 个人信息
   if (command === 'setCore') {
     Router.openView('/userinfo');
   }

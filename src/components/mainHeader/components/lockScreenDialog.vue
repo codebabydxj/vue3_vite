@@ -3,7 +3,7 @@
     <div class="info">
       <div>
         <el-avatar class="avatar" icon="el-icon-user-solid" :size="70"
-          src="/src/assets/imgs/avatar.png" fit="fill"></el-avatar>
+          :src="myStore.userInfo.userInfo.avatar" fit="fill"></el-avatar>
       </div>
       <div>{{ userName }}</div>
     </div>

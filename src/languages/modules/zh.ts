@@ -24,7 +24,7 @@ export default {
   person: {
     lockScreen: "锁定屏幕",
     clearCache: "刷新缓存",
-    setting: "信息中心",
+    setting: "个人信息",
     logout: "退出登录",
   },
   proTable: {

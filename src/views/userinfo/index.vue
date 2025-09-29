@@ -47,7 +47,7 @@ import { useGlobalStore } from "@/store";
 import UploadImg from "@/components/uploadImg/img.vue";
 
 const myStore: any = useGlobalStore()
-const photo: any = ref('/src/assets/imgs/avatar.png')
+const photo: any = ref(myStore.userInfo.userInfo.avatar)
 const userFormRef = ref<FormInstance>();
 const formParams: any = ref({
   oldPassword: '',

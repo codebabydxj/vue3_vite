@@ -72,6 +72,8 @@ const useGlobalStore = defineStore('GlobalState', {
       isWatermark: false,
       // 防止调试
       preventDebug: false,
+      // 液态登录
+      glassLogin: true,
     },
   }),
   getters: <any>{
