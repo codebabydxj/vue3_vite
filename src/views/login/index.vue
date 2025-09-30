@@ -33,14 +33,14 @@
               <h1 class="h1">你好，朋友！
                 <svg-icon name="smile" :iconStyle="{ width: '48px', height: '48px'}" />
               </h1>
-              <p style="margin: 15px 0;">在今天和明天之间，有一段很长的时间，趁你还有精神的时候，学习迅速办事。</p>
+              <p style="margin: 15px 0;">在今天和明天之间，有一段很长的时间，趁你还有精神的时候，学会迅速办事。</p>
               <el-button round style="background-color: transparent; color: #ffffff; border-color: #fff; font-size: 20px;" :icon="Right" @click="active = 'signIn'"></el-button>
             </div>
             <div class="overlay-panel overlay-right">
               <h1 class="h1">欢迎回来！
                 <svg-icon name="smile" :iconStyle="{ width: '48px', height: '48px'}" />
               </h1>
-              <p style="margin: 15px 0 25px 0;">选择了方向与路途，就不要抱怨，一个人只有承担起旅途风雨，才能最终守得住彩虹满天。</p>
+              <p style="margin: 15px 0 25px 0;">选择了方向与路途，就不要抱怨，一个人只有承担起旅途风雨，才能守得住满天彩虹。</p>
               <el-button round style="background-color: transparent; color: #ffffff; border-color: #fff; width: 100px;" @click="active = 'signUp'">去登录</el-button>
             </div>
           </div>
