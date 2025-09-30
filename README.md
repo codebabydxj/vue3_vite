@@ -8,6 +8,7 @@ Vite Admin 一款基于 Vue3.5、TypeScript、Vite5、Pinia、Element-Plus 开�
 ### 代码仓库 ⭐
 
 - GitHub：https://github.com/codebabydxj/vue3_vite
+- GitLab：https://gitlab.com/codebabydxj/vue3_vite
 
 ### 项目功能 🔨
 
@@ -19,7 +20,7 @@ Vite Admin 一款基于 Vue3.5、TypeScript、Vite5、Pinia、Element-Plus 开�
 - 支持 Element-Plus 组件大小切换、暗黑模式、i18n 国际化
 - 使用 VueRouter 进行路由权限拦截、页面按钮权限配置、路由懒加载
 - 使用 KeepAlive 对页面进行缓存，支持多级嵌套页面缓存
-- 防止调试功能
+- 支持 防止调试功能
 
 ### 兼容性注意
 
@@ -42,6 +43,7 @@ Vite Admin 一款基于 Vue3.5、TypeScript、Vite5、Pinia、Element-Plus 开�
 ### 安装
 
 - git clone https://github.com/codebabydxj/vue3_vite.git
+- git clone https://gitlab.com/codebabydxj/vue3_vite.git
 
 ### 启动前
 
@@ -50,6 +52,7 @@ Vite Admin 一款基于 Vue3.5、TypeScript、Vite5、Pinia、Element-Plus 开�
 ### 启动
 
 ```text
+pnpm run dev | pnpm dev
 npm run dev | yarn dev
 npm run serve | yarn serve
 ```
@@ -58,15 +61,15 @@ npm run serve | yarn serve
 
 ```text
 - 测试环境
-npm run build:dev | yarn build:dev
+pnpm build:dev | npm run build:dev | yarn build:dev
 - 生成环境
-npm run build:pro | yarn build:pro
+pnpm build:pro | npm run build:pro | yarn build:pro
 ```
 
 ### 代码检测
 
 ```text
-- 检测代码 npm run lint | yarn lint
+- 检测代码 pnpm lint | npm run lint | yarn lint
 ```
 
 ### 项目后台接口 🧩
