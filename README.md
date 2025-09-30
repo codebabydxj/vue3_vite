@@ -49,23 +49,23 @@ Vite-Admin 一款基于 Vue3.4、TypeScript、Vite4、Pinia、Element-Plus 开�
 ### 启动
 
 ```text
-npm run dev | yarn dev
-npm run serve | yarn serve
+npm run dev | yarn dev | pnpm dev
+npm run serve | yarn serve | | pnpm serve
 ```
 
 ### 打包
 
 ```text
 - 测试环境
-npm run build:dev | yarn build:dev
+npm run build:dev | yarn build:dev | pnpm build:dev
 - 生成环境
-npm run build:pro | yarn build:pro
+npm run build:pro | yarn build:pro | pnpm build:pro
 ```
 
 ### 代码检测
 
 ```text
-- 检测代码 npm run lint | yarn lint
+- 检测代码 npm run lint | yarn lint | pnpm lint
 ```
 
 ### 项目后台接口 🧩
