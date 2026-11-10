@@ -33,7 +33,7 @@ const createSnowflake = () => {
 // 定时生成雪花
 let interval: any = null;
 onMounted(() => {
-  interval = setInterval(createSnowflake, 100); // 每 100ms 生成一个雪花
+  // interval = setInterval(createSnowflake, 100); // 每 100ms 生成一个雪花
 });
 
 // 组件卸载时清除定时器
